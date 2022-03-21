@@ -1,0 +1,211 @@
+<div style="background-color: white;" class="bmd-layout-container bmd-drawer-f-l bmd-drawer-overlay ">
+  <main class="bmd-layout-content" id="main">
+
+    <div id="carousel" class="conteudo" *ngIf="!permitirBuscaAvancada" style="position: relative;">
+      <section class="home-banner owl-carousel owl-theme">
+        <div id="carouselExampleIndicators" class="carousel slide" ride="false">
+          <div class="carousel-inner">
+            <div>
+              <img class="img-carousel" loading="lazy" [src]="urlAPI+'biblioteca/imagemHome'">
+              <div class="area-pesquisa">
+                <div class="nome-da-pagina">
+                  <a [routerLink]="['/inicial/biblioteca']">
+                    <h1>
+                      BIBLIOTECA
+                    </h1>
+                  </a>
+                </div>
+
+                <div class="campo-pesquisa">
+                  <form [formGroup]="formFiltro" (submit)="buscarBibliotecas(true)">
+
+                    <button class="botao-pesquisa" type="submit">
+                      <mat-icon class="mobile">search</mat-icon>
+                      <span class="desktop">BUSCA</span>
+                    </button>
+                    <input formControlName="palavraChave" placeholder="Digite aqui a palavra desejada"
+                      class="input-pesquisa">
+                  </form>
+                </div>
+
+                <div class="filtros-avancados">
+                  <button class="botao-busca-avancada" (click)="mostrarBuscaAvancada()">
+                    BUSCA AVANÇADA
+                  </button>
+                </div>
+
+              </div>
+
+              <div class="carousel-caption">
+                <div style="position: inherit;bottom: 0;width: 100%;">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="contentBody" *ngIf="!permitirBuscaAvancada">
+      <app-breadcrumb style="position: relative;"></app-breadcrumb>
+    </div>
+
+    <section id="secao-filtro" class="secao-filtro" *ngIf="permitirBuscaAvancada">
+      <header>
+        <h1><span style="font-weight: 700 !important;color: white;">FAÇA UMA BUSCA NA BIBLIOTECA</span></h1>
+      </header>
+      <div class="row search-form-color">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 search-form-color">
+          <form [formGroup]="formFiltro" (submit)="buscarBibliotecas(true)" class="example-form">
+
+            <div class="col-lg-12 search-form-color">
+              <mat-form-field>
+                <input matInput formControlName="palavraChave" placeholder="Palavra chave">
+              </mat-form-field>
+            </div>
+
+            <mat-form-field class="col-lg-4 search-form-color">
+              <mat-label>Áreas de Interesse</mat-label>
+              <mat-select id="inputAreaInteresse" name="areaInteresse" formControlName="idAreaInteresse"
+                [(value)]="filtroBiblioteca.idAreaInteresse">
+                <mat-option [value]=""></mat-option>
+                <mat-option *ngFor="let item of areasInteresseCombo" value="{{item.id}}">{{item.nome}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-4 search-form-color">
+              <mat-label>Módulo</mat-label>
+              <mat-select id="modulo" name="modulo" formControlName="modulo">
+                  <mat-option [value]=""></mat-option>
+                  <mat-option value="{{modulo.id}}" *ngFor="let modulo of modulos" >{{modulo.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-lg-4 search-form-color">
+              <mat-label>Eixo</mat-label>
+              <mat-select id="idEixo" name="idEixo" formControlName="idEixo" (openedChange)="onEixoChange($event)">
+                <mat-option [value]=""></mat-option>
+                <mat-option *ngFor="let item of eixosCombo" value="{{item.id}}">{{item.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-lg-4 search-form-color">
+              <mat-label>Indicador</mat-label>
+              <mat-select id="idIndicador" name="idIndicador" formControlName="idIndicador">
+    
+                <mat-option *ngFor="let item of indicadoresCombo" value="{{item.id}}" [matTooltip]="item.label">{{item.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-lg-4 search-form-color">
+              <mat-label>ODS</mat-label>
+              <mat-select id="idOds" name="idOds" formControlName="idOds" (openedChange)="onOdsChange($event)">
+                <mat-option [value]=""></mat-option>
+                <mat-option *ngFor="let item of odsCombo" value="{{item.id}}">{{item.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-lg-4 search-form-color">
+              <mat-label>Meta ODS</mat-label>
+              <mat-select id="idMetasOds" name="idMetasOds" formControlName="idMetasOds">
+                <mat-option [value]=""></mat-option>
+                <mat-option *ngFor="let item of metasOdsCombo" value="{{item.id}}" [matTooltip]="item.label">{{item.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-4 search-form-color">
+              <mat-label>País da publicação</mat-label>
+              <mat-select id="idPais" name="idPais" formControlName="idPais" (selectionChange)="onPaisChange($event)">
+                <mat-option [value]=""></mat-option>
+                <mat-option *ngFor="let item of paisesCombo" value="{{item.id}}">{{item.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-4 search-form-color">
+              <mat-label>Estado da publicação</mat-label>
+              <mat-select id="idProvinciaEstado" name="idProvinciaEstado" formControlName="idProvinciaEstado"
+                (selectionChange)="onEstadoChange($event)">
+                <mat-option [value]=""></mat-option>
+                <mat-option *ngFor="let item of provinciaEstadoCombo" value="{{item.id}}">{{item.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-4 search-form-color">
+              <mat-label>Cidade da publicação</mat-label>
+              <mat-select id="idCidade" name="idCidade" formControlName="idCidade">
+                <mat-option [value]=""></mat-option>
+                <mat-option *ngFor="let item of cidadesCombo" value="{{item.id}}">{{item.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <div class="col-lg-12 text-right botoes-pesquisa" style="margin-top: 10px !important;">
+              <button matTooltip="Buscar Bibliotecas" mat-flat-button color="primary" id="btnBuscarBibliotecas" style="margin-right: 10px"
+                class="btnpesquisar btn-filtro-buscar" type="submit">
+                <mat-icon style="margin-top: -1px !important">search</mat-icon> Buscar
+              </button>
+
+              <button matTooltip="Fechar Busca Avançada e limpar filtro" mat-flat-button color="accent" class="btnpesquisar btn-filtro-fechar"
+                (click)="fecharBuscaAvancada()">
+                <mat-icon style="margin-top: -1px !important">close</mat-icon> Fechar
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <div id="bibliotecas">
+
+      <section class="secao">
+        <div class="row">
+          <div class="col-lg-8">
+            <div *ngIf="nadaEncontrado == true">
+              <div class="alert alert-warning">
+                Nenhum resultado encontrado.
+              </div>
+            </div>
+            <app-card-biblioteca *ngFor="let idBiblioteca of idsBibliotecas | slice : 0 : paginationLimit"
+              [idBiblioteca]="idBiblioteca.idBiblioteca"></app-card-biblioteca>
+          </div>
+          <div class="col-lg-4">
+            <section>
+              <div class="row">
+                <div class="col-md-12 row-card-side-bar" style="padding-bottom: 0px !important;" >
+                  <div class="h-100" style="cursor: pointer;">
+
+                    <div class="row">
+                      <div class="caixa" style="background-color: rgb(106, 177, 135);"></div>
+                      <a class="h1 titulos" onclick="return false;">ARQUIVOS RECENTES</a>
+                    </div>
+
+                    <div class="card-body" style="padding-bottom:7% !important; background-color: rgba(106, 177, 135, 0.1); margin-top: 20px;">
+
+                      <div class="row"*ngFor="let item of ultimasPublicacoes">
+                        <div  class=" verticalLine" style="margin-top: 5%;" >
+                          <div style="padding: 0px 15px">
+                            <a [routerLink]="['/biblioteca/detalhe/',item.id]" class="titulos-no-border underline-on-hover" style="margin-bottom:3% !important;width: 100%;border-color: #408559; color: #408559"
+                              onclick="return false;" [matTooltip]="item.tituloPublicacao" [innerHTML]="sliceTituloPublicacao(item.tituloPublicacao)" ></a> <br>
+                            <span [routerLink]="['/biblioteca/detalhe/',item.id]" class="titulos-no-border underline-on-hover" style="margin-bottom:3% !important;width: 100%; color: rgb(98, 97, 104);"  [innerHTML]="item.autor">
+                            </span>
+                          </div>
+                        </div>
+                        <hr style="border-top: 1pt solid; width: 85%; color: rgb(106, 177, 135);">
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <div
+          style="height: 100%;min-height: 100%;display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;-webkit-justify-content: center;justify-content: center;">
+          <button class="view-more" matTooltip="Mais Resultados" (click)="verMaisBibliotecas()" id="btnVerMais">
+            Ver Mais
+          </button>
+        </div>
+
+      </section>
+    </div>

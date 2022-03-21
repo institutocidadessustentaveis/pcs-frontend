@@ -1,0 +1,343 @@
+<div class="contentBody" style="position: relative;">
+  <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+    <section id="secao-formulario">
+
+      <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <mat-card-title>
+          Cadastro do Formulário
+        </mat-card-title>
+      </mat-card-content>
+      <hr />
+      <form [formGroup]="formFormulario" (submit)="salvarFormulario()">
+        <div class="row">
+
+          <input type="hidden"
+            formControlName="id"
+            id="id-formulario"
+            name="id" />
+          <mat-form-field class="col-md-12">
+            <input
+              matInput
+              placeholder="Nome do Formulário"
+              formControlName="nome"
+              maxlength="250"
+              #inputNome
+              required
+              id="nome"
+            />
+            <mat-hint align="end"
+              >{{ inputNome.value?.length || 0 }}/250</mat-hint
+            >
+            <mat-error
+              *ngIf="formFormulario.controls['nome'].hasError('required')" >
+              Campo Nome do Evento é obrigatório
+            </mat-error>
+          </mat-form-field>
+          <br />
+
+          <div class="col-md-12">
+            <mat-checkbox formControlName="publicado" type="checkbox" > Publicar</mat-checkbox>
+          </div>
+          <div class="col-md-12">
+            <mat-checkbox formControlName="apenasAutenticados" type="checkbox" > Apenas pessoas autenticadas na Plataforma poderão preencher o Formulário</mat-checkbox>
+          </div>
+          <div class="col-md-12">
+            <mat-checkbox *ngIf="usuarioPrefeitura"  formControlName="exibirPaginaPrefeitura" type="checkbox" > Exibir na Página da Cidade</mat-checkbox>
+          </div>
+
+          <br />
+
+          <div class="col-md-12"  style="margin-bottom:1em !important;">
+            <mat-label>Resumo/Descrição *</mat-label>
+            <div [ngxSummernote]="editorConfig" formControlName="descricao"></div>
+            <mat-error *ngIf="formFormulario.controls['descricao'].hasError('required')" >
+              Campo Descrição é obrigatório
+            </mat-error>
+          </div>
+
+          <div class="col-md-6">
+            <app-datepicker
+              class="''"
+              [formControlName]="'inicioPeriodoAtividade'"
+              [required]="true"
+              placeholder="Inicio do período de atividade"
+            ></app-datepicker>
+          </div>
+          <div class="col-md-6">
+            <app-datepicker
+              class="''"
+              [required]="true"
+              [formControlName]="'fimPeriodoAtividade'"
+              placeholder="Fim do período de atividade"
+            ></app-datepicker>
+          </div>
+
+          <mat-form-field class="col-md-6">
+            <mat-label>Quem poderá preencher o formulário*</mat-label>
+            <mat-select
+              id="tipoUsuario"
+              name="tipoUsuario"
+              required
+              formControlName="tipoUsuario">
+              <mat-option [value]="'todos'">Todos</mat-option>
+              <mat-option [value]="'prefeitura'">Apenas Prefeitura</mat-option>
+              <mat-option [value]="'cidadao'">Apenas Cidadãos</mat-option>
+            </mat-select>
+            <mat-error
+              *ngIf="formFormulario.controls['ods'].hasError('required')">
+              Campo obrigatório.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-6">
+            <mat-label>Eixos</mat-label>
+            <mat-select id="eixos" name="eixos" formControlName="eixos" multiple (selectionChange)="mudarEixo($event.value)">
+              <mat-option  *ngFor="let item of listaEixo" [value]="item.id">{{item.nome}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="formFormulario.controls['eixos'].hasError('required')" >
+              Campo obrigatório.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-6">
+            <mat-label>ODS</mat-label>
+            <mat-select id="ods" name="ods" formControlName="ods" multiple>
+              <mat-option *ngFor="let item of listaOds" [value]="item.id">{{item.label ? item.label : item.id+' - '+item.titulo }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="formFormulario.controls['ods'].hasError('required')" >
+              Campo obrigatório.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-6">
+            <mat-label>Temas</mat-label>
+            <mat-select id="temas" name="temas" multiple formControlName="temas">
+              <mat-option *ngFor="let item of listaTemas" [value]="item.id">{{item.nome}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="formFormulario.controls['eixos'].hasError('required')" >
+              Campo obrigatório.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <br />
+        <hr>
+    <section id="secao-secoes">
+      <mat-card-content class="text-left" >
+        <mat-card-title>
+          Seções e Perguntas
+        </mat-card-title>
+      </mat-card-content>
+      <form [formGroup]="formSecao" *ngIf="cadastrandoSecao" >
+        <div class="row">
+          <div class="col-md-12">
+            <h6>Cadastro de Seção</h6>
+          </div>
+          <input type="hidden"
+            formControlName="id"
+            id="id-secao"
+            name="id" />
+          <mat-form-field class="col-md-12">
+            <input
+              matInput
+              placeholder="Nome da Seção *"
+              formControlName="nome"
+              maxlength="250"
+              #inputNome
+              id="nomeSecao"
+            />
+            <mat-hint align="end"> {{ inputNome.value?.length || 0 }}/250 </mat-hint>
+            <mat-error
+              *ngIf="formFormulario.controls['nome'].hasError('required')" >
+              Campo obrigatório
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <br>
+        <div class="text-right" *ngIf="cadastrandoSecao && !cadastrandoPergunta" >
+          <button mat-flat-button color="primary" (click)="salvarSecao()">Salvar Seção</button>
+        </div>
+      </form>
+
+      <form [formGroup]="formPergunta" *ngIf="cadastrandoPergunta" >
+        <div class="row">
+          <div class="col-md-12">
+            <h6>Cadastro de Perguntas</h6>
+          </div>
+          <div class="col-md-12">
+            Seção: <strong>{{ secaoSelecionada.nome }}</strong>
+          </div>
+          <br />
+          <br />
+          <div class="col-md-12" style="margin-bottom:1em !important;">
+            <mat-label>Pergunta *</mat-label>
+            <div [ngxSummernote]="editorConfig" formControlName="pergunta"></div>
+            <mat-error *ngIf="formPergunta.controls['pergunta'].hasError('required')" >
+              Campo obrigatório.
+            </mat-error>
+          </div>
+          <br />
+          <br />
+
+          <mat-form-field class="col-md-6">
+            <mat-label>Qual o tipo da Pergunta? *</mat-label>
+            <mat-select id="tipo-pergunta"
+              name="tipo"
+              formControlName="tipo" >
+              <mat-option [value]="'SimNao'">Sim ou Não</mat-option>
+              <mat-option [value]="'Multiplo'">Multiplas Opções</mat-option>
+              <mat-option [value]="'MultiploOutro'">Multiplas Opções e campo "outro"</mat-option>
+              <mat-option [value]="'TextoLivre'">Texto Livre</mat-option>
+            </mat-select>
+            <mat-error *ngIf="formPergunta.controls['tipo'].hasError('required')" >
+              Campo obrigatório.
+            </mat-error>
+          </mat-form-field>
+
+          <br />
+          <div class="col-md-12" *ngIf="formPergunta.controls.tipo.value == 'Multiplo' || formPergunta.controls.tipo.value == 'MultiploOutro'">
+            <mat-checkbox formControlName="multiplaSelecao" type="checkbox" >
+              Permitir selecionar mais de uma resposta?
+            </mat-checkbox>
+          </div>
+
+        </div>
+        <section id="secao-opcoes" *ngIf="formPergunta.controls.tipo.value == 'Multiplo' || formPergunta.controls.tipo.value == 'MultiploOutro'"  >
+          <h6>Opções de respostas</h6>
+
+          <ul>
+            <li *ngFor="let resposta of perguntaSelecionada.respostas; let k = index" >
+               <button matTooltip="Excluir" class="btn-tabela" mat-button color="warn" style="cursor: pointer;"
+                  (click)="excluirResposta(k)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+                {{resposta.resposta}}
+            </li>
+          </ul>
+
+          <form [formGroup]="formResposta" (submit)="salvarResposta()" >
+            <div class="row">
+              <input type="hidden"
+                formControlName="id"
+                id="id-formulario"
+                name="id" />
+              <mat-form-field class="col-10 col-md-6 ">
+                <input
+                  matInput
+                  placeholder="Adicione uma Opção e clique no botão ao lado para confirmar."
+                  formControlName="resposta"
+                  maxlength="250"
+                  #inputResposta
+                  id="opcao"
+                  required
+                />
+                <mat-hint align="end"
+                  >{{ inputResposta.value?.length || 0 }}/250</mat-hint>
+                <mat-error
+                  *ngIf="formFormulario.controls['nome'].hasError('required')" >
+                  Campo obrigatório.
+                </mat-error>
+              </mat-form-field>
+              <div class="col-2 col-md-1  text-left">
+                <button [disabled]="!formResposta.valid" mat-mini-fab color="primary" >+</button>
+              </div>
+            </div>
+          </form>
+        </section>
+
+        <div class="text-right" >
+          <button mat-flat-button color="accent" (click)="salvarPergunta()">Salvar Pergunta</button>
+        </div>
+        <br />
+      </form>
+
+      <!-- Lista de Seções-->
+      <div *ngIf="!cadastrandoSecao && !cadastrandoPergunta" >
+        <mat-expansion-panel *ngFor="let secao of listaSecao; let i = index" [expanded]=true >
+          <mat-expansion-panel-header>
+            <span>
+              <h5>{{ secao.nome }}</h5>
+            </span>
+          </mat-expansion-panel-header>
+
+          <h6 *ngIf="!cadastrandoPergunta" >Perguntas da Seção</h6>
+          <span *ngIf="secao.perguntas.length == 0 && !cadastrandoPergunta" >
+            Ainda não há perguntas cadastradas para esta seção.
+          </span>
+          <br>
+         <ol class="lista-perguntas">
+            <li *ngFor="let pergunta of secao.perguntas; let j = index"  class="borda-baixo pergunta">
+                <button matTooltip="Editar" class="btn-tabela" mat-button color="primary" style="cursor: pointer; margin-right:.5em ;"
+                  (click)="editarPergunta(secao, pergunta)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button matTooltip="Excluir" class="btn-tabela" mat-button color="warn" style="cursor: pointer;"
+                  (click)="excluirPergunta(i,j)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+                {{pergunta.pergunta | stripTags}}
+                <br>
+                <div *ngIf="pergunta.respostas" >
+                  <ul class="lista-perguntas lista-respostas">
+                    <li><strong>Respostas:</strong></li>
+                    <li *ngFor="let resposta of pergunta.respostas; let l = index">
+                      {{resposta.resposta}}
+                    </li>
+                    <li *ngIf="pergunta.tipo == 'MultiploOutro'">Outro</li>
+                    <li *ngIf="pergunta.tipo == 'SimNao'">Sim</li>
+                    <li *ngIf="pergunta.tipo == 'SimNao'">Não</li>
+                    <li *ngIf="pergunta.tipo == 'TextoLivre'">Texto livre</li>
+                  </ul>
+                  <br />
+                </div>
+            </li>
+         </ol>
+
+
+          <mat-action-row>
+            <button mat-flat-button color="primary"
+              (click)="habilitarCadastroPergunta(secao)">
+              <mat-icon>add</mat-icon>
+              Adicionar Pergunta
+            </button>
+            <button matTooltip="Editar" class="btn-tabela" mat-button color="primary" style="cursor: pointer; margin-right:.5em ;"
+              (click)="editarSecao(i)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button matTooltip="Excluir" class="btn-tabela" mat-button color="warn" style="cursor: pointer;"
+              (click)="excluirSecao(i)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-action-row>
+        </mat-expansion-panel>
+      </div>
+
+      <div id="listaSecoes" *ngIf="!cadastrandoSecao && !cadastrandoPergunta" >
+        <span *ngIf="listaSecao.length == 0" >
+          Ainda não há seções cadastradas nesse formulário.
+        </span>
+        <br>
+        <div class="text-right">
+          <button mat-flat-button color="accent" (click)="habilitarCadastroSecao()">Adicionar Seção de Perguntas</button>
+        </div>
+      </div>
+
+    </section>
+    <hr>
+
+        <div class="text-right">
+          <button class="btn-direita" mat-flat-button [disabled]="!formFormulario.valid" color="primary" type="submit" >
+            <mat-icon> save </mat-icon> Salvar Formulário
+          </button>
+          <button class="btn-direita" mat-flat-button color="accent" type="button" name="voltar"
+            [routerLink]="['/participacao-cidada/formulario']" id="btnVoltar" matTooltip="Voltar" >
+            <mat-icon> arrow_back </mat-icon> Cancelar
+          </button>
+        </div>
+      </form>
+
+    </section>
+
+
+  </mat-card>
+</div>

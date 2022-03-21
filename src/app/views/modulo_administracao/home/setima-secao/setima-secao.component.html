@@ -1,0 +1,72 @@
+
+<!-- Sétima seção --> 
+
+  <section > 
+      <div class="col-md-12" *ngIf="setimaSecao?.tituloPrincipal" style="margin-bottom:3%" >
+        <div class="row">
+          <div class="caixa"  [style.background-color]="setimaSecao?.tituloPrincipalCor" ></div>
+          <a *ngIf="setimaSecao?.tituloPrincipal && setimaSecao?.tituloPrincipalLink && !verificaLinks(setimaSecao?.tituloPrincipalLink)"
+            class="h1 titulos" style="margin-bottom:0 !important;" [style.border-color]="setimaSecao?.tituloPrincipalCor"
+            [style.color]="setimaSecao?.tituloPrincipalCor"
+            [href]="setimaSecao?.tituloPrincipalLink" target="_blank">{{setimaSecao?.tituloPrincipal}}</a>
+          
+          <a *ngIf="setimaSecao?.tituloPrincipal && setimaSecao?.tituloPrincipalLink && verificaLinks(setimaSecao?.tituloPrincipalLink)"
+            class="h1 titulos" style="margin-bottom:0 !important; cursor: pointer;" [style.border-color]="setimaSecao?.tituloPrincipalCor"
+            [style.color]="setimaSecao?.tituloPrincipalCor"
+            (click)="validacaoDownload(setimaSecao?.tituloPrincipalLink)">{{setimaSecao?.tituloPrincipal}}</a>
+
+          <a *ngIf="setimaSecao?.tituloPrincipal && !setimaSecao?.tituloPrincipalLink"
+            class="h1 titulos" style="margin-bottom:0 !important;" [style.border-color]="setimaSecao?.tituloPrincipalCor"
+            [style.color]="setimaSecao?.tituloPrincipalCor">{{setimaSecao?.tituloPrincipal}}</a>
+        </div>
+      </div>
+        
+
+      <div class="row" style="width: 100%; margin-bottom: 3%;" *ngIf="setimaSecao?.primeiraImagemSafeUrl">
+        <div class="col underline-on-hover one-column-center one-column-fix"  
+            style="padding-left: 0% !important;padding-right: 0%; margin-left: 15px;" [style.background-color]="this.corTemaAux" >
+          <a *ngIf="setimaSecao.primeiraImagemLink && !verificaLinks(setimaSecao.primeiraImagemLink)" class="one-column-center" style="height: 100%;width: 100%;"  [style.background-color]="this.corTemaAux"
+            [href]="setimaSecao.primeiraImagemLink" target="_blank" rel="noopener"> 
+              <img [src]="setimaSecao.primeiraImagemSafeUrl" [matTooltip]="setimaSecao?.primeiraImagemTooltip" class="img-third-section" >
+          </a>
+
+          <a *ngIf="setimaSecao.primeiraImagemLink && verificaLinks(setimaSecao.primeiraImagemLink)" class="one-column-center" style="height: 100%;width: 100%; cursor: pointer;"  [style.background-color]="this.corTemaAux"
+            (click)="validacaoDownload(setimaSecao.primeiraImagemLink)" target="_blank" rel="noopener"> 
+              <img [src]="setimaSecao.primeiraImagemSafeUrl" [matTooltip]="setimaSecao?.primeiraImagemTooltip" class="img-third-section" >
+          </a>
+
+          <a *ngIf="!setimaSecao.primeiraImagemLink" class="one-column-center" style="height: 100%;width: 100%;"  [style.background-color]="this.corTemaAux"> 
+              <img [src]="setimaSecao.primeiraImagemSafeUrl" [matTooltip]="setimaSecao?.primeiraImagemTooltip" class="img-third-section" >
+          </a>
+        </div>
+        <div class="col-md-6 one-column-center one-column-fix" 
+              style="margin-right: 15px;padding-top:3%; padding-bottom: 3%;" [style.background-color]="this.corTemaAux" >
+          <div class="row" style="padding-left: 15px;">
+            <a *ngIf="setimaSecao?.primeiroTitulo && setimaSecao?.primeiroTituloLink && !verificaLinks(setimaSecao?.primeiroTituloLink)" class="h5 titulos-no-border underline-on-hover" style="margin-bottom:3% !important;width: 100%;" [style.border-color]="setimaSecao?.primeiroTituloCor" 
+            [style.color]="setimaSecao?.primeiroTituloCor"
+            [href]="setimaSecao?.primeiroTituloLink" target="_blank">{{setimaSecao?.primeiroTitulo}}</a>
+
+            <a *ngIf="setimaSecao?.primeiroTitulo && setimaSecao?.primeiroTituloLink && verificaLinks(setimaSecao?.primeiroTituloLink)" class="h5 titulos-no-border underline-on-hover" style="margin-bottom:3% !important;width: 100%; cursor: pointer;" [style.border-color]="setimaSecao?.primeiroTituloCor" 
+            [style.color]="setimaSecao?.primeiroTituloCor"
+            (click)="validacaoDownload(setimaSecao?.primeiroTituloLink)">{{setimaSecao?.primeiroTitulo}}</a>
+
+            <a *ngIf="setimaSecao?.primeiroTitulo && !setimaSecao?.primeiroTituloLink" class="h5 titulos-no-border underline-on-hover" style="margin-bottom:3% !important;width: 100%;" [style.border-color]="setimaSecao?.primeiroTituloCor" 
+            [style.color]="setimaSecao?.primeiroTituloCor">{{setimaSecao?.primeiroTitulo}}</a>
+
+
+
+            <a *ngIf="setimaSecao?.primeiroTexto && setimaSecao?.primeiroTextoLink && !verificaLinks(setimaSecao?.primeiroTextoLink)" class="one-column-texto-small underline-on-hover"  style="color: #231f20;width: 100%;text-align: left;padding-right: 30px;" [style.color]="setimaSecao?.primeiroTextoCor" 
+            [innerHTML]="setimaSecao?.primeiroTexto" 
+            [href]="setimaSecao?.primeiroTextoLink" target="_blank"></a>
+
+            <a *ngIf="setimaSecao?.primeiroTexto && setimaSecao?.primeiroTextoLink && verificaLinks(setimaSecao?.primeiroTextoLink)" class="one-column-texto-small underline-on-hover"  style="color: #231f20;width: 100%;text-align: left;padding-right: 30px; cursor: pointer;" [style.color]="setimaSecao?.primeiroTextoCor" 
+            [innerHTML]="setimaSecao?.primeiroTexto" (click)="validacaoDownload(setimaSecao?.primeiroTextoLink)"></a>
+
+            <a *ngIf="setimaSecao?.primeiroTexto && !setimaSecao?.primeiroTextoLink" class="one-column-texto-small underline-on-hover"  style="color: #231f20;width: 100%;text-align: left;padding-right: 30px;" [style.color]="setimaSecao?.primeiroTextoCor" 
+            [innerHTML]="setimaSecao?.primeiroTexto"></a>
+          </div>
+        </div>
+      </div>
+
+  </section>
+  

@@ -1,0 +1,226 @@
+<section class="home-banner owl-carousel owl-theme">
+  <div id="carouselExampleIndicators" class="carousel slide" ride="false">
+    <div class="carousel-inner">
+      <div>
+        <img class="img-carousel" loading="lazy" [src]="urlImagem()">
+        <div class="carousel-caption">
+          <div style="position: inherit;bottom: 0;width: 100%;">
+            <h1 class="animated fadeInUp duration-3s delay-1s">{{ evento?.nome }}</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="conteudo">
+    <section class="section_bread">
+      <app-breadcrumb style="position: relative;"></app-breadcrumb>
+    </section>
+
+    <section class="text-cols--centered">
+
+      <div class="row">
+        <div class="col-lg-6 col-xl-6 col-sm-6 col-md-6">
+
+          <div class="row">
+            <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+              <mat-icon style="vertical-align: middle;margin-right: 1%;">description
+              </mat-icon>
+            </div>
+            <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+              <strong>Descrição<br></strong>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+            </div>
+            <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+              <a [innerHTML]="evento?.descricao"></a>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+              <mat-icon style="vertical-align: middle;margin-right: 1%;">calendar_today
+              </mat-icon>
+            </div>
+            <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+              <strong>{{formatarData()}}<br></strong>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+            </div>
+            <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+              {{ horarioFormatado }}
+            </div>
+          </div>
+          <br>
+
+          <div class="row">
+            <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+              <mat-icon style="vertical-align: middle;margin-right: 1%;">location_on</mat-icon>
+            </div>
+            <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+              <strong>Local do Evento<br></strong>
+            </div>
+          </div>
+          <div class="row" style="margin-bottom: 4%;">
+            <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+            </div>
+            <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10" *ngIf="!evento?.online">
+              {{evento?.enderecoExibicao}}
+            </div>
+            <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10" *ngIf="evento?.online">
+              On-line
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+              <mat-icon style="vertical-align: middle;margin-right: 1%;">assignment_ind
+              </mat-icon>
+            </div>
+            <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+              <strong>Organizador:<br></strong>{{ evento?.organizador}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+            </div>
+            <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+              <a [innerHTML]="evento?.site" [href]="evento?.site"></a>
+            </div>
+          </div>
+          <br>
+
+          <div class="row">
+            <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+              <mat-icon style="vertical-align: middle;margin-right: 1%;">article
+              </mat-icon>
+            </div>
+            <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+              <strong>Tema do Evento<br></strong>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+            </div>
+            <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+              {{evento?.temasNomes.join('; ')}}
+            </div>
+          </div>
+
+          <section *ngIf="evento?.eixos?.length > 0">
+            <br>
+            <div class="row">
+              <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+                <mat-icon style="vertical-align: middle;margin-right: 1%;">location_city
+                </mat-icon>
+              </div>
+              <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+                <strong>Eixos do PCS<br></strong>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+              </div>
+              <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+                <a *ngFor="let eixo of evento.eixos" [href]="eixo.link" target="_blank">
+                  <img style="margin-right: 1em;" width="80" height="80" [src]="url+'eixo/imagem/'+eixo.id" [matTooltip]="eixo.nome">
+                </a><br>
+              </div>
+            </div>
+          </section>
+
+          <section *ngIf="evento?.ods">
+            <div class="row">
+              <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+                <mat-icon style="vertical-align: middle;margin-right: 1%;">language</mat-icon>
+              </div>
+              <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+                <strong>ODS<br></strong>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+              </div>
+              <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+                <a style="color:white;" href="institucional/ods/{{evento?.ods.id}}"
+                  title="Ir para página de ODS" target="_blank">
+                  <img class="icone-ods" [src]="gerarLinkImagem(evento?.ods)" />
+                </a>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-lg-6 col-xl-6 col-sm-6 col-md-6">
+          <div class="compartilhar" >
+
+            <div  class="text-center">
+              <button mat-icon-button (click)="salvarLogCompartilhamento('FACEBOOK')" class="btnTabela" style="background-color:#3a559f;color:white; margin-left: 10px;" shareButton="facebook"
+                [url]="urlatual">
+                <fa name="facebook" size="lg"></fa>
+              </button>
+
+              <button mat-icon-button (click)="salvarLogCompartilhamento('TWITTER')" class="btnTabela" style="background-color:#50abf1;color:white" shareButton="twitter"
+                [url]="urlatual">
+                <fa name="twitter" size="lg"></fa>
+              </button>
+
+              <button mat-icon-button (click)="salvarLogCompartilhamento('LINKEDIN')" class="btnTabela" style="background-color:#0077af;color:white" shareButton="linkedin"
+                [url]="urlatual">
+                <fa name="linkedin" size="lg"></fa>
+              </button>
+
+            </div>
+          </div>
+          <!-- <div class="col-md-12 map-mobile"> -->
+          <div *ngIf="evento" style="height: 100%; width: 100%;" 
+            leaflet 
+            [leafletOptions]="options"
+            [leafletLayers]="layersControl"
+            (leafletMapReady)="onMapReady($event)"
+            >
+          </div>
+
+
+          <!-- </div> -->
+        </div>
+      </div>
+
+    </section>
+  </div>
+
+  <section class="news__section" *ngIf="noticias?.length > 0">
+    <header>
+      <h1>Noticias relacionadas</h1>
+    </header>
+    <div class="news__grid news__grid--3">
+      <div class="news__grid-inner">
+        <article style="cursor: pointer;border:0;"
+          *ngFor="let item of noticias; let k = index">
+          <header>
+            <h2>
+              <a href="{{gerarLinkNoticia(item)}}">{{item.titulo}}</a>
+            </h2>
+          </header>
+
+            <a href="{{gerarLinkNoticia(item)}}">
+              <figure>
+                <img style=" height: 300px;width: 100%;object-fit: cover;" loading="lazy" [src]="item.urlImagem">
+              </figure>
+            </a>
+
+            <div class="options">{{item.dataHoraPublicacao | date:'shortDate'}}</div>
+            <p>
+              {{pcsUtil.replaceHtmlTags(pcsUtil.subStringSemCortarTexto(item.subtitulo,190))}} <a
+                href="{{gerarLinkNoticia(item)}}">
+                [Leia Mais]</a>
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>

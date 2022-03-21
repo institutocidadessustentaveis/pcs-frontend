@@ -1,0 +1,31 @@
+<div mat-dialog-content>
+  <div class="col-md-12">
+    <mat-card class="col-md-12">
+      <mat-card-title>Solicitação do Usuário</mat-card-title>
+      <mat-card-content>
+        <section>
+          <span>{{ solicitacao.solicitacao }}</span>
+        </section>
+      </mat-card-content>
+    </mat-card>
+    <br>
+    <section>
+      <form #formResposta="ngForm">
+        <mat-form-field>
+          <textarea matInput placeholder="Campo de resposta" rows="10"
+            name="resposta" [(ngModel)]="resposta" 
+            [disabled]="solicitacao.respondido">
+          </textarea>
+        </mat-form-field>  
+      </form>
+      <mat-card *ngIf="solicitacao.respondido">
+        <p>Respondido por: {{ respostaRef?.nomeUsuario }} </p>
+        <p>Data: {{ respostaRef?.dataHora | date:'dd/MM/yyyy HH:mm:ss' }} </p>
+      </mat-card>
+    </section>
+  </div>
+</div>
+<div mat-dialog-actions align="end">
+  <button style="margin: 10px;" mat-flat-button color="accent" class="btn-modal" (click)="closeModal()">Sair</button>
+  <button mat-flat-button color="primary" class="btn-modal" (click)="salvarResposta()"><mat-icon>send</mat-icon>Enviar</button>
+</div>

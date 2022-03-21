@@ -1,0 +1,7 @@
+body {
+    --bg-dialog: white;
+    --primary: rgb(71, 130, 94, 1);
+    --primary-contrast: #fff;
+    --primary-a60: rgba(71, 130, 94, 0.6);
+    --primary-a80: rgba(71, 130, 94, 0.8);
+}

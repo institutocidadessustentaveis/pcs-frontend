@@ -1,0 +1,20 @@
+mat-dialog-actions {
+    margin-top: 5px;
+}
+
+button {
+    margin-right: 5px;
+}
+
+.info {
+    width: 100%;
+    margin: 5px;
+  }
+
+.info-full-width {
+    width: 100%;
+}
+
+.justificativa {
+    width: 30%;
+}

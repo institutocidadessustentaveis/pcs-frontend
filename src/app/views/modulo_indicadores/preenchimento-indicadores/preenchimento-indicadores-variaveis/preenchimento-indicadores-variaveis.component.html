@@ -1,0 +1,165 @@
+<form [formGroup]="formVariavel">
+  <mat-form-field class="" [hidden]="true">
+    <input matInput placeholder="id Variavel" #txtIdVariavel [id]="'txtIdVariavel' + idHtml" formControlName="id"
+    [readonly]="true" />
+  </mat-form-field>
+  <mat-form-field class="" [hidden]="true">
+    <input matInput placeholder="tipo Variavel" #txtTipoVariavel [id]="'txtTipoVariavel' + idHtml"
+    formControlName="tipo" [disabled]="true" />
+  </mat-form-field>
+  <div [hidden]="!variavel.id" class="text-right btn-excluir">
+    <button mat-button color="warn" matTooltip="Excluir"
+      style="cursor: pointer; margin-right: 5px !important;" [id]="'btnExcluir' + idHtml" (click)="excluirVariavelPreenchida()" >
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+  <mat-form-field class="marginToCard">
+    <input matInput placeholder="Nome Variavel" #txtVariavel [id]="'txtVariavel' + idHtml"
+      matTooltip="{{variavel.descricao}}" formControlName="nome" [readonly]="true" />
+    <mat-hint align="end">{{ txtVariavel.value?.length || 0 }}/100</mat-hint>
+  </mat-form-field>
+
+  <mat-form-field class="marginToComponent" *ngIf="variavel.tipo === 'Texto livre'">
+    <input matInput placeholder="Valor" #txtValor [id]="'txtValor' + idHtml" formControlName="valor"
+      [readonly]="blockFields" [maxLength]="2000"/>
+    <mat-hint align="end">{{ txtValor.value?.length || 0 }}/2000</mat-hint>
+    <mat-error *ngIf="!formVariavel.controls['valor'].valid && formVariavel.controls['valor'].touched">
+      {{ getValor() }}
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="marginToComponent"  *ngIf="variavel.tipo === 'Numérico inteiro'">
+    <input matInput placeholder="Valor" #txtValor [id]="'txtValor' + idHtml" formControlName="valor" type="number"
+      onKeyPress="if(this.value.length==20) return false;" [readonly]="blockFields"
+      oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" (focusout)="validarValorAlerta()" />
+    <mat-hint align="end">{{ txtValor.value?.length || 0 }}/20</mat-hint>
+    <mat-error *ngIf="!formVariavel.controls['valor'].valid && formVariavel.controls['valor'].touched">
+      {{ getValor() }}
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="marginToComponent" *ngIf="variavel.tipo === 'Numérico decimal'">
+    <input matInput placeholder="Valor" #txtValor [id]="'txtValor' + idHtml" formControlName="valor" type="number"
+      onKeyPress="if(this.value.length==20) return false;" [readonly]="blockFields" (focusout)="validarValorAlerta()"/>
+    <mat-hint align="end">{{ txtValor.value?.length || 0 }}/20</mat-hint>
+    <mat-error *ngIf="!formVariavel.controls['valor'].valid && formVariavel.controls['valor'].touched">
+      {{ getValor() }}
+    </mat-error>
+  </mat-form-field>
+
+  <label style="max-width: 10% !important;" *ngIf="variavel.tipo === 'Tipo sim/não'">Resposta:
+    <mat-slide-toggle [id]="'sldOption' + idHtml" (change)="changeSlide()"
+      [disabled]="blockFields" class="marginToComponent" formControlName="respostaSimples" color="primary">{{labelSlider}}
+    </mat-slide-toggle>
+  </label>
+
+  <mat-form-field *ngIf="variavel.tipo === 'Tipo lista de opções' && !variavel.multiplaSelecao" class="marginToComponent">
+    <mat-label>Lista de Opções*</mat-label>
+    <mat-select [id]="'ddListaOpcoes' + idHtml" [multiple]="variavel.multiplaSelecao" formControlName="opcao" [disabled]="blockFields">
+      <mat-option *ngFor="let itemOpcao of listaTabelaOpcoes" [value]="itemOpcao.id">
+        {{itemOpcao.descricao}}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="!formVariavel.controls['opcao'].valid && formVariavel.controls['opcao'].touched">
+      {{ getOpcao() }}
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="variavel.tipo === 'Tipo lista de opções' && variavel.multiplaSelecao" class="marginToComponent">
+    <mat-label>Lista de Opções*</mat-label>
+    <mat-select [id]="'ddListaOpcoes' + idHtml" multiple formControlName="opcoes" [disabled]="blockFields">
+      <mat-option *ngFor="let itemOpcao of listaTabelaOpcoes" [value]="itemOpcao.id">
+        {{itemOpcao.descricao}}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="!formVariavel.controls['opcao'].valid && formVariavel.controls['opcao'].touched">
+      {{ getOpcao() }}
+    </mat-error>
+  </mat-form-field>
+
+  <label style="max-width: 10% !important; margin-right: 10px !important;" *ngIf="variavel.tipo === 'Tipo sim/não com lista de opções'">Resposta:
+    <mat-slide-toggle class="marginToComponent"
+      [id]="'sldOptionLista' + idHtml" (change)="changeSlide()" formControlName="respostaSimples"
+      [disabled]="blockFields" color="primary">{{labelSlider}}
+    </mat-slide-toggle>
+  </label>
+  <mat-form-field style="max-width: 89% !important;" *ngIf="variavel.tipo === 'Tipo sim/não com lista de opções' && !variavel.multiplaSelecao"
+    class="marginToComponent">
+    <mat-label>Lista de Opções*</mat-label>
+    <mat-select [id]="'ddListaOpcaoSimNao' + idHtml" formControlName="opcao" [disabled]="blockFields">
+      <mat-option *ngFor="let itemOpcaoSimNao of listaTabelaOpcoes" [value]="itemOpcaoSimNao.id">
+        {{itemOpcaoSimNao.descricao}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field style="max-width: 89% !important;" *ngIf="variavel.tipo === 'Tipo sim/não com lista de opções' && variavel.multiplaSelecao"
+    class="marginToComponent">
+    <mat-label>Lista de Opções* </mat-label>
+    <mat-select [id]="'ddListaOpcoesSimNao' + idHtml" formControlName="opcoes" [disabled]="blockFields" multiple>
+      <mat-option *ngFor="let itemOpcaoSimNao of listaTabelaOpcoes" [value]="itemOpcaoSimNao.id">
+        {{itemOpcaoSimNao.descricao}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="marginToTop">
+    <input matInput placeholder="Observação" #txtObservacao [id]="'txtObservacao' + idHtml" formControlName="observacao"
+      [readonly]="blockFields"  [maxLength]="4100" />
+    <mat-hint align="end">{{ txtObservacao.value?.length || 0 }}/4100</mat-hint>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label> Nome da fonte de dados </mat-label>
+    <mat-select formControlName="fonte" name="fonte" id="fonte" (selectionChange)="instituicaoFonteSelecionado($event.value)">
+      <mat-option value=""></mat-option>
+      <mat-option *ngFor="let fonte of listaInstituicaoFonte" [value]="fonte.id">
+        {{ fonte.label }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field [hidden]= exibirCampoNomeInstituicaoFonte>
+    <input matInput placeholder="Nome da fonte de dados" value="" #txtFonteTexto formControlName="fonteTexto" id="fonteTexto">
+    <mat-hint align="end">{{ txtFonteTexto.value?.length || 0 }}/100</mat-hint>
+  </mat-form-field>
+
+  <mat-form-field [hidden]= exibirCampoNomeInstituicaoFonte>
+    <mat-label> Nome da instancia do orgão* </mat-label>
+    <mat-select formControlName="instancia" name="instancia" id="instancia" (selectionChange)="instanciaSelecionado($event.value)">
+      <mat-option value=""></mat-option>
+      <mat-option *ngFor="let Instancia of listaInstancia" [value]="Instancia.id">
+      {{ Instancia.label }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="formVariavel.controls['instancia'].hasError('required')">
+      Campo Nome da instancia do orgão é obrigatório
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field [hidden]= exibirListaNomeDoOrgao>
+      <mat-label> Nome do orgão* </mat-label>
+      <mat-select formControlName="orgao" name="orgao" id="orgao">
+        <mat-option value=""></mat-option>
+        <mat-option *ngFor="let Orgao of listaOrgao" [value]="Orgao.id">
+        {{ Orgao.label }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="formVariavel.controls['orgao'].hasError('required')">
+        Campo Nome do orgão é obrigatório
+    </mat-error>
+  </mat-form-field>
+
+
+  <div class="col-md-12 col-lg-12 text-right marginToComponent">
+    <button mat-flat-button color="primary" matTooltip="Confirmar"
+      style="cursor: pointer; margin-right: 5px !important;" [id]="'btnConfirmar' + idHtml" (click)="confirmar()"
+      [disabled]="permiteConfirmar || desabilitarBtnConfirmar">
+      <mat-icon>check</mat-icon> Confirmar
+    </button>
+    <button mat-flat-button color="accent" matTooltip="Cancelar" style="cursor: pointer;" [id]="'btnCancelar' + idHtml"
+      (click)="cancelar()" [disabled]="habilitarBotaoCancelar">
+      <mat-icon>close</mat-icon> Cancelar
+    </button>
+  </div>
+</form>

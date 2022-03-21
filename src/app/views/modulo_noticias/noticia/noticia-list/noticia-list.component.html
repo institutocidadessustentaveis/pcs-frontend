@@ -1,0 +1,95 @@
+<div class="contentBody" style="position: relative;">
+    <app-breadcrumb style="position: relative;"></app-breadcrumb>
+<mat-card>
+  <div class="row">
+    <div class="col-md-8 col-lg-9 col-xs-12 col-sm-12">
+      <h2>Cadastrar Notícias</h2>
+    </div>
+
+    <div class="col-md-4 col-lg-3 col-xs-12 col-sm-12" style="text-align: right;">
+      <button mat-flat-button color="primary" [routerLink]="['/cadastro-noticia/cadastrar']" class="btnCadastrar"
+        id="btnCadastrar" matTooltip="Cadastrar" style="cursor: pointer !important; margin-bottom: 5px;">
+        <mat-icon>add</mat-icon>Cadastrar Notícia
+      </button>
+    </div>
+
+  </div>
+
+  <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+    <mat-divider></mat-divider>
+  </div>
+
+  <br>
+
+  <div *ngIf="loading" class="loading-indicator">
+    <mat-progress-spinner style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+  </div>
+
+  <mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtro">
+  </mat-form-field>
+
+  <br>
+  <br>
+
+  <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+    <mat-card-title>Lista de Notícias Cadastradas</mat-card-title>
+    <mat-divider></mat-divider>
+  </div>
+
+  <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
+
+    <ng-container matColumnDef="Título">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="titulo">Título</th>
+      <td mat-cell *matCellDef="let item">
+        <a href="/noticia/{{item.idNoticia}}" target="_blank" rel=”noopener”>{{item.titulo}}</a>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Autor">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="autor">Autor</th>
+      <td mat-cell *matCellDef="let item"> {{item.autor}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Usuário">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="usuario">Usuário</th>
+      <td mat-cell *matCellDef="let item"> {{item.usuario}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Data/Hora Criação">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="dataHoraCriacao">Data da Criação</th>
+      <td mat-cell *matCellDef="let item"> {{item.dataHoraCriacao | date: 'dd/MM/yyyy HH:mm'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Data/Hora Publicação">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="dataHoraPublicacao">Data da Publicação</th>
+      <td mat-cell *matCellDef="let item"> {{item.dataHoraPublicacao | date: 'dd/MM/yyyy HH:mm'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Ações">
+      <th mat-header-cell *matHeaderCellDef> Ações </th>
+      <td mat-cell *matCellDef="let item" class='m-card-title' data-label='Ações'>
+        <button mat-flat-button color="primary" type="button" name="button"
+          [routerLink]="['/cadastro-noticia/editar', item.idNoticia]" class="btnTabela" id="btnVisualizar"
+          matTooltip="Editar">
+          <mat-icon> edit </mat-icon>
+        </button>
+        <button mat-flat-button color="warn" type="button" name="button" (click)="excluir(item)"
+          class="btnTabela" id="btnExcluir" matTooltip="Excluir">
+          <mat-icon> delete </mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator (page)="carregarPaginaBoasPraticas($event)"
+                  showFirstLastButtons [length]="length" [pageSize]="pageSize"
+                  [pageSizeOptions]="[5, 10, 25, 50, 100]"
+                  style="text-align: center !important;"
+                  class="float-none">
+</mat-paginator>
+</mat-card>
+</div>

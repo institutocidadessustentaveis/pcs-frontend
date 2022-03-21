@@ -1,0 +1,106 @@
+<div style="background-color: white;" class="bmd-layout-container bmd-drawer-f-l bmd-drawer-overlay ">
+  <main class="bmd-layout-content">
+
+    <div class="contentBody">
+      <app-breadcrumb style="position: relative;"></app-breadcrumb>
+    </div>
+
+    <section class="secao-filtro">
+      <header>
+        <h1><span style="font-weight: 700 !important;color: white;">FAÇA UMA BUSCA</span></h1>
+      </header>
+      <div class="row search-form-color">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 search-form-color">
+          <form [formGroup]="formFiltro" class="example-form">
+
+            <div class="col-lg-12 search-form-color">
+              <mat-form-field>
+                <input matInput formControlName="palavraChave" placeholder="Palavra chave">
+              </mat-form-field>
+            </div>
+
+            <mat-form-field class="col-lg-12 search-form-color">
+              <mat-label>Áreas de Interesse</mat-label>
+              <mat-select id="inputAreaInteresse" name="areaInteresse" formControlName="idAreaInteresse">
+                <mat-option [value]=""></mat-option>
+                <mat-option *ngFor="let item of areasInteresseCombo" value="{{item.id}}">{{item.nome}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-lg-12 search-form-color">
+              <mat-label>Eixo</mat-label>
+              <mat-select id="idEixo" name="idEixo" formControlName="idEixo">
+                <mat-option [value]=""></mat-option>
+                <mat-option *ngFor="let item of eixosCombo" value="{{item.id}}">{{item.nome}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-lg-12 search-form-color">
+              <mat-label>ODS</mat-label>
+              <mat-select id="idOds" name="idOds" formControlName="idOds">
+                <mat-option [value]=""></mat-option>
+                <mat-option *ngFor="let item of odsCombo" value="{{item.id}}">{{item.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6 search-form-color">
+              <mat-label>País da publicação</mat-label>
+              <mat-select id="idPais" name="idPais" formControlName="idPais" (selectionChange)="onPaisChange($event)">
+                <mat-option [value]=""></mat-option>
+                <mat-option *ngFor="let item of paisesCombo" value="{{item.id}}">{{item.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6 search-form-color">
+              <mat-label>Estado da publicação</mat-label>
+              <mat-select id="idProvinciaEstado" name="idProvinciaEstado" formControlName="idProvinciaEstado"
+                (selectionChange)="onEstadoChange($event)">
+                <mat-option [value]=""></mat-option>
+                <mat-option *ngFor="let item of provinciaEstadoCombo" value="{{item.id}}">{{item.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-12 search-form-color">
+              <mat-label>Cidade da publicação</mat-label>
+              <mat-select id="idCidade" name="idCidade" formControlName="idCidade">
+                <mat-option [value]=""></mat-option>
+                <mat-option *ngFor="let item of cidadesCombo" value="{{item.id}}">{{item.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <div class="col-lg-12 text-right" style="margin-top: 10px !important;">
+              <button matTooltip="Buscar Grupos Acadêmicos" mat-flat-button color="primary" (click)="buscarGruposAcademicos()"
+                id="btnBuscarGrupos" class="btnpesquisar" type="submit">
+                <mat-icon style="margin-top: -1px !important">search</mat-icon> Buscar Grupos Acadêmicos
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </section>
+    
+    <section>
+      <div class="pb-3" style="background-color: rgba(18, 80, 105); color: white; text-align: center;">
+        <label style="font-family: Source Sans Pro,Arial Black,Helvetica,Arial,sans-serif;"
+          class="label-titulo-white">Ultimas Publicações</label>
+      </div>
+    </section>
+
+    <section class="secao">
+      <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-12 mb-3" *ngFor="let id of idsGruposAcademicos | slice : 0 : paginationLimit">
+          <app-card-contribuicoes-academicas [idGrupoAcademico]="id.id"></app-card-contribuicoes-academicas>
+        </div>
+      </div>
+
+      <div
+        style="height: 100%;min-height: 100%;display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;-webkit-justify-content: center;justify-content: center;">
+        <button class="view-more" matTooltip="Mais Resultados" (click)="verMaisGruposAcademicos()" id="btnVerMais">
+          Ver Mais
+        </button>
+      </div>
+
+    </section>
+  </main>
+</div>

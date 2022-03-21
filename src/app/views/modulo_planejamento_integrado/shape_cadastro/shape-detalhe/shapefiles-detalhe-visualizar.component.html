@@ -1,0 +1,278 @@
+<section class="home-banner owl-carousel owl-theme">
+  <div id="carouselExampleIndicators" class="carousel slide" ride="false">
+    <div class="carousel-inner">
+      <div>
+        <img class="img-carousel" loading="lazy" [src]="urlImagem()">
+        <div class="carousel-caption">
+          <div style="position: inherit;bottom: 0;width: 100%;">
+            <h1 class="animated fadeInUp duration-3s delay-1s">{{ shapefile.titulo }}</h1>
+            <h3 class="animated fadeInUp duration-3s delay-1s">Ano da Publicação: {{ shapefile.ano }} </h3>
+            <h4 *ngIf="shapefile.resumoConteudo" h4 class="animated fadeInUp duration-3s delay-1s">{{ shapefile.resumoConteudo }}
+            </h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<br>
+
+<div class="contentBody" style="position: relative;">
+  <div [hidden]="!loading" class="loading-indicator">
+    <mat-progress-spinner class="example-margin" style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+  </div>
+
+  <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12" style="padding: 20px 70px 42px 70px !important">
+
+
+    <section class="text-cols text-cols--dotted text-cols-2 text-cols--centered text-cols--dotted">
+    
+
+      <div class="item-container" *ngIf="shapefile.temaGeoespacial">
+        <span><strong>Tema da Camada: </strong></span>
+        <span >
+          {{ shapefile.temaGeoespacial }}
+        </span>
+      </div>
+
+      <div class="item-container" *ngIf="shapefile.fonte">
+        <span> <strong>Referência para citar a fonte do dado: </strong></span>
+        <span class="weakness-before">
+          {{ shapefile.fonte }}
+        </span>
+      </div>
+
+      <div class="item-container">
+        <span><strong>Tipos de Arquivo Cartográfico: </strong></span>
+        <span class="weakness-before">
+          {{ shapefile.tipoArquivo }}
+        </span>
+      </div>
+
+      <div class="item-container" *ngIf="shapefile.areasInteresse?.length > 0">
+        <span><strong>Áreas de interesse: </strong></span>
+        <span class="weakness-after" *ngFor="let interesse of shapefile.areasInteresse">
+          {{ interesse }}
+        </span>
+      </div>
+
+      <div class="item-container" *ngIf="listaOds?.length > 0">
+        <section style="margin-top: 2%;">
+          <label class="label-eixo"><strong>ODS: </strong></label>
+          <div class="news__grid--3">
+            <div class="news__grid-inner">
+              <div class="square" *ngFor="let item of listaOds">
+                <div class="content">
+                  <a style="color:white;" href="institucional/ods/{{item.id}}" title="Ir para página de ODS"
+                    target="_blank">
+                    <img class="icone-ods" [src]="gerarLinkImagem(item)" />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="item-container" *ngIf="shapefile.indicadores?.length > 0">
+        <span><strong>Indicador: </strong></span>
+        <span class="weakness-after" *ngFor="let indicador of shapefile.indicadores">
+          {{ indicador }}
+        </span>
+      </div>
+
+      <div class="item-container" *ngIf="shapefile.dadosMapeados">
+        <span><strong>Ano dos Dados Mapeados: </strong></span>
+        <span class="weakness-after">
+          {{ shapefile.dadosMapeados }}
+        </span>
+      </div>
+
+      <div class="item-container" *ngIf="shapefile.codigoMapa">
+        <span><strong>Código do sistema cartográfico internacional: </strong></span>
+        <span class="weakness-after">
+          {{ shapefile.codigoMapa }}
+        </span>
+      </div>
+
+      <div class="item-container" *ngIf="shapefile.pais">
+        <span> <strong>Pais: </strong></span>
+        <span class="weakness-after">
+          {{ shapefile.pais }}
+        </span>
+      </div>
+
+      <div class="item-container" *ngIf="shapefile.cidades?.length > 0">
+        <span><strong>Cidade: </strong></span>
+        <span class="weakness-after" *ngFor="let cidade of shapefile.cidades">
+          {{ cidade }}
+        </span>
+      </div>
+
+      
+        <div class="item-container" *ngIf="shapefile.latitude">
+          <span><strong>Latitude: </strong></span>
+          <span class="weakness-after">
+            {{ shapefile.latitude }}
+          </span>
+        </div>
+  
+        <div class="item-container" *ngIf="shapefile.longitude">
+          <span> <strong>Longitude: </strong> </span>
+          <span class="weakness-after">
+            {{ shapefile.longitude }}
+          </span>
+        </div>
+      
+     
+
+      <div class="item-container" *ngIf="shapefile.ambiente">
+        <span><strong>Ambiente SIG de Produção: </strong></span>
+        <span class="weakness-after">
+          {{ shapefile.ambiente }}
+        </span>
+      </div>
+
+      <div class="item-container">
+        <span><strong>Há mosaico: </strong></span>
+        <span class="weakness-after">
+          {{ shapefile.mosaico ? 'Sim' : 'Não' }}
+        </span>
+      </div>
+
+      <div class="item-container">
+        <span><strong>Publicar: </strong></span>
+        <span class="weakness-after">
+          {{ shapefile.publicar ? 'Sim' : 'Não' }}
+        </span>
+      </div>
+       
+        <div class="item-container">
+          <span><strong>Exibir automaticamente: </strong></span>
+          <span class="weakness-after">
+            {{ shapefile.exibirAuto ? 'Sim' : 'Não' }}
+          </span>
+        </div>
+      
+     
+
+      <div class="item-container" *ngIf="shapefile.instituicao">
+        <span><strong>Instituição Autora: </strong></span>
+        <span class="weakness-after">
+          {{ shapefile.instituicao }}
+        </span>
+      </div>
+
+      <div class="item-container" *ngIf="shapefile.sistemaDeReferencia">
+        <span><strong>Sistema de referência de coordenadas e Datum: </strong></span>
+        <span class="weakness-after">
+          {{ shapefile.sistemaDeReferencia }}
+        </span>
+      </div>
+
+      <div class="item-container" *ngIf="shapefile.regiao">
+        <span> <strong>Região do Brasil da publicação:</strong> </span>
+        <span class="weakness-after">
+          {{ shapefile.regiao }}
+        </span>
+      </div>
+
+      <div class="item-container" *ngIf="shapefile.eixos?.length > 0">
+        <span><strong>Eixos PCS:</strong></span>
+        <span class="weakness-after" *ngFor="let eixo of shapefile.eixos">
+          <a class="link-eixo" [href]="buildLinkToEixoPcs(eixo)"
+            target="_blank"><p>{{ eixo + ';' }}</p></a>
+        </span>
+      </div>
+
+      <div class="item-container" *ngIf="shapefile.metas?.length > 0" >
+          <span><strong>Metas ODS:</strong></span>
+          <table>
+            <tr *ngFor="let meta of shapefile.metas">
+              <td class='item-table'>
+                {{meta}}
+              </td>
+            </tr>
+          </table>
+      </div>
+
+      <div class="item-container" *ngIf="shapefile.palavra">
+        <span><strong>Palavra(s)-chave: </strong></span>
+        <span class="weakness-after">
+          {{ shapefile.palavra }}
+        </span>
+      </div>
+
+      <div class="item-container" *ngIf="shapefile.integridade">
+        <span><strong>Observações sobre integridade do arquivo: </strong></span>
+        <span class="weakness-after">
+          {{ shapefile.integridade }}
+        </span>
+      </div>
+
+      <div class="item-container" *ngIf="shapefile.escala">
+        <span><strong>Escala original: </strong></span>
+        <span class="weakness-after">
+          {{ shapefile.escala }}
+        </span>
+      </div>
+
+      <div class="item-container" *ngIf="shapefile.estados?.length > 0">
+        <span><strong>Estado: </strong></span>
+        <span class="weakness-after" *ngFor="let estado of shapefile.estados">
+          {{ estado }}
+        </span>
+      </div>
+
+      <div class="item-container" *ngIf="shapefile.cartografia">
+        <span><strong>Tipo de Cartografia: </strong></span>
+        <span class="weakness-after">
+          {{ shapefile.cartografia }}
+        </span>
+      </div>
+
+      <div class="item-container" *ngIf="shapefile.codificacao">
+        <span><strong>Codificação de caracteres: </strong></span>
+        <span class="weakness-after">
+          {{ shapefile.codificacao }}
+        </span>
+      </div>
+
+      <div class="item-container" *ngIf="shapefile.atualizacao">
+        <span><strong>Há atualização?</strong></span>
+        <span class="weakness-after">
+          {{ shapefile.atualizacao == 'QGis' ? "Anual" : ""}}
+          {{ shapefile.atualizacao == 'ArcGis' ? "Não há atualização periódica" : ""}}
+          {{ shapefile.atualizacao == 'MapInfo' ? "Quinquenal" : ""}}
+          {{ shapefile.atualizacao == 'Spring' ? "Decenal" : ""}}
+          {{ shapefile.atualizacao == 'AutoCadMap' ? "Mensal" : ""}}
+          {{ shapefile.atualizacao == 'Idrisi' ? "Outro" : ""}}
+        </span>
+      </div>
+
+      <div class="item-container" *ngIf="shapefile.nivelTerritorial">
+        <span><strong>Nível territorial:</strong></span>
+        <span class="weakness-after">
+          {{ shapefile.nivelTerritorial }}
+        </span>
+      </div>
+      <br>
+      <br>
+    </section>
+
+    <br>
+    <div class="col-md-12">
+      <div style="height: 500px;" leaflet [leafletOptions]="mapOptions" (leafletMapReady)="onMapReady($event)"></div>
+    </div>
+    <br>
+
+    <div class="col-md-12 text-right">
+      <button mat-flat-button color="accent" matTooltip="Voltar" style="cursor: pointer;"
+        [routerLink]="['/planejamento-integrado/cadastro-shapefile']" id="btnVoltar">
+        <mat-icon>arrow_back_ios</mat-icon> Voltar
+      </button>
+    </div>
+
+  </mat-card>
+</div>
+<br>

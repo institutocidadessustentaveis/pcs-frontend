@@ -1,0 +1,366 @@
+<div class="contentBody" style="position: relative;">
+  <app-breadcrumb style="position: relative;"></app-breadcrumb>
+  <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+    <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <mat-card-title>
+        Instituição
+      </mat-card-title>
+    </mat-card-content>
+    <hr>
+    <mat-horizontal-stepper linear=true #stepper>
+      <mat-step [stepControl]="primeiroFormGrupo" [editable]="true">
+        <form [formGroup]="primeiroFormGrupo">
+          <ng-template matStepLabel >Passo 1</ng-template>
+
+          <mat-form-field class="col-md-12">
+            <mat-label>Tipo do Cadastro</mat-label>
+            <mat-select id="tipoCadastro" name="tipoCadastro" #tipoCadastro formControlName="tipoCadastro" (selectionChange)="onTipoCadastroChange(tipoCadastro.value)">
+              <mat-option [value]='item' *ngFor="let item of tiposCadastro">{{item}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="primeiroFormGrupo.controls['tipoCadastro'].hasError('required')">
+              Campo Tipo de Cadastro é obrigatório.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Nome do Grupo *" formControlName="nomeGrupo" #nomeGrupo id="nomeGrupo">
+            <mat-error *ngIf="primeiroFormGrupo.controls['nomeGrupo'].hasError('required')">
+              Campo Nome do Grupo é obrigatório.
+            </mat-error>
+          </mat-form-field>
+
+          <div class="col-md-12 summernote">
+            <mat-label>Descrição da Instituição</mat-label>
+            <div [ngxSummernote]="editorConfig" formControlName="descricaoInstituicao"></div>
+          </div>
+    
+          <br>
+    
+          <div class="col-md-12 summernote">
+            <mat-label>Experiências Desenvolvidas</mat-label>
+            <div [ngxSummernote]="editorConfig" formControlName="experienciasDesenvolvidas"></div>
+          </div>
+    
+          <br>
+
+          <div class="col-md-12 summernote">
+            <mat-label>Observações</mat-label>
+            <div [ngxSummernote]="editorConfig" formControlName="observacoes"></div>
+          </div>
+    
+          <br>
+    
+          <mat-form-field class="col-md-6">
+            <mat-label>Temas</mat-label>
+            <mat-select id="areaInteresse" name="areaInteresse" formControlName="areasInteresse" multiple>
+              <mat-option *ngFor="let areaInteresse of areasIntesseCombo" [value]="areaInteresse.id">{{areaInteresse.nome}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+    
+          <mat-form-field class="col-md-6">
+            <mat-label>Eixos</mat-label>
+            <mat-select id="areaInteresse" name="eixos" formControlName="eixos" multiple>
+              <mat-option *ngFor="let eixo of eixosCombo" [value]="eixo.id">{{eixo.nome}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+    
+          <mat-form-field class="col-md-6">
+            <mat-label>ODS</mat-label>
+            <mat-select id="ods" name="ods" formControlName="ods" multiple>
+              <mat-option *ngFor="let ods of odsCombo" [value]="ods.id">{{ods.label}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+    
+          <mat-form-field class="col-md-3">
+            <input matInput placeholder="Página Online" formControlName="paginaOnline" #paginaOnline id="paginaOnline">
+          </mat-form-field>
+    
+          <mat-form-field class="col-md-3">
+            <input matInput placeholder="Nome para Contato" formControlName="nomeContato" #nomeContato id="nomeContato">
+          </mat-form-field>
+    
+          <mat-form-field class="col-md-3">
+            <input matInput placeholder="Email para Contato" formControlName="emailContato" #emailContato id="emailContato">
+          </mat-form-field>
+    
+          <mat-form-field class="col-md-3">
+            <input matInput placeholder="Telefone para Contato" formControlName="telefoneContato"
+              #telefoneContato id="telefoneContato">
+          </mat-form-field>
+    
+          <mat-form-field class="col-md-3">
+            <input matInput placeholder="Email Institucional" formControlName="emailInstitucional" #emailInstitucional
+              id="emailInstitucional">
+          </mat-form-field>
+    
+          <mat-form-field class="col-md-3">
+            <input matInput placeholder="Telefone Institucional"
+              formControlName="telefoneInstitucional" #telefoneInstitucional id="telefoneInstitucional">
+          </mat-form-field>
+    
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link para Base de Dados" formControlName="linkBaseDados" #linkBaseDados
+              id="linkBaseDados">
+          </mat-form-field>
+    
+          <div class="col-lg-12 col-md-12" style='margin-top: 16px'>
+            <h5>Endereço</h5>
+            
+            <div class="row">
+
+              <mat-form-field class="col-md-3">
+                <mat-label>Continente *</mat-label>
+                <mat-select id="continente" name="continente" formControlName="continente">
+                  <mat-option [value]='item' *ngFor="let item of continentes">{{item}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+        
+              <mat-form-field class="col-md-3">
+                <mat-label>País *</mat-label>
+                <mat-select id="inputPais" name="pais" formControlName="pais" (selectionChange)="onPaisChange()">
+                  <mat-option *ngFor="let pais of paisCombo" [value]="pais.id">{{pais.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+        
+              <mat-form-field class="col-md-3">
+                <mat-label>Estado *</mat-label>
+                <mat-select id="inputEstado" name="estado" formControlName="estado" (selectionChange)="onEstadoChange()">
+                  <mat-option *ngFor="let estado of estados" [value]="estado.id">{{estado.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+        
+              <mat-form-field class="col-md-3">
+                <mat-label>Cidade *</mat-label>
+                <mat-select id="inputCidade" name="cidade" formControlName="cidade">
+                  <mat-option *ngFor="let cidade of cidadesComboFiltrada" [value]="cidade.id">{{cidade.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-6 ">
+                <input matInput placeholder="Logradouro *" formControlName="logradouro" maxlength="200" #inputLogradouro
+                  id="inputLogradouro">
+                <mat-hint align="end">{{ inputLogradouro.value?.length || 0 }}/200</mat-hint>
+                <mat-error *ngIf="primeiroFormGrupo.controls['logradouro'].hasError('required')">
+                  Campo Logradouro é obrigatório.
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-6 ">
+                <input matInput placeholder="Número *" formControlName="numero" maxlength="200" #inputNumero
+                  id="inputNumero">
+                <mat-hint align="end">{{ inputNumero.value?.length || 0 }}/200</mat-hint>
+                <mat-error *ngIf="primeiroFormGrupo.controls['numero'].hasError('required')">
+                  Campo Número é obrigatório.
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12 ">
+                <input matInput placeholder="Complemento " formControlName="complemento" maxlength="200" #inputComplemento
+                  id="inputComplemento">
+                <mat-hint align="end">{{ inputComplemento.value?.length || 0 }}/200</mat-hint>
+              </mat-form-field>
+
+            </div> 
+            <br>   
+              <div class="col-md-12" align="center">
+                <button mat-flat-button color="primary" matTooltip="Buscar" (click)="buscarCidadeMapa()">Buscar coordenada</button>
+              </div>
+              <br>
+            <div [hidden]="!loadingBuscaCidade">
+              <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+            </div>
+    
+            <div class="mapa" leaflet [leafletOptions]="options" [leafletLayers]="layersControl"
+              (leafletMapReady)="onMapReady($event)">
+            </div>
+            <br>
+            <mat-form-field class="col-md-6">
+              <input matInput placeholder="Latitude " formControlName="latitude" maxlength="100"
+                #inputLatitude id="inputLatitude">
+            </mat-form-field>
+  
+            <mat-form-field class="col-md-6 text-center">
+              <input matInput placeholder="Longitude" formControlName="longitude" maxlength="100 "
+                #inputLongitude id="inputLongitude">
+            </mat-form-field>
+          </div>
+          <hr>
+          <br>
+          
+          <div class="col-md-12" align="end">
+            <button mat-flat-button color="accent"  matTooltip="Cancela cadastro"
+            [routerLink]="['/colaboracoes-academicas/grupos-academicos/administracao']">
+            <mat-icon>cancel</mat-icon> Cancelar
+          </button>
+
+            <button mat-flat-button color="primary" (click)="openSnackBar()" matStepperNext style="float:righ; margin-left: 8px;">Próximo</button>
+          </div>
+          <br>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="segundoFormGrupo" [editable]="true">
+        <form [formGroup]="segundoFormGrupo">
+          <ng-template matStepLabel>Passo 2</ng-template>
+
+            <mat-form-field class="col-md-12" *ngIf="modoCadastro == 'Grupo Acadêmico'">
+              <mat-label>Tipo da Instituição acadêmica *</mat-label>
+              <mat-select id="tipoInstituicao" name="tipoInstituicao" formControlName="tipoInstituicao">
+                <mat-option [value]='item' *ngFor="let item of tipos">{{item}}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="segundoFormGrupo.controls['tipoInstituicao'].hasError('required')">
+                Campo Tipo da Instituição é obrigatório.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-12" *ngIf="modoCadastro == 'Grupo Acadêmico'">
+              <input matInput type="text" placeholder="Quantidade de Alunos" formControlName="quantidadeAlunos" 
+                #inputQuantidadeAlunos id="inputQuantidadeAlunos">
+                <mat-error *ngIf="segundoFormGrupo.controls['quantidadeAlunos'].hasError('pattern')">
+                  Remova virgulas e pontos.
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6" *ngIf="modoCadastro == 'Grupo Acadêmico'">
+              <input matInput placeholder="Nome da Unidade de Pesquisa" formControlName="nomeAcademia"
+                id="nomeAcademia">
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6" *ngIf="modoCadastro == 'Grupo Acadêmico'">
+              <mat-label>Vincular material da biblioteca ao grupo</mat-label>
+              <mat-select id="bibliotecas" name="bibliotecas" formControlName="bibliotecas" multiple>
+                <mat-option *ngFor="let biblioteca of bibliotecasCombo" [value]="biblioteca.id">{{biblioteca.tituloPublicacao}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-12" *ngIf="modoCadastro == 'Fundação Empresarial' || modoCadastro == 'Empresa'">
+              <mat-label>Porte da Empresa *</mat-label>
+              <mat-select id="porteEmpresa" name="porteEmpresa" formControlName="porteEmpresa">
+                <mat-option [value]='item' *ngFor="let item of portesEmpresa">{{item}}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="segundoFormGrupo.controls['porteEmpresa'].hasError('required')">
+                Campo Porte da Empresa é obrigatório.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-12" *ngIf="modoCadastro == 'Empresa'">
+              <mat-label>Setor Econômico *</mat-label>
+              <mat-select id="porteEmpresa" name="setoresEconomicos" formControlName="setorEconomico">
+                <mat-option [value]='item' *ngFor="let item of setoresEconomicos">{{item}}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="segundoFormGrupo.controls['setorEconomico'].hasError('required')">
+                Campo Setor Econômico é obrigatório.
+              </mat-error>
+            </mat-form-field>
+            
+            <mat-form-field class="col-md-12" *ngIf="modoCadastro == 'Fundação Empresarial' || modoCadastro == 'Empresa'">
+              <input matInput type="number" placeholder="Quantidade de Funcionários" formControlName="quantidadeFuncionarios" 
+                id="inputQuantidadeFuncionarios">
+            </mat-form-field>
+
+            <mat-form-field class="col-md-12" *ngIf="modoCadastro == 'Empresa'">
+              <span matPrefix>$&nbsp;</span>
+              <input matInput type="number" placeholder="Receita Anual" formControlName="receitaAnual" 
+                id="inputReceitaAnual">
+            </mat-form-field>
+
+            <mat-form-field class="col-md-12" *ngIf="modoCadastro == 'Empresa'">
+              <input matInput placeholder="Fundação/Instituto Empresarial vinculado à empresa" formControlName="vinculo" #vinculo
+                id="vinculo">
+            </mat-form-field>
+
+            <div *ngIf="modoCadastro == 'Fundação Empresarial'">
+              <mat-form-field class="col-md-12">
+                <mat-label>Tipo de Fundação *</mat-label>
+                <mat-select #tipoFundacao id="inputTipoFundacao" name="tipoFundacao" formControlName="tipoFundacaoSelect" (selectionChange)="onTipoFundacaoChange(tipoFundacao.value)">
+                  <mat-option *ngFor="let tipo of tiposFundacao" [value]="tipo">{{tipo}}</mat-option>
+                  <mat-error *ngIf="segundoFormGrupo.controls['tipoFundacao'].hasError('required')">
+                    Campo Tipo de Fundação é obrigatório.
+                  </mat-error>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12" [hidden]='!mostrarTipoFundacao'>
+                <input matInput placeholder="Nome do Tipo de Fundação *" formControlName="tipoFundacao"
+                  id="tipoFundacao">
+                  <mat-error *ngIf="this.segundoFormGrupo.controls.tipoFundacao.hasError('required')">
+                    Campo Nome do Tipo de Fundação é obrigatório.
+                  </mat-error>
+              </mat-form-field>
+            </div>
+            <br>
+            <div *ngIf="modoCadastro == 'Empresa'">
+              <mat-checkbox  [checked]="false" formControlName="associadaEthos"></mat-checkbox>
+              Empresa associada ao Instituto Ethos
+              <br>
+              <mat-checkbox [checked]="false" formControlName="atuaProjetoSustentabilidade"></mat-checkbox>
+              Há Fundações Empresariais que atuam em projetos de sustentabilidade
+            </div>
+              
+            <div *ngIf="modoCadastro == 'Grupo Acadêmico' || modoCadastro == 'Empresa'">
+              <h5 style="margin-top: 16px;">Participação em Arranjo Produtivo Local - APL</h5>
+
+              <mat-checkbox style='margin-top: 16px' [checked]="true" (change)="onParticipaAplChange($event.checked)" formControlName="participaApl"></mat-checkbox>
+              Participa de APL
+              <br>
+              <div [hidden]="!participaApl">
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Nomes dos APL *" formControlName="nomeApl"
+                  id="nomeApl">
+                  <mat-error *ngIf="this.segundoFormGrupo.controls.nomeApl.hasError('required')">
+                    Campo de Nomes dos APL é obrigatório.
+                  </mat-error>
+              </mat-form-field>
+              <mat-form-field class="col-md-12" *ngIf="modoCadastro == 'Empresa' || modoCadastro == 'Grupo Acadêmico'">
+                <mat-label>Setor Econômico</mat-label>
+                <mat-select id="porteEmpresa" name="setoresEconomicos" formControlName="setoresApl" multiple>
+                  <mat-option [value]='item' *ngFor="let item of setoresEconomicos">{{item}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <div class="row">
+                  <div class="col-md-12">
+                    <mat-form-field class="col-md-12">
+                      <mat-label>País</mat-label>
+                      <mat-select name="pais" (selectionChange)="onPaisAplChange()" formControlName="paisApl">
+                        <mat-option *ngFor="let pais of paisCombo" [value]="pais.id">{{pais.label}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+              
+                    <mat-form-field class="col-md-12">
+                      <mat-label>Estado</mat-label>
+                      <mat-select name="estadoApl" id='estadoApl' formControlName="estadoApl" (selectionChange)="onEstadoAplChange()">
+                        <mat-option *ngFor="let estado of estadosApl" [value]="estado.id">{{estado.label}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+              
+                    <mat-form-field class="col-md-12">
+                      <mat-label>Cidade de Atuação</mat-label>
+                      <mat-select multiple name="cidade" formControlName="cidadesApl">
+                        <mat-option *ngFor="let cidade of cidadesAplComboFiltrada"  [value]="cidade.id">{{cidade.label}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+              </div>
+  
+              <div class="col-md-12 summernote" style="margin-top: 16px;">
+                <mat-label>Descrição da APL</mat-label>
+                <div [ngxSummernote]="editorConfig" formControlName="descricaoApl"></div>
+              </div>
+             </div>
+            </div>
+            <br>
+            <div class="col-md-12" style="height: 100%;min-height: 100%;display: -webkit-flex;display: flex;-webkit-align-items: right;align-items: flex-end;-webkit-justify-content: center;justify-content: flex-end;">
+              <button mat-flat-button color="primary" (click)="salvar()" [disabled]="debilitarBtnSalvar()" matTooltip="Cadastra o Grupo Acadêmico">
+                <mat-icon>save</mat-icon> Salvar e finalizar
+              </button>
+    
+              <button style="margin-left: 8px;" matTooltip="Cancela cadastro" mat-stroked-button matStepperPrevious>Voltar</button>
+            </div>
+        </form>
+      </mat-step>
+
+    </mat-horizontal-stepper>
+
+  </mat-card>
+</div>

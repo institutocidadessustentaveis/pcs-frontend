@@ -1,0 +1,93 @@
+<div class="contentBody" style="position: relative;">
+  <app-breadcrumb style="position: relative;"></app-breadcrumb>
+  <mat-card>
+    <div class="col-lg-12">
+      <mat-card-title>Páginas
+      </mat-card-title>
+      <hr>
+    </div>
+
+    <div [hidden]="!loading" class="loading-indicator">
+      <mat-progress-spinner class="example-margin" style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+    </div>
+
+    <form [formGroup]="formFiltro" class="example-form">
+ 
+      <div class="col-md-12" style="margin-top: 2%;">
+
+            <div class="row">
+            
+              <div class="col-md-8 col-lg-9 col-xs-12 col-sm-12">
+            
+              </div>
+            
+              <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12" style="text-align: right;">
+                <button mat-flat-button color="primary" (click)="cadastrarInstitucionalDinamico()" id="btnNovaPrimeiraSecao"
+                  matTooltip="Cadastrar Nova Página" style="cursor: pointer !important; margin-bottom: 5px;">
+                  Nova Página
+                </button>
+              </div>
+            </div>
+            <br>
+            <div>
+              <h4>Filtro</h4>
+            </div>
+            <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12" style="text-align: left;">
+              <mat-form-field>
+                <input matInput (keyup)="filtrarPaginaPorPalavraChave()" formControlName="campoPesquisa" type="text" name="campoPesquisa" id="campoPesquisa" placeholder="Pesquise por palavra chave">
+              </mat-form-field>
+            </div>
+            <br>
+            
+            <table mat-table [dataSource]="listaPaginas" matSort matSortActive="indice" matSortDirection="desc">
+
+              <ng-container matColumnDef="titulo">
+                <th mat-header-cell *matHeaderCellDef>Descrição</th>
+                <td mat-cell *matCellDef="let item" [innerHTML]="item.titulo"></td>
+              </ng-container>
+
+              <ng-container matColumnDef="link">
+                <th mat-header-cell *matHeaderCellDef>Endereço da Página</th>
+                <td mat-cell *matCellDef="let item"><span class="cursor-hand" (click)="openPageNewTab(item.link_pagina)">{{urlBase}}/paginas/{{item.link_pagina}}</span></td>
+              </ng-container>
+      
+              <ng-container matColumnDef="exibir">
+                <th mat-header-cell *matHeaderCellDef>Exibir</th>
+                <td mat-cell *matCellDef="let item"> {{item.exibir?'Sim':'Não'}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="acoes">
+                <th mat-header-cell *matHeaderCellDef> Ações </th>
+                <td mat-cell *matCellDef="let item" class='m-card-title' data-label='Ações'>
+
+
+                    <button mat-flat-button color="primary" type="button" name="button"
+                    (click)="editarInstitucionalDinamico(item.id)"
+                      class="btnTabela" matTooltip="Editar">
+                      <mat-icon> edit </mat-icon>
+                    </button>
+
+                    <button mat-flat-button color="warn" type="button" name="button" (click)="excluirPagina(item.id)"
+                      class="btnTabela" matTooltip="Excluir">
+                      <mat-icon> delete </mat-icon>
+                    </button>
+
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsSecao; sticky: true"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsSecao;"></tr>
+            </table>
+            <mat-paginator style="text-align: center !important;" class="float-none" [pageSizeOptions]="[10,25,50,100]"
+             showFirstLastButtons>
+            </mat-paginator>
+      </div>
+
+    </form>
+
+  </mat-card>
+</div>
+
+
+
+

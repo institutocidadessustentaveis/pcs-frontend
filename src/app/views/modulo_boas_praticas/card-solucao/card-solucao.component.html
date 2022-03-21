@@ -1,0 +1,18 @@
+<a [href]="gerarLinkSolucao(solucao)" target="_blank"
+  *ngIf="solucao">
+  <img class="solucao-imagem text-center pointer"  [src]="urlEndPoint + '/buscarSolucaoImagem/' + solucao.id">
+</a>
+
+<div *ngIf="solucao">
+  <h2 class="solucao-titulo pointer" >
+    <a [href]="gerarLinkSolucao(solucao)" target="_blank" class="link-noticia">
+      {{ solucao?.nome }}
+    </a><br>
+  </h2>
+  <a class="pointer solucao-subtitulo link-noticia" [href]="gerarLinkSolucao(solucao)" target="_blank">
+    {{ truncate(solucao?.caracterizacaoSolucao, 25, '...') }}
+  </a>
+  <p>
+    <a [href]="gerarLinkSolucao(solucao)" target="_blank" class="options">[Leia Mais]</a>
+ </p>
+</div>

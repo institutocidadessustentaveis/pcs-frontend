@@ -1,0 +1,249 @@
+<div style="background-color: white;" class="bmd-layout-container bmd-drawer-f-l bmd-drawer-overlay ">
+  <main class="bmd-layout-content">
+      <div [hidden]="!loading" class="loading-indicator">
+          <mat-progress-spinner class="example-margin" style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+        </div>
+    <div>
+      <!-- <section class="home-banner owl-carousel owl-theme">
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+          <ol class="carousel-indicators">
+            <li data-target="#carouselExampleIndicators" *ngFor="let x of listBoasPraticasCarousel;let i = index"
+              [attr.data-slide-to]="i" ngClass="i == 0 ? 'active' : ''"></li>
+          </ol>
+          <div class="carousel-inner">
+            <div *ngFor="let item of listBoasPraticasCarousel; let k = index"
+              [ngClass]="k == 0 ? 'carousel-item active' : 'carousel-item'">
+              <img class="img-carousel" loading="lazy" [src]="getImagePath(item.idBoaPratica)" alt="Event Image">
+              <div class="carousel-caption d-none d-md-block">
+                <a style="color: white;" href="#" [routerLink]="['/boas-praticas',item.idBoaPratica]"
+                  routerLinkActive="router-link-active" class="">
+                  <div style="position: absolute;bottom: 0;width:100%;">
+                    <h1 class="animated fadeInUp duration-3s delay-1s">{{item.titulo}}</h1>
+                    <h4 class="animated fadeInUp duration-3s delay-1s">{{item.subtitulo}}</h4>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+          <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+      </section> -->
+      <app-boas-praticas-inicial-header [dadosDownloadUser]="dadosDownload"></app-boas-praticas-inicial-header>
+      <section class="teaser teaser--dotted"  style="margin-top: 0%;margin-bottom: 0%;">
+          <app-breadcrumb></app-breadcrumb>
+        <header>
+          <h1 style="font-weight: 700 !important;">BOAS PRÁTICAS</h1>
+        </header>
+        <p>As Boas Práticas publicadas pelo Programa Cidades Sustentáveis apresentam exemplos de políticas públicas
+          no Brasil e no mundo que produziram resultados concretos e servem de inspiração para outras cidades</p>
+        <div [hidden]="true" class="grid grid-3 grid-stretch grid-tablet-cancel">
+          <div><button class="btn btn-wood btn-wide btn-l btn-full-height" type="button"><a style="color: white;"
+                href="#">O QUE SÃO <i class="material-icons">arrow_drop_down</i></a></button></div>
+          <div><button class="btn btn-wood btn-wide btn-l btn-full-height" type="button"><a style="color: white;"
+                href="#">CARACTERISTICAS E
+                CRITÉRIOS <i class="material-icons">arrow_drop_down</i></a></button></div>
+          <div><button class="btn btn-wood btn-wide btn-l btn-full-height" type="button"> <a style="color: white;"
+                href="#">O GUIA DAS BPS <i class="material-icons">arrow_drop_down</i></a></button></div>
+        </div>
+      </section>
+
+      <section class="advanced-search">
+        <header>
+          <h1><span style="font-weight: 700 !important;color: white;"><i
+                class="material-icons search-icon">search</i>FAÇA UMA BUSCA</span></h1>
+        </header>
+        <div class="advanced-search__body search-form-color">
+          <div class="sidebar">
+            <form [formGroup]="formulario">
+              <div>
+                <mat-form-field>
+                  <mat-label class="bmd-label-floating">Selecione um eixo PCS</mat-label>
+                  <mat-select id="idEixo" formControlName="idEixo" name="eixo" (selectionChange)="onChangeEixo()">
+                    <mat-option>Selecione um</mat-option>
+                    <mat-option *ngFor="let eixo of listaEixos" [value]="eixo.id">{{eixo.label}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div >
+                <mat-form-field  style="padding-left: 0px; width: 90%">
+                  <mat-label class="bmd-label-floating">Selecione um ODS</mat-label>
+                  <mat-select id="idOds" formControlName="idOds" name="ods" (selectionChange)="onChangeODS()">
+                      <mat-option >Selecione um</mat-option>
+                    <mat-option *ngFor="let ods of listaOds" [value]="ods.id">{{ods.label}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <span style="margin-left:10px">
+                  <a href="institucional/ods" title="Ir para página de ODS" style="color: white;" target="_blank"><i
+                    class="material-icons">help</i></a>
+                </span>
+              </div>
+              <div>
+                <mat-form-field>
+                  <input type="text" placeholder="Selecione uma meta ODS" matInput formControlName="metaOds"
+                    [matAutocomplete]="autoCompleteMetaODS" id="metaOds" [attr.disabled]="loading ? '' : null">
+                  <mat-autocomplete #autoCompleteMetaODS="matAutocomplete" [displayWith]="getTextoExibicao">
+                    <mat-option [value]="{id: null, label: 'Selecione uma meta ODS'}">Selecione uma meta ODS</mat-option>
+                    <mat-option *ngFor="let option of filteredMetaOdsOptions | async" [value]="option" [matTooltip]="option.label">
+                      {{ option.label }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field> 
+              </div>
+              <div>
+                <mat-form-field>
+                  <mat-label class="bmd-label-floating">Selecione um continente</mat-label>
+                  <mat-select id="idContinente" formControlName="continente" name="continente"
+                  (selectionChange)="onChangeContinente()">
+                    <mat-option >Selecione um</mat-option>
+                    <mat-option *ngFor="let continente of listaContinentes" [value]="continente.label">
+                      {{continente.label}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div>
+                <mat-form-field>
+                  <input type="text" placeholder="Selecione um país" matInput formControlName="pais" (click)="removerDisplayWidthDinamico('pais')"
+                    [matAutocomplete]="autoCompletePais" id="pais" [attr.disabled]="loading ? '' : null">
+                  <mat-autocomplete #autoCompletePais="matAutocomplete" [displayWith]="getTextoExibicao" (optionSelected)="onChangePais($event.option.value)">
+                    <mat-option [value]="{id: null, label: 'Selecione um País'}">Selecione um País</mat-option>
+                    <mat-option *ngFor="let pais of filteredPaisOptions | async" [value]="pais">
+                      {{ pais.label }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </div>
+              <div>
+                 <mat-form-field>
+                  <input type="text" placeholder="Selecione um Estado" matInput formControlName="estado" (click)="removerDisplayWidthDinamico('estado')"
+                    [matAutocomplete]="autoCompleteEstado" id="estado" [attr.disabled]="loading ? '' : null">
+                  <mat-autocomplete #autoCompleteEstado="matAutocomplete" [displayWith]="getTextoExibicao" (optionSelected)="onChangeEstado($event.option.value)">
+                    <mat-option [value]="{id: null, label: 'Selecione um Estado'}">Selecione um Estado</mat-option>
+                    <mat-option *ngFor="let option of filteredEstadoOptions | async" [value]="option">
+                      {{ option.label }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field> 
+              </div>
+              <div>
+                <mat-form-field>
+                  <input type="text" placeholder="Selecione uma Cidade" matInput formControlName="cidade"
+                    [matAutocomplete]="autoCompleteCidade" id="cidade" [attr.disabled]="loading ? '' : null">
+                  <mat-autocomplete #autoCompleteCidade="matAutocomplete" [displayWith]="getTextoExibicao">
+                    <mat-option [value]="{id: null, label: 'Selecione uma Cidade'}">Selecione uma Cidade</mat-option>
+                    <mat-option *ngFor="let option of filteredCidadeOptions | async" [value]="option">
+                      {{ option.label }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field> 
+              </div>
+              <div>
+                <div class="row">
+                  <div class="col-md-6 col-lg-6">
+                    <mat-form-field>
+                      <input matInput placeholder="População Min:" value="" id="popuMin"
+                      formControlName="popuMin" name="popuMin" type="number"
+                        onKeyPress="if(this.value.length==20) return false;" />
+                      <!--<mat-hint align="end">{{ popDe.value?.length || 0 }}/20</mat-hint>-->
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-6 col-lg-6">
+                    <mat-form-field>
+                      <input matInput placeholder="População Máx:" value="" id="popuMax"
+                      formControlName="popuMax" name="popuMax" type="number"
+                        onKeyPress="if(this.value.length==20) return false;" />
+                      <!--<mat-hint align="end">{{ popAte.value?.length || 0 }}/20</mat-hint>-->
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <mat-form-field>
+                    <mat-label class="bmd-label-floating">Palavra chave</mat-label>
+                    <input type="text" name="palavraChave" placeholder="Palavra chave" matInput formControlName="palavraChave"
+                     id="palavraChave">
+                  </mat-form-field>
+              </div>
+
+              <div class="row">
+                <div style="margin-right: 10px;" class="col-md-5 col-lg-5">
+                  <button matTooltip="PESQUISAR" (click)="pesquisarBoasPraticas()"
+                    class="btnpesquisar btn-outline-light btn-block mt-3" id="btnPesquisar">PESQUISAR</button>
+                </div>
+                <div class="col-md-5 col-lg-5">
+                  <button matTooltip="Limpar" class="btnpesquisar btn-outline-light btn-block mt-3" (click)="clear()"
+                    id="btnLimpar">LIMPAR</button>
+                </div>
+              </div>
+
+            </form>
+          </div>
+
+          <div class="map">
+            <div style="height: 500px;" leaflet [leafletOptions]="options" [leafletLayers]="layersControl"
+              (leafletMapReady)="onMapReady($event)">
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+
+      <div id="destination" [hidden]="boaPraticaPublicadaVazia" class="news">
+        <section class="news__section news__section--alt-title">
+          <header style="margin-bottom: 0em;">
+            <h1 style="font-weight: 700 !important;font-size: 1.5em;">BOAS PRÁTICAS PUBLICADAS</h1>
+          </header>
+          <div class="news__grid news__grid--3">
+            <div class="news__grid-inner">
+              <article *ngFor="let item of listBoasPraticas">
+                <header style="margin-bottom: 2%;margin-top: 4%;">
+                  <h2 class="cursor-hand" [routerLink]="['/boas-praticas',item.idBoaPratica]">{{item.titulo}}</h2>
+                </header>
+                <figure>
+                  <img class="cursor-hand" loading="lazy" [routerLink]="['/boas-praticas',item.idBoaPratica]"
+                        style=" height: 383px;width: 100%;object-fit: cover;" [src]="getImagePath(item.idBoaPratica)"
+                        matTooltip='Autoria: {{item.autorImagemPrincipal}}'>
+                  <figcaption></figcaption>
+                </figure>
+                <p class="cursor-hand" [routerLink]="['/boas-praticas',item.idBoaPratica]"> {{item.subtitulo}}
+                  <span><a href="#" [routerLink]="['/boas-praticas',item.idBoaPratica]"
+                    routerLinkActive="router-link-active"> Saiba mais</a></span>
+                </p><br><br><br>
+              </article>
+            </div>
+          </div>
+          <mat-paginator (page)="carregarPaginaBoasPraticas($event)" showFirstLastButtons [length]="length2"
+            [pageSize]="pageSize" [pageSizeOptions]="[3, 10, 25, 50, 100]" style="text-align: center !important;"
+            class="float-none">
+          </mat-paginator>
+        </section>
+      </div>
+
+
+      <!--section class="teaser" style="margin-top: 0%;margin-bottom: 0%; padding-top: 0em !important">
+        <header>
+          <h1 style="font-weight: 700 !important; font-size: 1.75em">Sugestão de Boas Práticas
+          </h1>
+        </header>
+        <p>Deseja sugerir uma Boa Prática? Clique no botão abaixo!</p>
+        <div class="col-md-12 mt-5">
+          <div class="row d-flex justify-content-center">
+            <a class="button-sugestao-boa-pratica" style="cursor: pointer;" routerLink="/sugerir-boa-pratica">Sugerir boa
+              Prática</a>
+          </div>
+        </div>
+      </section-->
+
+    </div>
+  </main>
+  <app-boas-praticas-inicial-secoes [dadosDownloadUser]="dadosDownload"></app-boas-praticas-inicial-secoes>
+</div>

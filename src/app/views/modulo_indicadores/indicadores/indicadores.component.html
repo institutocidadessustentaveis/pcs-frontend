@@ -1,0 +1,339 @@
+<div class="contentBody" style="position: relative;">
+    <app-breadcrumb style="position: relative;"></app-breadcrumb>
+  <div class="row">
+    <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+      <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <mat-card-title *ngIf="indicadorSelecionado.id !== null && indicadorSelecionado.id !== undefined">Alterar
+          Indicador</mat-card-title>
+        <mat-card-title *ngIf="indicadorSelecionado.id === null || indicadorSelecionado.id === undefined">Criar
+          Indicador</mat-card-title>
+        <hr>
+        <form [formGroup]="formIndicador">
+          <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+            <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+              <mat-card-subtitle>Informações gerais do indicador</mat-card-subtitle>
+              <hr>
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Nome do Indicador*" value="" #txtNomeIndicador id="txtNomeIndicador"
+                  formControlName="nome" />
+                <mat-hint align="end">{{ txtNomeIndicador.value?.length || 0 }}/100</mat-hint>
+                <mat-error *ngIf="!formIndicador.controls['nome'].valid && formIndicador.controls['nome'].touched">
+                  {{ getNome() }}
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="col-md-12 marginToComponent">
+                <textarea matInput placeholder="Descrição*" value="" #txtDescricao id="txtDescricao"
+                  formControlName="descricao" maxlength="1000"></textarea>
+                <mat-hint align="end">{{ txtDescricao.value?.length || 0 }}/1000</mat-hint>
+                <mat-error
+                  *ngIf="!formIndicador.controls['descricao'].valid && formIndicador.controls['descricao'].touched">
+                  {{ getDescricao() }}
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="col-md-6 marginToComponent">
+                <mat-label>Eixo*</mat-label>
+                <mat-select id="ddEixo" [(value)]="eixoSelecionado" (selectionChange)="tradeEixo($event.value)"
+                  formControlName="eixo">
+                  <mat-option *ngFor="let itemEixo of listaEixo" [value]="itemEixo">
+                    {{itemEixo.nome}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="!formIndicador.controls['eixo'].valid && formIndicador.controls['eixo'].touched">
+                  {{ getEixo() }}
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="col-md-6 marginToComponent">
+                <mat-label>Tipo de resultado*</mat-label>
+                <mat-select id="ddTipoResultado" formControlName="tipoResultado"
+                  (selectionChange)="tradeResultado($event.value)">
+                  <mat-option *ngFor="let item of listaTipoResultado" [value]="item.value">
+                    {{item.viewValue}}
+                  </mat-option>
+                </mat-select>
+                <mat-error
+                  *ngIf="!formIndicador.controls['tipoResultado'].valid && formIndicador.controls['tipoResultado'].touched">
+                  {{ getTipoResultado() }}
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="col-md-6 marginToComponent">
+                <mat-label>ODS*</mat-label>
+                <mat-select id="ddODS" formControlName="Ods" (selectionChange)="tradeOds($event.value)"
+                  formControlName="Ods">
+                  <mat-option *ngFor="let itemOds of listaODS" [value]="itemOds">
+                    {{itemOds.numero + ' - ' + itemOds.titulo}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="!formIndicador.controls['Ods'].valid && formIndicador.controls['Ods'].touched">
+                  {{ getOds() }}
+                </mat-error>
+              </mat-form-field>
+              <a href="institucional/ods" title="Ir para página de ODS" target="_blank"><i class="material-icons">help</i></a>
+              <mat-form-field class="col-md-5 marginToComponent">
+                <mat-label>Ordem de classificação*</mat-label>
+                <mat-select id="ddOrdemClassificacao" formControlName="ordemClassificacao">
+                  <mat-option *ngFor="let itemOrdemClassificacao of listaOrdemClassificacao"
+                    [value]="itemOrdemClassificacao.value">
+                    {{itemOrdemClassificacao.viewValue}}
+                  </mat-option>
+                </mat-select>
+                <mat-error
+                  *ngIf="!formIndicador.controls['ordemClassificacao'].valid && formIndicador.controls['ordemClassificacao'].touched">
+                  {{ getOrdemClassificacao() }}
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="col-md-12 marginToComponent">
+                <mat-label>Meta ODS*</mat-label>
+                <mat-select id="ddMetaODS" formControlName="MetaOds" >
+                  <mat-option *ngFor="let itemMetaOds of listaMetaODS" [value]="itemMetaOds" [matTooltip]="itemMetaOds.descricao">
+                    {{itemMetaOds?.numero + ' - ' + itemMetaOds.descricao}}
+                  </mat-option>
+                </mat-select>
+                <mat-error
+                  *ngIf="!formIndicador.controls['MetaOds'].valid && formIndicador.controls['MetaOds'].touched">
+                  {{ getMetaOds() }}
+                </mat-error>
+              </mat-form-field>
+              <div class="col-md-12 marginToComponent" style="margin-bottom: 10px;">
+                <mat-checkbox matInput placeholder="Complementar" value="" #complementar id="complementar"
+                  formControlName="complementar">Indicador complementar</mat-checkbox>
+              </div>
+              <mat-card>
+                <mat-card-subtitle>
+                  <div class="row col-md-12 col-lg-12 col-xl-12 col-xs-12 col-sm-12">
+                    <label class="col-auto mr-auto">Variáveis do Indicador</label>
+                  </div>
+                </mat-card-subtitle>
+                <mat-card-content>
+                  <div class="row col-md-12 col-lg-12 col-xl-12 col-xs-12 col-sm-12 marginToComponent">
+                    <mat-form-field
+                      class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-sm-11 mx-auto marginToComponent autoAjuste">
+                      <mat-label>Variáveis*</mat-label>
+                      <mat-select id="ddVariaveis" (selectionChange)="tradeVariavel($event.value)"
+                        [(value)]="variavelSelecionada">
+                        <mat-option *ngFor="let itemVariavel of listaVariaveis" [value]="itemVariavel">
+                          {{itemVariavel.nome}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <button matTooltip="Adicionar Variavel" mat-mini-fab color="primary" style="cursor: pointer;"
+                      class="col-auto mr-auto marginToComponent" id="btnAddVariavel" (click)="addTableItem()">
+                      <mat-icon>add</mat-icon>
+                    </button>
+                  </div>
+                  <!--Tabela-->
+                  <table mat-table [dataSource]="dataSource" matSort #tbVariavel id="tbVariavel"
+                    [hidden]="listaTabelaVariaveis.length == 0">
+                    <ng-container matColumnDef="Variavel">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header="nome">Variável</th>
+                      <td mat-cell *matCellDef="let element">{{ element.nome }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="Remover" *ngIf="hasRole('ROLE_CADASTRAR_INDICADOR')">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Remover</th>
+                      <td mat-cell *matCellDef="let element"> <button mat-mini-fab color="warn"
+                          matTooltip="Remover variável" style="cursor: pointer;" id="btnRemoveVariavel"
+                          (click)="removeTableItem(element)">
+                          <mat-icon>remove</mat-icon>
+                        </button></td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                  </table>
+                  <mat-paginator style="text-align: center !important;" class="float-none"
+                    [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons
+                    [hidden]="listaTabelaVariaveis.length == 0">
+                  </mat-paginator>
+                </mat-card-content>
+              </mat-card>
+              <hr />
+              <mat-card-subtitle>Fórmula do Indicador*</mat-card-subtitle>
+              <app-calculadora-formula [variaveis]="listaTabelaVariaveis" id="txtFormulaResultado"
+                formControlName="formulaResultado" [concatenacao]="exibirCardFormulaReferencia"
+                (resultado)="validarFormulaResultado($event)"></app-calculadora-formula>
+            </mat-card-content>
+          </mat-card>
+          <br>
+          <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12" *ngIf="!isGestor() && exibirCardFormulaReferencia">
+            <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+              <mat-card-subtitle>Fórmula para valor de referência</mat-card-subtitle>
+              <app-calculadora-formula [variaveis]="listaTabelaVariaveis" id="txtFormulaReferencia"
+                formControlName="formulaReferencia" [concatenacao]="false"
+                (resultado)="validarFormulaReferencia($event)"></app-calculadora-formula>
+            </mat-card-content>
+          </mat-card>
+        </form>
+        <br>
+
+        <mat-checkbox class="marginToComponent" id="chkShowRefVariavel" (change)="chechboxReferencia(ocultarReferencia)"
+        [checked]="ocultarReferencia" [hidden]="!exibirCardReferencia">
+        Não se aplica a referência para este indicador
+        </mat-checkbox>
+
+        <form [formGroup]="formReferencia">
+          <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12" [hidden]="!exibirCardReferencia || ocultarReferencia">
+            <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+              <mat-card-subtitle>Valores de referência</mat-card-subtitle>
+              <hr>
+
+              <div class="row marginToComponent">
+                <div class="col-lg-2 col-md-2 marginToComponent" style="max-width: 10% !important;">
+                  <mat-icon class="squareGreen" style="vertical-align: middle;" inline=true matTooltip="Alto">
+                  </mat-icon><span style="margin-left: 5px !important;">Alto </span>
+                </div>
+                <div class="col-lg-2">
+                  <mat-form-field>
+                    <input matInput placeholder="De" value="" #txtDeGreen id="txtDeGreen" formControlName="deGreen"
+                      type="number" onKeyPress="if(this.value.length==20) return false;" />
+                    <mat-hint align="end">{{ txtDeGreen.value?.length || 0 }}/20</mat-hint>
+                    <mat-error
+                      *ngIf="!formReferencia.controls['deGreen'].valid && formReferencia.controls['deGreen'].touched">
+                      {{ getDeGreen() }}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-lg-2">
+                  <mat-form-field>
+                    <input matInput placeholder="Até" value="" #txtAteGreen id="txtAteGreen" formControlName="ateGreen"
+                      type="number" onKeyPress="if(this.value.length==20) return false;" />
+                    <mat-hint align="end">{{ txtAteGreen.value?.length || 0 }}/20</mat-hint>
+                    <mat-error
+                      *ngIf="!formReferencia.controls['ateGreen'].valid && formReferencia.controls['ateGreen'].touched">
+                      {{ getAteGreen() }}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row marginToComponent">
+                <div class="col-lg-2 col-md-2 marginToComponent" style="max-width: 10% !important;">
+                  <mat-icon class="squareYellow" style="vertical-align: middle;" inline=true matTooltip="Médio">
+                  </mat-icon><span style="margin-left: 5px !important;">Médio </span>
+                </div>
+                <div class="col-lg-2">
+                  <mat-form-field>
+                    <input matInput placeholder="De" value="" #txtDeYellow id="txtDeGreen" formControlName="deYellow"
+                      type="number" onKeyPress="if(this.value.length==20) return false;" />
+                    <mat-hint align="end">{{ txtDeYellow.value?.length || 0 }}/20</mat-hint>
+                    <mat-error
+                      *ngIf="!formReferencia.controls['deYellow'].valid && formReferencia.controls['deYellow'].touched">
+                      {{ getDeYellow() }}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-lg-2">
+                  <mat-form-field>
+                    <input matInput placeholder="Até" value="" #txtAteYellow id="txtAteYellow"
+                      formControlName="ateYellow" type="number" onKeyPress="if(this.value.length==20) return false;" />
+                    <mat-hint align="end">{{ txtAteYellow.value?.length || 0 }}/20</mat-hint>
+                    <mat-error
+                      *ngIf="!formReferencia.controls['ateGreen'].valid && formReferencia.controls['ateGreen'].touched">
+                      {{ getAteYellow() }}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row marginToComponent">
+                <div class="col-lg-2 col-md-2" style="max-width: 10% !important;">
+                  <mat-icon class="squareOrange" style="vertical-align: middle;" inline=true matTooltip="Baixo">
+                  </mat-icon><span style="margin-left: 5px !important;">Baixo </span>
+                </div>
+                <div class="col-lg-2">
+                  <mat-form-field>
+                    <input matInput placeholder="De" value="" #txtDeOrange id="txtDeOrange" formControlName="deOrange"
+                      type="number" onKeyPress="if(this.value.length==20) return false;" />
+                    <mat-hint align="end">{{ txtDeOrange.value?.length || 0 }}/20</mat-hint>
+                    <mat-error
+                      *ngIf="!formReferencia.controls['deOrange'].valid && formReferencia.controls['deOrange'].touched">
+                      {{ getDeOrange() }}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-lg-2">
+                  <mat-form-field>
+                    <input matInput placeholder="Até" value="" #txtAteOrange id="txtAteOrange"
+                      formControlName="ateOrange" type="number" onKeyPress="if(this.value.length==20) return false;" />
+                    <mat-hint align="end">{{ txtAteOrange.value?.length || 0 }}/20</mat-hint>
+                    <mat-error
+                      *ngIf="!formReferencia.controls['ateOrange'].valid && formReferencia.controls['ateOrange'].touched">
+                      {{ getAteOrange() }}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row marginToComponent">
+                <div class="col-lg-2 col-md-2" style="max-width: 10% !important;">
+                  <mat-icon class="squareRed" style="vertical-align: middle;" inline=true matTooltip="Muito Baixo">
+                  </mat-icon><span style="margin-left: 5px !important;">Muito Baixo </span>
+                </div>
+                <div class="col-lg-2">
+                  <mat-form-field>
+                    <input matInput placeholder="De" value="" #txtDeRed id="txtDeRed" formControlName="deRed"
+                      type="number" onKeyPress="if(this.value.length==20) return false;" />
+                    <mat-hint align="end">{{ txtDeRed.value?.length || 0 }}/20</mat-hint>
+                    <mat-error
+                      *ngIf="!formReferencia.controls['deRed'].valid && formReferencia.controls['deRed'].touched">
+                      {{ getDeRed() }}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-lg-2">
+                  <mat-form-field>
+                    <input matInput placeholder="Até" value="" #txtAteRed id="txtAteRed" formControlName="ateRed"
+                      type="number" onKeyPress="if(this.value.length==20) return false;" />
+                    <mat-hint align="end">{{ txtAteRed.value?.length || 0 }}/20</mat-hint>
+                    <mat-error
+                      *ngIf="!formReferencia.controls['ateRed'].valid && formReferencia.controls['ateRed'].touched">
+                      {{ getAteRed() }}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+          <!-- FIM DOS VALORES DE REFERENCIA -->
+          <br>
+          <div class="col-md-12 text-right">
+            <button mat-flat-button color="primary" matTooltip="Salvar"
+              style="cursor: pointer; margin-right: 5px !important;" id="btnSalvar"
+              [disabled]="!formIndicador.valid && hasRole('ROLE_CADASTRAR_INDICADOR')" (click)="salvar()"
+              [hidden]="exibirCardReferencia && !ocultarReferencia">
+              <mat-icon>save</mat-icon> Salvar
+            </button>
+
+            <button mat-flat-button color="primary" matTooltip="Salvar"
+              style="cursor: pointer; margin-right: 5px !important;" id="btnSalvarReferencia"
+              [disabled]="validarBotaoSalvarReferencia() && hasRole('ROLE_CADASTRAR_INDICADOR')" (click)="salvar()"
+              [hidden]="!exibirCardReferencia || ocultarReferencia">
+              <mat-icon>save</mat-icon> Salvar
+            </button>
+
+            <button mat-flat-button color="accent" matTooltip="Voltar" style="cursor: pointer;"
+              [routerLink]="['/cadastroindicadores']" id="btnVoltar">
+              <mat-icon>arrow_back_ios</mat-icon> Voltar
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <ng-template #modalLoading>
+    <div class="centralizar-loading">
+       <div id="circularG">
+        <div id="circularG_1" class="circularG"></div>
+        <div id="circularG_2" class="circularG"></div>
+        <div id="circularG_3" class="circularG"></div>
+        <div id="circularG_4" class="circularG"></div>
+        <div id="circularG_5" class="circularG"></div>
+        <div id="circularG_6" class="circularG"></div>
+        <div id="circularG_7" class="circularG"></div>
+        <div id="circularG_8" class="circularG"></div>
+      </div> 
+      <div class="mt-2" style="text-align: center">
+        <p><strong>Carregando...</strong></p>
+      </div>
+    </div>
+  </ng-template>
+  
+</div>

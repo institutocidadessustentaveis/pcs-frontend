@@ -1,0 +1,544 @@
+<!-- Seção Lateral -->
+
+<section>
+  <div class="row" *ngIf="secaoLateral?.exibirBanner1">
+    <div class="col-md-12 row-card-side-bar" style="padding-bottom: 0px !important;">
+      <div class="h-100">
+
+        <div class="row">
+          <div class="caixa" [style.background-color]="secaoLateral?.primeiroTituloPrincipalCor"></div>
+          <a *ngIf="secaoLateral?.primeiroTituloPrincipal && secaoLateral?.primeiroTituloPrincipalLink && !verificaLinks(secaoLateral?.primeiroTituloPrincipalLink)" class="h1 titulos" style="margin-bottom:0 !important;"
+            [style.border-color]="secaoLateral?.primeiroTituloPrincipalCor"
+            [style.color]="secaoLateral?.primeiroTituloPrincipalCor" 
+            [href]="secaoLateral?.primeiroTituloPrincipalLink" target="_blank">
+            {{secaoLateral?.primeiroTituloPrincipal}}
+          </a>
+          <a *ngIf="secaoLateral?.primeiroTituloPrincipal && secaoLateral?.primeiroTituloPrincipalLink && verificaLinks(secaoLateral?.primeiroTituloPrincipalLink)" class="h1 titulos" style="margin-bottom:0 !important; cursor: pointer;"
+            [style.border-color]="secaoLateral?.primeiroTituloPrincipalCor"
+            [style.color]="secaoLateral?.primeiroTituloPrincipalCor" 
+            (click)="validacaoDownload(secaoLateral?.primeiroTituloPrincipalLink)">{{secaoLateral?.primeiroTituloPrincipal}}</a>
+
+          <a *ngIf="secaoLateral?.primeiroTituloPrincipal && !secaoLateral?.primeiroTituloPrincipalLink" class="h1 titulos" style="margin-bottom:0 !important;"
+            [style.border-color]="secaoLateral?.primeiroTituloPrincipalCor"
+            [style.color]="secaoLateral?.primeiroTituloPrincipalCor">
+            {{secaoLateral?.primeiroTituloPrincipal}}
+          </a>
+        </div>
+
+        <div class="card-body" style="padding-bottom: 0% !important;">
+
+          <a class="one-column-center" style="height: 100%;width: 100%;margin-top: 5%;"
+            *ngIf="secaoLateral?.primeiraImagemSafeUrl && secaoLateral?.primeiraImagemLink && !verificaLinks(secaoLateral?.primeiraImagemLink)" 
+            [href]="secaoLateral?.primeiraImagemLink"
+            target="_blank" rel="noopener">
+            <img [src]="secaoLateral?.primeiraImagemSafeUrl" class="img-third-section"
+            [matTooltip]="secaoLateral?.primeiraImagemTooltip">
+          </a>
+
+          <a class="one-column-center" style="height: 100%;width: 100%;margin-top: 5%; cursor: pointer;"
+            *ngIf="secaoLateral?.primeiraImagemSafeUrl && secaoLateral?.primeiraImagemLink && verificaLinks(secaoLateral?.primeiraImagemLink)"
+            (click)="validacaoDownload(secaoLateral?.primeiraImagemLink)">
+            <img [src]="secaoLateral?.primeiraImagemSafeUrl" class="img-third-section"
+            [matTooltip]="secaoLateral?.primeiraImagemTooltip">
+          </a>
+
+          <a class="one-column-center" style="height: 100%;width: 100%;margin-top: 5%;"
+            *ngIf="secaoLateral?.primeiraImagemSafeUrl && !secaoLateral?.primeiraImagemLink">
+            <img [src]="secaoLateral?.primeiraImagemSafeUrl" class="img-third-section"
+            [matTooltip]="secaoLateral?.primeiraImagemTooltip">
+          </a>
+
+
+          <div class="row" style="margin-top: 5%; margin-bottom: 3%;">
+            <a *ngIf="secaoLateral?.primeiroTitulo && secaoLateral?.primeiroTituloLink && !verificaLinks(secaoLateral?.primeiroTituloLink)" class="h5 titulos-no-border underline-on-hover" style="margin-bottom:3% !important;width: 100%;"
+              [style.border-color]="secaoLateral?.primeiroTituloCor"
+              [style.color]="secaoLateral?.primeiroTituloCor"
+              [href]="secaoLateral?.primeiroTituloLink" target="_blank">
+              {{secaoLateral?.primeiroTitulo}}
+            </a>
+
+            <a *ngIf="secaoLateral?.primeiroTitulo && secaoLateral?.primeiroTituloLink && verificaLinks(secaoLateral?.primeiroTituloLink)" class="h5 titulos-no-border underline-on-hover" style="margin-bottom:3% !important;width: 100%; cursor: pointer;"
+              [style.border-color]="secaoLateral?.primeiroTituloCor"
+              [style.color]="secaoLateral?.primeiroTituloCor"
+              (click)="validacaoDownload(secaoLateral?.primeiroTituloLink)">
+              {{secaoLateral?.primeiroTitulo}}
+            </a>
+
+            <a *ngIf="secaoLateral?.primeiroTitulo && !secaoLateral?.primeiroTituloLink" class="h5 titulos-no-border underline-on-hover" style="margin-bottom:3% !important;width: 100%;"
+              [style.border-color]="secaoLateral?.primeiroTituloCor"
+              [style.color]="secaoLateral?.primeiroTituloCor">
+              {{secaoLateral?.primeiroTitulo}}
+            </a>
+
+
+            <a *ngIf="secaoLateral?.primeiroTexto && secaoLateral?.primeiroTextoLink && !verificaLinks(secaoLateral?.primeiroTextoLink)" class="one-column-texto-small underline-on-hover" style="color: #231f20;width: 100%;"
+              [style.color]="secaoLateral?.primeiroTextoCor" [innerHTML]="secaoLateral?.primeiroTexto"
+              [href]="secaoLateral?.primeiroTextoLink" target="_blank">
+            </a>
+
+            <a *ngIf="secaoLateral?.primeiroTexto && secaoLateral?.primeiroTextoLink && verificaLinks(secaoLateral?.primeiroTextoLink)" class="one-column-texto-small underline-on-hover" style="color: #231f20;width: 100%; cursor: pointer;"
+              [style.color]="secaoLateral?.primeiroTextoCor" [innerHTML]="secaoLateral?.primeiroTexto"
+              (click)="validacaoDownload(secaoLateral?.primeiroTextoLink)">
+            </a>
+
+            <a *ngIf="secaoLateral?.primeiroTexto && !secaoLateral?.primeiroTextoLink" class="one-column-texto-small underline-on-hover" style="color: #231f20;width: 100%;"
+              [style.color]="secaoLateral?.primeiroTextoCor" [innerHTML]="secaoLateral?.primeiroTexto">
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="secaoLateral?.exibirBanner1">
+    <div class="col-md-12 row-card-side-bar">
+            <hr style="border-top: 1pt solid;"
+              [style.color]="secaoLateral?.primeiroTituloPrincipalCor">
+    </div>
+  </div>
+
+  <div class="row" *ngIf="secaoLateral?.exibirBanner2" style="margin-bottom: 5%">
+    <div class="col-md-12 row-card-side-bar">
+      <div class="h-100" style="cursor: pointer;">
+        <div class="card-body" style="padding: 0px !important;">
+          <div class="container" style="padding: 0px !important;">
+            <a *ngIf="secaoLateral?.segundaImagemLink && !verificaLinks(secaoLateral?.segundaImagemLink)" 
+            [href]="secaoLateral?.segundaImagemLink" target="_blank">
+              <img class="img-carousel-side" loading="lazy" [src]="secaoLateral?.segundaImagemSafeUrl"
+                alt="Event Image" [matTooltip]="secaoLateral?.segundaImagemTooltip">
+              <div class="centered">
+                <div class="row">
+                  <a *ngIf="secaoLateral?.segundoTitulo && secaoLateral?.segundoTituloLink && !verificaLinks(secaoLateral?.segundoTituloLink)" class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="secaoLateral?.segundoTituloCor"
+                    [style.color]="secaoLateral?.segundoTituloCor"
+                    style="width: 100%;margin-bottom: 2%;text-align: center;"
+                    [href]="secaoLateral?.segundoTituloLink" target="_blank"
+                    [innerHTML]="secaoLateral?.segundoTitulo"></a>
+
+                  <a *ngIf="secaoLateral?.segundoTitulo && secaoLateral?.segundoTituloLink && verificaLinks(secaoLateral?.segundoTituloLink)" class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="secaoLateral?.segundoTituloCor"
+                    [style.color]="secaoLateral?.segundoTituloCor"
+                    style="width: 100%;margin-bottom: 2%;text-align: center; cursor: pointer;" 
+                    (click)="validacaoDownload(secaoLateral?.segundoTituloLink)"
+                    [innerHTML]="secaoLateral?.segundoTitulo"></a>
+
+                  <a *ngIf="secaoLateral?.segundoTitulo && !secaoLateral?.segundoTituloLink" class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="secaoLateral?.segundoTituloCor"
+                    [style.color]="secaoLateral?.segundoTituloCor"
+                    style="width: 100%;margin-bottom: 2%;text-align: center;"
+                    [innerHTML]="secaoLateral?.segundoTitulo"></a>
+
+
+
+                  <a *ngIf="secaoLateral?.segundoTexto && secaoLateral?.segundoTextoLink && !verificaLinks(secaoLateral?.segundoTextoLink)" class="subtitulos-inside-image underline-on-hover"
+                    style="color: #231f20; text-align:center !important"
+                    [style.color]="secaoLateral?.segundoTextoCor" [innerHTML]="secaoLateral?.segundoTexto"
+                    [href]="secaoLateral?.segundoTextoLink" target="_blank">
+                  </a>
+
+                  <a *ngIf="secaoLateral?.segundoTexto && secaoLateral?.segundoTextoLink && verificaLinks(secaoLateral?.segundoTextoLink)" class="subtitulos-inside-image underline-on-hover"
+                    style="color: #231f20; text-align:center !important; cursor: pointer;"
+                    [style.color]="secaoLateral?.segundoTextoCor" [innerHTML]="secaoLateral?.segundoTexto"
+                    (click)="validacaoDownload(secaoLateral?.segundoTextoLink)">
+                  </a>
+                  
+                  <a *ngIf="secaoLateral?.segundoTexto && !secaoLateral?.segundoTextoLink" class="subtitulos-inside-image underline-on-hover"
+                    style="color: #231f20; text-align:center !important;"
+                    [style.color]="secaoLateral?.segundoTextoCor" [innerHTML]="secaoLateral?.segundoTexto">
+                  </a>
+                </div>
+              </div>
+            </a>
+
+            <a *ngIf="secaoLateral?.segundaImagemLink && verificaLinks(secaoLateral?.segundaImagemLink)" (click)="validacaoDownload(secaoLateral?.segundaImagemLink)" style="cursor: pointer;">
+              <img class="img-carousel-side" loading="lazy" [src]="secaoLateral?.segundaImagemSafeUrl"
+                alt="Event Image" [matTooltip]="secaoLateral?.segundaImagemTooltip">
+              <div class="centered">
+                <div class="row">
+                  <a *ngIf="secaoLateral?.segundoTitulo && secaoLateral?.segundoTituloLink && !verificaLinks(secaoLateral?.segundoTituloLink)" class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="secaoLateral?.segundoTituloCor"
+                    [style.color]="secaoLateral?.segundoTituloCor"
+                    style="width: 100%;margin-bottom: 2%;text-align: center;"
+                    [href]="secaoLateral?.segundoTituloLink" target="_blank"
+                    [innerHTML]="secaoLateral?.segundoTitulo"></a>
+
+                  <a *ngIf="secaoLateral?.segundoTitulo && secaoLateral?.segundoTituloLink && verificaLinks(secaoLateral?.segundoTituloLink)" class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="secaoLateral?.segundoTituloCor"
+                    [style.color]="secaoLateral?.segundoTituloCor"
+                    style="width: 100%;margin-bottom: 2%;text-align: center; cursor: pointer;" 
+                    (click)="validacaoDownload(secaoLateral?.segundoTituloLink)"
+                    [innerHTML]="secaoLateral?.segundoTitulo"></a>
+
+                  <a *ngIf="secaoLateral?.segundoTitulo && !secaoLateral?.segundoTituloLink" class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="secaoLateral?.segundoTituloCor"
+                    [style.color]="secaoLateral?.segundoTituloCor"
+                    style="width: 100%;margin-bottom: 2%;text-align: center;"
+                    [innerHTML]="secaoLateral?.segundoTitulo"></a>
+
+
+
+                  <a *ngIf="secaoLateral?.segundoTexto && secaoLateral?.segundoTextoLink && !verificaLinks(secaoLateral?.segundoTextoLink)" class="subtitulos-inside-image underline-on-hover"
+                    style="color: #231f20; text-align:center !important"
+                    [style.color]="secaoLateral?.segundoTextoCor" [innerHTML]="secaoLateral?.segundoTexto"
+                    [href]="secaoLateral?.segundoTextoLink" target="_blank">
+                  </a>
+
+                  <a *ngIf="secaoLateral?.segundoTexto && secaoLateral?.segundoTextoLink && verificaLinks(secaoLateral?.segundoTextoLink)" class="subtitulos-inside-image underline-on-hover"
+                    style="color: #231f20; text-align:center !important; cursor: pointer;"
+                    [style.color]="secaoLateral?.segundoTextoCor" [innerHTML]="secaoLateral?.segundoTexto"
+                    (click)="validacaoDownload(secaoLateral?.segundoTextoLink)">
+                  </a>
+                  
+                  <a *ngIf="secaoLateral?.segundoTexto && !secaoLateral?.segundoTextoLink" class="subtitulos-inside-image underline-on-hover"
+                    style="color: #231f20; text-align:center !important;"
+                    [style.color]="secaoLateral?.segundoTextoCor" [innerHTML]="secaoLateral?.segundoTexto">
+                  </a>
+                </div>
+              </div>
+            </a>
+
+            <a *ngIf="!secaoLateral?.segundaImagemLink">
+              <img class="img-carousel-side" loading="lazy" [src]="secaoLateral?.segundaImagemSafeUrl"
+                alt="Event Image" [matTooltip]="secaoLateral?.segundaImagemTooltip">
+              <div class="centered">
+                <div class="row">
+                  <a *ngIf="secaoLateral?.segundoTitulo && secaoLateral?.segundoTituloLink && !verificaLinks(secaoLateral?.segundoTituloLink)" class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="secaoLateral?.segundoTituloCor"
+                    [style.color]="secaoLateral?.segundoTituloCor"
+                    style="width: 100%;margin-bottom: 2%;text-align: center;"
+                    [href]="secaoLateral?.segundoTituloLink" target="_blank"
+                    [innerHTML]="secaoLateral?.segundoTitulo"></a>
+
+                  <a *ngIf="secaoLateral?.segundoTitulo && secaoLateral?.segundoTituloLink && verificaLinks(secaoLateral?.segundoTituloLink)" class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="secaoLateral?.segundoTituloCor"
+                    [style.color]="secaoLateral?.segundoTituloCor"
+                    style="width: 100%;margin-bottom: 2%;text-align: center; cursor: pointer;" 
+                    (click)="validacaoDownload(secaoLateral?.segundoTituloLink)"
+                    [innerHTML]="secaoLateral?.segundoTitulo"></a>
+
+                  <a *ngIf="secaoLateral?.segundoTitulo && !secaoLateral?.segundoTituloLink" class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="secaoLateral?.segundoTituloCor"
+                    [style.color]="secaoLateral?.segundoTituloCor"
+                    style="width: 100%;margin-bottom: 2%;text-align: center;"
+                    [innerHTML]="secaoLateral?.segundoTitulo"></a>
+
+
+
+                  <a *ngIf="secaoLateral?.segundoTexto && secaoLateral?.segundoTextoLink && !verificaLinks(secaoLateral?.segundoTextoLink)" class="subtitulos-inside-image underline-on-hover"
+                    style="color: #231f20; text-align:center !important"
+                    [style.color]="secaoLateral?.segundoTextoCor" [innerHTML]="secaoLateral?.segundoTexto"
+                    [href]="secaoLateral?.segundoTextoLink" target="_blank">
+                  </a>
+
+                  <a *ngIf="secaoLateral?.segundoTexto && secaoLateral?.segundoTextoLink && verificaLinks(secaoLateral?.segundoTextoLink)" class="subtitulos-inside-image underline-on-hover"
+                    style="color: #231f20; text-align:center !important"
+                    [style.color]="secaoLateral?.segundoTextoCor" [innerHTML]="secaoLateral?.segundoTexto"
+                    (click)="validacaoDownload(secaoLateral?.segundoTextoLink)">
+                  </a>
+                  
+                  <a *ngIf="secaoLateral?.segundoTexto && !secaoLateral?.segundoTextoLink" class="subtitulos-inside-image underline-on-hover"
+                    style="color: #231f20; text-align:center !important;"
+                    [style.color]="secaoLateral?.segundoTextoCor" [innerHTML]="secaoLateral?.segundoTexto">
+                  </a>
+                </div>
+              </div>
+            </a>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="secaoLateral?.exibirBanner3 && secaoLateral?.segundoTituloPrincipal">
+    <div class="col-md-12 row-card-side-bar">
+      <div class="h-100">
+        <div class="row">
+          <div class="caixa" [style.background-color]="secaoLateral?.segundoTituloPrincipalCor"></div>
+          <a *ngIf="secaoLateral?.segundoTituloPrincipal && secaoLateral?.segundoTituloPrincipalLink && !verificaLinks(secaoLateral?.segundoTituloPrincipalLink)" class="h1 titulos" style="margin-bottom:0 !important;"
+            [style.border-color]="secaoLateral?.segundoTituloPrincipalCor"
+            [style.color]="secaoLateral?.segundoTituloPrincipalCor"  
+            [href]="secaoLateral?.segundoTituloPrincipalLink" target="_blank">
+            {{secaoLateral?.segundoTituloPrincipal}}</a>
+
+          <a *ngIf="secaoLateral?.segundoTituloPrincipal && secaoLateral?.segundoTituloPrincipalLink && verificaLinks(secaoLateral?.segundoTituloPrincipalLink)" class="h1 titulos" style="margin-bottom:0 !important; cursor: pointer;"
+            [style.border-color]="secaoLateral?.segundoTituloPrincipalCor"
+            [style.color]="secaoLateral?.segundoTituloPrincipalCor"  
+            (click)="validacaoDownload(secaoLateral?.segundoTituloPrincipalLink)">{{secaoLateral?.segundoTituloPrincipal}}</a>
+      
+          <a *ngIf="secaoLateral?.segundoTituloPrincipal && !secaoLateral?.segundoTituloPrincipalLink" class="h1 titulos" style="margin-bottom:0 !important;"
+            [style.border-color]="secaoLateral?.segundoTituloPrincipalCor"
+            [style.color]="secaoLateral?.segundoTituloPrincipalCor">
+            {{secaoLateral?.segundoTituloPrincipal}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top: 3%; margin-bottom: 5%"  *ngIf="secaoLateral?.exibirBanner3">
+    <div class="col-md-12 row-card-side-bar">
+      <div class="h-100">
+        <div class="card-body" [style.background-color]="this.segundoTituloPrincipalCorTemaAux">
+
+          <div class="verticalLine" [style.border-color]="secaoLateral?.segundoTituloPrincipalCor">
+            <a *ngIf="secaoLateral?.primeiroItemTexto && secaoLateral?.primeiroItemLink && !verificaLinks(secaoLateral?.primeiroItemLink)" [href]="secaoLateral?.primeiroItemLink" target="_blank">
+              <p style="text-align: left;">
+                <span [style.color]="secaoLateral?.itemTituloCor"
+                  style="font-weight: bold;">{{secaoLateral?.primeiroItemTitulo}} </span>
+                <span [style.color]="secaoLateral?.itemTextoCor">{{secaoLateral?.primeiroItemTexto}}</span>
+              </p>
+            </a>
+
+            <a *ngIf="secaoLateral?.primeiroItemTexto && secaoLateral?.primeiroItemLink && verificaLinks(secaoLateral?.primeiroItemLink)"
+            (click)="validacaoDownload(secaoLateral?.primeiroItemLink)" style="cursor: pointer;">
+              <p style="text-align: left;">
+                <span [style.color]="secaoLateral?.itemTituloCor"
+                  style="font-weight: bold;">{{secaoLateral?.primeiroItemTitulo}} </span>
+                <span [style.color]="secaoLateral?.itemTextoCor">{{secaoLateral?.primeiroItemTexto}}</span>
+              </p>
+            </a>
+
+            <a *ngIf="secaoLateral?.primeiroItemTexto && !secaoLateral?.primeiroItemLink">
+              <p style="text-align: left;">
+                <span [style.color]="secaoLateral?.itemTituloCor"
+                  style="font-weight: bold;">{{secaoLateral?.primeiroItemTitulo}} </span>
+                <span [style.color]="secaoLateral?.itemTextoCor">{{secaoLateral?.primeiroItemTexto}}</span>
+              </p>
+            </a>
+          </div>
+          <hr style="border-top: 1pt solid;width: 85%;" [style.color]="secaoLateral?.segundoTituloPrincipalCor">
+
+          <div class="verticalLine" [style.border-color]="secaoLateral?.segundoTituloPrincipalCor">
+            <a *ngIf="secaoLateral?.segundoItemTexto && secaoLateral?.segundoItemLink && !verificaLinks(secaoLateral?.segundoItemLink)" [href]="secaoLateral?.segundoItemLink" target="_blank">
+              <p style="text-align: left;">
+                <span [style.color]="secaoLateral?.itemTituloCor"
+                  style="font-weight: bold;">{{secaoLateral?.segundoItemTitulo}} </span>
+                <span [style.color]="secaoLateral?.itemTextoCor">{{secaoLateral?.segundoItemTexto}}</span>
+              </p>
+            </a>
+            <a *ngIf="secaoLateral?.segundoItemTexto && secaoLateral?.segundoItemLink && verificaLinks(secaoLateral?.segundoItemLink)" 
+            (click)="validacaoDownload(secaoLateral?.segundoItemLink)" style="cursor: pointer;">
+              <p style="text-align: left;">
+                <span [style.color]="secaoLateral?.itemTituloCor"
+                  style="font-weight: bold;">{{secaoLateral?.segundoItemTitulo}} </span>
+                <span [style.color]="secaoLateral?.itemTextoCor">{{secaoLateral?.segundoItemTexto}}</span>
+              </p>
+            </a>
+            <a *ngIf="secaoLateral?.segundoItemTexto && !secaoLateral?.segundoItemLink">
+              <p style="text-align: left;">
+                <span [style.color]="secaoLateral?.itemTituloCor"
+                  style="font-weight: bold;">{{secaoLateral?.segundoItemTitulo}} </span>
+                <span [style.color]="secaoLateral?.itemTextoCor">{{secaoLateral?.segundoItemTexto}}</span>
+              </p>
+            </a>
+          </div>
+          <hr style="border-top: 1pt solid;width: 85%;" [style.color]="secaoLateral?.segundoTituloPrincipalCor">
+
+          <div class="verticalLine" [style.border-color]="secaoLateral?.segundoTituloPrincipalCor">
+            <a *ngIf="secaoLateral?.terceiroItemTexto && secaoLateral?.terceiroItemLink && !verificaLinks(secaoLateral?.terceiroItemLink)" 
+            [href]="secaoLateral?.terceiroItemLink" target="_blank">
+              <p style="text-align: left;">
+                <span [style.color]="secaoLateral?.itemTituloCor"
+                  style="font-weight: bold;">{{secaoLateral?.terceiroItemTitulo}} </span>
+                <span [style.color]="secaoLateral?.itemTextoCor">{{secaoLateral?.terceiroItemTexto}}</span>
+              </p>
+            </a>
+
+            <a *ngIf="secaoLateral?.terceiroItemTexto && secaoLateral?.terceiroItemLink && verificaLinks(secaoLateral?.terceiroItemLink)" 
+            (click)="validacaoDownload(secaoLateral?.terceiroItemLink)" style="cursor: pointer;">
+              <p style="text-align: left;">
+                <span [style.color]="secaoLateral?.itemTituloCor"
+                  style="font-weight: bold;">{{secaoLateral?.terceiroItemTitulo}} </span>
+                <span [style.color]="secaoLateral?.itemTextoCor">{{secaoLateral?.terceiroItemTexto}}</span>
+              </p>
+            </a>
+
+            <a *ngIf="secaoLateral?.terceiroItemTexto && !secaoLateral?.terceiroItemLink">
+              <p style="text-align: left;">
+                <span [style.color]="secaoLateral?.itemTituloCor"
+                  style="font-weight: bold;">{{secaoLateral?.terceiroItemTitulo}} </span>
+                <span [style.color]="secaoLateral?.itemTextoCor">{{secaoLateral?.terceiroItemTexto}}</span>
+              </p>
+            </a>
+          </div>
+          <hr style="border-top: 1pt solid;width: 85%;" [style.color]="secaoLateral?.segundoTituloPrincipalCor">
+
+          <div class="verticalLine" [style.border-color]="secaoLateral?.segundoTituloPrincipalCor">
+            <a *ngIf="secaoLateral?.quartoItemTexto && secaoLateral?.quartoItemLink && !verificaLinks(secaoLateral?.quartoItemLink)" [href]="secaoLateral?.quartoItemLink" target="_blank">
+              <p style="text-align: left;">
+                <span [style.color]="secaoLateral?.itemTituloCor"
+                  style="font-weight: bold;">{{secaoLateral?.quartoItemTitulo}} </span>
+                <span [style.color]="secaoLateral?.itemTextoCor">{{secaoLateral?.quartoItemTexto}}</span>
+              </p>
+            </a>
+
+            <a *ngIf="secaoLateral?.quartoItemTexto && secaoLateral?.quartoItemLink && verificaLinks(secaoLateral?.quartoItemLink)" 
+            (click)="validacaoDownload(secaoLateral?.quartoItemLink)" style="cursor: pointer;">
+              <p style="text-align: left;">
+                <span [style.color]="secaoLateral?.itemTituloCor"
+                  style="font-weight: bold;">{{secaoLateral?.quartoItemTitulo}} </span>
+                <span [style.color]="secaoLateral?.itemTextoCor">{{secaoLateral?.quartoItemTexto}}</span>
+              </p>
+            </a>
+
+            <a *ngIf="secaoLateral?.quartoItemTexto && !secaoLateral?.quartoItemLink">
+              <p style="text-align: left;">
+                <span [style.color]="secaoLateral?.itemTituloCor"
+                  style="font-weight: bold;">{{secaoLateral?.quartoItemTitulo}} </span>
+                <span [style.color]="secaoLateral?.itemTextoCor">{{secaoLateral?.quartoItemTexto}}</span>
+              </p>
+            </a>
+          </div>
+          <hr style="border-top: 1pt solid;width: 85%;" [style.color]="secaoLateral?.segundoTituloPrincipalCor">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row" style="margin-bottom: 5%;" *ngIf="secaoLateral?.exibirBanner4">
+    <div class="col-md-12 row-card-side-bar">
+      <div class="h-100" style="cursor: pointer;">
+        <div class="card-body" style="padding: 0px !important;">
+          <div class="container" style="padding: 0px !important;">
+
+            <a *ngIf="secaoLateral?.terceiraImagemLink && !verificaLinks(secaoLateral?.terceiraImagemLink)" [href]="secaoLateral?.terceiraImagemLink" target="_blank">
+              <img class="img-carousel-side" loading="lazy" [src]="secaoLateral?.terceiraImagemSafeUrl"
+                alt="Event Image" [matTooltip]="secaoLateral?.terceiraImagemTooltip">
+              <div class="centered">
+                <div class="row">
+                  <a *ngIf="secaoLateral?.terceiroTitulo && secaoLateral?.terceiroTituloLink && !verificaLinks(secaoLateral?.terceiroTituloLink)" class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="secaoLateral?.terceiroTituloCor"
+                    [style.color]="secaoLateral?.terceiroTituloCor"
+                    style="width: 100%;margin-bottom: 2%;text-align: center;"
+                    [href]="secaoLateral?.terceiroTituloLink" target="_blank"
+                    [innerHTML]="secaoLateral?.terceiroTitulo"></a>
+
+                  <a *ngIf="secaoLateral?.terceiroTitulo && secaoLateral?.terceiroTituloLink && verificaLinks(secaoLateral?.terceiroTituloLink)" class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="secaoLateral?.terceiroTituloCor"
+                    [style.color]="secaoLateral?.terceiroTituloCor"
+                    style="width: 100%;margin-bottom: 2%;text-align: center; cursor: pointer;"
+                    (click)="validacaoDownload(secaoLateral?.terceiroTituloLink)"
+                    [innerHTML]="secaoLateral?.terceiroTitulo"></a>
+
+                  <a *ngIf="secaoLateral?.terceiroTitulo && !secaoLateral?.terceiroTituloLink" class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="secaoLateral?.terceiroTituloCor"
+                    [style.color]="secaoLateral?.terceiroTituloCor"
+                    style="width: 100%;margin-bottom: 2%;text-align: center;"
+                    [href]="secaoLateral?.terceiroTituloLink"
+                    [innerHTML]="secaoLateral?.terceiroTitulo"></a>
+
+
+
+                  <a *ngIf="secaoLateral?.terceiroTexto && secaoLateral?.terceiroTextoLink && !verificaLinks(secaoLateral?.terceiroTextoLink)" class="subtitulos-inside-image underline-on-hover"
+                    style="color: #231f20; text-align:center !important"
+                    [style.color]="secaoLateral?.terceiroTextoCor" [innerHTML]="secaoLateral?.terceiroTexto"
+                    [href]="secaoLateral?.terceiroTextoLink" target="_blank"></a>
+                  
+                  <a *ngIf="secaoLateral?.terceiroTexto && secaoLateral?.terceiroTextoLink && verificaLinks(secaoLateral?.terceiroTextoLink)" class="subtitulos-inside-image underline-on-hover"
+                    style="color: #231f20; text-align:center !important; cursor: pointer;"
+                    [style.color]="secaoLateral?.terceiroTextoCor" [innerHTML]="secaoLateral?.terceiroTexto"
+                    (click)="validacaoDownload(secaoLateral?.terceiroTextoLink)"></a>
+
+                  <a *ngIf="secaoLateral?.terceiroTexto && !secaoLateral?.terceiroTextoLink" class="subtitulos-inside-image underline-on-hover"
+                    style="color: #231f20; text-align:center !important;"
+                    [style.color]="secaoLateral?.terceiroTextoCor" [innerHTML]="secaoLateral?.terceiroTexto"></a>
+                </div>
+              </div>
+            </a>
+
+            <a *ngIf="secaoLateral?.terceiraImagemLink && verificaLinks(secaoLateral?.terceiraImagemLink)" (click)="validacaoDownload(secaoLateral?.terceiraImagemLink)" style="cursor: pointer;">
+              <img class="img-carousel-side" loading="lazy" [src]="secaoLateral?.terceiraImagemSafeUrl"
+                alt="Event Image" [matTooltip]="secaoLateral?.terceiraImagemTooltip">
+              <div class="centered">
+                <div class="row">
+                  <a *ngIf="secaoLateral?.terceiroTitulo && secaoLateral?.terceiroTituloLink && !verificaLinks(secaoLateral?.terceiroTituloLink)" class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="secaoLateral?.terceiroTituloCor"
+                    [style.color]="secaoLateral?.terceiroTituloCor"
+                    style="width: 100%;margin-bottom: 2%;text-align: center;"
+                    [href]="secaoLateral?.terceiroTituloLink" target="_blank"
+                    [innerHTML]="secaoLateral?.terceiroTitulo"></a>
+
+                  <a *ngIf="secaoLateral?.terceiroTitulo && secaoLateral?.terceiroTituloLink && verificaLinks(secaoLateral?.terceiroTituloLink)" class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="secaoLateral?.terceiroTituloCor"
+                    [style.color]="secaoLateral?.terceiroTituloCor"
+                    style="width: 100%;margin-bottom: 2%;text-align: center; cursor: pointer;"
+                    (click)="validacaoDownload(secaoLateral?.terceiroTituloLink)"
+                    [innerHTML]="secaoLateral?.terceiroTitulo"></a>
+
+                  <a *ngIf="secaoLateral?.terceiroTitulo && !secaoLateral?.terceiroTituloLink" class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="secaoLateral?.terceiroTituloCor"
+                    [style.color]="secaoLateral?.terceiroTituloCor"
+                    style="width: 100%;margin-bottom: 2%;text-align: center;"
+                    [innerHTML]="secaoLateral?.terceiroTitulo"></a>
+
+
+
+                  <a *ngIf="secaoLateral?.terceiroTexto && secaoLateral?.terceiroTextoLink && !verificaLinks(secaoLateral?.terceiroTextoLink)" class="subtitulos-inside-image underline-on-hover"
+                    style="color: #231f20; text-align:center !important"
+                    [style.color]="secaoLateral?.terceiroTextoCor" [innerHTML]="secaoLateral?.terceiroTexto"
+                    [href]="secaoLateral?.terceiroTextoLink" target="_blank"></a>
+                  
+                  <a *ngIf="secaoLateral?.terceiroTexto && secaoLateral?.terceiroTextoLink && verificaLinks(secaoLateral?.terceiroTextoLink)" class="subtitulos-inside-image underline-on-hover"
+                    style="color: #231f20; text-align:center !important; cursor: pointer;"
+                    [style.color]="secaoLateral?.terceiroTextoCor" [innerHTML]="secaoLateral?.terceiroTexto"
+                    (click)="validacaoDownload(secaoLateral?.terceiroTextoLink)"></a>
+
+                  <a *ngIf="secaoLateral?.terceiroTexto && !secaoLateral?.terceiroTextoLink" class="subtitulos-inside-image underline-on-hover"
+                    style="color: #231f20; text-align:center !important;"
+                    [style.color]="secaoLateral?.terceiroTextoCor" [innerHTML]="secaoLateral?.terceiroTexto"></a>
+                </div>
+              </div>
+            </a>
+
+            <a *ngIf="!secaoLateral?.terceiraImagemLink">
+              <img class="img-carousel-side" loading="lazy" [src]="secaoLateral?.terceiraImagemSafeUrl"
+                alt="Event Image" [matTooltip]="secaoLateral?.terceiraImagemTooltip">
+              <div class="centered">
+                <div class="row">
+                  <a *ngIf="secaoLateral?.terceiroTitulo && secaoLateral?.terceiroTituloLink && !verificaLinks(secaoLateral?.terceiroTituloLink)" class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="secaoLateral?.terceiroTituloCor"
+                    [style.color]="secaoLateral?.terceiroTituloCor"
+                    style="width: 100%;margin-bottom: 2%;text-align: center;"
+                    [href]="secaoLateral?.terceiroTituloLink" target="_blank"
+                    [innerHTML]="secaoLateral?.terceiroTitulo"></a>
+
+                  <a *ngIf="secaoLateral?.terceiroTitulo && secaoLateral?.terceiroTituloLink && verificaLinks(secaoLateral?.terceiroTituloLink)" class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="secaoLateral?.terceiroTituloCor"
+                    [style.color]="secaoLateral?.terceiroTituloCor"
+                    style="width: 100%;margin-bottom: 2%;text-align: center; cursor: pointer;"
+                    (click)="validacaoDownload(secaoLateral?.terceiroTituloLink)"
+                    [innerHTML]="secaoLateral?.terceiroTitulo"></a>
+
+                  <a *ngIf="secaoLateral?.terceiroTitulo && !secaoLateral?.terceiroTituloLink" class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="secaoLateral?.terceiroTituloCor"
+                    [style.color]="secaoLateral?.terceiroTituloCor"
+                    style="width: 100%;margin-bottom: 2%;text-align: center;"
+                    [innerHTML]="secaoLateral?.terceiroTitulo"></a>
+
+
+
+                  <a *ngIf="secaoLateral?.terceiroTexto && secaoLateral?.terceiroTextoLink && !verificaLinks(secaoLateral?.terceiroTextoLink)" class="subtitulos-inside-image underline-on-hover"
+                    style="color: #231f20; text-align:center !important"
+                    [style.color]="secaoLateral?.terceiroTextoCor" [innerHTML]="secaoLateral?.terceiroTexto"
+                    [href]="secaoLateral?.terceiroTextoLink" target="_blank"></a>
+                  
+                  <a *ngIf="secaoLateral?.terceiroTexto && secaoLateral?.terceiroTextoLink && verificaLinks(secaoLateral?.terceiroTextoLink)" class="subtitulos-inside-image underline-on-hover"
+                    style="color: #231f20; text-align:center !important; cursor: pointer;"
+                    [style.color]="secaoLateral?.terceiroTextoCor" [innerHTML]="secaoLateral?.terceiroTexto"
+                    (click)="validacaoDownload(secaoLateral?.terceiroTextoLink)"></a>
+
+                  <a *ngIf="secaoLateral?.terceiroTexto && !secaoLateral?.terceiroTextoLink" class="subtitulos-inside-image underline-on-hover"
+                    style="color: #231f20; text-align:center !important;"
+                    [style.color]="secaoLateral?.terceiroTextoCor" [innerHTML]="secaoLateral?.terceiroTexto"></a>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>

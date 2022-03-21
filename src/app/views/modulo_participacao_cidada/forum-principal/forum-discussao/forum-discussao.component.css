@@ -1,0 +1,89 @@
+ html {
+    overflow-x: hidden;
+    font-size: 100%;
+    line-height: 1.5em;
+    background-color: #fafafa;
+  }
+
+  .news--full {
+    margin: 3em 128px;
+    display: grid;
+    grid: auto/1fr 1024px 1fr;
+    gap: 48px;
+
+  }
+  @media (max-width: 1023px) {
+    .news--full {
+      margin-left: 48px;
+      margin-right: 48px;
+    }
+    .news--full {
+        grid: auto/1fr;
+        gap: 24px;
+      }
+  }
+  @media (max-width: 1499px) {
+    .news--full {
+      grid: auto/1fr 3fr 1fr;
+    }
+  }
+
+  .breadcrumb {
+    margin-bottom: 20px;
+  }
+
+  .informacoes {
+      color:#3e7152;
+      display: flex;
+      flex-direction: row;
+  }
+
+  .info-item {
+      margin-right: 20px;
+  }
+
+  .comment-info{
+    color:#3e7152;
+    font-weight: 500;
+  }
+
+  .align-icon {
+    position: relative;
+    top: 5px;
+  }
+
+.comment-info-flex {
+    display: flex;
+}
+
+@media (max-width: 807px) {
+  .comment-info-flex {
+    display: flex;
+    flex-direction: column;
+}
+}
+
+.flex-item-comment {
+    margin-right: 35px;
+}
+
+.spacer{
+  flex: 1 1 auto;
+}
+
+
+.home-banner h1 {
+  font-weight: 700 !important;
+  font-size: calc(17px + 1.5vw);
+  line-height: 1.25em;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+  text-transform: uppercase;
+}
+
+.comentariosFilhos {
+  display: flex;
+  justify-content: flex-end;
+}
+
+
+

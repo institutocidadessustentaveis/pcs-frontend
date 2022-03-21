@@ -1,0 +1,182 @@
+<div class="contentBody" style="position: relative;">
+  <mat-card>
+
+    <div class="row">
+
+      <div class="col-md-8 col-lg-9 col-xs-12 col-sm-12">
+        <h2>Cadastro de Usuários de Prefeituras</h2>
+      </div>
+
+      <div class="col-md-4 col-lg-3 col-xs-12 col-sm-12" style="text-align: right;">
+        <button mat-flat-button color="primary" [routerLink]="['/usuario-prefeitura/cadastrar']" class="btnCadastrar"
+          *ngIf="'ROLE_CADASTRAR_USUARIO' | hasRole"
+          matTooltip="Cadastrar" style="cursor: pointer !important; margin-bottom: 5px;">
+          <mat-icon>add</mat-icon> Cadastrar Usuário
+        </button>
+      </div>
+
+    </div>
+
+    <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+      <mat-divider></mat-divider>
+    </div>
+
+    <br>
+
+    <div class="col-lg-12" style="margin-top: 20px !important;">
+      <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <mat-card-title>Lista de Usuários Cadastrados</mat-card-title>
+        <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+          <mat-divider></mat-divider>
+        </div>
+        <form [formGroup]="form" (submit)="filtrar()">
+          <div class="row" >
+            <div class="col-lg-3" style="margin-top: 1em !important;">
+              <mat-form-field class="full-width">
+                <input matInput autocomplete="off" placeholder="Nome" name="nome" id="nome" #txtArquivo maxlength="100"
+                  formControlName="nome"  />
+              </mat-form-field>
+            </div>
+
+            <div class="col-lg-1" style="margin-top: 1em !important;">
+              <mat-form-field >
+                <mat-select placeholder="UF" id="cbPapei" formControlName="uf">
+                  <mat-option value="AC">AC</mat-option>
+                  <mat-option value="AL">AL</mat-option>
+                  <mat-option value="AM">AM</mat-option>
+                  <mat-option value="AP">AP</mat-option>
+                  <mat-option value="BA">BA</mat-option>
+                  <mat-option value="CE">CE</mat-option>
+                  <mat-option value="DF">DF</mat-option>
+                  <mat-option value="ES">ES</mat-option>
+                  <mat-option value="GO">GO</mat-option>
+                  <mat-option value="MA">MA</mat-option>
+                  <mat-option value="MG">MG</mat-option>
+                  <mat-option value="MS">MS</mat-option>
+                  <mat-option value="MT">MT</mat-option>
+                  <mat-option value="PA">PA</mat-option>
+                  <mat-option value="PB">PB</mat-option>
+                  <mat-option value="PE">PE</mat-option>
+                  <mat-option value="PI">PI</mat-option>
+                  <mat-option value="PR">PR</mat-option>
+                  <mat-option value="RJ">RJ</mat-option>
+                  <mat-option value="RN">RN</mat-option>
+                  <mat-option value="RO">RO</mat-option>
+                  <mat-option value="RR">RR</mat-option>
+                  <mat-option value="RS">RS</mat-option>
+                  <mat-option value="SC">SC</mat-option>
+                  <mat-option value="SE">SE</mat-option>
+                  <mat-option value="SP">SP</mat-option>
+                  <mat-option value="TO">TO</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="col-lg-3" style="margin-top: 1em !important;">
+              <mat-form-field class="full-width">
+                <input matInput autocomplete="off"  placeholder="Cidade" name="cidade" id="cidade" #txtArquivo maxlength="100"
+                  formControlName="cidade"  />
+              </mat-form-field>
+            </div>
+
+            <div class="col-lg-3" style="margin-top: 1em !important;">
+              <mat-form-field >
+                <mat-select placeholder="Perfil" id="perfil" formControlName="perfil" multiple>
+                  <mat-option [value]="5">Responsável pelo PCS</mat-option>
+                  <mat-option [value]="6">Reponsável pelos Indicadores</mat-option>
+                  <mat-option [value]="7">Responsável pelas Boas Práticas</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+     
+          </div>
+          <div class="col-lg-12 col-md-12 col-sm-12">
+            <div align="right">
+              <button mat-flat-button color="primary"  type="submit">FILTRAR</button>
+              <button mat-stroked-button color="primary" style="margin-left: 3px" (click)="limparFiltro()" alt="Limpar Filtro">LIMPAR</button>
+            </div>
+          </div>
+        </form>
+
+        <table mat-table class="col-lg-12" [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+          <ng-container matColumnDef="nome">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="nome">Nome</th>
+            <td mat-cell *matCellDef="let usuario" class='m-card-title' data-label='Nome'>
+              <span class="mobile-label">Nome:</span>
+              <span>{{ usuario.nome }}</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="email">E-mail</th>
+            <td mat-cell *matCellDef="let usuario" class='m-card-title' data-label='E-mail'>
+              <span class="mobile-label">E-mail:</span>
+              <span>{{ usuario.email }}</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="uf" >
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="prefeituraCidadeProvinciaEstadoSigla" style="min-width: 50px;">UF</th>
+            <td mat-cell *matCellDef="let usuario" class='m-card-title' data-label='UF' style="min-width: 50px;">
+              <span class="mobile-label">UF:</span>
+              <span>{{ usuario.uf }}</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="cidade">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="prefeituraCidadeNome" style="min-width: 150px;">Cidade</th>
+            <td mat-cell *matCellDef="let usuario" class='m-card-title' data-label='cidade' style="min-width: 150px;">
+              <span class="mobile-label">Cidade:</span>
+              <span>{{ usuario.cidade }}</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="perfil">
+            <th mat-header-cell *matHeaderCellDef >Perfil</th>
+            <td mat-cell *matCellDef="let usuario" class='m-card-title' data-label='perfil'>
+              <span class="mobile-label">Perfil:</span>
+              <span>{{ usuario.nomePerfil }}</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="telefone">
+            <th mat-header-cell *matHeaderCellDef style="min-width: 150px;" >Telefone</th>
+            <td mat-cell *matCellDef="let usuario" class='m-card-title' data-label='Telefone' style="min-width: 150px;" >
+              <span class="mobile-label">Telefone:</span>
+              <span>{{ usuario.telefone | mask: '(00) 00000-0000' }}</span>
+            </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="acoes">
+            <th mat-header-cell *matHeaderCellDef style="min-width: 150px;" >Ações</th>
+            <td mat-cell *matCellDef="let usuario" style="min-width: 150px;">
+              <span  *ngIf="'ROLE_EDITAR_USUARIO' | hasRole">
+                <button mat-flat-button color="primary" [routerLink]="['/usuario-prefeitura/', usuario.id]"
+                  class="btnTabela" matTooltip="Visualizar">
+                  <mat-icon>search</mat-icon>
+                </button>
+                <span *ngIf="'ROLE_DELETAR_USUARIO' | hasRole">
+                  <button mat-flat-button color="warn" class="btnTabela"
+                    matTooltip="Excluir" (click)="deletarUsuario(usuario)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </span>
+              </span>
+            </td>
+          </ng-container>
+        </table>
+        <div *ngIf="usuarios.length == 0">
+          <div class="alert alert-warning">
+            Nenhum resultado encontrado.
+          </div>
+        </div>
+        <mat-paginator (page)="carregarPaginaUsuarios($event)" showFirstLastButtons [length]="length"
+          [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50, 100]" style="text-align: center !important;"
+          class="float-none">
+        </mat-paginator>
+      </div>
+    </div>
+    <div class="exportar" align="center">
+      <button mat-button mat-flat-button color='primary' (click)="validacaoDownloadListaUsuariosPrefeiturasXls()"> <mat-icon>file_download</mat-icon> Exportar Tabela</button>
+    </div>
+  </mat-card>
+</div>

@@ -1,0 +1,260 @@
+<div class="contentBody">
+<mat-card>
+    <form [formGroup]="addResponsavelForm">
+      <div class="col-lg-12">
+        <mat-card-title>Adicionar Responsáveis</mat-card-title>
+        <hr>
+      </div>
+      <br>
+      <div class="alert alert-dark" role="alert" >
+        <b>Uso do formulário de cadastro dos responsáveis</b>
+        <p>Esta seção é para que sejam definidos os responsáveis da Prefeitura para as seguintes atribuições: 
+          Responsável pelo PCS; Responsável pelos Indicadores; e Responsável pelas Boas Práticas da prefeitura. 
+        </p>
+        <p>
+          A cidade poderá definir um usuário para todas as atribuições ou um usuário para cada uma das atribuições. 
+          Contudo, no intuito de garantir a integridade dos dados, apenas o usuário com a atribuição poderá acessar 
+          os sistemas específicos de inserção de dados, sendo vedado o acesso aos demais. 
+        </p>
+        <p>
+          Cada atribuição de papel somente poderá ser definida para um usuário, ou seja, diferentes usuários não podem ter o mesmo papel. 
+          O processo se inicia com a inserção dos dados do responsável. Depois, é escolhido o papel que será atribuído a ele, podendo ser atribuído mais de um. 
+        </p>
+        <p>
+          Caso queira indicar diversos responsáveis, após preencher o primeiro deles e definir seu papel, basta clicar no botão “Adicionar Responsável”. 
+          A lista dos responsáveis criados estará em uma lista logo abaixo. Posteriormente será possível editar os dados do usuário e sua atribuição, ou mesmo o excluir. 
+        </p>
+        <p>
+          Você poderá editar ou apagar os usuários criados utilizando o seu usuário e senha.
+        </p>
+      </div>
+      <br />
+      <mat-card-subtitle class="col-md-12">Informações da Cidade</mat-card-subtitle>
+      <hr>
+      <div class="col-md-12">
+      <div class="col-md-12"> Estado: {{emailToken?.aprovacaoPrefeitura?.prefeitura?.cidade?.provinciaEstado?.nome}}</div>
+      <div class="col-md-12"> Cidade: {{ emailToken?.aprovacaoPrefeitura?.prefeitura?.cidade?.nome }}</div>
+      <div class="col-md-12"> {{ emailToken?.aprovacaoPrefeitura?.prefeitura?.cargo }}: {{ emailToken?.aprovacaoPrefeitura?.prefeitura?.nome }}</div>
+      </div>
+      <br>
+        <mat-card-subtitle class="col-md-12">Dados do Responsável</mat-card-subtitle>
+        <hr>
+      <div class="col-lg-12" style="margin-top: 1em !important;">
+        <mat-form-field class="full-width">
+          <input
+            matInput
+            autocomplete="off"
+            required
+            placeholder="Nome"
+            name="nome"
+            id="nome"
+            #txtNome
+            maxlength="100"
+            formControlName ="nome"
+          />
+          <mat-hint align="end">{{ txtNome.value?.length || 0 }}/100</mat-hint>
+          <mat-error *ngIf="!addResponsavelForm.controls['nome'].valid && addResponsavelForm.controls['nome'].touched">
+            {{ getCampoNome() }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-12" style="margin-top: 1em !important;">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              autocomplete="off"
+              required
+              placeholder="E-mail"
+              name="email"
+              id="email"
+              #txtEmail
+              maxlength="100"
+              formControlName ="email"
+            />
+            <mat-hint align="end">{{ txtEmail.value?.length || 0 }}/100</mat-hint>
+            <mat-error *ngIf="!addResponsavelForm.controls['email'].valid && addResponsavelForm.controls['email'].touched">
+              {{ getCampoEmail() }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-lg-12" style="margin-top: 10px;">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                autocomplete="off"
+                required
+                mask="(00) 0000-0000"
+                placeholder="Telefone Fixo"
+                name="telefoneFixo"
+                id="telefoneFixo"
+                formControlName ="telefoneFixo"
+                #txtTelefoneFixo
+                maxlength="100"
+              />
+              <mat-hint align="end">{{ txtTelefoneFixo.value?.length || 0 }}/100</mat-hint>
+              <mat-error *ngIf="!addResponsavelForm.controls['telefoneFixo'].valid && addResponsavelForm.controls['telefoneFixo'].touched">
+                {{ getCampoTelefoneFixo() }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+      <div class="col-lg-12" style="margin-top: 10px;">
+        <mat-form-field class="full-width">
+          <input
+            matInput
+            autocomplete="off"
+            required
+            mask="(00) 00000-0000"
+            placeholder="Celular"
+            name="celular"
+            id="celular"
+            formControlName ="celular"
+            #txtCelular
+            maxlength="100"
+          />
+          <mat-hint align="end">{{ txtCelular.value?.length || 0 }}/100</mat-hint>
+          <mat-error *ngIf="!addResponsavelForm.controls['celular'].valid && addResponsavelForm.controls['celular'].touched">
+            {{ getCampoCelular() }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-12" style="margin-top: 10px;">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              autocomplete="off"
+              required
+              placeholder="Cargo"
+              name="cargo"
+              id="cargo"
+              formControlName ="cargo"
+              #txtCargo
+              maxlength="40"
+            />
+            <mat-hint align="end">{{ txtCargo.value?.length || 0 }}/40</mat-hint>
+            <mat-error *ngIf="!addResponsavelForm.controls['cargo'].valid && addResponsavelForm.controls['cargo'].touched">
+              {{ getCampoCargo() }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="row col-md-12">
+            <mat-form-field class="col-md-11">
+              <mat-select placeholder="Papeis" id="cbPapei" formControlName="papeis">
+                 <mat-option *ngFor="let papeis of perfisCombo" [value]="papeis.id">{{papeis.nome}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div class="col-md-1" style="text-align: end;">
+              <button id="btnAdicionarPapel"
+                      type="button"
+                      mat-fab color="primary"
+                      (click)="adicionarPapel()"
+                      [disabled]="!addResponsavelForm.valid"
+                      matTooltip="Adicionar Papel"
+                      >+</button>
+            </div>
+            <mat-list [hidden]="listaPapeisAtribuidos.length === 0">
+              <h3 mat-subheader>Papel</h3>
+              <mat-list-item *ngFor="let papel of listaPapeisAtribuidos" >
+                <mat-icon style="cursor: pointer !important; color: red;" (click)="removePapel(papel)" matTooltip="Excluir"
+                  mat-list-icon>delete</mat-icon>
+                <h4 mat-line >{{papel.nome}}</h4>
+              </mat-list-item>
+            </mat-list>
+          </div>
+
+          <br>
+
+          <div class="row col-md-12" style="margin-left:0px;">
+            <mat-checkbox formControlName="recebeEmail" style="margin-right:.5em" [checked]="true"></mat-checkbox>
+            Não desejo receber os boletins e informações do Programa Cidades Sustentáveis.
+          </div>
+
+          <br>
+          <div class="text-right" style="margin-top: 5px;">
+            <button
+          mat-flat-button
+          color="primary"
+          (click)="adicionarResponsavel()"
+          [disabled]="!addResponsavelForm.valid || listaPapeisAtribuidos.length === 0"
+          matTooltip="Adicionar Responsável"
+          >
+          <mat-icon >add</mat-icon>
+          Adicionar Responsável
+        </button>
+        </div>
+        <br>
+
+        <mat-card-subtitle class="col-md-12">Dados do Responsável</mat-card-subtitle>
+        <hr>
+
+          <table mat-table [dataSource]="dataSource" matSort>
+            <!-- Nome Responsável Column -->
+            <ng-container matColumnDef="Responsavel">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header="tbResponsavel"> Responsável </th>
+              <td mat-cell *matCellDef="let papelResponsavel" class='m-card-title'  data-label='Responsável'>
+                  <span class="mobile-label">Nome:</span>{{papelResponsavel.nome}} </td>
+            </ng-container>
+
+            <!-- Papeis Column -->
+            <ng-container matColumnDef="Papeis">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header="tbPapeis"> Papeis </th>
+              <td mat-cell *matCellDef="let papelResponsavel" class='m-card-title'  data-label='Papeis'>
+                  <span class="mobile-label">Papeis:</span>{{papelResponsavel.papel}} </td>
+            </ng-container>
+
+            <!-- Ações Column -->
+            <ng-container matColumnDef="Ações">
+                <th mat-header-cell *matHeaderCellDef> Ações </th>
+                <td mat-cell *matCellDef="let papelResponsavel" >
+                  <button *ngIf="!isUsuarioPrefeitura(papelResponsavel)" mat-flat-button color="primary" type="button" name="button"  class="btnTabela" id="btnEditarPais" (click)="editar(papelResponsavel)" matTooltip="Editar"><mat-icon> edit </mat-icon></button>
+                  <button *ngIf="!isUsuarioPrefeitura(papelResponsavel)" mat-flat-button color="warn" name="button"  class="btnTabela" id="btnExcluirPais" (click)="remover(papelResponsavel)" matTooltip="Excluir"><mat-icon> delete </mat-icon></button>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+          </form>
+
+            <br>
+            <br>
+            <br>
+
+            <div class="alert alert-dark" role="alert" >
+              <b>Termo de responsabilidade para acesso à área exclusiva da Plataforma do Conhecimento Cidades Sustentáveis</b>
+              <p>Os signatários do Programa Cidades Sustentáveis têm à disposição um espaço virtual no portal
+                <a href="http://www.cidadessustentaveis.org.br" >http://www.cidadessustentaveis.org.br</a> para apresentar informações do município por meio dos indicadores,
+                do Plano de Metas e divulgar boas práticas. Além destas ferramentas o
+                sistema oferecerá diversas outras voltadas para a divulgação de informações da cidade que serão inseridas pela prefeitura.<br />
+                A plataforma cumpre uma dupla função: é fonte de informação para o planejamento, gestão e tomada de decisão da administração pública,
+                assim como de transparência, acompanhamento e fiscalização para toda a sociedade.<br />
+                Para ter acesso ao sistema, é necessário o preenchimento do formulário de cadastro com a indicação das
+                pessoas que serão responsáveis pelo Programa Cidades Sustentáveis na gestão municipal.<br />
+                É importante salientar que a prefeitura é responsável por manter atualizadas as informações de cadastro no sistema. <br />
+                As pessoas indicadas pelo prefeito/a receberão seus usuários via e-mail e cadastrarão suas senhas, que são pessoais. Portanto é de responsabilidade de cada uma das pessoas indicadas o uso adequado de suas senhas, bem como a responsabilidade pela inserção de dados referentes ao seu município e demais informações publicadas.
+              </p>
+            </div>
+
+            <p>
+              <mat-checkbox [(ngModel)]="checked" id="chkTermo"></mat-checkbox> Eu, {{ emailToken?.aprovacaoPrefeitura?.prefeitura?.cargo }} {{emailToken?.aprovacaoPrefeitura?.prefeitura?.nome}}, concordo com os termos acima e quero preencher o formulário de cadastro com a indicação das pessoas responsáveis pela administração do sistema da prefeitura: {{emailToken?.aprovacaoPrefeitura?.prefeitura?.cidade?.nome}} na Plataforma do Conhecimento Cidades Sustentáveis.
+            </p>
+
+      <div class="text-right" style="margin-top: 5px;">
+        <button
+          mat-flat-button
+          id="btnEnviarDados"
+          class="btnToRight"
+          color="primary"
+          (click)="enviarDados()"
+          [disabled]="listaResponsaveis.length === 0 || !checked"
+          matTooltip="Enviar"
+          >
+          <mat-icon >send</mat-icon>
+          Enviar
+        </button>
+        <button mat-flat-button color="accent" id="btnVoltar" class="btnToRight" [routerLink]="['/institucional']" matTooltip="Voltar">
+          <mat-icon >arrow_back_ios</mat-icon>
+          Voltar
+        </button>
+      </div>
+  </mat-card>
+</div>

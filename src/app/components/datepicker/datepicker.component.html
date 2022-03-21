@@ -1,0 +1,7 @@
+<div [class]="class" [style]="style">
+  <mat-form-field>
+    <input matInput [matDatepicker]="picker" [placeholder]="placeholder" (click)="picker.open()" (focus)="picker.open()" [formControl]="control" [hidden]="hidden" >
+    <mat-datepicker-toggle matSuffix [for]="picker"  ></mat-datepicker-toggle>
+    <mat-datepicker [type]="type" #picker [twelveHour]="false"></mat-datepicker>
+  </mat-form-field>
+</div>

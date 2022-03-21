@@ -1,0 +1,188 @@
+/* Deafult */
+.half-center {
+    width: 50%;
+    text-align: center !important;
+    margin-left: auto;
+    margin-right: auto;
+    color: white;
+    font-size: 3vh;
+  }
+
+.resumo {
+    background-color: #8a9ea1;
+    padding-top: 2%;
+    padding-bottom: 2%;
+}
+/* ...Deafult */
+
+/* Template 01 */
+.first-section, .third-section {
+    background: url("../../../../../assets/boas-praticas-inicial/pontos-light.png");
+    padding-bottom: 2%;
+}
+
+.second-section {
+    padding-bottom: 2%;
+    /* text-align: center; */
+}
+
+.fourth-section {
+    /* background-color: rgba(106,104,71,.8); */
+    color: white;
+    background: url("../../../../../assets/boas-praticas-inicial/home-banner.png");
+    padding-bottom: 2%;
+}
+
+.label-titulo {
+    font-weight: bold;
+    font-size: 30px;
+    margin: 2% 5% 1% 5%;
+    color: #408559;
+    text-transform: uppercase;
+}
+
+.label-titulo-white {
+    font-weight: bold;
+    font-size: 30px;
+    text-align: justify;
+    margin: 2% 5% 1% 5%;
+    color: white;
+    text-transform: uppercase;
+}
+
+.one-column {
+    text-align: justify;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.one-column-with-image {
+    text-align: justify;
+    margin-left: 5%;
+}
+
+.two-columns {
+    text-align: justify;
+    margin-left: 5%;
+    margin-right: 5%;
+    column-count: 2;
+    column-gap: 60px;
+}
+
+.two-columns-with-image {
+    text-align: justify;
+    padding-right: 5% !important;
+    column-count: 2;
+    column-gap: 60px;
+}
+
+.div-img-first-section{
+    margin-left: 5%;
+}
+
+.three-columns {
+    text-align: justify;
+    margin-left: 5%;
+    margin-right: 5%;
+    column-count: 3;
+    column-gap: 60px;
+}
+
+.btn-transparent {
+    background: transparent;
+    border: 1px white solid;
+    border-radius: 12px;
+    color: white;
+    min-height: 36px;
+    min-width: 150px;
+}
+
+.div-img-third-section{
+    margin-left: 3%;
+    width: 38%;
+}
+
+.img-third-section{
+    width: 100%;
+    height: 100%;
+}
+/* ...Template 01 */
+
+:host::ng-deep blockquote {
+    border-right: 5px solid #47825e;
+    padding-right: 15px;
+    width: 380px;
+  }
+  
+
+blockquote {
+  background: #3a855a;
+  border-left: 10px solid white;
+  margin: 1.5em 10px;
+  padding: 0.5em 10px;
+  quotes: "\201C""\201D""\2018""\2019";
+  color: white;
+  font-size: 20px;
+}
+
+blockquote p {
+  display: inline;
+}
+
+.divBlockquote{
+    padding: 1px 15px 1px 15px;
+    margin-top: 20px;
+    background-color: #3a855a;
+    break-inside: avoid;
+    page-break-inside: avoid;
+
+}
+
+.label-titulo-section2 {
+    padding: 2% 5% 1% 5%;
+}
+
+.div-btn-transparent{
+    display: flex;
+    justify-content: center;
+}
+
+.div-btn-transparent-three{
+    display: flex;
+    justify-content: center;
+    width: 33%;
+}
+
+.div-btn-transparent-four{
+    display: flex;
+    justify-content: center;
+    width: 25%;
+}
+
+.div-btn-transparent-margin:not(:last-child){
+    margin-right: 60px;
+}
+
+.div-btn-group{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px; 
+    margin-left: 5%; 
+    margin-right: 5%;
+}
+
+.div-btn-group2{
+    display: flex;
+    justify-content: center;
+    margin-top: 50px; 
+    margin-left: 5%; 
+    margin-right: 5%;
+}
+
+@media (max-width: 600px) {
+    .three-columns {
+        column-count: 1;
+    }
+}
+
+

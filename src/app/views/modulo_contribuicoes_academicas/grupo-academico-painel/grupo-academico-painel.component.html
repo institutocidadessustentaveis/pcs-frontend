@@ -1,0 +1,43 @@
+
+<div *ngIf="grupoAcademico">
+  <tr data-toggle="collapse" [attr.data-target]="'#accordion' + grupoAcademico.id" class="clickable" style="cursor: pointer; ">
+    <td class="titulo" (click)="adicionarDrop(grupoAcademico.id)" >
+      {{grupoAcademico?.nomeGrupo}}
+      <mat-icon class="drop" *ngIf="onDrop(grupoAcademico.id)" style="float: right;">keyboard_arrow_up</mat-icon>
+      <mat-icon class="drop" *ngIf="onDrop(grupoAcademico.id) == false" style="float: right;">keyboard_arrow_down</mat-icon>
+    </td>
+  </tr>
+  <tr [attr.colspan]="10">
+    <td [attr.colspan]="10" [attr.id]="'accordion' + grupoAcademico.id" class="collapse">
+      <div *ngIf="grupoAcademico.nomePais != null" style="padding-bottom: 1em;"> <b>País: </b>{{grupoAcademico?.nomePais}}</div>
+      <div *ngIf="grupoAcademico.nomeEstado != null" style="padding-bottom: 1em;"> <b>Estado: </b> {{grupoAcademico?.nomeEstado}}</div>
+      <div *ngIf="grupoAcademico.nomeCidade != null" style="padding-bottom: 1em;"> <b>Cidade: </b>{{grupoAcademico?.nomeCidade}}</div>
+      <div *ngIf="grupoAcademico.tipo != null" style="padding-bottom: 1em;"> <b>Tipo Instituição: </b>{{grupoAcademico?.tipo}}</div>
+      <div *ngIf="grupoAcademico.paginaOnline != null" style="padding-bottom: 1em;"> <b>Página Online: </b>{{grupoAcademico?.paginaOnline}}</div>
+      <div *ngIf="grupoAcademico.nomeContato != null" style="padding-bottom: 1em;"> <b>Nome Contato: </b>{{grupoAcademico?.nomeContato}}</div>
+      <div *ngIf="grupoAcademico.emailContato != null" style="padding-bottom: 1em;"> <b>E-mail Contato: </b>{{grupoAcademico?.emailContato}}</div>
+      <div *ngIf="grupoAcademico.telefoneContato != null" style="padding-bottom: 1em;"> <b>Telefone Contato: </b>{{grupoAcademico?.telefoneContato}}</div>
+      <div *ngIf="grupoAcademico.emailInstitucional != null" style="padding-bottom: 1em;"> <b>E-mail Institucional: </b>{{grupoAcademico?.emailInstitucional}}</div>
+      <div *ngIf="grupoAcademico.telefoneInstitucional != null" style="padding-bottom: 1em;"> <b>Telefone Institucional: </b>{{grupoAcademico?.telefoneInstitucional}}</div>
+      <div *ngIf="grupoAcademico.linkBaseDados != null" style="padding-bottom: 1em;"> <b>Link da base de dados: </b>{{grupoAcademico?.linkBaseDados}}</div>
+      <div *ngIf="grupoAcademico.observacoes != null" style="padding-bottom: 1em;"> <b>Observações: </b>{{grupoAcademico?.observacoes}}</div>
+      <div *ngIf="grupoAcademico.descricaoInstituicao != null" style="padding-bottom: 1em;"> <b>Descrição da Instituição: </b>{{grupoAcademico?.descricaoInstituicao}}</div>
+      <div *ngIf="grupoAcademico.experienciasDesenvolvidas != null" style="padding-bottom: 1em;"> <b>Experiências desenvolvidas: </b>{{grupoAcademico?.experienciasDesenvolvidas}}</div>
+      <div *ngIf="grupoAcademico.logradouro != null" style="padding-bottom: 1em;"> <b>Logradouro: </b>{{grupoAcademico?.logradouro}}</div>
+      <div *ngIf="grupoAcademico.numero != null" style="padding-bottom: 1em;"> <b>Número: </b>{{grupoAcademico?.numero}}</div>
+      <div *ngIf="grupoAcademico.complemento != null" style="padding-bottom: 1em;"> <b>Complemento: </b>{{grupoAcademico?.complemento}}</div>
+      <div *ngIf="grupoAcademico.quantidadeAlunos != null" style="padding-bottom: 1em;"> <b>Quantidade de Alunos: </b>{{grupoAcademico?.quantidadeAlunos}}</div>
+      <div *ngIf="grupoAcademico.nomeAcademia != null" style="padding-bottom: 1em;"> <b>Nome da Academia: </b>{{grupoAcademico?.nomeAcademia}}</div>
+      <div *ngIf="grupoAcademico.nomeApl != null" style="padding-bottom: 1em;"> <b>Nome da APL: </b>{{grupoAcademico?.nomeApl}}</div>
+      <div *ngIf="grupoAcademico.descricaoApl != null" style="padding-bottom: 1em;"> <b>Descrição da APL: </b>{{grupoAcademico?.descricaoApl}}</div>
+      <div *ngIf="grupoAcademico.areasInteresse != null" style="padding-bottom: 1em;"> <b>Temas: </b>{{grupoAcademico?.areasInteresse}}</div>
+      <div *ngIf="grupoAcademico.eixos != null" style="padding-bottom: 1em;"> <b>Eixos: </b>{{grupoAcademico?.eixos}}</div>
+      <div *ngIf="grupoAcademico.ods != null" style="padding-bottom: 1em;"> <b>ODS: </b>{{grupoAcademico?.ods}}</div>
+      <div *ngIf="grupoAcademico.bibliotecas != null" style="padding-bottom: 1em;"> <b>Bibliotecas: </b>
+        <div *ngFor="let biblioteca of grupoAcademico.bibliotecas">
+          <a class="cursor-hand" [routerLink]="['/biblioteca/detalhe/', biblioteca.id]" target="_blank" >{{biblioteca?.tituloBiblioteca}}</a>
+        </div>
+      </div>
+    </td>
+  </tr>
+</div>

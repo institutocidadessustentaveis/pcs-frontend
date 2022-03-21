@@ -1,0 +1,159 @@
+<mat-card class='card-formulario'>
+
+  <form [formGroup]="formVariavel" (submit)="salvarPreenchimento()">
+    <div class="row">
+      <!-- <div class="col-lg-12"> ID: {{variavelCompleta.id}}</div>
+        <div class="col-lg-12"> Nome: {{variavelCompleta.nome}}</div>
+        <div class="col-lg-12"> Tipo: {{variavelCompleta.tipo}}</div>
+        <div class="col-lg-12"> Informações: {{variavelCompleta | json}}</div> -->
+        <mat-form-field class="col-lg-12">
+          <mat-label> Ano de preenchimento da variável </mat-label>
+          <mat-select formControlName="ano" name="ano" id="ano" (selectionChange)="carregarVariavelPreenchida()">
+            <mat-option *ngFor="let ano of anos" [value]="ano">
+              {{ ano }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="col-lg-12" *ngIf="variavelCompleta.tipo === 'Texto livre'">
+          <input matInput placeholder="Valor*" #txtValor formControlName="valor" [maxLength]="2000"/>
+          <mat-hint align="end">{{ txtValor.value?.length || 0 }}/2000</mat-hint>
+          <mat-error *ngIf="verificaValidTouched('valor')">
+            Campo obrigatório
+          </mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field class="col-lg-12"  *ngIf="variavelCompleta.tipo === 'Numérico inteiro'">
+          <input matInput placeholder="Valor*" #txtValor formControlName="valor" type="number"
+          onKeyPress="if(this.value.length==20) return false;"
+          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  />
+          <mat-hint align="end">{{ txtValor.value?.length || 0 }}/20</mat-hint>
+          <mat-error *ngIf="verificaValidTouched('valor')">
+            Campo obrigatório
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="col-lg-12" *ngIf="variavelCompleta.tipo === 'Numérico decimal'">
+          <input matInput placeholder="Valor*" #txtValor formControlName="valor" type="number"
+          onKeyPress="if(this.value.length==20) return false;">
+          <mat-hint align="end">{{ txtValor.value?.length || 0 }}/20</mat-hint>
+          <mat-error *ngIf="verificaValidTouched('valor')">
+            Campo obrigatório
+          </mat-error>
+        </mat-form-field>
+
+        <label style="max-width: 10% !important;" [class]="variavelCompleta.tipo === 'Tipo sim/não' ? 'col-lg-12': 'col-lg-2'" *ngIf="variavelCompleta.tipo === 'Tipo sim/não' || variavelCompleta.tipo === 'Tipo sim/não com lista de opções'">Resposta:
+          <mat-slide-toggle  (change)="changeSlide()"
+          class="marginToComponent" formControlName="respostaSimples" color="primary"> {{labelSlider}}
+        </mat-slide-toggle>
+        </label>
+
+      <mat-form-field  [class]="variavelCompleta.tipo === 'Tipo sim/não' ? 'col-lg-12': variavelCompleta.tipo === 'Tipo lista de opções' ? 'col-lg-12' : 'col-lg-10'"
+        *ngIf="variavelCompleta.multiplaSelecao && (variavelCompleta.tipo === 'Tipo lista de opções' || (variavelCompleta.tipo === 'Tipo sim/não com lista de opções' && ((variavelCompleta.resposta.exibirOpcaoSim && formVariavel.controls.respostaSimples.value ) || (variavelCompleta.resposta.exibirOpcaoNao && !formVariavel.controls.respostaSimples.value)) ))" >
+        <mat-label>Lista de Opções*</mat-label>
+        <mat-select [multiple]="true" [formControlName]="'opcoes'" >
+          <mat-option *ngFor="let itemOpcao of variavelCompleta.resposta.listaOpcoes" [value]="itemOpcao.id">
+            {{itemOpcao.descricao}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="verificaValidTouched('opcoes')">
+          Campo obrigatório
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field  [class]="variavelCompleta.tipo === 'Tipo sim/não' ? 'col-lg-12': variavelCompleta.tipo === 'Tipo lista de opções' ? 'col-lg-12' : 'col-lg-10'"
+        *ngIf="!variavelCompleta.multiplaSelecao && (variavelCompleta.tipo === 'Tipo lista de opções' || (variavelCompleta.tipo === 'Tipo sim/não com lista de opções' && ((variavelCompleta.resposta.exibirOpcaoSim && formVariavel.controls.respostaSimples.value ) || (variavelCompleta.resposta.exibirOpcaoNao && !formVariavel.controls.respostaSimples.value)) ))" >
+        <mat-label>Lista de Opções*</mat-label>
+        <mat-select [multiple]="false" [formControlName]="'opcao'" >
+          <mat-option *ngFor="let itemOpcao of variavelCompleta.resposta.listaOpcoes" [value]="itemOpcao.id">
+            {{itemOpcao.descricao}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="verificaValidTouched('opcao')">
+          Campo obrigatório
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-lg-12">
+        <input matInput placeholder="Observação" #txtObservacao formControlName="observacao"
+        [maxLength]="4100" />
+        <mat-hint align="end">{{ txtObservacao.value?.length || 0 }}/4100</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field class="col-lg-12">
+        <mat-label> Nome da fonte de dados* </mat-label>
+        <mat-select formControlName="fonte" name="fonte" id="fonte" (selectionChange)="instituicaoFonteSelecionado($event.value)">
+          <mat-option value=""></mat-option>
+          <mat-option *ngFor="let fonte of listaInstituicaoFonte" [value]="fonte.id">
+            {{ fonte.label }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="verificaValidTouched('fonte')">
+          Campo obrigatório
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-lg-12" [hidden]= exibirCampoNomeInstituicaoFonte>
+        <input matInput placeholder="Nome da fonte de dados*" value="" #txtFonteTexto formControlName="fonteTexto" id="fonteTexto">
+        <mat-hint align="end">{{ txtFonteTexto.value?.length || 0 }}/100</mat-hint>
+        <mat-error *ngIf="verificaValidTouched('fonteTexto')">
+          Campo obrigatório
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-lg-12" [hidden]= exibirCampoNomeInstituicaoFonte>
+        <mat-label> Nome da instância do orgão* </mat-label>
+        <mat-select formControlName="instancia" name="instancia" id="instancia" (selectionChange)="instanciaSelecionado($event.value)">
+          <mat-option value=""></mat-option>
+          <mat-option *ngFor="let instancia of listaInstancia" [value]="instancia.id">
+            {{ instancia.label }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="formVariavel.controls['instancia'].hasError('required')">
+          Campo Nome da instancia do orgão é obrigatório
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-lg-12" [hidden]= exibirListaNomeDoOrgao>
+        <mat-label> Nome do orgão* </mat-label>
+        <mat-select formControlName="orgao" name="orgao" id="orgao">
+          <mat-option value=""></mat-option>
+          <mat-option *ngFor="let orgao of listaOrgao" [value]="orgao.id">
+            {{ orgao.label }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="formVariavel.controls['orgao'].hasError('required')">
+          Campo Nome do orgão é obrigatório
+        </mat-error>
+      </mat-form-field>
+      <div class="col-lg-12 text-right">
+        <button mat-flat-button color="primary" matTooltip="Confirmar" type="submit" id='botao-salvar'>
+          Salvar
+        </button>
+      </div>
+    </div>
+  </form>
+</mat-card>
+<div >
+  <strong>Série Histórica</strong>
+  <table>
+    <tr>
+      <th style="width: 3em;">
+        Ano
+      </th>
+      <th>
+        Valor
+      </th>
+    </tr>
+    <tr *ngFor="let item of serieHistorica">
+      <td style="width: 3em;">
+        {{item.ano}}
+      </td>
+      <td>
+        {{item .valor}}
+      </td>
+    </tr>
+  </table>
+
+</div>

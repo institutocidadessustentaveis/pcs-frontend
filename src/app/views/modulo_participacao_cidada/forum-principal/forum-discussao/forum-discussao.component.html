@@ -1,0 +1,199 @@
+<div [hidden]="!loadingDiscussao && !loadingComentarios && !loadingEnviarComentario" class="loading-indicator">
+  <mat-progress-spinner class="example-margin" style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+</div>
+<header style="background-color: white;" class="bmd-layout-container bmd-drawer-f-l bmd-drawer-overlay ">
+  <div class="bmd-layout-content">
+
+    <div id='top' class="conteudo" style="position: relative;">
+      <section class="home-banner owl-carousel owl-theme">
+        <div id="carouselExampleIndicators" class="carousel slide" ride="false">
+          <div class="carousel-inner">
+            <div>
+              <img class="img-carousel" loading="lazy"
+                src="https://s2.glbimg.com/YO-DzhslXUrgUZBFOfTUPboBvWk=/780x440/e.glbimg.com/og/ed/f/original/2015/10/02/pierre_guezingar.jpg">
+              <div class="carousel-caption">
+                <div style="position: inherit;bottom: 0;width: 100%;">
+                  <h1 class="animated fadeInUp duration-3s delay-2s">FÓRUM</h1>
+                  <h4 class="animated fadeInUp duration-3s delay-2s">Um espaço interativo para falar de planejamento e gestão municipal, compartilhar experiências em políticas públicas e trocar ideias sobre cidades melhores 	para todas e todos</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</header>
+
+
+<main style="background-color: white;" class="news news--full">
+  <div></div>
+  <section class="news__article">
+     <app-breadcrumb></app-breadcrumb>
+    <header>
+      <h2>{{discussao?.titulo}}</h2>
+      <div class="informacoes">
+        <div class="info-item"><b>Criada em:</b> {{discussao?.dataHoraCriacao | date: 'medium'}}</div>
+        <div class="info-item"><b>Ativa em:</b> {{discussao?.dataAtivacao | date: 'mediumDate'}}</div>
+        <div class="info-item"><b>Visualizações:</b> {{discussao?.numeroDeVisualizacao}}</div>
+      </div>
+
+    </header>
+    <hr>
+    <div [ngxSummernoteView]="discussao?.descricao"></div>
+    <hr>
+    <div *ngIf="discussao?.numeroDeRespostas == 1">
+      <h4 style="color: #408559;">{{discussao?.numeroDeRespostas}} comentário</h4>
+    </div>
+    <div *ngIf="discussao?.numeroDeRespostas != 1">
+      <h4 style="color: #408559;">{{discussao?.numeroDeRespostas}} comentários</h4>
+    </div>
+    <br>
+
+    <section *ngFor="let comentario of comentariosDiscussao">
+      <br>
+      <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12" style="padding: 16px 10px 16px 16px">
+        <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12" style="padding: 0px 0px 0px 15px">
+          <div class="comment-info">
+
+            <div class="comment-info-flex">
+              <div *ngIf="nomePerfil.includes('Administrador')"
+              class="flex-item-comment" style="cursor: pointer;" (click)="openModalInfoUser(comentario)">
+                  <mat-icon class="align-icon">person</mat-icon> {{comentario.nomeUsuario}}
+              </div>
+              <div *ngIf="!nomePerfil.includes('Administrador')"
+              class="flex-item-comment">
+                  <mat-icon class="align-icon">person</mat-icon> {{comentario.nomeUsuario}}
+              </div>
+
+              <ng-template #modalInfoUser>
+                <div style="display: flex; justify-content: end;">
+                  <mat-icon style="cursor: pointer;" (click)="closeModal()">close</mat-icon>
+                </div>
+                <div align="center">
+                  <h4 style="color: #408559;">Dados usuário</h4>
+                </div>
+                <div>
+                  <mat-icon class="align-icon" style="padding-right: 30px">person</mat-icon>
+                    <span>Nome: {{usuarioComentario.nome}} 
+                    </span>
+                </div>
+                <div>
+                  <mat-icon class="align-icon" style="padding-right: 30px;">alternate_email</mat-icon>
+                    <span>E-mail: {{usuarioComentario.email}} 
+                    </span>
+                </div>
+                <div *ngIf="usuarioComentario.telefone != null">
+                  <mat-icon class="align-icon" style="padding-right: 30px;">phone</mat-icon>
+                    <span>Telefone: {{usuarioComentario.telefone | mask: '(00) 0000-0000' }} 
+                    </span>
+                </div>
+                <div *ngIf="usuarioComentario.celular != null">
+                  <mat-icon class="align-icon" style="padding-right: 30px;">stay_current_portrait</mat-icon>
+                    <span>Celular: {{usuarioComentario.celular | mask: '(00) 00000-0000' }} 
+                    </span>
+                </div>
+                <div *ngIf="usuarioComentario.estado != null">
+                  <mat-icon class="align-icon" style="padding-right: 30px;">location_city</mat-icon>
+                    <span>Estado: {{usuarioComentario.estado}}
+                    </span>
+                </div>
+                <div *ngIf="usuarioComentario.cidade != null">
+                  <mat-icon class="align-icon" style="padding-right: 30px;">location_city</mat-icon>
+                    <span>Cidade: {{usuarioComentario.cidade}}
+                    </span>
+                </div>
+                <div *ngIf="usuarioComentario.perfis != ''">
+                  <mat-icon class="align-icon" style="padding-right: 30px;">how_to_reg</mat-icon>
+                    <span>Perfis: {{usuarioComentario.perfis}}
+                    </span>
+                </div>
+              </ng-template>
+
+              <div class="flex-item-comment">
+                  <mat-icon class="align-icon">access_time</mat-icon> {{comentario.horarioPublicacao}}
+              </div>
+
+              <div class="flex-item-comment">
+                <mat-icon class="align-icon">date_range</mat-icon>{{comentario.dataPublicacao | date: 'mediumDate'}}
+              </div>
+
+              <div class="flex-item-comment" *ngIf="comentario.editado">
+                <mat-icon class="align-icon">edit</mat-icon>Editado em {{comentario.dataEdicao | date: 'mediumDate'}} às {{comentario.horarioEdicao}}
+              </div>
+
+              <div class="spacer"></div>
+              <button class="flex-end" style="padding: 0; width: 15px !important;  min-width: unset!important;" mat-button [matMenuTriggerFor]="afterMenu" *ngIf="podeEditar(comentario) || podeExcluir(comentario)"><mat-icon style="width: 15px !important;">more_vert</mat-icon></button>
+              <mat-menu #afterMenu="matMenu" xPosition="after">
+                <button mat-menu-item (click)="onClickEditar(comentario.id)" *ngIf="podeEditar(comentario)" ><mat-icon>edit</mat-icon> Editar</button>
+                <button mat-menu-item (click)="deletar(comentario)" *ngIf="podeExcluir(comentario)"><mat-icon>delete</mat-icon> Excluir</button>
+              </mat-menu>
+            </div>
+          </div>
+
+          <article 
+            style="margin-top: 12px" 
+            [ngxSummernoteView]="comentario.comentario"
+            >
+          </article>
+
+          <div style="display: flex; justify-content: end;">
+            <button style="color:#3e7152;" mat-flat-button [disabled]="!usuarioEstaLogado && !discussao.ativo" (click)="ativarCampoRespostaComentarioFilho(comentario.id)"><mat-icon>comment</mat-icon> Responder </button>
+          </div>
+          
+
+          <article *ngIf="onModoEditar(comentario.id)">
+            <h3>Editar Comentário</h3>
+            <div class="summmernote" [formGroup]="formComentarioEditar">
+              <mat-label>Comentário *</mat-label>
+              <div [ngxSummernote]="editorConfig" formControlName="comentario"></div>
+            </div>
+            <div align="end" style="margin-top: 12px;">
+              <button mat-flat-button color="primary" (click)="onEditar(comentario.id)" [disabled]="!formComentarioEditar.valid">
+                <mat-icon>save</mat-icon> Editar
+              </button>
+              <button mat-stroked-button style="margin-left: 12px;" (click)="onClickEditar(comentario.id)">
+                <mat-icon>cancel</mat-icon> Cancelar
+              </button>
+          </div>
+          </article>
+        </mat-card-content>
+      </mat-card>
+
+      <section class="comentariosFilhos">
+          <app-comentarios-filhos 
+            [hidden]="!mostrarComentariosFilhos(comentario.id)"
+            [idComentarioPai]="comentario.id"  
+            [usuarioLogado]="usuarioLogado"
+            [idDiscussao]="idDiscussao"   
+            (atualizarDiscussaoEvent)="atualizarDiscussao($event)"
+          >
+        </app-comentarios-filhos>     
+        <mat-divider></mat-divider>
+      </section>
+    </section>
+      
+    <hr>
+    <section *ngIf="usuarioEstaLogado && discussao.ativo">
+      <h4>Seu comentário</h4>
+      <div class="summmernote" [formGroup]="formComentario">
+        <mat-label>Comentário *</mat-label>
+        <div [ngxSummernote]="editorConfig" formControlName="comentario"></div>
+      </div>
+      <div align="end" style="margin-top: 12px;">
+        <button mat-flat-button color="primary" (click)="onEnviar()" [disabled]="!formComentario.valid || loadingEnviarComentario">
+          <mat-icon>save</mat-icon> Enviar
+        </button>
+    </div>
+    </section>
+    <div class="alert alert-warning" *ngIf="!usuarioEstaLogado">
+      Faça login para comentar.
+    </div>
+
+    <div class="alert alert-warning" *ngIf="!discussao.ativo">
+      Este fórum está inativo.
+    </div>
+
+  </section>
+</main>
+

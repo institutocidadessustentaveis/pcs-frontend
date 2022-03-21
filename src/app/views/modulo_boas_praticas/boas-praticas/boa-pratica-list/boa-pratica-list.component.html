@@ -1,0 +1,102 @@
+<div class="contentBody" style="position: relative;">
+    <app-breadcrumb style="position: relative;"></app-breadcrumb>
+<mat-card>
+
+  <div class="row">
+
+    <div class="col-md-8 col-lg-9 col-xs-12 col-sm-12">
+      <h2>Cadastro de Boas Práticas</h2>
+    </div>
+
+    <div class="col-md-4 col-lg-3 col-xs-12 col-sm-12" style="text-align: right;">
+      <button mat-flat-button color="primary" [routerLink]="['/cadastro-boas-praticas/cadastrar']" class="btnCadastrar"
+        id="btnCadastrar" matTooltip="Cadastrar" *ngIf="hasRole('ROLE_CADASTRAR_BOA_PRATICA')" style="cursor: pointer !important; margin-bottom: 5px;">
+        <mat-icon>add</mat-icon>Cadastrar Boa Prática
+      </button>
+    </div>
+
+  </div>
+
+  <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+    <mat-divider></mat-divider>
+  </div>
+
+  <br>
+  <br>
+
+  <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+    <mat-card-title>Lista de Boas Práticas Cadastradas</mat-card-title>
+    <mat-divider></mat-divider>
+  </div>
+
+  <div *ngIf="loading" class="loading-indicator">
+    <mat-progress-spinner style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+  </div>
+
+  <mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtro">
+  </mat-form-field>
+
+  <table mat-table [dataSource]="dataSource" matSort>
+
+    <!-- Tipo Column -->
+    <ng-container matColumnDef="tipo">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="tipo">Tipo</th>
+      <td mat-cell *matCellDef="let item"> Boa Prática {{item.tipo}}</td>
+    </ng-container>
+
+    <!-- Municipio Column -->
+    <ng-container matColumnDef="municipioNome">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="municipioNome">Local</th>
+      <td mat-cell *matCellDef="let item"> {{item.municipioNome}} </td>
+    </ng-container>
+
+    <!-- Título Column -->
+    <ng-container matColumnDef="titulo">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="titulo">Título da boa prática</th>
+      <td mat-cell *matCellDef="let item"> {{item.titulo}} </td>
+    </ng-container>
+
+    <!-- Autor Column -->
+    <ng-container matColumnDef="nomeResponsavel">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="nomeResponsavel">Autor</th>
+      <td mat-cell *matCellDef="let item"> {{ item.nomeResponsavel }} </td>
+    </ng-container>
+
+    <!-- Data Column -->
+    <ng-container matColumnDef="dataPublicacao">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="dataPublicacao">Data</th>
+      <td mat-cell *matCellDef="let item"> {{ item.dataPublicacao | date }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="acoes">
+      <th mat-header-cell *matHeaderCellDef> Ações </th>
+      <td mat-cell *matCellDef="let item" class='m-card-title' data-label='Ações'>
+
+        <button mat-flat-button color="primary" type="button" name="button"
+          [routerLink]="['/cadastro-boas-praticas/editar', item.id]" class="btnTabela" id="btnEditar" matTooltip="Editar" *ngIf="podeEditar(item)" >
+          <mat-icon> edit </mat-icon>
+        </button>
+
+        <button mat-flat-button color="warn" type="button" name="button" (click)="excluirBoaPratica(item.id)" *ngIf="podeExcluir(item)"
+          class="btnTabela" id="btnExcluir" matTooltip="Visualizar" >
+          <mat-icon> delete </mat-icon>
+        </button>
+
+        <button mat-flat-button color="warn" type="button" name="button" (click)="copiarBoaPratica(item.id)" *ngIf="podeCopiar(item)"
+          class="btnTabela" id="btnCopiar" matTooltip="Copiar" >
+          <mat-icon> file_copy </mat-icon>
+        </button>
+
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator style="text-align: center !important;" class="float-none" [pageSizeOptions]="[10,25,50,100]"
+    showFirstLastButtons></mat-paginator>
+
+</mat-card>
+</div>

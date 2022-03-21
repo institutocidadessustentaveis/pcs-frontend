@@ -1,0 +1,46 @@
+
+<!-- Primeira seção -->
+<section class="second-section" *ngIf="paginaChild" [style.background-color]="paginaChild?.corFundo">
+  <div *ngIf="paginaChild?.titulo" [ngxSummernoteView]="paginaChild?.titulo" class="label-titulo-section2"></div>
+  <div *ngIf="paginaChild?.texto" class="three-columns" [ngxSummernoteView]="paginaChild?.texto">
+  </div>
+
+  <div *ngIf="btnLenght >= 3" class="div-btn-group">
+    <div *ngIf="paginaChild?.txtBotao01" [ngClass]="btnLenght > 3 ? 'div-btn-transparent-four div-btn-transparent-margin' : 'div-btn-transparent-three div-btn-transparent-margin'">
+      <button class="btn-transparent" [style.color]="paginaChild?.txtBotao01Cor" [style.border-color]="paginaChild?.txtBotao01Cor" (click)="verificaTipoLink(paginaChild?.linkBotao01)" id="btn_historia">{{paginaChild?.txtBotao01}}
+      </button>
+    </div>
+    <div *ngIf="paginaChild?.txtBotao02" [ngClass]="btnLenght > 3 ? 'div-btn-transparent-four div-btn-transparent-margin' : 'div-btn-transparent-three div-btn-transparent-margin'">
+      <button class="btn-transparent" [style.color]="paginaChild?.txtBotao02Cor" [style.border-color]="paginaChild?.txtBotao02Cor" (click)="verificaTipoLink(paginaChild?.linkBotao02)" id="btn_agenda">{{paginaChild?.txtBotao02}}
+      </button>
+    </div>
+    <div *ngIf="paginaChild?.txtBotao03" [ngClass]="btnLenght > 3 ? 'div-btn-transparent-four div-btn-transparent-margin' : 'div-btn-transparent-three div-btn-transparent-margin'">
+      <button class="btn-transparent" [style.color]="paginaChild?.txtBotao03Cor" [style.border-color]="paginaChild?.txtBotao03Cor" (click)="verificaTipoLink(paginaChild?.linkBotao03)" id="btn_metas">{{paginaChild?.txtBotao03}}
+        </button>
+    </div>
+    <div *ngIf="paginaChild?.txtBotao04" [ngClass]="btnLenght > 3 ? 'div-btn-transparent-four div-btn-transparent-margin' : 'div-btn-transparent-three div-btn-transparent-margin'">
+      <button class="btn-transparent" [style.color]="paginaChild?.txtBotao04Cor" [style.border-color]="paginaChild?.txtBotao04Cor" (click)="verificaTipoLink(paginaChild?.linkBotao04)" id="btn_metas">{{paginaChild?.txtBotao04}}
+        </button>
+    </div>
+    
+  </div>
+
+  <div *ngIf="btnLenght > 0 && btnLenght < 3" class="div-btn-group2">
+    <div *ngIf="paginaChild?.txtBotao01" style="margin: 1em;" class="div-btn-transparent">
+      <button class="btn-transparent" [style.color]="paginaChild?.txtBotao01Cor" [style.border-color]="paginaChild?.txtBotao01Cor" (click)="verificaTipoLink(paginaChild?.linkBotao01)" id="btn_historia">{{paginaChild?.txtBotao01}}
+      </button>
+    </div>
+    <div *ngIf="paginaChild?.txtBotao02" style="margin: 1em;" class="div-btn-transparent">
+        <button  class="btn-transparent" [style.color]="paginaChild?.txtBotao02Cor" [style.border-color]="paginaChild?.txtBotao02Cor" (click)="verificaTipoLink(paginaChild?.linkBotao02)" id="btn_agenda">{{paginaChild?.txtBotao02}}
+          </button>
+    </div>
+    <div *ngIf="paginaChild?.txtBotao03" style="margin: 1em;" class="div-btn-transparent">
+        <button  class="btn-transparent" [style.color]="paginaChild?.txtBotao03Cor" [style.border-color]="paginaChild?.txtBotao03Cor" (click)="verificaTipoLink(paginaChild?.linkBotao03)" id="btn_metas">{{paginaChild?.txtBotao03}}
+          </button>
+    </div>
+    <div *ngIf="paginaChild?.txtBotao04" style="margin: 1em;" class="div-btn-transparent">
+      <button  class="btn-transparent" [style.color]="paginaChild?.txtBotao04Cor" [style.border-color]="paginaChild?.txtBotao04Cor" (click)="verificaTipoLink(paginaChild?.linkBotao04)" id="btn_metas">{{paginaChild?.txtBotao04}}
+        </button>
+    </div>
+  </div>
+</section>

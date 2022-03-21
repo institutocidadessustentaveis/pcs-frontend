@@ -1,0 +1,28 @@
+
+td{
+padding: 12px;
+transition: 0.4s;
+}
+td:hover {
+  background-color:rgb(250 250 250);
+}
+table {
+  vertical-align: middle;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+app-card-faq{
+  width: 100%;
+}
+
+.gray-line {
+  background-color: rgb(238, 238, 238) !important;
+}
+
+.white-line {
+  background-color: #fff !important;
+}
+
+.text-faq {
+  font-family: Open Sans, Helvetica, Arial, sans-serif;
+}

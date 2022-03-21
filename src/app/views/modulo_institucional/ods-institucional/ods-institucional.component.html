@@ -1,0 +1,116 @@
+<br>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <mat-card>
+
+
+
+
+          <div class=" ">
+
+              <main class="">
+
+                <div class="container">
+                  <div class="row ">
+
+                    <section>
+                      <div class="row" style="margin: 1%; ">
+                        <div class="square" *ngFor="let item of listaOds">
+                          <div class="content">
+                            <img class="icone-ods" [src]="gerarLinkImagem(item)" (click)="selecionarOds(item)" />
+                          </div>
+                        </div>
+                        <div class="square">
+                          <div class="content">
+                            <a href="http://www.agenda2030.com.br/" target="_blank">
+                              <img class="icone-ods" src="../../../../assets/logos/ods_onu.png" title="Seguir para Agenda2030" />
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+
+                    <section *ngIf="this.odsSelecionado !== null">
+                      <div class="row div-detalhe-ods">
+                        <div class="col-md-3">
+                          <img [src]="gerarLinkImagem(odsSelecionado)" />
+                        </div>
+                        <div class="col-md-9">
+                          <h5 [ngClass]="{
+                            'col-md-12': true,
+                            'titulo-ods-um': odsSelecionado.numero == 1,
+                            'titulo-ods-dois': odsSelecionado.numero == 2,
+                            'titulo-ods-tres': odsSelecionado.numero == 3,
+                            'titulo-ods-quatro': odsSelecionado.numero == 4,
+                            'titulo-ods-cinco': odsSelecionado.numero == 5,
+                            'titulo-ods-seis': odsSelecionado.numero == 6,
+                            'titulo-ods-sete': odsSelecionado.numero == 7,
+                            'titulo-ods-oito': odsSelecionado.numero == 8,
+                            'titulo-ods-nove': odsSelecionado.numero == 9,
+                            'titulo-ods-dez': odsSelecionado.numero == 10,
+                            'titulo-ods-onze': odsSelecionado.numero == 11,
+                            'titulo-ods-doze': odsSelecionado.numero == 12,
+                            'titulo-ods-treze': odsSelecionado.numero == 13,
+                            'titulo-ods-quatorze': odsSelecionado.numero == 14,
+                            'titulo-ods-quinze': odsSelecionado.numero == 15,
+                            'titulo-ods-dezesseis': odsSelecionado.numero == 16,
+                            'titulo-ods-dezessete': odsSelecionado.numero == 17}"> Objetivo {{odsSelecionado.numero}} </h5>
+                          <h1 [ngClass]="{
+                            'col-md-12': true,
+                            'titulo-ods-um': odsSelecionado.numero == 1,
+                            'titulo-ods-dois': odsSelecionado.numero == 2,
+                            'titulo-ods-tres': odsSelecionado.numero == 3,
+                            'titulo-ods-quatro': odsSelecionado.numero == 4,
+                            'titulo-ods-cinco': odsSelecionado.numero == 5,
+                            'titulo-ods-seis': odsSelecionado.numero == 6,
+                            'titulo-ods-sete': odsSelecionado.numero == 7,
+                            'titulo-ods-oito': odsSelecionado.numero == 8,
+                            'titulo-ods-nove': odsSelecionado.numero == 9,
+                            'titulo-ods-dez': odsSelecionado.numero == 10,
+                            'titulo-ods-onze': odsSelecionado.numero == 11,
+                            'titulo-ods-doze': odsSelecionado.numero == 12,
+                            'titulo-ods-treze': odsSelecionado.numero == 13,
+                            'titulo-ods-quatorze': odsSelecionado.numero == 14,
+                            'titulo-ods-quinze': odsSelecionado.numero == 15,
+                            'titulo-ods-dezesseis': odsSelecionado.numero == 16,
+                            'titulo-ods-dezessete': odsSelecionado.numero == 17}"> {{odsSelecionado.titulo}} </h1>
+                          <h5 class="col-md-12 label-subtitulo-ods"> {{odsSelecionado.subtitulo}} </h5>
+                        </div>
+
+                        <div class="col-md-12 div-descricao-ods">
+                          <p class="textAux"> {{odsSelecionado.descricao}} </p>
+                        </div>
+                      </div>
+                    </section>
+
+                    <section>
+                      <table mat-table [dataSource]="dataSource" class="tabelaArquivosParaDownload" *ngIf="this.odsSelecionado">
+                        <!-- Meta Column -->
+                        <ng-container matColumnDef="meta">
+                          <th mat-header-cell *matHeaderCellDef> Metas do Objetivo {{odsSelecionado.numero}} </th>
+                          <td mat-cell *matCellDef="let item"> <b>{{item.numero}}</b> - {{item.descricao}} </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                      </table>
+                    </section>
+
+                    <!-- FOOTER -->
+
+
+
+
+                  </div>
+                </div>
+              </main>
+
+            </div>
+
+
+
+      </mat-card>
+    </div>
+  </div>
+</div>
+<br>

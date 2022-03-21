@@ -1,0 +1,119 @@
+<div class="div-principal col-md-8">
+  <div class="paper paperheavy">
+    <header>
+      <h1><span>Cadastro cidadão</span></h1>
+    </header>
+    <form [formGroup]="formulario">
+      <mat-form-field class="col-md-12" [style.fontSize.em]=1.2>
+        <input matInput placeholder="Nome *" id="nome" [attr.disabled]="loading ? '' : null" formControlName="nome">
+      </mat-form-field>
+      <mat-form-field class="col-md-6" [style.fontSize.em]=1.2>
+        <input type="email" matInput placeholder="E-mail *" id="email" [attr.disabled]="loading ? '' : null"
+          formControlName="email">
+      </mat-form-field>
+      <mat-form-field class="col-md-6" [style.fontSize.em]=1.2>
+        <input type="cel" matInput placeholder="Celular *" id="celular" mask="(00) 00000-0000"
+          [attr.disabled]="loading ? '' : null" formControlName="celular">
+      </mat-form-field>
+      <mat-form-field class="col-md-6" [style.fontSize.em]=1.2>
+        <input type="password" matInput placeholder="Senha *" id="txtSenha" #txtSenha [attr.disabled]="loading ? '' : null"
+          formControlName="senha">
+          <mat-hint>Deve ter pelo menos 6 caracteres, contendo letra(s) e número(s)</mat-hint>
+          <mat-hint align="end">{{ txtSenha.value?.length || 0 }}/10</mat-hint>
+          <mat-error
+            *ngIf="!formulario.controls['senha'].valid && formulario.controls['senha'].touched">
+            {{ getErrorSenha() }}
+          </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6" [style.fontSize.em]=1.2>
+        <input type="password" matInput placeholder="Confirmação de Senha *"
+          id="confirmacaoSenha" #confirmacaoSenha [attr.disabled]="loading ? '' : null" formControlName="confirmaSenha">
+          <mat-hint align="end">{{ confirmacaoSenha.value?.length || 0 }}/10</mat-hint>
+          <mat-error
+            *ngIf="!formulario.controls['confirmaSenha'].valid && formulario.controls['confirmaSenha'].touched">
+            {{ getErrorConfirmaSenha() }}
+          </mat-error>
+      </mat-form-field>
+      
+
+      <mat-form-field class="col-md-12" [style.fontSize.em]=1.2 style="margin-top: 1%;">
+        <input type="text" placeholder="Cidade de interesse *" matInput formControlName="cidadeInteresse"
+          [matAutocomplete]="auto" id="cidadeInteresse" [attr.disabled]="loading ? '' : null">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="getTextoExibicaoCidade" (optionSelected)="setCidadeSelecionada($event.option.value)">
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+            {{ option.label }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <mat-form-field [style.fontSize.em]=1.2 class="col-md-12">
+        <mat-label>Áreas de Interesse *</mat-label>
+        <mat-select id="idAreaInteresse" name="areas" formControlName="areasInteresse" multiple>
+          <mat-option *ngFor="let area of listaAreaInteresse" [value]="area">{{area.nome}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+
+      <div class="col-md-11" style="margin-top: 2%;" [style.fontSize.em]=1.2>
+        <label>Representa uma organização? *:</label>&nbsp;
+        <mat-radio-group formControlName="representa" id="representaOrg" (change)="representaOrganizacao($event.value)"
+          aria-label="Representa uma organização:">
+          <mat-radio-button value=true>Sim</mat-radio-button>&nbsp;
+          <mat-radio-button value=false>Não</mat-radio-button>
+        </mat-radio-group>
+        <i class="col-md-1" (click)="msgAjuda()" class="material-icons">help</i>
+      </div>
+
+
+      <!-- SOCIAL CIVIL/INSTITUIÇÃO PANEL -->
+      <div class="col-md-11" style="margin-top: 2%;margin-left:3%;" [hidden]="!representaOrg">
+        <mat-card-subtitle class="col-md-12" [style.fontSize.em]=1.2><strong>Sociedade Civil/Instituição</strong>
+        </mat-card-subtitle>
+        <hr>
+        <mat-form-field class="col-md-12" [style.fontSize.em]=1.2>
+          <input matInput placeholder="Nome da Organização *:" id="nomeOrg" formControlName="nomeOrg">
+        </mat-form-field>
+        <mat-form-field class="col-md-12" [style.fontSize.em]=1.2>
+          <input matInput placeholder="Cargo *:" id="cargo" formControlName="cargo">
+        </mat-form-field>
+
+        <mat-form-field [style.fontSize.em]=1.2 class="col-md-12">
+          <mat-label>Áreas atuação *</mat-label>
+          <mat-select id="idAreaAtuacao" name="areas" formControlName="areasAtuacao" multiple>
+            <mat-option *ngFor="let area of listaAreaAtuacoes" [value]="area">{{area.nome}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="col-md-12" [style.fontSize.em]=1.2>
+          <mat-select id="tipoInstituicao" placeholder="Tipo de Instituição *:" formControlName="tipoInstituicao">
+            <mat-option *ngFor="let dados of listaIntituicoes" [value]="dados.nome">{{dados.nome}}
+              <b>({{dados.tipo}})</b></mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-12" style="margin-top: 2%;" [style.fontSize.em]=1.2>
+        <mat-checkbox formControlName="recebeEmail" style="margin-right:.5em" [checked]="true"></mat-checkbox>
+        Não desejo receber boletins e informações do Programa Cidades Sustentáveis.
+      </div>
+
+      <div class="col-md-12">
+        <ngx-recaptcha2 id="captcha" #captchaElem [siteKey]="siteKey" (success)="handleSuccess($event)"
+          [useGlobalDomain]="false" class="col-md-7" formControlName="recaptcha">
+        </ngx-recaptcha2>
+      </div>
+      <div class="col-md-12" [style.fontSize.em]=1.2>Campos obrigatórios estão marcados com asterisco (*)</div>
+      <div class="colspan-2">
+       </div>
+       <div class="col-md-12" style="margin-top: 8px">
+        Os dados pessoais solicitados no cadastro de usuários nesta plataforma são utilizados apenas no âmbito do Programa Cidades Sustentáveis e atividades a ele vinculadas, no intuito de estabelecer uma boa comunicação com os usuários acerca de eventos e informes sobre demais atividades do Programa e seu Instituto.
+       </div>
+      <div class="col-md-12" style="text-align: end;margin-top: 10px;">
+        <button id="btnCadastrarCidadao" style="width:250px;"
+          class="btnToRight btn btn-wide btn-bigger btn-green btn-block"
+          [disabled]="!formulario.valid || loading || !senhasCombinam" (click)="gravar()" mat-flat-button
+          color="primary" matTooltip="Cadastrar">Cadastrar</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,885 @@
+<div class="contentBody" style="position: relative;">
+  <app-breadcrumb style="position: relative;"></app-breadcrumb>
+  <mat-card>
+    <div class="col-lg-12">
+      <mat-card-title *ngIf="institucionalDinamico.id !== null && institucionalDinamico.id !== undefined">Alterar Página
+      </mat-card-title>
+      <mat-card-title *ngIf="institucionalDinamico.id === null || institucionalDinamico.id === undefined">Criar Página
+      </mat-card-title>
+      <hr>
+    </div>
+
+    <div [hidden]="!loading" class="loading-indicator">
+      <mat-progress-spinner class="example-margin" style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+    </div>
+
+
+    <form #institucionalForm="ngForm" class="example-form">
+
+      <!-- Link da página -->
+      <div class="col-lg-12" style="margin-top: 20px !important;">
+
+        <div class="row">
+
+
+          <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12" style="text-align: right;">
+            <button mat-flat-button color="primary"  (click)="voltarListaPaginas()"
+              id="btnVoltarLista" matTooltip="Voltar para Lista de Páginas"
+              style="cursor: pointer !important;">
+              Voltar
+            </button>
+          </div>
+    
+        </div>
+
+        <div class="full-width">
+          <mat-checkbox id="exibirPagina" name="exibirPagina" [(ngModel)]="institucionalDinamico.exibir">
+            Exibir a página</mat-checkbox>
+        </div>
+
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Insira o Link" id="txtLink" [disabled]=false
+            [(ngModel)]="institucionalDinamico.link_pagina" name="tituloHome" required minlength="3" #link="ngModel">
+          <mat-hint [hidden]="link.invalid" style="font-size: 12px">Link completo:
+            {{urlBase}}/paginas/{{institucionalDinamico.link_pagina}}</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" style="margin-top: 1%">
+          <input matInput placeholder="Insira a descrição da página" id="txtTituloHome" [(ngModel)]="institucionalDinamico.titulo" name="linkHome" [disabled]=false
+            required minlength="3" #tituloHome="ngModel">
+          <mat-hint [hidden]="tituloHome.invalid" style="font-size: 12px">{{tituloHome.value?.length || 0 }}/250
+          </mat-hint>
+        </mat-form-field>
+
+      <!-- Image cropper -->
+      <div class="col-md-12">
+  
+        <input hidden #imagemInputGaleria type="file" id="imagemGaleria" name="imagemGaleria"
+          accept="image/jpeg,image/jpg, image/png" (change)="processImage($event, 'galeria', null)">
+        <button type="button" mat-raised-button (click)="imagemInputGaleria.click()" id="btnImagemGaleria"
+          name="imagemGaleria" color="primary" style="margin-top: 40px; cursor: pointer;"
+          matTooltip="Upload Imagem Para Galeria">
+          <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar imagem para galeria (resolução ref. 1900x530px)
+        </button>
+        <div>
+          <image-cropper style="max-height: 500px;" [imageChangedEvent]="imagemGaleriaChangedEvent"
+            [maintainAspectRatio]="false" [aspectRatio]="1 / 1" [resizeToWidth]="0" format="png"
+            (imageCropped)="imageCropped($event)">
+          </image-cropper>
+        </div>
+        <div class="modal-footer" *ngIf='imagemGaleriaChangedEvent'>
+          <button type="button" (click)="cortarImagem()" class="btn btn-sm btn-primary">Cortar</button>
+        </div>
+
+        <p *ngIf="institucionalDinamico?.imagens?.length > 0">Clique na Imagem para editar os campos</p>
+        <div class="row">
+          <div class="containerGaleria col-md-2" *ngFor="let item of institucionalDinamico.imagens">
+            <div *ngIf="item == institucionalDinamicoImagemRef" style="padding:4px;background: red;">
+              <img [src]="item.safeUrl"  style="width:100%" class="cursor-hand" (click)="carregaImagem(item)">
+            </div>
+            <div *ngIf="item != institucionalDinamicoImagemRef">
+              <img [src]="item.safeUrl" style="width:100%" class="cursor-hand" (click)="carregaImagem(item)">
+            </div>
+            <div class="caption" *ngIf="item == institucionalDinamicoImagemRef">
+              <p>IMAGEM SELECIONADA</p>
+            </div>
+            <button type="button" mat-raised-button style="width:100%" (click)="deletarImagemDaGaleria(item)">
+                  <mat-icon class="btn-remover">delete</mat-icon>
+            </button>
+            <p *ngIf="!item.id" style="text-align: center;">Clique em Salvar</p>
+          </div>
+        </div>
+
+        <span *ngIf="imageSelected">
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Nome do Autor" [(ngModel)]="institucionalDinamicoImagemRef.nomeAutor" maxlength="250"
+              #inputNomeAutor name="autorImagem" id="inputNomeAutor"
+              matTooltip="Nome do Autor a ser inserido na imagem">
+            <mat-hint align="end">{{ inputNomeAutor.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Título" maxlength="250" #inputTitulo name="tituloImagem"
+              [(ngModel)]="institucionalDinamicoImagemRef.titulo" id="inputTitulo" matTooltip="Título">
+            <mat-hint align="end">{{ inputTitulo.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Subtítulo" [(ngModel)]="institucionalDinamicoImagemRef.subtitulo" maxlength="500"
+              #inputSubtitulo name="subtituloImagem" id="inputSubtitulo"
+              matTooltip="Subtítulo a ser inserido sob o título">
+            <mat-hint align="end">{{ inputSubtitulo.value?.length || 0 }}/500</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link da Imagem" [(ngModel)]="institucionalDinamicoImagemRef.link" maxlength="250"
+              #inputLinkImagem name="linkImagem" id="inputLinkImagem" matTooltip="Link a ser inserido na imagem">
+            <mat-hint align="end">{{ inputLinkImagem.value?.length || 0 }}/100</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Índice da Imagem" [(ngModel)]="institucionalDinamicoImagemRef.indice" maxlength="250"  (ngModelChange)="ordernarGaleriaDeImagens($event)"
+              #inputIndiceImagem name="indiceImagem" id="inputIndiceImagem" matTooltip="Índice a ser inserido na imagem">
+            <mat-hint align="end">{{ inputIndiceImagem.value?.length || 0 }}/100</mat-hint>
+          </mat-form-field>
+
+          <span *ngIf="institucionalDinamico?.id">
+            <button mat-flat-button color="primary" [disabled]="institucionalDinamico?.imagens?.length <= 0" style="margin-left: 15px;"
+              role="button" (click)='editarGaleria()' matTooltip="Salvar Imagem">
+              <mat-icon>save</mat-icon>Salvar Imagem Selecionada
+            </button>
+          </span>
+          
+        </span>
+
+      </div>
+      <!-- ./Image cropper -->
+
+
+      <!-- Título -->
+       <!-- <div class="col-lg-12" style="margin-top: 50px !important;">
+         <mat-form-field class="full-width">
+           <input matInput placeholder="Insira o título" id="txtTitulo" [(ngModel)]="institucionalDinamico.txtTitulo" name="txtTitulo"
+             required minlength="3" maxlength="250" #txtTitulo>
+             <mat-hint align="end">{{ txtTitulo.value?.length || 0 }}/250</mat-hint>
+         </mat-form-field>
+       </div> -->
+
+      <!-- cor de fundo seção do subtítulo -->
+      <mat-form-field style="margin-top: 40px !important;" class="col-md-12">
+        <input [style.background]="institucionalDinamico?.corFundoSubtitulo" [cpPosition]="'top-right'"
+          [(colorPicker)]="institucionalDinamico.corFundoSubtitulo" />
+        <input matInput placeholder="Cor de Fundo" maxlength="10" #inputCorFundoSubtitulo
+          name="corFundoSubtitulo" [(ngModel)]="institucionalDinamico.corFundoSubtitulo"
+          id="corFundoSubtitulo" matTooltip="Cor de Fundo">
+      </mat-form-field>
+
+      <div class="col-md-12" style="margin-top: 30px; margin-bottom: 30px;">
+        <mat-label class="labelTextEditor">Insira o Caminho de Migalhas</mat-label>
+        <div [ngxSummernote]="editorCaminhoMigalhasConfig" name="caminhoMigalhas" [(ngModel)]="institucionalDinamico.caminhoMigalhas"></div>
+        <mat-hint class="caracteres-editor">{{ institucionalDinamico.caminhoMigalhas?.length || 0 }}/400</mat-hint>
+      </div>
+
+       <!-- Subtítulo -->
+       <div class="col-md-12" style="margin-top: 30px; margin-bottom: 30px;">
+         <mat-label class="labelTextEditor">Insira o Subtitulo</mat-label>
+         <div [ngxSummernote]="editorConfig" name="subtitulo" [(ngModel)]="institucionalDinamico.txtSubtitulo"></div>
+         <mat-hint class="caracteres-editor">{{ institucionalDinamico.txtSubtitulo?.length || 0 }}/400</mat-hint>
+       </div>
+
+       <!-- Texto Botão do subtítulo -->
+       <div class="col-lg-12" style="margin-top: 20px !important;">
+          <mat-form-field class="full-width">
+            <input matInput id="txtSubtitulo" placeholder="Texto Botão do subtítulo" [(ngModel)]="institucionalDinamico.txtBotaoSubtitulo"
+              name="txtBotaoSubtitulo" minlength="3" maxlength="50" #txtBotaoSubtitulo>
+              <mat-hint align="end">{{ txtBotaoSubtitulo.value?.length || 0 }}/50</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Link Botão do subtítulo -->
+        <div class="col-lg-12" style="margin-top: 20px !important;">
+          <mat-form-field class="full-width">
+            <input matInput id="linkSubtitulo" placeholder="Link Botão do subtítulo" [(ngModel)]="institucionalDinamico.linkBotaoSubtitulo"
+              name="linkBotaoSubtitulo" minlength="3" maxlength="250" #linkBotaoSubtitulo>
+              <mat-hint align="end">{{ linkBotaoSubtitulo.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+        </div>
+
+      </div>
+
+      <div class="col-lg-12 text-right" style="margin-top: 20px !important;">
+        <button mat-flat-button color="primary" class="btnToRight"
+          role="button" (click)='salvar()' matTooltip="Salvar Página">
+          <mat-icon>save</mat-icon>Salvar
+        </button>
+      </div>
+
+
+      <div class="col-md-12" style="margin-top: 2%;"  *ngIf="institucionalDinamico.id">
+
+        <mat-accordion>
+
+          <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)">
+            <mat-expansion-panel-header>
+              <mat-panel-title style="align-items: center; width:200px;">
+                Seções
+              </mat-panel-title>
+              <mat-panel-description>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div class="row">
+
+              <div class="col-md-8 col-lg-9 col-xs-12 col-sm-12">
+
+              </div>
+
+              <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12" style="text-align: right;">
+                <button mat-flat-button color="primary"  (click)="cadastrarNovaPrimeiraSecao()"
+                  id="btnNovaPrimeiraSecao" matTooltip="Cadastrar Nova Seção"
+                  style="cursor: pointer !important; margin-bottom: 5px;">
+                  Nova Seção A
+                </button>
+                <button mat-flat-button color="primary" (click)="cadastrarNovaSegundaSecao()"
+                  id="btnNovaSegundaSecao" matTooltip="Cadastrar Nova Seção"
+                  style="cursor: pointer !important; margin-bottom: 5px;margin-left: 5px ;">
+                  Nova Seção B
+                </button>
+                <button mat-flat-button color="primary" (click)="cadastrarNovaTerceiraSecao()"
+                  id="btnNovaTerceiraSecao" matTooltip="Cadastrar Nova Seção"
+                  style="cursor: pointer !important; margin-bottom: 5px;margin-left: 5px ;">
+                  Nova Seção C
+                </button>
+                <button mat-flat-button color="primary" (click)="cadastrarNovaQuartaSecao()"
+                  id="btnNovaQuartaSecao" matTooltip="Cadastrar Nova Seção"
+                  style="cursor: pointer !important; margin-bottom: 5px;margin-left: 5px ;">
+                  Nova Seção D
+                </button>
+
+              </div>
+
+            </div>
+
+
+            <table mat-table [dataSource]="dataSourceSecao" matSort matSortActive="indice" matSortDirection="desc">
+
+              <ng-container matColumnDef="indiceSecao">
+                <th mat-header-cell *matHeaderCellDef>Índice Geral</th>
+                <td mat-cell *matCellDef="let item" > <b>{{item.indice}}</b></td>
+              </ng-container>
+
+              <ng-container matColumnDef="tipoSecao">
+                <th mat-header-cell *matHeaderCellDef>Tipo</th>
+                <td mat-cell *matCellDef="let item">
+                  <span *ngIf="item.tipo == 'primeiraSecao'">Seção A</span>
+                  <span *ngIf="item.tipo == 'segundaSecao'">Seção B</span>
+                  <span *ngIf="item.tipo == 'terceiraSecao'">Seção C</span>
+                  <span *ngIf="item.tipo == 'quartaSecao'">Seção D</span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="tituloSecao">
+                <th mat-header-cell *matHeaderCellDef>Título</th>
+                <td mat-cell *matCellDef="let item" [innerHTML]="item.titulo? item.titulo : item.primeiroTitulo"></td>
+              </ng-container>
+
+              <ng-container matColumnDef="exibirSecao">
+                <th mat-header-cell *matHeaderCellDef>Exibir</th>
+                <td mat-cell *matCellDef="let item"> {{item.exibir?'Sim':'Não'}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="acoesSecao">
+                <th mat-header-cell *matHeaderCellDef> Ações </th>
+                <td mat-cell *matCellDef="let item" class='m-card-title' data-label='Ações'>
+
+                  <span *ngIf="item.tipo == 'primeiraSecao'">
+                    <button mat-flat-button color="primary" type="button" name="button"
+                    (click)="buscarPrimeiraSecaoDetalhe(item.id)"
+                      class="btnTabela" matTooltip="Editar">
+                      <mat-icon> edit </mat-icon>
+                    </button>
+
+                    <button mat-flat-button color="warn" type="button" name="button" (click)="excluirPrimeiraSecao(item.id)"
+                      class="btnTabela" matTooltip="Excluir">
+                      <mat-icon> delete </mat-icon>
+                    </button>
+                  </span>
+
+                  <span *ngIf="item.tipo == 'segundaSecao'">
+                    <button mat-flat-button color="primary" type="button" name="button"
+                    (click)="buscarSegundaSecaoDetalhe(item.id)"
+                      class="btnTabela" matTooltip="Editar">
+                      <mat-icon> edit </mat-icon>
+                    </button>
+
+                    <button mat-flat-button color="warn" type="button" name="button" (click)="excluirSegundaSecao(item.id)"
+                      class="btnTabela" matTooltip="Excluir">
+                      <mat-icon> delete </mat-icon>
+                    </button>
+                  </span>
+
+                  <span *ngIf="item.tipo == 'terceiraSecao'">
+                    <button mat-flat-button color="primary" type="button" name="button"
+                    (click)="buscarTerceiraSecaoDetalhe(item.id)"
+                      class="btnTabela" matTooltip="Editar">
+                      <mat-icon> edit </mat-icon>
+                    </button>
+
+                    <button mat-flat-button color="warn" type="button" name="button" (click)="excluirTerceiraSecao(item.id)"
+                      class="btnTabela" matTooltip="Excluir">
+                      <mat-icon> delete </mat-icon>
+                    </button>
+                  </span>
+
+                  <span *ngIf="item.tipo == 'quartaSecao'">
+                    <button mat-flat-button color="primary" type="button" name="button"
+                    (click)="buscarQuartaSecaoDetalhe(item.id)"
+                      class="btnTabela" matTooltip="Editar">
+                      <mat-icon> edit </mat-icon>
+                    </button>
+
+                    <button mat-flat-button color="warn" type="button" name="button" (click)="excluirQuartaSecao(item.id)"
+                      class="btnTabela" matTooltip="Excluir">
+                      <mat-icon> delete </mat-icon>
+                    </button>
+                  </span>
+
+                  <button mat-flat-button color="primary" type="button" name="button"
+                  (click)="alteraIndiceSecao(item)"
+                    class="btnTabela" matTooltip="Editar Indíce">
+                    <mat-icon> reorder </mat-icon>
+                  </button>
+
+
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsSecao; sticky: true"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsSecao;"></tr>
+            </table>
+
+
+          </mat-expansion-panel>
+
+        </mat-accordion>
+
+        <!-- Primeira seção -->
+        <div *ngIf="primeiraSecaoSelecionada">
+
+          <div class="row" style="padding-top: 2%;padding-bottom: 1%;">
+
+            <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 h1 titulos" *ngIf="primeiraSecaoSelecionada.id">
+              Editar Seção A - Indíce:{{primeiraSecaoSelecionada.indice}}
+              <button mat-flat-button color="primary"  (click)="fecharPrimeiraSecao()"
+                matTooltip="Fechar"
+                style="cursor: pointer !important;float:right">
+                Fechar
+              </button>
+            </div>
+
+            <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 h1 titulos" *ngIf="!primeiraSecaoSelecionada.id">
+              Nova Seção A - Indíce:{{primeiraSecaoSelecionada.indice}}
+              <button mat-flat-button color="primary"  (click)="fecharPrimeiraSecao()"
+                matTooltip="Fechar"
+                style="cursor: pointer !important;float:right">
+                Fechar
+              </button>
+
+            </div>
+
+          </div>
+
+          <!-- Índice primeira seção -->
+          <mat-form-field class="col-md-2" style="margin-top: 1%;">
+            <mat-label>Índice geral</mat-label>
+            <input  #indicePrimeiraSecao="ngModel" pattern="^([1-9][0-9]{0,2}|1000)$" onKeyPress="if(this.value.length==4) return false;" name="indicePrimeiraSecao" matInput placeholder="Índice geral" [(ngModel)]="primeiraSecaoSelecionada.indice">
+            <mat-hint [hidden]="!indicePrimeiraSecao.invalid" style="font-size: 12px;color:red">Digite um valor entre 1 e 1000</mat-hint>
+          </mat-form-field>
+
+          <!-- Exibir primeira seção -->
+          <div class="col-md-12" style="margin-left:0px;margin-bottom: 1%;">
+            <mat-checkbox id="primeiraSecaoExibir" name="primeiraSecaoExibir"
+              [(ngModel)]="primeiraSecaoSelecionada.exibir">Exibir a seção</mat-checkbox>
+          </div>
+          
+          <!-- Título primeira seção -->
+          <div class="col-md-12 summernote" style="margin-top: 20px">
+            <mat-label class="labelTextEditor">Título</mat-label>
+            <div [ngxSummernote]="editorTituloConfig" name="tituloPrimeiraSecao" [(ngModel)]="primeiraSecaoSelecionada.titulo"></div>
+            <mat-hint class="caracteres-editor">{{  primeiraSecaoSelecionada.titulo?.length || 0 }}/250</mat-hint>
+          </div>
+
+          <!-- Texto primeira seção -->
+          <div class="col-md-12 summernote" style="margin-top: 20px;" [hidden]="exibirConfigRecursosExternosSecao01">
+            <mat-label class="labelTextEditor">Texto</mat-label>
+            <div [ngxSummernote]="editorConfig" name="txtPrimeiraSecao" [(ngModel)]="primeiraSecaoSelecionada.texto"></div>
+          </div>
+
+          <div class="col-md-12 summernote" style="margin-top: 20px;" [hidden]="!exibirConfigRecursosExternosSecao01">
+            <mat-label class="labelTextEditor">Texto</mat-label>
+            <div [ngxSummernote]="editorConfigRecursoExterno" name="txtPrimeiraSecao" [(ngModel)]="primeiraSecaoSelecionada.texto"></div>
+          </div>
+
+          <mat-checkbox [checked]="false" 
+            id="habilitaRecursoExternoSecao01" 
+            [(ngModel)]="primeiraSecaoSelecionada.habilitaRecursoExterno"
+            (change)="habilitarConfigSummernoteRecursosExternos($event.checked, 1, null, null)" 
+            name="habilitaRecursoExternoSecao01">
+             Habilitar recursos externos no editor de texto
+         </mat-checkbox>
+
+          <!-- cor de fundo da primeira seção -->
+          <mat-form-field style="margin-top: 40px !important;" class="col-md-12">
+            <input [style.background]="primeiraSecaoSelecionada?.corFundo" [cpPosition]="'top-right'"
+              [(colorPicker)]="primeiraSecaoSelecionada.corFundo" />
+            <input matInput placeholder="Cor de Fundo da Seção" maxlength="10" #inputCorFundoPrimeiraSecao
+              name="corFundoPrimeiraSecao" [(ngModel)]="primeiraSecaoSelecionada.corFundo"
+              id="corFundoPrimeiraSecao" matTooltip="Cor de Fundo da Seção">
+          </mat-form-field>
+
+          <!-- Texto Botão 01 primeira seção -->
+          <div class="col-lg-12" >
+            <mat-form-field class="full-width">
+              <input matInput id="txtBotao01" placeholder="Texto Botão 1" [(ngModel)]="primeiraSecaoSelecionada.txtBotao01"
+                name="txtBotao01" minlength="3" maxlength="50" #txtBotao01>
+                <mat-hint align="end">{{ txtBotao01.value?.length || 0 }}/50</mat-hint>
+            </mat-form-field>
+          </div>
+
+          <!-- cor Botão 01 primeira seção -->
+          <mat-form-field class="col-md-12">
+            <input [style.background]="primeiraSecaoSelecionada?.txtBotao01Cor" [cpPosition]="'top-right'"
+              [(colorPicker)]="primeiraSecaoSelecionada.txtBotao01Cor" />
+            <input matInput placeholder="Cor do Texto Botão 1" maxlength="10" #inputCorTxtBotao01
+              name="corTxtBotao01" [(ngModel)]="primeiraSecaoSelecionada.txtBotao01Cor"
+              id="corTxtBotao01" matTooltip="Cor do Texto Botão 1">
+          </mat-form-field>
+
+          <!-- Link Botão 01 primeira seção -->
+          <div class="col-lg-12">
+            <mat-form-field class="full-width">
+              <input matInput id="linkBotao01" placeholder="Link Botão 1" [(ngModel)]="primeiraSecaoSelecionada.linkBotao01"
+                name="linkBotao01" minlength="3" maxlength="250" #linkBotao01>
+                <mat-hint align="end">{{ linkBotao01.value?.length || 0 }}/250</mat-hint>
+            </mat-form-field>
+          </div>
+
+  
+          <!-- Texto Botão 02 primeira seção -->
+          <div class="col-lg-12" style="margin-top: 20px !important;">
+            <mat-form-field class="full-width">
+              <input matInput id="txtBotao02" placeholder="Texto Botão 2" [(ngModel)]="primeiraSecaoSelecionada.txtBotao02"
+                name="txtBotao02" minlength="3" maxlength="50" #txtBotao02>
+                <mat-hint align="end">{{ txtBotao02.value?.length || 0 }}/50</mat-hint>
+            </mat-form-field>
+          </div>
+
+          <!-- cor Botão 02 primeira seção -->
+          <mat-form-field class="col-md-12">
+          <input [style.background]="primeiraSecaoSelecionada?.txtBotao02Cor" [cpPosition]="'top-right'"
+              [(colorPicker)]="primeiraSecaoSelecionada.txtBotao02Cor" />
+            <input matInput placeholder="Cor do Texto Botão 2" maxlength="10" #inputCorTxtBotao02
+              name="corTxtBotao02" [(ngModel)]="primeiraSecaoSelecionada.txtBotao02Cor"
+              id="corTxtBotao02" matTooltip="Cor do Texto Botão 1">
+          </mat-form-field>
+
+          <!-- Link Botão 02 primeira seção -->
+          <div class="col-lg-12">
+            <mat-form-field class="full-width">
+              <input matInput id="linkBotao02" placeholder="Link Botão 02" [(ngModel)]="primeiraSecaoSelecionada.linkBotao02"
+                name="linkBotao02" minlength="3" maxlength="250" #linkBotao02>
+                <mat-hint align="end">{{ linkBotao02.value?.length || 0 }}/250</mat-hint>
+            </mat-form-field>
+          </div>
+
+
+            
+          <!-- Texto Botão 03 primeira seção -->
+          <div class="col-lg-12" style="margin-top: 20px !important;">
+            <mat-form-field class="full-width">
+              <input matInput id="txtBotao03" placeholder="Texto Botão 3" [(ngModel)]="primeiraSecaoSelecionada.txtBotao03"
+                name="txtBotao03" minlength="3" maxlength="50" #txtBotao03>
+                <mat-hint align="end">{{ txtBotao03.value?.length || 0 }}/50</mat-hint>
+            </mat-form-field>
+          </div>
+
+          <!-- cor Botão 03 primeira seção -->
+          <mat-form-field class="col-md-12">
+          <input [style.background]="primeiraSecaoSelecionada?.txtBotao03Cor" [cpPosition]="'top-right'"
+              [(colorPicker)]="primeiraSecaoSelecionada.txtBotao03Cor" />
+            <input matInput placeholder="Cor do Texto Botão 3" maxlength="10" #inputCorTxtBotao03
+              name="corTxtBotao03" [(ngModel)]="primeiraSecaoSelecionada.txtBotao03Cor"
+              id="corTxtBotao03" matTooltip="Cor do Texto Botão 1">
+          </mat-form-field>
+
+          <!-- Link Botão 03 primeira seção -->
+          <div class="col-lg-12">
+            <mat-form-field class="full-width">
+              <input matInput id="linkBotao03" placeholder="Link Botão 03" [(ngModel)]="primeiraSecaoSelecionada.linkBotao03"
+                name="linkBotao03" minlength="3" maxlength="250" #linkBotao03>
+                <mat-hint align="end">{{ linkBotao03.value?.length || 0 }}/250</mat-hint>
+            </mat-form-field>
+          </div>
+
+          <!-- Texto Botão 04 primeira seção -->
+          <div class="col-lg-12" style="margin-top: 20px !important;">
+            <mat-form-field class="full-width">
+              <input matInput id="txtBotao04" placeholder="Texto Botão 4" [(ngModel)]="primeiraSecaoSelecionada.txtBotao04"
+                name="txtBotao04" minlength="3" maxlength="50" #txtBotao04>
+                <mat-hint align="end">{{ txtBotao04.value?.length || 0 }}/50</mat-hint>
+            </mat-form-field>
+          </div>
+
+          <!-- cor Botão 04 primeira seção -->
+          <mat-form-field class="col-md-12">
+          <input [style.background]="primeiraSecaoSelecionada?.txtBotao04Cor" [cpPosition]="'top-right'"
+              [(colorPicker)]="primeiraSecaoSelecionada.txtBotao04Cor" />
+            <input matInput placeholder="Cor do Texto Botão 4" maxlength="10" #inputCorTxtBotao04
+              name="corTxtBotao04" [(ngModel)]="primeiraSecaoSelecionada.txtBotao04Cor"
+              id="corTxtBotao04" matTooltip="Cor do Texto Botão 1">
+          </mat-form-field>
+
+          <!-- Link Botão 04 primeira seção -->
+          <div class="col-lg-12">
+            <mat-form-field class="full-width">
+              <input matInput id="linkBotao04" placeholder="Link Botão 04" [(ngModel)]="primeiraSecaoSelecionada.linkBotao04"
+                name="linkBotao04" minlength="3" maxlength="250" #linkBotao04>
+                <mat-hint align="end">{{ linkBotao04.value?.length || 0 }}/250</mat-hint>
+            </mat-form-field>
+          </div>
+
+          <!-- Salvar primeira seção -->
+          <div class="text-right" style="margin-top: 10px !important;">
+            <button mat-flat-button color="primary" class="btnToRight" [disabled]="indicePrimeiraSecao?.invalid"
+              role="button" (click)='editarPrimeiraSecao()' matTooltip="Salvar Seção A">
+              <mat-icon>save</mat-icon>Salvar
+            </button>
+          </div>
+
+
+        </div>
+
+        <!-- Segunda seção -->
+        <div *ngIf="segundaSecaoSelecionada">
+
+          <div class="row" style="padding-top: 2%;padding-bottom: 1%;">
+
+            <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 h1 titulos" *ngIf="segundaSecaoSelecionada.id">
+              Editar Seção B - Indíce:{{segundaSecaoSelecionada.indice}}
+              <button mat-flat-button color="primary"  (click)="fecharSegundaSecao()"
+                matTooltip="Fechar"
+                style="cursor: pointer !important;float:right">
+                Fechar
+              </button>
+            </div>
+
+            <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 h1 titulos" *ngIf="!segundaSecaoSelecionada.id">
+              Nova Seção B - Indíce:{{segundaSecaoSelecionada.indice}}
+              <button mat-flat-button color="primary"  (click)="fecharSegundaSecao()"
+                matTooltip="Fechar"
+                style="cursor: pointer !important;float:right">
+                Fechar
+              </button>
+
+            </div>
+
+          </div>
+
+          <!-- Índice segunda seção -->
+          <mat-form-field class="col-md-2" style="margin-top: 1%;">
+            <mat-label>Índice geral</mat-label>
+            <input  #indiceSegundaSecao="ngModel" pattern="^([1-9][0-9]{0,2}|1000)$" onKeyPress="if(this.value.length==4) return false;" name="indiceSegundaSecao" matInput placeholder="Índice geral" [(ngModel)]="segundaSecaoSelecionada.indice">
+            <mat-hint [hidden]="!indiceSegundaSecao.invalid" style="font-size: 12px;color:red">Digite um valor entre 1 e 1000</mat-hint>
+          </mat-form-field>
+
+          <!-- Exibir segunda seção -->
+          <div class="col-md-12" style="margin-left:0px;margin-bottom: 1%;">
+            <mat-checkbox id="segundaSecaoExibir" name="segundaSecaoExibir"
+              [(ngModel)]="segundaSecaoSelecionada.exibir">Exibir a seção</mat-checkbox>
+          </div>
+          
+          <!-- Título segunda seção -->
+          <div class="col-md-12 summernote" style="margin-top: 20px">
+            <mat-label class="labelTextEditor">Título</mat-label>
+            <div [ngxSummernote]="editorTituloConfig" name="tituloSegundaSecao" [(ngModel)]="segundaSecaoSelecionada.titulo"></div>
+            <mat-hint class="caracteres-editor">{{  segundaSecaoSelecionada.titulo?.length || 0 }}/250</mat-hint>
+          </div>
+
+          <!-- Texto primeira coluna segunda seção -->
+          <div class="col-md-12 summernote" style="margin-top: 20px;" [hidden]="exibirConfigRecursosExternosSecao02PrimeiraCol">
+            <mat-label class="labelTextEditor">Texto primeira coluna</mat-label>
+            <div [ngxSummernote]="editorConfig" name="txtPrimeiraColuna" [(ngModel)]="segundaSecaoSelecionada.textoPrimeiraColuna"></div>
+          </div>
+
+          <div class="col-md-12 summernote" style="margin-top: 20px;" [hidden]="!exibirConfigRecursosExternosSecao02PrimeiraCol">
+            <mat-label class="labelTextEditor">Texto primeira coluna</mat-label>
+            <div [ngxSummernote]="editorConfigRecursoExterno" name="txtPrimeiraColuna" [(ngModel)]="segundaSecaoSelecionada.textoPrimeiraColuna"></div>
+          </div>
+
+          <mat-checkbox [checked]="false" 
+            id="habilitaRecursoExternoSecao02Col01" 
+            [(ngModel)]="segundaSecaoSelecionada.habilitaRecursoExternoCol01"
+            (change)="habilitarConfigSummernoteRecursosExternos($event.checked, 2, true, null)" 
+            name="habilitaRecursoExternoSecao02Col01">
+             Habilitar recursos externos no editor de texto
+         </mat-checkbox>
+        
+          <!-- Texto segunda coluna segunda seção -->
+          <div class="col-md-12 summernote" style="margin-top: 20px;" [hidden]="exibirConfigRecursosExternosSecao02SegundaCol">
+            <mat-label class="labelTextEditor">Texto segunda coluna</mat-label>
+            <div [ngxSummernote]="editorConfig" name="txtSegundaColuna" [(ngModel)]="segundaSecaoSelecionada.textoSegundaColuna"></div>
+          </div>
+
+          <div class="col-md-12 summernote" style="margin-top: 20px;" [hidden]="!exibirConfigRecursosExternosSecao02SegundaCol">
+            <mat-label class="labelTextEditor">Texto segunda coluna</mat-label>
+            <div [ngxSummernote]="editorConfigRecursoExterno" name="txtSegundaColuna" [(ngModel)]="segundaSecaoSelecionada.textoSegundaColuna"></div>
+          </div>
+
+          <mat-checkbox [checked]="false" 
+            id="habilitaRecursoExternoSecao02Col02" 
+            [(ngModel)]="segundaSecaoSelecionada.habilitaRecursoExternoCol02"
+            (change)="habilitarConfigSummernoteRecursosExternos($event.checked, 2, null, true)" 
+            name="habilitaRecursoExternoSecao02Col02">
+             Habilitar recursos externos no editor de texto
+
+         </mat-checkbox>
+          
+          <!-- cor de fundo da segunda seção -->
+          <mat-form-field style="margin-top: 40px !important;" class="col-md-12">
+            <input [style.background]="segundaSecaoSelecionada?.corFundo" [cpPosition]="'top-right'"
+              [(colorPicker)]="segundaSecaoSelecionada.corFundo" />
+            <input matInput placeholder="Cor de Fundo da Seção" maxlength="10" #inputCorFundoSegundaSecao
+              name="corFundoSegundaSecao" [(ngModel)]="segundaSecaoSelecionada.corFundo"
+              id="corFundoSegundaSecao" matTooltip="Cor de Fundo da Seção">
+          </mat-form-field>
+
+          <!-- Imagem segunda seção -->
+          <div class="col-md-12">
+            <input hidden #imagemInputSegundaSecao type="file" id="imagemSegundaSecao" name="imagemSegundaSecao"
+              accept="image/jpeg,image/png" (change)="processImage($event, 'segundaSecaoImagem', segundaSecaoSelecionada)">
+            <button type="button" mat-raised-button (click)="imagemInputSegundaSecao.click()" id="btnIcone" name="icone"
+              color="primary" style="margin-top: 20px; margin-bottom: 20px; cursor: pointer;" matTooltip="Upload Imagem">
+              <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar imagem
+            </button>
+    
+    
+            <div class="containerGaleria" *ngIf="segundaSecaoSelecionada.imagem"  style="margin-top: 20px;">
+              <img style=" width: 100%;" [src]="geraImagem(segundaSecaoSelecionada.imagem)"/>
+              <button type="button" mat-raised-button style="width:100%;" (click)="removerImagemSegundaSecao()">
+                <mat-icon class="btn-remover">delete</mat-icon>
+              </button>
+              <mat-form-field style="margin-top: 5px;">
+                  <input type="text" #autor matInput placeholder="Autoria da imagem" (blur)="onEnterSegundaSecao(autor.value)" value='{{segundaSecaoSelecionada.autorImagem}}'>
+              </mat-form-field>
+            </div>
+            <div class="containerGaleria" *ngIf="!segundaSecaoSelecionada.imagem && segundaSecaoSelecionada.idImagem">
+              <img style=" width: 100%;" [src]="geraImagemPorId(segundaSecaoSelecionada.idImagem)"/>
+              <button type="button" mat-raised-button style="width:100%;" (click)="removerImagemSegundaSecao()">
+                <mat-icon class="btn-remover">delete</mat-icon>
+              </button>
+              <mat-form-field style="margin-top: 5px;">
+                  <input type="text" #autor matInput placeholder="Autoria da imagem" (blur)="onEnterSegundaSecao(autor.value)" value='{{segundaSecaoSelecionada.autorImagem}}'>
+              </mat-form-field>
+            </div>
+
+            <div class="containerGaleria">
+              <mat-form-field>
+                <input matInput id="linkSecaoSecaolinkImagem" placeholder="Link da imagem" [(ngModel)]="segundaSecaoSelecionada.imagemLink"
+                  name="linkSecaoSecaolinkImagem" minlength="3" maxlength="250" #linkSecaoSecaolinkImagem>
+                  <mat-hint align="end">{{ linkSecaoSecaolinkImagem.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+            </div>
+
+
+            
+          </div>
+
+
+
+
+          <!-- Salvar segunda seção -->
+          <div class="text-right" style="margin-top: 10px !important;">
+            <button mat-flat-button color="primary" class="btnToRight" [disabled]="indiceSegundaSecao?.invalid"
+              role="button" (click)='editarSegundaSecao()' matTooltip="Salvar Seção A">
+              <mat-icon>save</mat-icon>Salvar
+            </button>
+          </div>
+
+
+        </div>
+
+
+
+
+
+        <!-- Terceira seção -->
+        <div *ngIf="terceiraSecaoSelecionada">
+
+          <div class="row" style="padding-top: 2%;padding-bottom: 1%;">
+
+            <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 h1 titulos" *ngIf="terceiraSecaoSelecionada.id">
+              Editar Seção C - Indíce:{{terceiraSecaoSelecionada.indice}}
+              <button mat-flat-button color="primary"  (click)="fecharTerceiraSecao()"
+                matTooltip="Fechar"
+                style="cursor: pointer !important;float:right">
+                Fechar
+              </button>
+            </div>
+
+            <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 h1 titulos" *ngIf="!terceiraSecaoSelecionada.id">
+              Nova Seção C - Indíce:{{terceiraSecaoSelecionada.indice}}
+              <button mat-flat-button color="primary"  (click)="fecharTerceiraSecao()"
+                matTooltip="Fechar"
+                style="cursor: pointer !important;float:right">
+                Fechar
+              </button>
+
+            </div>
+
+          </div>
+
+          <!-- Índice terceira seção -->
+          <mat-form-field class="col-md-2" style="margin-top: 1%;">
+            <mat-label>Índice geral</mat-label>
+            <input  #indiceTerceiraSecao="ngModel" pattern="^([1-9][0-9]{0,2}|1000)$" onKeyPress="if(this.value.length==4) return false;" name="indiceTerceiraSecao" matInput placeholder="Índice geral" [(ngModel)]="terceiraSecaoSelecionada.indice">
+            <mat-hint [hidden]="!indiceTerceiraSecao.invalid" style="font-size: 12px;color:red">Digite um valor entre 1 e 1000</mat-hint>
+          </mat-form-field>
+
+          <!-- Exibir terceira seção -->
+          <div class="col-md-12" style="margin-left:0px;margin-bottom: 1%;">
+            <mat-checkbox id="terceiraSecaoExibir" name="terceiraSecaoExibir"
+              [(ngModel)]="terceiraSecaoSelecionada.exibir">Exibir a seção</mat-checkbox>
+          </div>
+          
+          <!-- Título terceira seção -->
+          <div class="col-md-12 summernote" style="margin-top: 20px">
+            <mat-label class="labelTextEditor">Título</mat-label>
+            <div [ngxSummernote]="editorTituloConfig" name="tituloTerceiraSecao" [(ngModel)]="terceiraSecaoSelecionada.titulo"></div>
+            <mat-hint class="caracteres-editor">{{  terceiraSecaoSelecionada.titulo?.length || 0 }}/250</mat-hint>
+          </div>
+
+          <!-- cor de fundo da terceira seção -->
+          <mat-form-field class="col-md-12">
+            <input [style.background]="terceiraSecaoSelecionada?.corFundo" [cpPosition]="'top-right'"
+              [(colorPicker)]="terceiraSecaoSelecionada.corFundo" />
+            <input matInput placeholder="Cor de Fundo da Seção" maxlength="10" #inputCorFundoTerceiraSecao
+              name="corFundoTerceiraSecao" [(ngModel)]="terceiraSecaoSelecionada.corFundo"
+              id="corFundoTerceiraSecao" matTooltip="Cor de Fundo da Seção">
+          </mat-form-field>
+
+
+          <div class="row" >
+            <p class="col-lg-12">
+              Escolha ou crie publicações para sua adicionar ao seu catalogo de publicações página.
+            </p>
+  
+            <app-institucional-publicacao-visualizacao  class="div-card-publicacao col-lg-4 col-sm-12"
+              *ngFor="let item of terceiraSecaoSelecionada.publicacoes; let i = index"
+              [publicacao]="item"
+              (resultado)="onAtualizar($event, i, 1)"
+              (moverParaDireita)="onMoverDireita($event)"
+              (moverParaEsquerda)="onMoverEsquerda($event)">
+            </app-institucional-publicacao-visualizacao>
+  
+            <app-institucional-publicacao-visualizacao  class="div-card-publicacao col-lg-4 col-sm-12"
+              [publicacao]="publicacao"
+              (resultado)="onAtualizar($event, terceiraSecaoSelecionada.publicacoes.length,1)"></app-institucional-publicacao-visualizacao>
+          </div>
+
+
+          <!-- Salvar terceira seção -->
+          <div class="text-right" style="margin-top: 10px !important;">
+            <button mat-flat-button color="primary" class="btnToRight" [disabled]="indiceTerceiraSecao?.invalid"
+              role="button" (click)='editarTerceiraSecao()' matTooltip="Salvar Seção A">
+              <mat-icon>save</mat-icon>Salvar
+            </button>
+          </div>
+
+
+        </div>
+
+
+        <!-- Quarta seção -->
+        <div *ngIf="quartaSecaoSelecionada">
+
+          <div class="row" style="padding-top: 2%;padding-bottom: 1%;">
+
+            <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 h1 titulos" *ngIf="quartaSecaoSelecionada.id">
+              Editar Seção D - Indíce:{{quartaSecaoSelecionada.indice}}
+              <button mat-flat-button color="primary"  (click)="fecharQuartaSecao()"
+                matTooltip="Fechar"
+                style="cursor: pointer !important;float:right">
+                Fechar
+              </button>
+            </div>
+
+            <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 h1 titulos" *ngIf="!quartaSecaoSelecionada.id">
+              Nova Seção D - Indíce:{{quartaSecaoSelecionada.indice}}
+              <button mat-flat-button color="primary"  (click)="fecharQuartaSecao()"
+                matTooltip="Fechar"
+                style="cursor: pointer !important;float:right">
+                Fechar
+              </button>
+
+            </div>
+
+          </div>
+
+          <!-- Índice quarta seção -->
+          <mat-form-field class="col-md-2" style="margin-top: 1%;">
+            <mat-label>Índice geral</mat-label>
+            <input  #indiceQuartaSecao="ngModel" pattern="^([1-9][0-9]{0,2}|1000)$" onKeyPress="if(this.value.length==4) return false;" name="indiceQuartaSecao" matInput placeholder="Índice geral" [(ngModel)]="quartaSecaoSelecionada.indice">
+            <mat-hint [hidden]="!indiceQuartaSecao.invalid" style="font-size: 12px;color:red">Digite um valor entre 1 e 1000</mat-hint>
+          </mat-form-field>
+
+          <!-- Exibir quarta seção -->
+          <div class="col-md-12" style="margin-left:0px;margin-bottom: 1%;">
+            <mat-checkbox id="quartaSecaoExibir" name="quartaSecaoExibir"
+              [(ngModel)]="quartaSecaoSelecionada.exibir">Exibir a seção</mat-checkbox>
+          </div>
+          
+          <!-- Texto quarta seção -->
+          <div class="col-md-12 summernote" style="margin-top: 20px;" [hidden]="exibirConfigRecursosExternosSecao04">
+            <mat-label class="labelTextEditor">Texto</mat-label>
+            <div [ngxSummernote]="editorConfig" name="txtQuartaSecao" [(ngModel)]="quartaSecaoSelecionada.texto"></div>
+          </div>
+
+          <div class="col-md-12 summernote" style="margin-top: 20px;" [hidden]="!exibirConfigRecursosExternosSecao04">
+            <mat-label class="labelTextEditor">Texto</mat-label>
+            <div [ngxSummernote]="editorConfigRecursoExterno" name="txtQuartaSecao" [(ngModel)]="quartaSecaoSelecionada.texto"></div>
+          </div>
+
+          <mat-checkbox [checked]="false" 
+            id="habilitaRecursoExternoSecao04" 
+            [(ngModel)]="quartaSecaoSelecionada.habilitaRecursoExterno"
+            (change)="habilitarConfigSummernoteRecursosExternos($event.checked, 4, null, null)" 
+            name="habilitaRecursoExternoSecao04">
+             Habilitar recursos externos no editor de texto
+         </mat-checkbox>
+
+          <!-- Exibir mapa -->
+          <div class="col-md-12" style="margin-left:0px;margin-top: 20px;">
+            <mat-checkbox id="quartaSecaoExibirMapa" name="quartaSecaoExibirMapa"
+              [(ngModel)]="quartaSecaoSelecionada.exibirMapa">Exibir o mapa (Shapes selecionados)</mat-checkbox>
+          </div>
+
+          <!-- cor de fundo da quarta seção -->
+          <mat-form-field style="margin-top: 20px !important;" class="col-md-12">
+            <input [style.background]="quartaSecaoSelecionada?.corFundo" [cpPosition]="'top-right'"
+              [(colorPicker)]="quartaSecaoSelecionada.corFundo" />
+            <input matInput placeholder="Cor de Fundo da Seção" maxlength="10" #inputCorFundoQuartaSecao
+              name="corFundoQuartaSecao" [(ngModel)]="quartaSecaoSelecionada.corFundo"
+              id="corFundoQuartaSecao" matTooltip="Cor de Fundo da Seção">
+          </mat-form-field>
+      
+          <!-- Seleção shapes -->
+          <div class="col-lg-12">
+            <mat-form-field class="full-width">
+              <mat-label>Selecione os ShapeFiles</mat-label>
+              <mat-select id="idShp" name="shp"  [(ngModel)]="quartaSecaoSelecionada.shapeFiles" multiple>
+                  <mat-option *ngFor="let shp of shapeFiles" [value]="shp.id">{{shp?.nome}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <!-- Salvar quarta seção -->
+          <div class="text-right" style="margin-top: 10px !important;">
+            <button mat-flat-button color="primary" class="btnToRight" [disabled]="indiceQuartaSecao?.invalid"
+              role="button" (click)='editarQuartaSecao()' matTooltip="Salvar Seção A">
+              <mat-icon>save</mat-icon>Salvar
+            </button>
+          </div>
+
+
+        </div>
+
+      </div>
+
+    </form>
+
+  </mat-card>
+</div>
+
+
+
+

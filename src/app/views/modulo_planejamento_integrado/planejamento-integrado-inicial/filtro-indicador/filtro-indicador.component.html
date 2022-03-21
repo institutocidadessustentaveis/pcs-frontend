@@ -1,0 +1,148 @@
+<div class="col-md-12 mt-2">
+  <form #formVariaveis="ngForm">
+    <mat-form-field class="col-md-6">
+      <mat-select id="idEixo" placeholder="Eixo" [(ngModel)]="filtroIndicadoresPorMunicipio.idEixo" name="eixo">
+        <mat-option>Selecione um</mat-option>
+        <mat-option *ngFor="let eixo of listaEixosCombo" [value]="eixo.id">{{eixo.nome}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6">
+      <mat-select id="idvariavel" placeholder="Variável" [(ngModel)]="filtroIndicadoresPorMunicipio.idVariavelSelecionada" name="variavel">
+        <mat-option>Selecione uma</mat-option>
+        <mat-option *ngFor="let variavel of variaveisCombo" [value]="variavel.id">{{variavel.label}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6">
+      <mat-select name="ods" placeholder="Ods" [(ngModel)]="filtroIndicadoresPorMunicipio.idOds">
+        <mat-option>Selecione um</mat-option>
+        <mat-option *ngFor="let ods of listaOdsCombo" [value]="ods.id">{{ ods?.numero + ' - ' + ods.titulo}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6">
+      <mat-select name="indicador" placeholder="Indicador" [(ngModel)]="filtroIndicadoresPorMunicipio.idIndicador" required
+        (selectionChange)="changeIndicador($event.value)">
+        <mat-option>Selecione um</mat-option>
+        <mat-option *ngFor="let item of listaIndicadores" [value]="item.id">{{item.nome}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6">
+      <mat-select name="cidade" placeholder="Cidade" [(ngModel)]="filtroIndicadoresPorMunicipio.idCidade">
+        <mat-option>Selecione uma</mat-option>
+        <mat-option *ngFor="let cidade of listaCidades" [value]="cidade.id">{{cidade.label}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6" *ngIf="formulaIndicadorSelecionadoTreeMap?.length > 1">
+      <mat-label class="bmd-label-floating">Fórmula:</mat-label>
+      <mat-select name="formula" placeholder="Formula" [(ngModel)]="idxFormula" required>
+        <mat-option *ngFor="let item of formulaIndicadorSelecionadoTreeMap; let i=index" [value]="i"> {{item}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-3">
+      <input matInput placeholder="População Min:" value="" id="popuMin" [(ngModel)]="filtroIndicadoresPorMunicipio.popuMin" name="popuMin"
+        type="number" onKeyPress="if(this.value.length==20) return false;" />
+    </mat-form-field>
+
+    <mat-form-field class="col-md-3">
+      <input matInput placeholder="População Máx:" value="" id="popuMax" [(ngModel)]="filtroIndicadoresPorMunicipio.popuMax" name="popuMax"
+        type="number" onKeyPress="if(this.value.length==20) return false;" />
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6">
+      <input name="inputValorPreenchido" matInput placeholder="Valor preenchido" [(ngModel)]="filtroIndicadoresPorMunicipio.valorPreenchido">
+    </mat-form-field>
+
+    <mat-form-field class="col-md-3">
+      <mat-select id="inputAnoSelecionado" placeholder="Ano de preenchimento" [(ngModel)]="filtroIndicadoresPorMunicipio.anoSelecionado" name="anoSelecionado">
+        <mat-option *ngFor="let ano of anosCombo" [value]="ano">{{ano}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-12">
+      <mat-label>Exibição no mapa</mat-label>
+      <mat-select name="inputVisualizar" [(ngModel)]="filtroIndicadoresPorMunicipio.visualizarComoPontos">
+        <mat-option *ngFor="let opcao of opcoes" [value]="opcao.value">
+          {{opcao.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="row" style="padding-left: 3%;padding-right: 3%;">
+      <button mat-raised-button color="primary" class="col-md-5" style="margin-right: 5%;"
+              [disabled]="!formVariaveis.valid"  style="margin-right: 5%;" (click)="buscarCidadesComIndicadorPreenchido()">
+        Carregar no mapa
+      </button>
+
+      <button mat-raised-button color="primary" class="col-md-5"
+      style="margin-right: 5%;"(click)="exportarShapeIndicadores()" id="btnExportar">Exportar shape</button>
+    </div>
+
+    <div class="row" style="padding-left: 3%;padding-right: 3%;padding-top: 1%;">
+      <button mat-raised-button color="accent" id="btnRemover" 
+              class="col-md-5" style="margin-right: 5%;" (click)="clear()">
+        Remover do mapa
+      </button>
+    
+      <button mat-raised-button color="primary" class="col-md-5" style="margin-right: 5%;" 
+        (click)="openDialogPropriedades()" [disabled]="!exibirEstilo" id="btnEstilo">
+        Alterar estilo
+      </button>
+    </div>
+
+
+  </form>
+
+  <form #formConsulta="ngForm" *ngIf="isAuthenticated()">
+    <mat-form-field class="col-md-4" style="margin-top: 3%;">
+      <input matInput placeholder="Nome da consulta:" value="" id="consultanome" required [disabled]="filtroIndicadoresPorMunicipio.idConsulta"
+        [(ngModel)]="filtroIndicadoresPorMunicipio.nomeConsulta" name="consultanome"/>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" matTooltip="Salvar Consulta" (click)="salvarConsultaIndicadores()"
+            [disabled]="!formConsulta.valid || !(filtroIndicadoresPorMunicipio.idConsulta == null)"  id="btnSalvarConsulta">
+      <mat-icon> save </mat-icon>
+    </button>
+   
+    <mat-form-field class="col-md-4">
+      <mat-label class="bmd-label-floating">Selecione uma consulta</mat-label>
+      <mat-select id="idCidade"  name="filtroConsulta" [(ngModel)]="consultaSelecionada" (selectionChange)="onChangeConsultaIndicador($event.value)">
+        <mat-option>Selecione uma</mat-option>
+        <mat-option *ngFor="let filtro of listaConsultasIndicadores" [value]="filtro">{{filtro.nomeConsulta}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-flat-button color="warn" type="button" name="button" (click)="excluirConsultaIndicador(filtroIndicadoresPorMunicipio.idConsulta)"
+         id="btnExcluir"  *ngIf="filtroIndicadoresPorMunicipio.idConsulta"   matTooltip="Excluir consulta" >
+      <mat-icon> delete </mat-icon>
+    </button>
+
+    <button mat-flat-button color="primary"  style="margin-left: 1%;" *ngIf="filtroIndicadoresPorMunicipio.idConsulta" (click)="limparFiltroIndicadoresPorMunicipios()"
+        id="btnAdd" matTooltip="Novo">Limpar
+    </button>
+  </form>
+
+  <ng-template #modalLoading>
+    <div class="centralizar-loading">
+       <div id="circularG">
+        <div id="circularG_1" class="circularG"></div>
+        <div id="circularG_2" class="circularG"></div>
+        <div id="circularG_3" class="circularG"></div>
+        <div id="circularG_4" class="circularG"></div>
+        <div id="circularG_5" class="circularG"></div>
+        <div id="circularG_6" class="circularG"></div>
+        <div id="circularG_7" class="circularG"></div>
+        <div id="circularG_8" class="circularG"></div>
+      </div> 
+      <div class="mt-2" style="text-align: center">
+        <p><strong>Carregando...</strong></p>
+      </div>
+    </div>
+  </ng-template>
+</div>

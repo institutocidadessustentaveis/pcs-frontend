@@ -1,0 +1,36 @@
+<div [hidden]="!carregando">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+<div class="contentBody">
+
+  <app-breadcrumb style="position: relative;"></app-breadcrumb>
+
+  <div class="row" [hidden]="carregando">
+    <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+      <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <mat-card-title>Envie uma proposta para {{cidade.nome}} - {{cidade.siglaEstado}} </mat-card-title>
+        <hr>
+        <br>
+        <section>
+          Deseja enviar uma proposta para a prefeitura de <strong>{{cidade.nome}} - {{cidade.siglaEstado}} </strong>? Então digite-a no campo abaixo e clique no botão "Enviar proposta para a Prefeitura".
+          <form [formGroup]="formSolicitacao" (submit)="enviarProposta()">
+            <div [ngxSummernote]="editorConfig" formControlName="proposta"></div>
+            <div class="text-center">
+              <br>
+              <button  type="submit" [disabled]="!autenticado"
+                style="height: 5em !important;
+                display: inline;
+                padding-top: 0.3em;
+                padding-left: 1em;
+                padding-right: 1em;" mat-flat-button color="primary"
+                matTooltip="Enviar Proposta para a Prefeitura.">
+                Enviar proposta para a Prefeitura
+              </button><br>
+              <div style="color: red" [hidden]="autenticado"> Você precisa fazer Login para enviar uma proposta para a prefeitura.</div>
+            </div>
+          </form>
+        </section>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

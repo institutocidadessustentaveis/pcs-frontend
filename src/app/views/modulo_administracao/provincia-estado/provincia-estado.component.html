@@ -1,0 +1,80 @@
+<div class="contentBody" style="position: relative;">
+    <app-breadcrumb style="position: relative;"></app-breadcrumb>
+<mat-card>
+
+  <div class="row">
+
+    <div class="col-md-8 col-lg-9 col-xs-12 col-sm-12">
+      <h2>Cadastro de Estado/Província</h2>
+    </div>
+
+    <div class="col-md-4 col-lg-3 col-xs-12 col-sm-12" style="text-align: right;">
+      <button mat-flat-button color="primary" class="btnCadastrar"  [routerLink]="['/estado-provincia/cadastrar']"
+        id="btnCadastrarProvincia" matTooltip="Cadastrar" style="cursor: pointer !important; margin-bottom: 5px;">
+        <mat-icon>add</mat-icon>Cadastrar Estado/Província
+      </button>
+    </div>
+
+  </div>
+
+  <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+    <mat-divider></mat-divider>
+  </div>
+
+    <div *ngIf="loading" class="loading-indicator">
+      <mat-progress-spinner style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+    </div>
+
+    <br>
+
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtro">
+    </mat-form-field>
+
+    <br>
+    <br>
+
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <mat-card-title>Lista de Estados/Procíncias Cadastrados</mat-card-title>
+      <mat-divider></mat-divider>
+    </div>
+
+    <div>
+      <div>
+          <table mat-table  [dataSource]="dataSource" matSort>
+
+            <ng-container matColumnDef="ProvinciaEstado">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header="nome"> Província/Estado </th>
+              <td mat-cell *matCellDef="let provinciaEstado" class='m-card-title' data-label='Província/Estado'>
+                  <span class="mobile-label">Estado:</span> {{provinciaEstado.nome}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Pais">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header='nomePais'> Pais </th>
+              <td mat-cell *matCellDef="let provinciaEstado" class='m-card-title' data-label='Pais'>
+                  <span class="mobile-label">Pais:</span> {{provinciaEstado.nomePais}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Ações">
+              <th mat-header-cell *matHeaderCellDef> Ações </th>
+              <td mat-cell *matCellDef="let provinciaEstado" class='m-card-title'  data-label='Ações'>
+                <button mat-flat-button color="primary" type="button" name="button" (click)="editar(provinciaEstado)" [routerLink]="['/estado-provincia/editar', provinciaEstado.id]"  class="btnTabela" id="btnEditarProvinciaEstado" matTooltip="Editar"> <mat-icon> edit </mat-icon> </button>
+                <button mat-flat-button color="warn" name="button" (click)='deletarProvinciaEstado(provinciaEstado)'  class="btnTabela" id="btnExcluirProvinciaEstado" matTooltip="Excluir"> <mat-icon> delete </mat-icon> </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+      </div>
+      <mat-paginator style="text-align: center !important;" class="float-none"
+                     (page)="carregarPaginaEstado($event)" showFirstLastButtons
+                     [length]="length"
+                     [pageSize]="pageSize"
+                     [pageSizeOptions]="[10, 25, 50, 100]"
+      ></mat-paginator>
+    </div>
+</mat-card>
+</div>
+
+

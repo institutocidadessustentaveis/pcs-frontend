@@ -1,0 +1,219 @@
+<div class="contentBody">
+  <mat-card>
+    <div class="col-lg-12">
+      <h2>Dados abertos</h2>
+      <mat-divider></mat-divider>
+    </div>
+
+    <div [hidden]="!loading">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+
+    <br>
+
+    <div class="col-lg-12">
+      <h2><mat-icon aria-hidden="false">save</mat-icon> Baixar dados</h2>
+    </div>
+
+    <mat-card>
+      <div class="row">
+        <div class="col-lg-6">
+          <mat-form-field>
+            <mat-label>Cidades</mat-label>
+            <mat-select [(value)]="idCidade">
+              <mat-option value="-1">TODAS</mat-option>
+              <mat-option *ngFor="let cidade of cidades" [value]="cidade.id">
+                  {{cidade.nome}} - {{cidade.provinciaEstado.sigla}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-8">
+          <mat-form-field>
+              <mat-label>Indicador</mat-label>
+              <mat-select [(value)]="idIndicador">
+                <mat-option value="-1">TODOS</mat-option>
+                <mat-option *ngFor="let indicador of indicadores" [value]="indicador.id" [matTooltip]="indicador.nome">
+                    {{indicador.nome}}
+                </mat-option>
+              </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-4">
+          <mat-form-field>
+              <mat-label>Formato</mat-label>
+              <mat-select [(value)]="formato">
+                  <mat-option value=".xls">XLS / Microsoft Excel</mat-option>
+                  <mat-option value=".csv">CSV</mat-option>
+                  <mat-option value=".xml">XML</mat-option>
+                  <mat-option value=".json">JSON</mat-option>
+              </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card>
+
+    <br>
+
+    <div class="row">
+      <div class="col-lg-12">
+        <h3>Informações contidas nos arquivos</h3>
+        <mat-divider></mat-divider>
+      </div>
+    </div>
+
+    <br>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <h4>Arquivo de indicadores</h4>
+
+        <div class="col-lg-12 text-center" style="margin-top: 10px !important;" >
+          <a mat-raised-button color="primary" alt="Baixar indicadores" (click)="validacaoDownloadIndicadores()" >
+            Download <mat-icon aria-hidden="false">cloud_download</mat-icon>
+          </a>
+        </div>
+
+        <mat-list>
+          <mat-list-item>
+            <mat-icon matListIcon>arrow_right</mat-icon> <strong>Nome da cidade</strong>
+          </mat-list-item>
+
+          <mat-list-item>
+            <mat-icon matListIcon>arrow_right</mat-icon> <strong>Nome do indicador</strong>
+          </mat-list-item>
+
+          <mat-list-item>
+            <mat-icon matListIcon>arrow_right</mat-icon> <strong>Ano de Preenchimento</strong>
+          </mat-list-item>
+
+          <mat-list-item>
+            <mat-icon matListIcon>arrow_right</mat-icon> <strong>Valor</strong>
+          </mat-list-item>
+
+          <mat-list-item><mat-icon matListIcon>arrow_right</mat-icon> ID da cidade</mat-list-item>
+          <mat-list-item><mat-icon matListIcon>arrow_right</mat-icon> Eixo</mat-list-item>
+          <mat-list-item><mat-icon matListIcon>arrow_right</mat-icon> ID Indicador</mat-list-item>
+          <mat-list-item><mat-icon matListIcon>arrow_right</mat-icon> Fórmula</mat-list-item>
+          <mat-list-item><mat-icon matListIcon>arrow_right</mat-icon> Meta</mat-list-item>
+          <mat-list-item><mat-icon matListIcon>arrow_right</mat-icon> Meta ODS</mat-list-item>
+          <mat-list-item><mat-icon matListIcon>arrow_right</mat-icon> ODS relacionados</mat-list-item>
+          <mat-list-item><mat-icon matListIcon>arrow_right</mat-icon> Descrição</mat-list-item>
+          <mat-list-item><mat-icon matListIcon>arrow_right</mat-icon> Justificativa do valor não preenchido</mat-list-item>
+        </mat-list>
+      </div>
+
+      <div class="col-lg-6">
+        <h4>Arquivo de variáveis</h4>
+
+        <div class="col-lg-12 text-center" style="margin-top: 10px !important;">
+          <a mat-raised-button color="primary" alt="Baixar variáveis" (click)="validacaoDownloadVariaveis()">
+            Download <mat-icon aria-hidden="false">cloud_download</mat-icon>
+          </a>
+        </div>
+
+        <mat-list>
+          <mat-list-item>
+            <mat-icon matListIcon>arrow_right</mat-icon> <strong>Nome da cidade</strong>
+          </mat-list-item>
+
+          <mat-list-item>
+            <mat-icon matListIcon>arrow_right</mat-icon> <strong>Nome do indicador</strong>
+          </mat-list-item>
+
+          <mat-list-item>
+            <mat-icon matListIcon>arrow_right</mat-icon> <strong>Ano de Preenchimento</strong>
+          </mat-list-item>
+
+          <mat-list-item>
+            <mat-icon matListIcon>arrow_right</mat-icon> <strong>Valor</strong>
+          </mat-list-item>
+
+          <mat-list-item><mat-icon matListIcon>arrow_right</mat-icon> ID da cidade</mat-list-item>
+          <mat-list-item><mat-icon matListIcon>arrow_right</mat-icon> ID</mat-list-item>
+          <mat-list-item><mat-icon matListIcon>arrow_right</mat-icon> Tipo</mat-list-item>
+          <mat-list-item><mat-icon matListIcon>arrow_right</mat-icon> Fonte</mat-list-item>
+          <mat-list-item><mat-icon matListIcon>arrow_right</mat-icon> Unidade de medida</mat-list-item>
+          <mat-list-item><mat-icon matListIcon>arrow_right</mat-icon> Observações</mat-list-item>
+          <mat-list-item><mat-icon matListIcon>arrow_right</mat-icon> Fonte de valor</mat-list-item>
+        </mat-list>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-2"></div>
+
+      <mat-card class="col-lg-8">
+        <mat-card-header>
+          <div mat-card-avatar>
+              <mat-icon matListIcon>folder</mat-icon>
+          </div>
+          <mat-card-title>O que são dados abertos?</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+          <p>Segundo a definição da Open Knowledge Foundation, em suma,</p>
+
+          <blockquote class="text-right" cite="http://opendatahandbook.org/guide/pt_BR/what-is-open-data/">
+            <p>
+              dados são abertos quando qualquer pessoa pode livremente usá-los, reutilizá-los e redistribuí-los, 
+              estando sujeito a, no máximo, a exigência de creditar a sua autoria e compartilhar pela mesma licença.
+            </p>
+
+            <small>
+              <a href="http://opendatahandbook.org/guide/pt_BR/what-is-open-data/" target="_blank">Open Knowledge Foundation</a>
+            </small>
+          </blockquote>
+
+          <p>
+            Você pode saber mais sobre o assunto acessando 
+            <a href="http://dados.gov.br/dados-abertos/" target="_blank">o Portal de dados abertos do Brasil</a>.
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <br>
+
+    <div class="row">
+        <div class="col-lg-2"></div>
+
+      <mat-card class="col-lg-8">
+        <mat-card-header>
+          <div mat-card-avatar>
+            <mat-icon matListIcon>remove_red_eye</mat-icon>
+          </div>
+          <mat-card-title>Saiba mais sobre os Indicadores</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+          <!-- <blockquote class="text-right" cite="http://www.cedeps.com.br/wp-content/uploads/2011/02/INDICADORES-SOCIAIS-JANUZZI.pdf">
+            <p>
+                Um indicador social é uma medida em geral quantitativa dotada de significado social substantivo, usada para substituir, 
+                quantificar ou operacionalizar um conceito social abstrato, de interesse teórico (para pesquisa acadêmica) ou programático 
+                (para formulação de políticas)
+            </p>
+
+            <small>
+              <a href="http://www.cedeps.com.br/wp-content/uploads/2011/02/INDICADORES-SOCIAIS-JANUZZI.pdf" target="_blank">Paulo de Martino Jannuzzi, 2011</a>
+            </small>
+          </blockquote>
+
+          <p>
+              Dentro da Plataforma Cidades Sustentáveis, um <strong>indicador</strong> é composto por uma ou mais <strong>variáveis</strong> agrupadas por operadores matemáticos.
+              Cada <strong>variável</strong> tem um período de atualização, por exemplo, <i>diariamente</i>, <i>semanalmente</i>, <i>mensalmente</i> ou <i>anualmente</i>.
+              Quandos os dados são inseridos na Plataforma, a entrada contém qual <strong>variável</strong>, qual a data e qual a fonte daquela entrada.
+              Com isso, os <strong>indicadores</strong> que utilizam daquela <strong>variável</strong> são atualizados automaticamente e geram um novo número, chamado de <strong>valor</strong>.
+              Você pode fazer o download de maneira simples e aberta dos dados de <strong>valores dos indicadores</strong> ou valores das variáveis.
+          </p> -->
+          <a [routerLink]="['/bomIndicador']" target="_blank">O que é um Bom Indicador</a>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+  </mat-card>
+</div>

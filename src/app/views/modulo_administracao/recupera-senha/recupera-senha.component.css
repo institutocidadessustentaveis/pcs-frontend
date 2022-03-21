@@ -1,0 +1,29 @@
+  .full-width {
+    width: 100%;
+  }
+  
+  /* Structure */
+  table {
+    width: 100%;
+  }
+  
+  .mat-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  .btnToRight{
+    margin-right: 5px !important;
+  }
+
+  .marginToTop{
+      margin-top: 30px !important;
+  }
+  
+  .marginToComponent{
+      margin-top: 10px !important;
+  }
+
+  .marginfield{
+    margin-top: 20px !important;
+  }

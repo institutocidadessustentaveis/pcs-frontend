@@ -1,0 +1,22 @@
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 10px !important;"
+  [hidden]="registros.length == 0">
+  <div *ngIf="loading" class="loading-indicator">
+    <mat-progress-spinner mode="indeterminate" style="margin-top:20px; display: block;"></mat-progress-spinner>
+  </div>
+  <button matTooltip="Pdf" mat-flat-button color="primary" (click)="exportPdf()" class="btnToRight"
+    style="cursor: pointer !important;" id="btnPdf">
+    Pdf
+  </button>
+  <button matTooltip="Xls" mat-flat-button color="primary" (click)="exportXls()" class="btnToRight"
+    style="cursor: pointer !important;" id="btnXls">
+    Xls
+  </button>
+  <button matTooltip="Doc" mat-flat-button color="primary" (click)="exportDoc()" class="btnToRight"
+    style="cursor: pointer !important;" id="btnDoc">
+    Doc
+  </button>
+  <button matTooltip="Csv" mat-flat-button color="primary" (click)="exportCsv()" class="btnToRight"
+    style="cursor: pointer !important;" id="btnCsv">
+    Csv
+  </button>
+</div>

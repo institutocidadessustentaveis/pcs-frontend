@@ -1,0 +1,69 @@
+<br><br><br><br>
+<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+  <mat-card class="mat-card">
+      <div class="paper paper--heavy"><header><h1><span>Acesso</span></h1></header></div>
+        <form [formGroup]="formlogin" (ngSubmit)="doLogin()">
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" style="margin-top: 20px !important;">
+              <mat-form-field [style.fontSize.em]=1.3>
+                <input matInput placeholder="Usuário (e-mail)"  id="txtUsuario" formControlName="usuario" autofocus
+                  #txtUsuario maxlength="50" class="input-class">
+                <mat-hint align="end">{{ txtUsuario.value?.length || 0 }}/50</mat-hint>
+                <mat-error *ngIf="!formlogin.controls['usuario'].valid && formlogin.controls['usuario'].touched">
+                  {{ getUsuario() }}
+                </mat-error>
+              </mat-form-field>
+              <br>
+              <mat-form-field [style.fontSize.em]=1.3>
+                <input matInput placeholder="Senha" id="txtSenha" formControlName="senha" #txtSenha maxlength="30"
+                  [type]="hideSenha ? 'password' : 'text'" class=".input-class::-webkit-input-placeholder">
+                <mat-icon matSuffix (click)="hideSenha = !hideSenha">{{hideSenha ? 'visibility_off' : 'visibility'}}
+                </mat-icon>
+                <mat-hint align="end">{{ txtSenha.value?.length || 0 }}/20</mat-hint>
+                <mat-error *ngIf="!formlogin.controls['senha'].valid && formlogin.controls['senha'].touched">
+                  {{ getSenha() }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12"
+              style="margin-top: 10px !important; text-align: center;" [hidden]="!loading">
+              <mat-progress-bar mode="indeterminate"></mat-progress-bar><br>
+              <label style="font-weight: bold;">{{labelSistema}}</label>
+            </div>
+          </div>
+          <br>
+
+          <div class="row">
+              <div class="col-lg-9 col-md-6 col-xs-12 col-sm-12">
+                <div class="row" style="padding-left: 12px;">
+                  <a (click)="openModalCadastroEsqueciSenha(innerWidth)"
+                  style="color: #007bff; background-color: transparent; cursor: pointer;font-size:16px" id="aEsqueciSenha">Alterar minha
+                  senha</a>
+                </div>
+
+                <div class="row" style="padding-left: 12px;">
+                    <a style="color: #007bff; background-color: transparent; cursor: pointer;font-size:16px;" id="aNovoUsuario"
+                    routerLink="/cadastroCidadao">Novo
+                    usuario</a>
+                </div>
+
+              </div>
+
+              <div class="col-lg-3 col-md-6 col-xs-12 col-sm-12" style="text-align: right">
+                  <button mat-flat-button color="primary" matTooltip="Login" id="btnLogin" (click)="doLogin()" type="submit"
+                  [disabled]="!formlogin.valid" id="btnRealizarLogin">
+                  <mat-icon>perm_identity</mat-icon> Acessar
+                </button>
+              </div>
+          </div>
+      </form>
+  </mat-card>
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<br>

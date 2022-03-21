@@ -1,0 +1,91 @@
+<div style="background-color: white;" class="bmd-layout-container bmd-drawer-f-l bmd-drawer-overlay ">
+  <main class="bmd-layout-content">
+    <div [hidden]="!loading" class="loading-indicator">
+      <mat-progress-spinner class="example-margin" style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+    </div>
+
+    <div>
+      <section class="teaser teaser--dotted" style="margin-top: 0%;margin-bottom: 0%;">
+        <app-breadcrumb></app-breadcrumb>
+
+        <header>
+          <h1 style="font-weight: 700 !important;">Mapa de Macrozoneamento</h1>
+        </header>
+
+      </section>
+
+      <section class="secao-filtro">
+        <header>
+          <h1><span style="font-weight: 700 !important;color: white;">FAÇA UMA BUSCA</span></h1>
+        </header>
+        <div class="row search-form-color">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 search-form-color">
+            <form [formGroup]="formFiltro" class="example-form">
+
+              <mat-form-field class="col-md-6 search-form-color">
+                <input matInput formControlName="palavraChave" placeholder="Palavra chave">
+              </mat-form-field>
+
+              <mat-form-field class="col-md-6 search-form-color">
+                <mat-label>Áreas de Interesse</mat-label>
+                <mat-select id="inputTema" name="tema" formControlName="idTema">
+                  <mat-option [value]=""></mat-option>
+                  <mat-option *ngFor="let item of areasInteresseCombo" [value]="item.id">{{item.nome}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-4 search-form-color">
+                <mat-label>País</mat-label>
+                <mat-select id="idPais" name="idPais" formControlName="idPais" (selectionChange)="onPaisChange($event)">
+                  <mat-option [value]=""></mat-option>
+                  <mat-option *ngFor="let item of paisesCombo" [value]="item.id">{{item.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-4 search-form-color">
+                <mat-label>Estado</mat-label>
+                <mat-select id="idProvinciaEstado" name="idProvinciaEstado" formControlName="idProvinciaEstado"
+                  (selectionChange)="onEstadoChange($event)">
+                  <mat-option [value]=""></mat-option>
+                  <mat-option *ngFor="let item of provinciaEstadoCombo" [value]="item.id">{{item.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-4 search-form-color">
+                <mat-label>Cidade</mat-label>
+                <mat-select id="idCidade" name="idCidade" formControlName="idCidade">
+                  <mat-option [value]=""></mat-option>
+                  <mat-option *ngFor="let item of cidadesCombo" [value]="item.id">{{item.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right botoes-pesquisa" style="margin-top: 10px !important;">
+                <button matTooltip="Buscar" mat-flat-button color="primary" style="margin-right: 10px" (click)="buscar()" id="btnBuscar"
+                  class="btn-filtro-buscar">
+                  <mat-icon style="margin-top: -1px !important">search</mat-icon>Buscar
+                </button>
+                <button matTooltip="Buscar" mat-flat-button color="accent" (click)="limparFiltro()" id="btnBuscar"
+                  class="btn-filtro-limpar">
+                  Limpar Filtro
+                </button>
+              </div>
+              
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <div id="destination" class="news">
+        <section class="news__section news__section--alt-title">
+          <header style="margin-bottom: 0em;">
+            <h1 style="font-weight: 700 !important;font-size: 1.5em;">Mapa de Leis, Planos e Regulamentações</h1>
+          </header>
+          <div style="height: 700px;" leaflet [leafletOptions]="options" [leafletLayers]="layersControl"
+            (leafletMapReady)="onMapReady($event)">
+          </div>
+        </section>
+      </div>
+
+    </div>
+  </main>
+</div>

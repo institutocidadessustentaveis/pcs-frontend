@@ -1,0 +1,77 @@
+<div class="contentBody">
+  <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+    <form [formGroup]="formulario">
+      <div class="col-lg-12">
+        <title> Sugerir Boa Prática </title>
+        <h2 >Sugestão de Boa Prática</h2>
+        <mat-divider></mat-divider>
+      </div>
+      <br>
+
+      <mat-form-field class="col-md-12">
+        <mat-label>País</mat-label>
+        <mat-select id="idPais" name="idPais" formControlName="idPais" (selectionChange)="onPaisChange($event)">
+          <mat-option *ngFor="let item of paisesCombo" [value]="item.id">{{item.label}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="formulario.controls['solicitacao'].hasError('required')">
+          Campo País é obrigatório
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-12">
+        <mat-label>Estado</mat-label>
+        <mat-select id="idProvinciaEstado" name="idProvinciaEstado" formControlName="idProvinciaEstado" (selectionChange)="onEstadoChange($event)">
+          <mat-option *ngFor="let item of provinciaEstadosCombo" [value]="item.id">{{item.label}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="formulario.controls['solicitacao'].hasError('required')">
+          Campo Estado é obrigatório
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-12">
+        <mat-label>Cidade</mat-label>
+        <mat-select id="idCidade" name="idCidade" formControlName="idCidade">
+          <mat-option *ngFor="let item of cidadesCombo" [value]="item.id">{{item.label}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="formulario.controls['solicitacao'].hasError('required')">
+          Campo Cidade é obrigatório
+        </mat-error>
+      </mat-form-field>
+
+      <div class="col-md-12">
+        <mat-label>Solicitação *</mat-label>
+        <div [ngxSummernote]="editorConfig" formControlName="solicitacao"></div>
+        <mat-error *ngIf="formulario.controls['solicitacao'].hasError('required')">
+          Campo Solicitação é obrigatório
+        </mat-error>
+      </div>
+
+      <div class="col-md-12">
+        <ngx-recaptcha2 id="captcha" #captchaElem [siteKey]="siteKey" (success)="handleSuccess($event)"
+          [useGlobalDomain]="false" class="col-md-7" formControlName="recaptcha">
+      </ngx-recaptcha2>
+      </div>
+
+      <br />
+
+      <div class="text-right" style="margin-top: 5px;">
+          <button mat-flat-button color="primary" matTooltip="Salvar"
+            style="cursor: pointer; margin-top: 10px !important; margin-right: 5px;" id="btnSalvar" (click)="salvar()" [disabled]="!formulario.valid">
+            <mat-icon>save</mat-icon> Enviar
+          </button>
+
+          <button mat-flat-button color="accent" matTooltip="Voltar" style="cursor: pointer;"
+            (click)="returnBack()" id="btnVoltar" [hidden]="false">
+            <mat-icon>arrow_back_ios</mat-icon> Voltar
+          </button>
+      </div>
+
+      <br />
+
+      <br />
+
+      <mat-progress-bar [hidden]="!loading" mode="indeterminate"></mat-progress-bar>
+
+    </form>
+  </mat-card>
+</div>

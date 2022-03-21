@@ -1,0 +1,27 @@
+<a [href]="gerarLinkNoticia(materialApoio.id)" *ngIf="materialApoio && materialApoio?.id">
+  <img style=" height: 300px;width: 100%;object-fit: cover;" class="publicacao-material-apoio text-center pointer"
+    [style.backgroundImage]="'url('+urlbackend+'materialapoio/imagem/'+materialApoio?.id+')'">
+</a>
+<div *ngIf="materialApoio && materialApoio?.id">
+
+  <a [href]="gerarLinkNoticia(materialApoio.id)" target="_blank">
+    <h2 class="publicacao-material-apoio-titulo pointer">
+      {{ materialApoio.titulo }}
+      <br>
+    </h2>
+  </a>
+  <a [href]="gerarLinkNoticia(materialApoio.id)" target="_blank">
+    <p class="publicacao-material-apoio-texto pointer">
+      {{ materialApoio.subtitulo }}
+    </p>
+  </a>
+  <a [href]="gerarLinkNoticia(materialApoio.id)" target="_blank">
+    <p class="publicacao-material-apoio-texto pointer">
+      [Leia Mais]
+    </p>
+  </a>
+
+  <button matTooltip="Buscar Eventos" mat-flat-button color="primary" class="botaoBuscarEventos" (click)="validacaoDownloadMaterialApoio()" id="btnBuscarEventos">
+    <mat-icon style="margin-top: -1px !important">get_app</mat-icon> Download
+  </button>
+</div>

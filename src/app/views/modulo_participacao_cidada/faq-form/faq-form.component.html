@@ -1,0 +1,38 @@
+<div class="contentBody" style="position: relative;">
+  <app-breadcrumb style="position: relative;"></app-breadcrumb>
+  <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+    <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <mat-card-title>
+        FAQ
+      </mat-card-title>
+    </mat-card-content>
+    <hr>
+    <form [formGroup]="formFaq">
+
+      <mat-form-field class="col-md-12">
+        <input matInput placeholder="Título da pergunta *" formControlName="pergunta" maxlength="200" #inputPergunta
+          id="inputPergunta">
+        <mat-hint align="end">{{ inputPergunta.value?.length || 0 }}/200</mat-hint>
+        <mat-error *ngIf="formFaq.controls['pergunta'].hasError('required')">
+          Campo Título da pergunta é obrigatório.
+        </mat-error>
+      </mat-form-field>
+
+      <div class="col-md-12">
+        <mat-label>Resposta *</mat-label>
+        <div [ngxSummernote]="editorConfig" formControlName="resposta"></div>
+        <mat-error *ngIf="formFaq.controls['resposta'].hasError('required')">
+          Campo Resposta é obrigatório
+        </mat-error>
+      </div>
+      <br>
+        <div class="col-sm-12" align='end'>
+          <button mat-flat-button color="primary" (click)="salvar()" matTooltip="Cadastrar pergunta e resposta">
+            <mat-icon>save</mat-icon> Salvar e finalizar
+          </button>
+          <button mat-flat-button  color="accent" style="margin-left: 6px" matTooltip="Voltar para a lista de perguntas" routerLink="/participacao-cidada/faq-administracao">Voltar</button>
+        </div>
+
+    </form>
+  </mat-card>
+</div>

@@ -1,0 +1,71 @@
+<!-- Seção Lateral -->
+
+<section>
+
+
+  <div class="row" style="margin-top: 5%" *ngIf="secaoLateral?.segundoTituloPrincipal">
+    <div class="col-md-12 row-card-side-bar">
+      <div class="h-100" style="cursor: pointer;">
+        <div class="row">
+          <div class="caixa" [style.background-color]="secaoLateral.segundoTituloPrincipalCor"></div>
+          <a class="h1 titulos" style="margin-bottom:0 !important;"
+            [style.border-color]="secaoLateral.segundoTituloPrincipalCor"
+            [style.color]="secaoLateral.segundoTituloPrincipalCor"
+            [href]="secaoLateral.segundoTituloPrincipalLink" onclick="return false;">{{secaoLateral.segundoTituloPrincipal}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top: 3%">
+    <div class="col-md-12 row-card-side-bar">
+      <div class="h-100">
+        <div class="card-body" [style.background-color]="this.segundoTituloPrincipalCorTemaAux">
+
+          <div class="verticalLine" [style.border-color]="secaoLateral.segundoTituloPrincipalCor">
+            <a [href]="secaoLateral.primeiroItemLink" onclick="return false;">
+              <p style="text-align: left;">
+                <span [style.color]="secaoLateral.itemTituloCor" style="font-weight: bold;">{{secaoLateral.primeiroItemTitulo}} </span>
+                <span [style.color]="secaoLateral.itemTextoCor">{{secaoLateral.primeiroItemTexto}}</span>
+              </p>
+            </a>
+          </div>
+          <hr style="border-top: 1pt solid;width: 85%;" [style.color]="secaoLateral.segundoTituloPrincipalCor">
+
+          <div class="verticalLine" [style.border-color]="secaoLateral.segundoTituloPrincipalCor">
+            <a [href]="secaoLateral.segundoItemLink" onclick="return false;">
+              <p style="text-align: left;">
+                <span [style.color]="secaoLateral.itemTituloCor" style="font-weight: bold;">{{secaoLateral.segundoItemTitulo}} </span>
+                <span [style.color]="secaoLateral.itemTextoCor">{{secaoLateral.segundoItemTexto}}</span>
+              </p>
+            </a>
+          </div>
+          <hr style="border-top: 1pt solid;width: 85%;" [style.color]="secaoLateral.segundoTituloPrincipalCor">
+
+          <div class="verticalLine" [style.border-color]="secaoLateral.segundoTituloPrincipalCor">
+            <a [href]="secaoLateral.terceiroItemLink" onclick="return false;">
+              <p style="text-align: left;">
+                <span [style.color]="secaoLateral.itemTituloCor" style="font-weight: bold;">{{secaoLateral.terceiroItemTitulo}} </span>
+                <span [style.color]="secaoLateral.itemTextoCor">{{secaoLateral.terceiroItemTexto}}</span>
+              </p>
+            </a>
+          </div>
+          <hr style="border-top: 1pt solid;width: 85%;" [style.color]="secaoLateral.segundoTituloPrincipalCor">
+
+          <div class="verticalLine" [style.border-color]="secaoLateral.segundoTituloPrincipalCor">
+            <a [href]="secaoLateral.quartoItemLink" onclick="return false;">
+              <p style="text-align: left;">
+                <span [style.color]="secaoLateral.itemTituloCor" style="font-weight: bold;">{{secaoLateral.quartoItemTitulo}} </span>
+                <span [style.color]="secaoLateral.itemTextoCor">{{secaoLateral.quartoItemTexto}}</span>
+              </p>
+            </a>
+          </div>
+          <hr style="border-top: 1pt solid;width: 85%;" [style.color]="secaoLateral.segundoTituloPrincipalCor">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+</section>

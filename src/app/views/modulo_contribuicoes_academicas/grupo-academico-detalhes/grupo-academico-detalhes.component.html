@@ -1,0 +1,388 @@
+<section class="home-banner owl-carousel owl-theme">
+  <div id="carouselExampleIndicators" class="carousel slide" ride="false">
+    <div class="carousel-inner">
+      <div>
+        <img class="img-carousel" loading="lazy" [src]="urlImagem()">
+        <div class="carousel-caption">
+          <div style="position: inherit;bottom: 0;width: 100%;">
+            <h1 class="animated fadeInUp duration-3s delay-1s"> {{ nomeGrupo }} </h1>
+            <h3 class="animated fadeInUp duration-3s delay-1s"></h3>
+            <h4 h4 class="animated fadeInUp duration-3s delay-1s">
+            </h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<br>
+<div class="contentBody" style="position: relative; margin-bottom: 3%;">
+  <app-breadcrumb style="position: relative;"></app-breadcrumb>
+</div>
+<br>
+
+<div class="contentBody" style="position: relative;">
+  <div class='col-lg-8'>
+    <mat-card>
+    <br>
+    <div class="item-container" *ngIf="descricaoInstituicao">
+    <div class="row">
+      <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+        <mat-icon style="vertical-align: middle;margin-right: 1%;">description
+        </mat-icon>
+      </div>
+      <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+        <strong>Descrição<br></strong>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+      </div>
+      <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+        <a [innerHTML]="descricaoInstituicao"></a>
+      </div>
+    </div>
+  </div>
+  <div class="item-container" *ngIf="endereco">
+    <div class="row">
+      <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+        <mat-icon style="vertical-align: middle;margin-right: 1%;">location_on
+        </mat-icon>
+      </div>
+      <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+        <strong>Localização<br></strong>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+      </div>
+      <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+        {{ endereco }}
+      </div>
+    </div>
+    </div>
+    <div class="item-container" *ngIf="paginaOnline">
+      <div class="row">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+          <mat-icon style="vertical-align: middle;margin-right: 1%;">web
+          </mat-icon>
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+          <strong>Site<br></strong>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+          <a [href]="gerarLink(paginaOnline)">{{ paginaOnline }}</a>
+        </div>
+      </div>
+    </div>
+    <div class="item-container" *ngIf="telefoneInstitucional">
+      <div class="row">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+          <mat-icon style="vertical-align: middle;margin-right: 1%;">phone
+          </mat-icon>
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+          <strong>Telefone institucional<br></strong>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+          {{ telefoneInstitucional }}
+        </div>
+      </div>
+    </div>
+    <div class="item-container" *ngIf="emailInstitucional !== null">
+      <div class="row">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+          <mat-icon style="vertical-align: middle;margin-right: 1%;">email
+          </mat-icon>
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+          <strong>E-mail institucional<br></strong>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+          <a [href]="mailTo">{{ emailInstitucional }}</a>
+        </div>
+      </div>
+    </div>
+    <div class="item-container" *ngIf="areasInteresse.length > 0">
+      <div class="row">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+          <mat-icon style="vertical-align: middle;margin-right: 1%;">subject
+          </mat-icon>
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+          <strong>Temas<br></strong>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+          {{areasInteresse.join('; ')}}
+        </div>
+      </div>
+    </div>
+    <div class="item-container" *ngIf="quantidadeAlunos">
+      <div class="row">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+          <mat-icon style="vertical-align: middle;margin-right: 1%;">groups
+          </mat-icon>
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+          <strong>Quantidade alunos<br></strong>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+          {{quantidadeAlunos}}
+        </div>
+      </div>
+    </div>
+    <div class="item-container">
+      <div class="row" *ngIf="!(nomeContato === null || telefoneContato === null || telefoneContato === null) ">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+          <mat-icon style="vertical-align: middle;margin-right: 1%;">person
+          </mat-icon>
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+          <strong>Contato<br> </strong>
+          <strong>Nome: </strong> {{ nomeContato }}<br>
+        </div>
+      </div>
+      <div class="row" *ngIf="telefoneContato">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+          <strong>Telefone: </strong> {{ telefoneContato }}<br>
+        </div>
+      </div>
+      <div class="row" *ngIf="emailContato">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+          <strong>E-mail: </strong> <a [href]="mailTo">{{ emailContato }}</a>
+        </div>
+      </div>
+    </div>
+    <div class="item-container" *ngIf="linkBaseDados">
+      <div class="row">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+          <mat-icon style="vertical-align: middle;margin-right: 1%;">download
+          </mat-icon>
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+          <strong>Base de dados<br></strong>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+          <a [href]="linkBaseDados">{{ linkBaseDados }}</a>
+        </div>
+      </div>
+    </div>
+    <div class="item-container" *ngIf="listaOds?.length > 0">
+      <div class="row">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+          <mat-icon style="vertical-align: middle;margin-right: 1%;">language
+          </mat-icon>
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+          <strong>ODS<br></strong>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+          <div class="col-md-12-content">
+            <section style="margin-top: 2%;">
+              <div class="news__grid--3">
+                <div class="news__grid-inner">
+                  <div class="square" *ngFor="let item of listaOds">
+                    <div class="content">
+                      <a style="color:white;" href="institucional/ods/{{item.id}}" title="Ir para página de ODS"
+                        target="_blank">
+                        <img class="icone-ods" [src]="gerarLinkImagem(item)" />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="item-container" *ngIf="eixos?.length > 0">
+      <div class="row">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+          <mat-icon style="vertical-align: middle;margin-right: 1%;">location_city
+          </mat-icon>
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+          <strong>Eixos do PCS<br></strong>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+          <a *ngFor="let eixo of eixos" [href]="eixo.link" target="_blank">
+            <img style="margin-right: 1em;" width="70" height="70" [src]="url+'eixo/imagem/'+eixo.id"
+              [matTooltip]="eixo.nome">
+          </a><br>
+        </div>
+      </div>
+    </div>
+    <div class="item-container" *ngIf="experienciasDesenvolvidas">
+      <div class="row">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+          <mat-icon style="vertical-align: middle;margin-right: 1%;">receipt_long
+          </mat-icon>
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+          <strong>Experiências desenvolvidas<br></strong>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10" [innerHTML]="experienciasDesenvolvidasSafeUrl">
+        </div>
+      </div>
+    </div>
+    <div class="item-container" *ngIf="observacoes">
+      <div class="row">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+          <mat-icon style="vertical-align: middle;margin-right: 1%;">text_snippet
+          </mat-icon>
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+          <strong>Observações<br></strong>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10"  [innerHTML]="observacoes">
+        </div>
+      </div>
+    </div>
+    <div class="item-container" *ngIf="tipoCadastro === 'Empresa'">
+      <div class="row" *ngIf="porteEmpresa !== null">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+          <mat-icon style="vertical-align: middle;margin-right: 1%;">business_center
+          </mat-icon>
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+          <strong>Porte da Empresa<br></strong>
+        </div>
+      </div>
+      <div class="row" *ngIf="porteEmpresa !== null">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10" >
+         {{ porteEmpresa }}
+        </div>
+      </div>
+      <br>
+      <div class="row" *ngIf="setorEconomico">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+          <mat-icon style="vertical-align: middle;margin-right: 1%;">account_balance
+          </mat-icon>
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+          <strong>Setor Econômico<br></strong>
+        </div>
+      </div>
+      <div class="row" *ngIf="setorEconomico">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10" >
+         {{ setorEconomico }}
+        </div>
+      </div>
+      <br>
+      <div class="row" *ngIf="quantidadeFuncionarios">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+          <mat-icon style="vertical-align: middle;margin-right: 1%;">people
+          </mat-icon>
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+          <strong>Quantidade de Funcionários<br></strong>
+        </div>
+      </div>
+      <div class="row" *ngIf="quantidadeFuncionarios">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10" >
+         {{ quantidadeFuncionarios }}
+        </div>
+      </div>
+    </div>
+    <div class="item-container">
+      <div class="row" *ngIf="(nomeApl || cidadesApl.length > 0 || descricaoApl)">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+          <mat-icon style="vertical-align: middle;margin-right: 1%;">group_work
+          </mat-icon>
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+          <strong>Participação em Arranjo Produtivo Local (APL)<br></strong>
+          
+        </div>
+      </div>
+      <div class="row" *ngIf="nomeApl">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+          <strong>Nome: </strong> {{nomeApl}}
+        </div>
+      </div>
+      <div class="row" *ngIf="cidadesApl.length > 0">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+          <strong>Cidades: </strong> {{cidadesApl.join('; ')}}
+        </div>
+      </div>
+      <div class="row" *ngIf="descricaoApl">
+        <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+        </div>
+        <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+          <strong>Descrição:</strong> <div [innerHTML]="descricaoApl"></div>
+        </div>
+      </div>
+    </div>
+    </mat-card>
+  </div>
+  <br>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="mapa" leaflet [leafletOptions]="options" [leafletLayers]="layersControl">
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="col-md-12 text-right">
+      <button mat-flat-button color="accent" matTooltip="Voltar" style="cursor: pointer;" (click)="backClicked()"
+        id="btnVoltar">
+        <mat-icon>arrow_back_ios</mat-icon> Voltar
+      </button>
+    </div>
+</div>
+<br>

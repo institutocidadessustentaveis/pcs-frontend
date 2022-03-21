@@ -1,0 +1,2656 @@
+<div class="contentBody" style="position: relative;">
+  <app-breadcrumb style="position: relative;"></app-breadcrumb>
+  <mat-card>
+    <div class="col-lg-12">
+      <mat-card-title *ngIf="home.id !== null && home.id !== undefined">Alterar Página Home
+      </mat-card-title>
+      <mat-card-title *ngIf="home.id === null || home.id === undefined">Criar Página Home
+      </mat-card-title>
+      <hr>
+    </div>
+
+    <div [hidden]="!loading" class="loading-indicator">
+      <mat-progress-spinner class="example-margin" style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+    </div>
+
+    <form #institucionalForm="ngForm" class="example-form">
+
+      <!-- Link da página -->
+      <div class="col-lg-12" style="margin-top: 20px !important;">
+
+        <div class="row">
+
+
+          <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12" style="text-align: right;">
+            <button mat-flat-button color="primary"  (click)="voltarListaPaginas()"
+              id="btnVoltarLista" matTooltip="Voltar para Lista de Páginas"
+              style="cursor: pointer !important;margin-bottom: 20px;">
+              Voltar
+            </button>
+          </div>
+    
+        </div>
+
+
+        <mat-card>
+          <div class="full-width">
+            <mat-checkbox id="exibirHome" name="exibirHome" [(ngModel)]="home.exibir">
+              Exibir a página</mat-checkbox>
+          </div>
+
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Insira o Link da Home" id="txtLink" [disabled]=false
+              [(ngModel)]="home.link_pagina" name="tituloHome" required minlength="3" #link="ngModel">
+            <mat-hint [hidden]="link.invalid" style="font-size: 12px">Link completo da Home:
+              {{urlBase}}/inicial/{{home.link_pagina}}</mat-hint>
+          </mat-form-field>
+  
+          <mat-form-field class="full-width" style="margin-top: 1%">
+            <input matInput placeholder="Insira a descrição da Home" id="txtTituloHome" [(ngModel)]="home.titulo" name="linkHome" [disabled]=false
+              required minlength="3" #tituloHome="ngModel">
+            <mat-hint [hidden]="tituloHome.invalid" style="font-size: 12px">{{tituloHome.value?.length || 0 }}/250
+            </mat-hint>
+          </mat-form-field>
+  
+          <div class="text-right" style="margin-top: 10px !important;" *ngIf="home.link_pagina !='home'">
+            <button mat-flat-button color="primary" class="btnToRight"  *ngIf="home.id"
+              role="button" (click)='salvar()' matTooltip="Salvar Link/Descrição">
+              <mat-icon>save</mat-icon>Salvar
+            </button>
+          </div>
+        </mat-card>
+
+      </div>
+
+
+      <div class="col-md-12" style="margin-top: 2%;" *ngIf="home.id">
+
+        <mat-accordion>
+
+          <mat-expansion-panel [expanded]="step === 0" (opened)="carregarImagensGaleria()">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Galeria de Imagens
+              </mat-panel-title>
+              <mat-panel-description>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <input hidden #imagemInputGaleria type="file" id="imagemGaleria" name="imagemGaleria"
+              accept="image/jpeg,image/jpg, image/png" (change)="processImage($event, 'galeria', null)">
+            <button type="button" mat-raised-button (click)="imagemInputGaleria.click()" id="btnImagemGaleria"
+              name="imagemGaleria" color="primary" style="margin-top: 40px; cursor: pointer;"
+              matTooltip="Upload Imagem Para Galeria">
+              <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar imagem para galeria (resolução ref. 1900x530px)
+            </button>
+            <div>
+              <image-cropper style="max-height: 500px;" [imageChangedEvent]="imagemHomeGaleriaChangedEvent"
+                [maintainAspectRatio]="false" [aspectRatio]="1 / 1" [resizeToWidth]="0" format="png"
+                (imageCropped)="imageCropped($event)">
+              </image-cropper>
+            </div>
+            <div class="modal-footer" *ngIf='imagemHomeGaleriaChangedEvent'>
+              <button type="button" (click)="cortarImagem()" class="btn btn-sm btn-primary">Cortar</button>
+            </div>
+
+            <p *ngIf="home?.galeriaDeImagens?.length > 0">Clique na Imagem para editar os campos</p>
+            <div class="row">
+              <div class="containerGaleria col-md-2" *ngFor="let item of home.galeriaDeImagens">
+                <div *ngIf="item == homeImagemRef" style="padding:4px;background: red;">
+                  <img [src]="item.safeUrl" style="width:100%" class="cursor-hand" (click)="carregaTituloSubtitulo(item)">
+                </div>
+                <div *ngIf="item != homeImagemRef">
+                  <img [src]="item.safeUrl" style="width:100%" class="cursor-hand" (click)="carregaTituloSubtitulo(item)">
+                </div>
+                <div class="caption" *ngIf="item == homeImagemRef">
+                  <p>IMAGEM SELECIONADA</p>
+                </div>
+                <button type="button" mat-raised-button style="width:100%" (click)="deletarImagemDaGaleria(item)">
+                      <mat-icon class="btn-remover">delete</mat-icon>
+                </button>
+                <p *ngIf="!item.id" style="text-align: center;">Clique em Salvar</p>
+              </div>
+            </div>
+
+            <span *ngIf="homeImageSelected">
+
+              <div class="col-md-12" style="margin-left:0px;margin-bottom: 1%;">
+                <mat-checkbox id="exibirBusca" name="exibirBusca"
+                  [(ngModel)]="homeImagemRef.exibirBusca">Exibir Busca da Biblioteca</mat-checkbox>
+              </div>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Título" maxlength="250" #inputTitulo name="tituloImagem"
+                  [(ngModel)]="homeImagemRef.titulo" id="inputTitulo" matTooltip="Título">
+                <mat-hint align="end">{{ inputTitulo.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Subtítulo" [(ngModel)]="homeImagemRef.subtitulo" maxlength="500"
+                  #inputSubtitulo name="subtituloImagem" id="inputSubtitulo"
+                  matTooltip="Subtítulo a ser inserido sob o título">
+                <mat-hint align="end">{{ inputSubtitulo.value?.length || 0 }}/500</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Tooltip do Autor da Imagem" [(ngModel)]="homeImagemRef.nomeAutor" maxlength="250"
+                  #inputNomeAutor name="autorImagem" id="inputNomeAutor"
+                  matTooltip="Nome do Autor a ser inserido na imagem">
+                <mat-hint align="end">{{ inputNomeAutor.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Link da Imagem" [(ngModel)]="homeImagemRef.link" maxlength="250"
+                  #inputLinkImagem name="linkImagem" id="inputLinkImagem" matTooltip="Link a ser inserido na imagem">
+                <mat-hint align="end">{{ inputLinkImagem.value?.length || 0 }}/100</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Índice da Imagem" [(ngModel)]="homeImagemRef.indice" maxlength="250"  (ngModelChange)="ordernarGaleriaDeImagens($event)"
+                  #inputIndiceImagem name="indiceImagem" id="inputIndiceImagem" matTooltip="Índice a ser inserido na imagem">
+                <mat-hint align="end">{{ inputIndiceImagem.value?.length || 0 }}/100</mat-hint>
+              </mat-form-field>
+
+              <button mat-flat-button color="primary" [disabled]="home.galeriaDeImagens?.length <= 0" style="margin-left: 15px;"
+                role="button" (click)='editarHomeGaleria()' matTooltip="Salvar Imagem">
+              <mat-icon>save</mat-icon>Salvar Imagem Selecionada
+            </button>
+            </span>
+          </mat-expansion-panel>
+
+          <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Barra de Chamadas
+              </mat-panel-title>
+              <mat-panel-description>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div class="col-md-12" style="margin-left:0px;">
+              <mat-checkbox id="homeBarraExibir" name="homeBarraExibir" [(ngModel)]="home.homeBarra.exibir">Exibir a
+                barra de chamadas na Home</mat-checkbox>
+            </div>
+
+            <section class="head-buttons-bar">
+              <div (click)="selecionarDivHomeBarra(1)" class="underline-on-hover cursor-hand"
+                [style.background-color]="home.homeBarra?.div1CorFundo">
+                <span [style.color]="home.homeBarra?.div1CorTexto" class="a-branco">{{home.homeBarra?.div1Texto}}</span>
+              </div>
+              <div (click)="selecionarDivHomeBarra(2)" class="underline-on-hover cursor-hand"
+                [style.background-color]="home.homeBarra?.div2CorFundo">
+                <span [style.color]="home.homeBarra?.div2CorTexto" class="a-branco">{{home.homeBarra?.div2Texto}}</span>
+              </div>
+              <div (click)="selecionarDivHomeBarra(3)" class="underline-on-hover cursor-hand"
+                [style.background-color]="home.homeBarra?.div3CorFundo">
+                <span [style.color]="home.homeBarra?.div3CorTexto" class="a-branco">{{home.homeBarra?.div3Texto}}</span>
+              </div>
+              <div (click)="selecionarDivHomeBarra(4)" class="underline-on-hover cursor-hand"
+                [style.background-color]="home.homeBarra?.div4CorFundo">
+                <span [style.color]="home.homeBarra?.div4CorTexto" class="a-branco">{{home.homeBarra?.div4Texto}}</span>
+              </div>
+              <div (click)="selecionarDivHomeBarra(5)" class="underline-on-hover cursor-hand"
+                [style.background-color]="home.homeBarra?.div5CorFundo">
+                <span [style.color]="home.homeBarra?.div5CorTexto" class="a-branco">{{home.homeBarra?.div5Texto}}</span>
+              </div>
+            </section>
+
+            <span *ngIf="homeBarraDivSelecionada">
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Texto" maxlength="250" #inputTextoDivBarra name="textoDivBarra"
+                  [(ngModel)]="home.homeBarra['div' + homeBarraDivSelecionada +'Texto']" id="inputTextoDivBarra"
+                  matTooltip="Texto do Link">
+                <mat-hint align="end">{{inputTextoDivBarra?.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Link" maxlength="250" #inputLinkDivBarra name="linkDivBarra"
+                  [(ngModel)]="home.homeBarra['div' + homeBarraDivSelecionada +'Link']" id="inputLinkDivBarra"
+                  matTooltip="Endereço do Link">
+                <mat-hint align="end">{{inputLinkDivBarra?.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12">
+                <input [style.background]="home.homeBarra['div' + homeBarraDivSelecionada +'CorTexto']"
+                  [cpPosition]="'top-right'"
+                  [(colorPicker)]="home.homeBarra['div' + homeBarraDivSelecionada +'CorTexto']" />
+
+                <input matInput placeholder="Cor do Texto" maxlength="250" #inputCorTextoDivBarra
+                  name="corTextoDivBarra" [(ngModel)]="home.homeBarra['div' + homeBarraDivSelecionada +'CorTexto']"
+                  id="inputCorTextoDivBarra" matTooltip="Cor do texto do Link">
+                <mat-hint align="end">{{inputCorTextoDivBarra?.value?.length || 0 }}/10</mat-hint>
+              </mat-form-field>
+
+
+              <mat-form-field class="col-md-12">
+                <input [style.background]="home.homeBarra['div' + homeBarraDivSelecionada +'CorFundo']"
+                  [cpPosition]="'top-right'"
+                  [(colorPicker)]="home.homeBarra['div' + homeBarraDivSelecionada +'CorFundo']" />
+
+                <input matInput placeholder="Cor do Fundo" maxlength="250" #inputCorFundoDivBarra
+                  name="corFundoDivBarra" [(ngModel)]="home.homeBarra['div' + homeBarraDivSelecionada +'CorFundo']"
+                  id="inputCorFundoDivBarra" matTooltip="Cor do Fundo">
+                <mat-hint align="end">{{inputCorFundoDivBarra?.value?.length || 0 }}/10</mat-hint>
+
+              </mat-form-field>
+            </span>
+            <mat-action-row>
+              <div class="text-right" style="margin-top: 10px !important;">
+                <button mat-flat-button color="primary" class="btnToRight"
+                  role="button" (click)='editarHomeBarra()' matTooltip="Salvar Barra de Chamadas">
+                  <mat-icon>save</mat-icon>Salvar
+                </button>
+              </div>
+            </mat-action-row>
+          </mat-expansion-panel>
+
+          <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Seção Lateral
+              </mat-panel-title>
+              <mat-panel-description>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div class="row">
+
+              <div class="col-md-8 col-lg-9 col-xs-12 col-sm-12">
+
+              </div>
+
+              <div class="col-md-4 col-lg-3 col-xs-12 col-sm-12" style="text-align: right;">
+                <button mat-flat-button color="primary"  (click)="cadastrarNovaSecaoLateral()"
+                  id="btnNovaSecaoLateral" matTooltip="Cadastrar Nova Seção"
+                  style="cursor: pointer !important; margin-bottom: 5px;">
+                  <mat-icon>add</mat-icon>Nova Seção
+                </button>
+              </div>
+
+            </div>
+
+
+            <table mat-table [dataSource]="dataSourceSecaoLateral" matSort>
+
+              <ng-container matColumnDef="indiceSecaoLateral">
+                <th mat-header-cell *matHeaderCellDef>Índice Geral</th>
+                <td mat-cell *matCellDef="let item" > <b>{{item.indice}}</b></td>
+              </ng-container>
+
+              <ng-container matColumnDef="primeiroTituloPrincipalSecaoLateral">
+                <th mat-header-cell *matHeaderCellDef>Título Primeiro Banner</th>
+                <td mat-cell *matCellDef="let item" [innerHTML]="item.primeiroTituloPrincipal"></td>
+              </ng-container>
+
+
+              <ng-container matColumnDef="exibirSecaoLateral">
+                <th mat-header-cell *matHeaderCellDef>Exibir</th>
+                <td mat-cell *matCellDef="let item"> {{item.exibir?'Sim':'Não'}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="acoesSecaoLateral">
+                <th mat-header-cell *matHeaderCellDef> Ações </th>
+                <td mat-cell *matCellDef="let item" class='m-card-title' data-label='Ações'>
+
+                  <button mat-flat-button color="primary" type="button" name="button"
+                  (click)="buscarSecaoLateralDetalhe(item.id)"
+                    class="btnTabela" matTooltip="Editar">
+                    <mat-icon> edit </mat-icon>
+                  </button>
+
+                  <button mat-flat-button color="warn" type="button" name="button" (click)="excluirSecaoLateral(item.id)"
+                    class="btnTabela" matTooltip="Excluir">
+                    <mat-icon> delete </mat-icon>
+                  </button>
+
+                  <button mat-flat-button color="primary" type="button" name="button"
+                    (click)="alteraIndiceSecao(item)"
+                    class="btnTabela" matTooltip="Editar Indíce">
+                    <mat-icon> reorder </mat-icon>
+                  </button>
+
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsSecaoLateral; sticky: true"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsSecaoLateral;"></tr>
+
+            </table>
+
+            <div *ngIf="secaoLateralSelecionada">
+
+              <div class="row" style="padding-top: 2%;padding-bottom: 1%;">
+
+                <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 h1 titulos" *ngIf="secaoLateralSelecionada.id">
+                  Editar Seção Lateral - Indíce:{{secaoLateralSelecionada.indice}}
+
+                  <button mat-flat-button color="primary"  (click)="fecharSecaoLateral()"
+                    matTooltip="Fechar"
+                    style="cursor: pointer !important;float:right">
+                    Fechar
+                  </button>
+
+                  <button mat-flat-button color="primary"  (click)="preVisulizarSecao(secaoLateralSelecionada,'secaoLateral')"
+                    matTooltip="Pré-Visualizar"
+                    style="cursor: pointer !important;float:right;margin-right: 5px">
+                    Pré-Visualizar
+                  </button>
+
+                </div>
+
+                <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 h1 titulos" *ngIf="!secaoLateralSelecionada.id">
+                  Nova Seção Lateral - Indíce:{{secaoLateralSelecionada.indice}}
+
+                  <button mat-flat-button color="primary"  (click)="fecharSecaoLateral()"
+                    matTooltip="Fechar"
+                    style="cursor: pointer !important;float:right">
+                    Fechar
+                  </button>
+
+                  <button mat-flat-button color="primary"  (click)="preVisulizarSecao(secaoLateralSelecionada,'secaoLateral')"
+                    matTooltip="Pré-Visualizar"
+                    style="cursor: pointer !important;float:right;margin-right: 5px">
+                    Pré-Visualizar
+                  </button>
+                </div>
+
+              </div>
+
+              <div class="col-md-12" style="margin-left:0px;margin-bottom: 1%;">
+                <mat-checkbox id="secaoLateralExibir" name="secaoLateralExibir"
+                  [(ngModel)]="secaoLateralSelecionada.exibir">Exibir a seção na Home</mat-checkbox>
+              </div>
+
+              <mat-form-field class="col-md-2" style="margin-bottom: 1%;">
+                <mat-label>Índice geral</mat-label>
+                <input  #indiceSecaoLateral="ngModel" pattern="^([1-9][0-9]{0,2}|1000)$" onKeyPress="if(this.value.length==4) return false;" name="indiceSecaoLateral" matInput placeholder="Índice geral" [(ngModel)]="secaoLateralSelecionada.indice">
+                <mat-hint [hidden]="!indiceSecaoLateral.invalid" style="font-size: 12px;color:red">Digite um valor entre 1 e 1000</mat-hint>
+              </mat-form-field>
+
+
+              <div style="margin-top:3%; margin-bottom: 3%;font-weight: bold;">
+                PRIMEIRA CONFIGURAÇÃO
+                <hr class="hr-separador">
+              </div>
+
+              <div class="col-md-12" style="margin-left:0px;margin-bottom: 1%;">
+                <mat-checkbox id="secaoLateralExibirPrimeira" name="secaoLateralExibirPrimeira"
+                  [(ngModel)]="secaoLateralSelecionada.exibirBanner1">Exibir Primeira Configuração na Home</mat-checkbox>
+              </div>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Título" maxlength="250" #inputPrimeiroTituloPrincipalSecaoLateral
+                  name="primeiroTituloPrincipalSecaoLateral" [(ngModel)]="secaoLateralSelecionada.primeiroTituloPrincipal"
+                  id="primeiroTituloPrincipalSecaoLateral" matTooltip="Título">
+                <mat-hint align="end">{{inputPrimeiroTituloPrincipalSecaoLateral?.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Link do Título" maxlength="250"
+                  #inputLinkPrimeiroTituloPrincipalSecaoLateral name="linkPrimeiroTituloPrincipalSecaoLateral"
+                  [(ngModel)]="secaoLateralSelecionada.primeiroTituloPrincipalLink" id="linkPrimeiroTituloPrincipalSecaoLateral"
+                  matTooltip="Link do Título">
+                <mat-hint align="end">{{inputLinkPrimeiroTituloPrincipalSecaoLateral?.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12">
+                <input [style.background]="secaoLateralSelecionada.primeiroTituloPrincipalCor" [cpPosition]="'top-right'"
+                  [(colorPicker)]="secaoLateralSelecionada.primeiroTituloPrincipalCor" />
+                <input matInput placeholder="Cor do Título" maxlength="10"
+                  #inputCorPrimeiroTituloPrincipalSecaoLateral name="corPrimeiroTituloPrincipalSecaoLateral"
+                  [(ngModel)]="secaoLateralSelecionada.primeiroTituloPrincipalCor" id="corPrimeiroTituloPrincipalSecaoLateral"
+                  matTooltip="Cor do título">
+              </mat-form-field>
+
+
+              <div style="margin-top: 3%;margin-bottom: 3%;margin-left: 4%;width: 33%">
+                <app-secao-lateral-1 [secaoLateral]="secaoLateralSelecionada"></app-secao-lateral-1>
+              </div>
+
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Título" maxlength="250" #inputPrimeiroTituloSecaoLateral
+                  name="primeiroTituloSecaoLateral" [(ngModel)]="secaoLateralSelecionada.primeiroTitulo"
+                  id="inputPrimeiroTituloSecaoLateral" matTooltip="Título">
+                <mat-hint align="end">{{inputPrimeiroTituloSecaoLateral?.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Link do Título" maxlength="250" #inputLinkPrimeiroTituloSecaoLateral
+                  name="linkPrimeiroTituloSecaoLateral" [(ngModel)]="secaoLateralSelecionada.primeiroTituloLink"
+                  id="linkPrimeiroTituloSecaoLateral" matTooltip="Link do Título">
+                <mat-hint align="end">{{inputLinkPrimeiroTituloSecaoLateral?.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12">
+                <input [style.background]="secaoLateralSelecionada.primeiroTituloCor" [cpPosition]="'top-right'"
+                  [(colorPicker)]="secaoLateralSelecionada.primeiroTituloCor" />
+                <input matInput placeholder="Cor do Título" maxlength="10" #inputCorPrimeiroTituloSecaoLateral
+                  name="corPrimeiroTituloSecaoLateral" [(ngModel)]="secaoLateralSelecionada.primeiroTituloCor"
+                  id="corPrimeiroTituloSecaoLateral" matTooltip="Cor do título">
+              </mat-form-field>
+
+              <div class="col-lg-12" style="margin-top: 20px !important;">
+                <mat-label class="labelTextEditor">Texto</mat-label>
+                <div [ngxSummernote]="editorCleanConfig" name="primeiroTextoSecaoLateral"
+                  [(ngModel)]="secaoLateralSelecionada.primeiroTexto"></div>
+                <mat-hint class="caracteres-editor">{{ secaoLateralSelecionada?.primeiroTexto?.length || 0 }}/250</mat-hint>
+              </div>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Link do Texto" maxlength="250" #inputLinkPrimeiroTextoSecaoLateral
+                  name="linkPrimeiroTextoSecaoLateral" [(ngModel)]="secaoLateralSelecionada.primeiroTextoLink"
+                  id="linkPrimeiroTextoSecaoLateral" matTooltip="Link do Texto">
+                <mat-hint align="end">{{inputLinkPrimeiroTextoSecaoLateral?.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12">
+                <input [style.background]="secaoLateralSelecionada.primeiroTextoCor" [cpPosition]="'top-right'"
+                  [(colorPicker)]="secaoLateralSelecionada.primeiroTextoCor" />
+                <input matInput placeholder="Cor do Texto" maxlength="10" #inputCorPrimeiroTextoSecaoLateral
+                  name="corPrimeiroTextoSecaoLateral" [(ngModel)]="secaoLateralSelecionada.primeiroTextoCor"
+                  id="corPrimeiroTextoSecaoLateral" matTooltip="Cor do texto">
+              </mat-form-field>
+
+              <div class="col-md-12">
+                <input hidden #primeiraImagemSecaoLateral type="file" id="primeiraImagemSecaoLateral"
+                  name="primeiraImagemSecaoLateral" accept="image/jpeg,image/png"
+                  (change)="processImage($event, 'secaoLateralPrimeiraImagem', secaoLateralSelecionada)">
+                <button type="button" mat-raised-button (click)="primeiraImagemSecaoLateral.click()"
+                  id="btnPrimeiraImagemSecaoLateral" name="primeiraImagemSecaoLateral" color="primary"
+                  style="margin-top: 20px; cursor: pointer;" matTooltip="Upload da imagem">
+                  <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar imagem (resolução ref. 500x500px)
+                </button>
+
+                <div class="containerGaleria" *ngIf="secaoLateralSelecionada.primeiraImagem">
+                  <img [src]="secaoLateralSelecionada.primeiraImagemSafeUrl" style="width:100%">
+                  <button type="button" mat-raised-button style="width:100%;" (click)="removerPrimeiraImagemSecaoLateral(secaoLateralSelecionada)">
+                    <mat-icon class="btn-remover">delete</mat-icon>
+                  </button>
+                </div>
+              </div>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Link da Imagem" maxlength="250" #inputLinkPrimeiraImagemSecaoLateral
+                  name="linkPrimeiraImagemSecaoLateral" [(ngModel)]="secaoLateralSelecionada.primeiraImagemLink"
+                  id="inputLinkPrimeiraImagemSecaoLateral" matTooltip="Link da Imagem">
+                <mat-hint align="end">{{inputLinkPrimeiraImagemSecaoLateral?.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Tooltip da Imagem" #inputPrimeiraImagemTooltipSecaoLateral name="inputPrimeiraImagemTooltipSecaoLateral"
+                [(ngModel)]="secaoLateralSelecionada.primeiraImagemTooltip" id="inputPrimeiraImagemTooltipSecaoLateral"
+                matTooltip="Tooltip da Imagem">
+              </mat-form-field>
+
+              <div style="margin-top:3%; margin-bottom: 3%;font-weight: bold;">
+                SEGUNDA CONFIGURAÇÃO
+                <hr class="hr-separador">
+              </div>
+
+              <div style="margin-top: 3%;margin-bottom: 3%;margin-left: 3%;width: 33%">
+                <app-secao-lateral-2 [secaoLateral]="secaoLateralSelecionada"></app-secao-lateral-2>
+              </div>
+
+              <div class="col-md-12" style="margin-left:0px;margin-bottom: 1%;">
+                <mat-checkbox id="secaoLateralExibirSegunda" name="secaoLateralExibirSegunda"
+                  [(ngModel)]="secaoLateralSelecionada.exibirBanner2">Exibir Segunda Configuração na Home</mat-checkbox>
+              </div>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Título" maxlength="250" #inputSegundoTituloSecaoLateral
+                  name="segundoTituloSecaoLateral" [(ngModel)]="secaoLateralSelecionada.segundoTitulo" id="segundoTituloSecaoLateral"
+                  matTooltip="Título">
+                <mat-hint align="end">{{inputSegundoTituloSecaoLateral?.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Link do Título" maxlength="250" #inputLinkSegundoTituloSecaoLateral
+                  name="linkSegundoTituloSecaoLateral" [(ngModel)]="secaoLateralSelecionada.segundoTituloLink"
+                  id="linkSegundoTituloSecaoLateral" matTooltip="Link do Título">
+                <mat-hint align="end">{{inputLinkSegundoTituloSecaoLateral?.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12">
+                <input [style.background]="secaoLateralSelecionada.segundoTituloCor" [cpPosition]="'top-right'"
+                  [(colorPicker)]="secaoLateralSelecionada.segundoTituloCor" />
+                <input matInput placeholder="Cor do Título" maxlength="10" #inputCorSegundoTituloSecaoLateral
+                  name="corSegundoTituloSecaoLateral" [(ngModel)]="secaoLateralSelecionada.segundoTituloCor"
+                  id="corSegundoTituloSecaoLateral" matTooltip="Cor do título">
+              </mat-form-field>
+
+              <div class="col-lg-12" style="margin-top: 20px !important;">
+                <mat-label class="labelTextEditor">Texto</mat-label>
+                <div [ngxSummernote]="editorCleanConfig" name="segundoTextoSecaoLateral"
+                  [(ngModel)]="secaoLateralSelecionada.segundoTexto"></div>
+                <mat-hint class="caracteres-editor">{{ secaoLateralSelecionada?.segundoTexto?.length || 0 }}/250</mat-hint>
+              </div>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Link do Texto" maxlength="250" #inputLinkSegundoTextoSecaoLateral
+                  name="linkSegundoTextoSecaoLateral" [(ngModel)]="secaoLateralSelecionada.segundoTextoLink"
+                  id="linkSegundoTextoSecaoLateral" matTooltip="Link do Texto">
+                <mat-hint align="end">{{inputLinkSegundoTextoSecaoLateral?.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12">
+                <input [style.background]="secaoLateralSelecionada.segundoTextoCor" [cpPosition]="'top-right'"
+                  [(colorPicker)]="secaoLateralSelecionada.segundoTextoCor" />
+                <input matInput placeholder="Cor do Texto" maxlength="10" #inputCorSegundoTextoSecaoLateral
+                  name="corSegundoTextoSecaoLateral" [(ngModel)]="secaoLateralSelecionada.segundoTextoCor"
+                  id="corSegundoTextoSecaoLateral" matTooltip="Cor do texto">
+              </mat-form-field>
+
+              <div class="col-md-12">
+                <input hidden #segundaImagemSecaoLateral type="file" id="segundaImagemSecaoLateral" name="segundaImagemSecaoLateral"
+                  accept="image/jpeg,image/png" (change)="processImage($event, 'secaoLateralSegundaImagem', secaoLateralSelecionada)">
+                <button type="button" mat-raised-button (click)="segundaImagemSecaoLateral.click()"
+                  id="btnSegundaImagemSecaoLateral" name="segundaImagemSecaoLateral" color="primary"
+                  style="margin-top: 20px; cursor: pointer;" matTooltip="Upload da imagem">
+                  <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar imagem (resolução ref. 500x500px)
+                </button>
+
+                <div class="containerGaleria" *ngIf="secaoLateralSelecionada.segundaImagem">
+                  <img [src]="secaoLateralSelecionada.segundaImagemSafeUrl" style="width:100%">
+                  <button type="button" mat-raised-button style="width:100%;" (click)="removerSegundaImagemSecaoLateral(secaoLateralSelecionada)">
+                    <mat-icon class="btn-remover">delete</mat-icon>
+                  </button>
+                </div>
+              </div>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Link da Imagem" maxlength="250" #inputLinkSegundaImagemSecaoLateral
+                  name="linkSegundaImagemSecaoLateral" [(ngModel)]="secaoLateralSelecionada.segundaImagemLink"
+                  id="inputLinkSegundaImagemSecaoLateral" matTooltip="Link da imagem">
+                <mat-hint align="end">{{inputLinkSegundaImagemSecaoLateral?.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Tooltip da Imagem" #inputSegundaImagemTooltipSecaoLateral name="inputSegundaImagemTooltipSecaoLateral"
+                [(ngModel)]="secaoLateralSelecionada.segundaImagemTooltip" id="inputSegundaImagemTooltipSecaoLateral"
+                matTooltip="Tooltip da Imagem">
+              </mat-form-field>
+
+
+              <div style="margin-top:3%; margin-bottom: 3%;font-weight: bold;">
+                TERCEIRA CONFIGURAÇÃO
+                <hr class="hr-separador">
+              </div>
+
+              <div class="col-md-12" style="margin-left:0px;margin-bottom: 1%;">
+                <mat-checkbox id="secaoLateralExibirTerceira" name="secaoLateralExibirTerceira"
+                  [(ngModel)]="secaoLateralSelecionada.exibirBanner3">Exibir Terceira Configuração na Home</mat-checkbox>
+              </div>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Título" maxlength="250" #inputSegundoTituloPrincipalSecaoLateral
+                  name="segundoTituloPrincipalSecaoLateral" [(ngModel)]="secaoLateralSelecionada.segundoTituloPrincipal"
+                  id="segundoTituloPrincipalSecaoLateral" matTooltip="Título">
+                <mat-hint align="end">{{inputSegundoTituloPrincipalSecaoLateral?.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Link do Título" maxlength="250"
+                  #inputLinkSegundoTituloPrincipalSecaoLateral name="linkSegundoTituloPrincipalSecaoLateral"
+                  [(ngModel)]="secaoLateralSelecionada.segundoTituloPrincipalLink" id="linkSegundoTituloPrincipalSecaoLateral"
+                  matTooltip="Link do Título">
+                <mat-hint align="end">{{inputLinkSegundoTituloPrincipalSecaoLateral?.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12">
+                <input [style.background]="secaoLateralSelecionada.segundoTituloPrincipalCor" [cpPosition]="'top-right'"
+                  [(colorPicker)]="secaoLateralSelecionada.segundoTituloPrincipalCor" />
+                <input matInput placeholder="Cor do Título" maxlength="10"
+                  #inputCorSegundoTituloPrincipalSecaoLateral name="corSegundoTituloPrincipalSecaoLateral"
+                  [(ngModel)]="secaoLateralSelecionada.segundoTituloPrincipalCor" id="corSegundoTituloPrincipalSecaoLateral"
+                  matTooltip="Cor do título">
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12">
+                <input [style.background]="secaoLateralSelecionada.itemTituloCor" [cpPosition]="'top-right'"
+                  [(colorPicker)]="secaoLateralSelecionada.itemTituloCor" />
+                <input matInput placeholder="Cor dos títulos dos Itens" maxlength="10" #inputCorItemTituloSecaoLateral
+                  name="corItemTituloSecaoLateral" [(ngModel)]="secaoLateralSelecionada.itemTituloCor" id="corItemTituloSecaoLateral"
+                  matTooltip="Cor dos títulos dos Itens">
+              </mat-form-field>
+
+
+              <mat-form-field class="col-md-12">
+                <input [style.background]="secaoLateralSelecionada.itemTextoCor" [cpPosition]="'top-right'"
+                  [(colorPicker)]="secaoLateralSelecionada.itemTextoCor" />
+                <input matInput placeholder="Cor dos textos dos Itens" maxlength="10" #inputCorItemTextoSecaoLateral
+                  name="corItemTextoSecaoLateral" [(ngModel)]="secaoLateralSelecionada.itemTextoCor" id="corItemTextoSecaoLateral"
+                  matTooltip="Cor dos textos dos Itens">
+              </mat-form-field>
+
+
+              <div style="margin-top: 3%;margin-bottom: 3%;margin-left: 3%;width: 28%;">
+                <app-secao-lateral-3  [secaoLateral]="secaoLateralSelecionada"></app-secao-lateral-3>
+              </div>
+
+              <div style="margin-top:3%; margin-bottom: 3%;">
+                 ITEM - 1
+                <hr class="hr-separador">
+              </div>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Título do Item" maxlength="250" #inputPrimeiroItemTituloSecaoLateral
+                  name="primeiroItemTituloSecaoLateral" [(ngModel)]="secaoLateralSelecionada.primeiroItemTitulo"
+                  id="primeiroItemTituloSecaoLateral" matTooltip="Título do Item">
+                <mat-hint align="end">{{inputPrimeiroItemTituloSecaoLateral?.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Texto do Item" maxlength="250" #inputPrimeiroItemTextoSecaoLateral
+                  name="primeiroItemTextoSecaoLateral" [(ngModel)]="secaoLateralSelecionada.primeiroItemTexto"
+                  id="primeiroItemTextoSecaoLateral" matTooltip="Texto do Item">
+                <mat-hint align="end">{{inputPrimeiroItemTextoSecaoLateral?.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Link do Item" maxlength="250" #inputLinkPrimeiroItemTextoSecaoLateral
+                  name="linkPrimeiroItemTextoSecaoLateral" [(ngModel)]="secaoLateralSelecionada.primeiroItemLink"
+                  id="linkPrimeiroItemTextoSecaoLateral" matTooltip="Link do Item">
+                <mat-hint align="end">{{inputLinkPrimeiroItemTextoSecaoLateral?.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+
+              <div style="margin-top:3%; margin-bottom: 3%;">
+                ITEM - 2
+               <hr class="hr-separador">
+              </div>
+
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Título do Item" maxlength="250" #inputSegundoItemTituloSecaoLateral
+                  name="segundoItemTituloSecaoLateral" [(ngModel)]="secaoLateralSelecionada.segundoItemTitulo"
+                  id="segundoItemTituloSecaoLateral" matTooltip="Título do Item">
+                <mat-hint align="end">{{inputSegundoItemTituloSecaoLateral?.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Texto do Item" maxlength="250" #inputSegundoItemTextoSecaoLateral
+                  name="segundoItemTextoSecaoLateral" [(ngModel)]="secaoLateralSelecionada.segundoItemTexto"
+                  id="segundoItemTextoSecaoLateral" matTooltip="Texto do Item">
+                <mat-hint align="end">{{inputSegundoItemTextoSecaoLateral?.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Link do Item" maxlength="250" #inputLinkSegundoItemTextoSecaoLateral
+                  name="linkSegundoItemTextoSecaoLateral" [(ngModel)]="secaoLateralSelecionada.segundoItemLink"
+                  id="linkSegundoItemTextoSecaoLateral" matTooltip="Link do Item">
+                <mat-hint align="end">{{inputLinkSegundoItemTextoSecaoLateral?.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+
+              <div style="margin-top:3%; margin-bottom: 3%;">
+                ITEM - 3
+               <hr class="hr-separador">
+              </div>
+
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Título do Item" maxlength="250" #inputTerceiroItemTituloSecaoLateral
+                  name="terceiroItemTituloSecaoLateral" [(ngModel)]="secaoLateralSelecionada.terceiroItemTitulo"
+                  id="terceiroItemTituloSecaoLateral" matTooltip="Título do Item">
+                <mat-hint align="end">{{inputTerceiroItemTituloSecaoLateral?.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Texto do Item" maxlength="250" #inputTerceiroItemTextoSecaoLateral
+                  name="terceiroItemTextoSecaoLateral" [(ngModel)]="secaoLateralSelecionada.terceiroItemTexto"
+                  id="terceiroItemTextoSecaoLateral" matTooltip="Texto do Item">
+                <mat-hint align="end">{{inputTerceiroItemTextoSecaoLateral?.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Link do Item" maxlength="250" #inputLinkTerceiroItemTextoSecaoLateral
+                  name="linkTerceiroItemTextoSecaoLateral" [(ngModel)]="secaoLateralSelecionada.terceiroItemLink"
+                  id="linkTerceiroItemTextoSecaoLateral" matTooltip="Link do Item">
+                <mat-hint align="end">{{inputLinkTerceiroItemTextoSecaoLateral?.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+              <div style="margin-top:3%; margin-bottom: 3%;">
+                ITEM - 4
+               <hr class="hr-separador">
+              </div>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Título do Item" maxlength="250" #inputQuartoItemTituloSecaoLateral
+                  name="quartoItemTituloSecaoLateral" [(ngModel)]="secaoLateralSelecionada.quartoItemTitulo"
+                  id="quartoItemTituloSecaoLateral" matTooltip="Título do Item">
+                <mat-hint align="end">{{inputQuartoItemTituloSecaoLateral?.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Texto do Item" maxlength="250" #inputQuartoItemTextoSecaoLateral
+                  name="quartoItemTextoSecaoLateral" [(ngModel)]="secaoLateralSelecionada.quartoItemTexto"
+                  id="quartoItemTextoSecaoLateral" matTooltip="Texto do Item">
+                <mat-hint align="end">{{inputQuartoItemTextoSecaoLateral?.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Link do Item" maxlength="250" #inputLinkQuartoItemTextoSecaoLateral
+                  name="linkQuartoItemTextoSecaoLateral" [(ngModel)]="secaoLateralSelecionada.quartoItemLink"
+                  id="linkQuartoItemTextoSecaoLateral" matTooltip="Link do Item">
+                <mat-hint align="end">{{inputLinkQuartoItemTextoSecaoLateral?.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+
+              <div style="margin-top:3%; margin-bottom: 3%;font-weight: bold;">
+                QUARTA CONFIGURAÇÃO
+                <hr class="hr-separador">
+              </div>
+
+              <div style="margin-top: 3%;margin-bottom: 3%;margin-left: 3%;width: 33%">
+                <app-secao-lateral-4  [secaoLateral]="secaoLateralSelecionada"></app-secao-lateral-4>
+              </div>
+
+              <div class="col-md-12" style="margin-left:0px;margin-bottom: 1%;">
+                <mat-checkbox id="secaoLateralExibirQuarta" name="secaoLateralExibirQuarta"
+                  [(ngModel)]="secaoLateralSelecionada.exibirBanner4">Exibir Quarta Configuração na Home</mat-checkbox>
+              </div>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Título" maxlength="250" #inputTerceiroTituloSecaoLateral
+                  name="terceiroTituloSecaoLateral" [(ngModel)]="secaoLateralSelecionada.terceiroTitulo" id="terceiroTituloSecaoLateral"
+                  matTooltip="Título">
+                <mat-hint align="end">{{inputTerceiroTituloSecaoLateral?.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Link do Título" maxlength="250" #inputLinkTerceiroTituloSecaoLateral
+                  name="linkTerceiroTituloSecaoLateral" [(ngModel)]="secaoLateralSelecionada.terceiroTituloLink"
+                  id="linkTerceiroTituloSecaoLateral" matTooltip="Link do Título">
+                <mat-hint align="end">{{inputLinkTerceiroTituloSecaoLateral?.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12">
+                <input [style.background]="secaoLateralSelecionada.terceiroTituloCor" [cpPosition]="'top-right'"
+                  [(colorPicker)]="secaoLateralSelecionada.terceiroTituloCor" />
+                <input matInput placeholder="Cor do Título" maxlength="10" #inputCorTerceiroTituloSecaoLateral
+                  name="corTerceiroTituloSecaoLateral" [(ngModel)]="secaoLateralSelecionada.terceiroTituloCor"
+                  id="corTerceiroTituloSecaoLateral" matTooltip="Cor do título">
+              </mat-form-field>
+
+              <div class="col-lg-12" style="margin-top: 20px !important;">
+                <mat-label class="labelTextEditor">Texto</mat-label>
+                <div [ngxSummernote]="editorCleanConfig" name="terceiroTextoSecaoLateral"
+                  [(ngModel)]="secaoLateralSelecionada.terceiroTexto"></div>
+                <mat-hint class="caracteres-editor">{{ secaoLateralSelecionada?.terceiroTexto?.length || 0 }}/250</mat-hint>
+              </div>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Link do Texto" maxlength="250" #inputLinkTerceiroTextoSecaoLateral
+                  name="linkTerceiroTextoSecaoLateral" [(ngModel)]="secaoLateralSelecionada.terceiroTextoLink"
+                  id="linkTerceiroTextoSecaoLateral" matTooltip="Link do Texto">
+                <mat-hint align="end">{{inputLinkTerceiroTextoSecaoLateral?.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12">
+                <input [style.background]="secaoLateralSelecionada.terceiroTextoCor" [cpPosition]="'top-right'"
+                  [(colorPicker)]="secaoLateralSelecionada.terceiroTextoCor" />
+                <input matInput placeholder="Cor do Texto" maxlength="10" #inputCorTerceiroTextoSecaoLateral
+                  name="corTerceiroTextoSecaoLateral" [(ngModel)]="secaoLateralSelecionada.terceiroTextoCor"
+                  id="corTerceiroTextoSecaoLateral" matTooltip="Cor do texto">
+              </mat-form-field>
+
+              <div class="col-md-12">
+                <input hidden #terceiraImagemSecaoLateral type="file" id="terceiraImagemSecaoLateral"
+                  name="terceiraImagemSecaoLateral" accept="image/jpeg,image/png"
+                  (change)="processImage($event, 'secaoLateralTerceiraImagem', secaoLateralSelecionada)">
+                <button type="button" mat-raised-button (click)="terceiraImagemSecaoLateral.click()"
+                  id="btnTerceiraImagemSecaoLateral" name="terceiraImagemSecaoLateral" color="primary"
+                  style="margin-top: 20px; cursor: pointer;" matTooltip="Upload da terceira imagem da Seção Lateral">
+                  <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar imagem (resolução ref. 500x500px)
+                </button>
+
+                <div class="containerGaleria" *ngIf="secaoLateralSelecionada.terceiraImagem">
+                  <img [src]="secaoLateralSelecionada.terceiraImagemSafeUrl" style="width:100%">
+                  <button type="button" mat-raised-button style="width:100%;" (click)="removerTerceiraImagemSecaoLateral(secaoLateralSelecionada)">
+                    <mat-icon class="btn-remover">delete</mat-icon>
+                  </button>
+                </div>
+              </div>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Link da Imagem" maxlength="250" #inputLinkTerceiraImagemSecaoLateral
+                  name="linkTerceiraImagemSecaoLateral" [(ngModel)]="secaoLateralSelecionada.terceiraImagemLink"
+                  id="inputLinkTerceiraImagemSecaoLateral" matTooltip="Link da imagem">
+                <mat-hint align="end">{{inputLinkTerceiraImagemSecaoLateral?.value?.length || 0 }}/250</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12">
+                <input matInput placeholder="Tooltip da Imagem" #inputTerceiraImagemTooltipSecaoLateral name="inputTerceiraImagemTooltipSecaoLateral"
+                [(ngModel)]="secaoLateralSelecionada.terceiraImagemTooltip" id="inputTerceiraImagemTooltipSecaoLateral"
+                matTooltip="Tooltip da Imagem">
+              </mat-form-field>
+
+              <div class="text-right" style="margin-top: 10px !important;">
+                <button mat-flat-button color="primary" class="btnToRight"  [disabled]="indiceSecaoLateral?.invalid"
+                  role="button" (click)='editarSecaoLateral()' matTooltip="Salvar Seção Lateral">
+                  <mat-icon>save</mat-icon>Salvar
+                </button>
+              </div>
+
+            </div>
+
+          </mat-expansion-panel>
+
+          <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)">
+            <mat-expansion-panel-header>
+              <mat-panel-title style="align-items: center; width:200px;">
+                Seções
+              </mat-panel-title>
+              <mat-panel-description>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div class="row">
+
+              <div class="col-md-8 col-lg-9 col-xs-12 col-sm-12">
+
+              </div>
+
+              <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12" style="text-align: right;">
+                <button mat-flat-button color="primary"  (click)="cadastrarNovaPrimeiraSecao()"
+                  id="btnNovaPrimeiraSecao" matTooltip="Cadastrar Nova Seção"
+                  style="cursor: pointer !important; margin-bottom: 5px;">
+                  Nova Seção A
+                </button>
+
+                <button mat-flat-button color="primary" (click)="cadastrarNovaSegundaSecao()"
+                  id="btnNovaSegundaSecao" matTooltip="Cadastrar Nova Seção"
+                  style="cursor: pointer !important; margin-bottom: 5px;margin-left: 5px ;">
+                  Nova Seção B
+                </button>
+                <button mat-flat-button color="primary"  (click)="cadastrarNovaTerceiraSecao()"
+                  id="btnNovaTerceiraSecao" matTooltip="Cadastrar Nova Seção"
+                  style="cursor: pointer !important; margin-bottom: 5px;margin-left: 5px ;">
+                  Nova Seção C
+                </button>
+                <button mat-flat-button color="primary" (click)="cadastrarNovaQuartaSecao()"
+                  id="btnNovaQuartaSecao" matTooltip="Cadastrar Nova Seção"
+                  style="cursor: pointer !important; margin-bottom: 5px;margin-left: 5px ;">
+                  Nova Seção D
+                </button>
+                <button mat-flat-button color="primary" (click)="cadastrarNovaQuintaSecao()"
+                  id="btnNovaQuintaSecao" matTooltip="Cadastrar Nova Seção"
+                  style="cursor: pointer !important; margin-bottom: 5px;margin-left: 5px ;">
+                  Nova Seção E
+                </button>
+                <button mat-flat-button color="primary"  (click)="cadastrarNovaSextaSecao()"
+                  id="btnNovaSextaSecao" matTooltip="Cadastrar Nova Seção"
+                  style="cursor: pointer !important; margin-bottom: 5px;margin-left: 5px ;">
+                  Nova Seção F
+                </button>
+
+                <button mat-flat-button color="primary"  (click)="cadastrarNovaSetimaSecao()"
+                  id="btnNovaSetimaSecao" matTooltip="Cadastrar Nova Seção"
+                  style="cursor: pointer !important; margin-bottom: 5px;margin-left: 5px ;">
+                  Nova Seção G
+                </button>
+
+              </div>
+
+            </div>
+
+
+            <table mat-table [dataSource]="dataSourceSecao" matSort matSortActive="indice" matSortDirection="desc">
+
+              <ng-container matColumnDef="indiceSecao">
+                <th mat-header-cell *matHeaderCellDef>Índice Geral</th>
+                <td mat-cell *matCellDef="let item" > <b>{{item.indice}}</b></td>
+              </ng-container>
+
+              <ng-container matColumnDef="tipoSecao">
+                <th mat-header-cell *matHeaderCellDef>Tipo</th>
+                <td mat-cell *matCellDef="let item">
+                  <span *ngIf="item.tipo == 'primeiraSecao'">Seção A</span>
+                  <span *ngIf="item.tipo == 'segundaSecao'">Seção B</span>
+                  <span *ngIf="item.tipo == 'terceiraSecao'">Seção C</span>
+                  <span *ngIf="item.tipo == 'quartaSecao'">Seção D</span>
+                  <span *ngIf="item.tipo == 'quintaSecao'">Seção E</span>
+                  <span *ngIf="item.tipo == 'sextaSecao'">Seção F</span>
+                  <span *ngIf="item.tipo == 'setimaSecao'">Seção G</span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="tituloSecao">
+                <th mat-header-cell *matHeaderCellDef>Título</th>
+                <td mat-cell *matCellDef="let item" [innerHTML]="item.tituloPrincipal? item.tituloPrincipal : item.primeiroTitulo"></td>
+              </ng-container>
+
+              <ng-container matColumnDef="exibirSecao">
+                <th mat-header-cell *matHeaderCellDef>Exibir</th>
+                <td mat-cell *matCellDef="let item"> {{item.exibir?'Sim':'Não'}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="acoesSecao">
+                <th mat-header-cell *matHeaderCellDef> Ações </th>
+                <td mat-cell *matCellDef="let item" class='m-card-title' data-label='Ações'>
+
+                  <span *ngIf="item.tipo == 'primeiraSecao'">
+                    <button mat-flat-button color="primary" type="button" name="button"
+                    (click)="buscarPrimeiraSecaoDetalhe(item.id)"
+                      class="btnTabela" matTooltip="Editar">
+                      <mat-icon> edit </mat-icon>
+                    </button>
+
+                    <button mat-flat-button color="warn" type="button" name="button" (click)="excluirPrimeiraSecao(item.id)"
+                      class="btnTabela" matTooltip="Excluir">
+                      <mat-icon> delete </mat-icon>
+                    </button>
+                  </span>
+
+                  <span *ngIf="item.tipo == 'segundaSecao'">
+                    <button mat-flat-button color="primary" type="button" name="button"
+                    (click)="buscarSegundaSecaoDetalhe(item.id)"
+                      class="btnTabela" matTooltip="Editar">
+                      <mat-icon> edit </mat-icon>
+                    </button>
+
+                    <button mat-flat-button color="warn" type="button" name="button" (click)="excluirSegundaSecao(item.id)"
+                      class="btnTabela" matTooltip="Excluir">
+                      <mat-icon> delete </mat-icon>
+                    </button>
+
+                  </span>
+
+                  <span *ngIf="item.tipo == 'terceiraSecao'">
+                    <button mat-flat-button color="primary" type="button" name="button"
+                    (click)="buscarTerceiraSecaoDetalhe(item.id)"
+                      class="btnTabela" matTooltip="Editar">
+                      <mat-icon> edit </mat-icon>
+                    </button>
+
+                    <button mat-flat-button color="warn" type="button" name="button" (click)="excluirTerceiraSecao(item.id)"
+                      class="btnTabela" matTooltip="Excluir">
+                      <mat-icon> delete </mat-icon>
+                    </button>
+                  </span>
+
+                  <span *ngIf="item.tipo == 'quartaSecao'">
+                    <button mat-flat-button color="primary" type="button" name="button"
+                    (click)="buscarQuartaSecaoDetalhe(item.id)"
+                      class="btnTabela" matTooltip="Editar">
+                      <mat-icon> edit </mat-icon>
+                    </button>
+
+                    <button mat-flat-button color="warn" type="button" name="button" (click)="excluirQuartaSecao(item.id)"
+                      class="btnTabela" matTooltip="Excluir">
+                      <mat-icon> delete </mat-icon>
+                    </button>
+                  </span>
+
+                  <span *ngIf="item.tipo == 'quintaSecao'">
+                    <button mat-flat-button color="primary" type="button" name="button"
+                    (click)="buscarQuintaSecaoDetalhe(item.id)"
+                      class="btnTabela" matTooltip="Editar">
+                      <mat-icon> edit </mat-icon>
+                    </button>
+
+                    <button mat-flat-button color="warn" type="button" name="button" (click)="excluirQuintaSecao(item.id)"
+                      class="btnTabela" matTooltip="Excluir">
+                      <mat-icon> delete </mat-icon>
+                    </button>
+                  </span>
+
+                  <span *ngIf="item.tipo == 'sextaSecao'">
+                    <button mat-flat-button color="primary" type="button" name="button"
+                    (click)="buscarSextaSecaoDetalhe(item.id)"
+                      class="btnTabela" matTooltip="Editar">
+                      <mat-icon> edit </mat-icon>
+                    </button>
+
+                    <button mat-flat-button color="warn" type="button" name="button" (click)="excluirSextaSecao(item.id)"
+                      class="btnTabela" matTooltip="Excluir">
+                      <mat-icon> delete </mat-icon>
+                    </button>
+                  </span>
+
+                  <span *ngIf="item.tipo == 'setimaSecao'">
+                    <button mat-flat-button color="primary" type="button" name="button"
+                    (click)="buscarSetimaSecaoDetalhe(item.id)"
+                      class="btnTabela" matTooltip="Editar">
+                      <mat-icon> edit </mat-icon>
+                    </button>
+
+                    <button mat-flat-button color="warn" type="button" name="button" (click)="excluirSetimaSecao(item.id)"
+                      class="btnTabela" matTooltip="Excluir">
+                      <mat-icon> delete </mat-icon>
+                    </button>
+                  </span>
+
+                  <button mat-flat-button color="primary" type="button" name="button"
+                  (click)="alteraIndiceSecao(item)"
+                    class="btnTabela" matTooltip="Editar Indíce">
+                    <mat-icon> reorder </mat-icon>
+                  </button>
+
+
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsSecao; sticky: true"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsSecao;"></tr>
+            </table>
+
+
+          </mat-expansion-panel>
+
+        </mat-accordion>
+
+
+        <div *ngIf="primeiraSecaoSelecionada">
+
+          <div class="row" style="padding-top: 2%;padding-bottom: 1%;">
+
+            <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 h1 titulos" *ngIf="primeiraSecaoSelecionada.id">
+              Editar Seção A - Indíce:{{primeiraSecaoSelecionada.indice}}
+              <button mat-flat-button color="primary"  (click)="fecharPrimeiraSecao()"
+                matTooltip="Fechar"
+                style="cursor: pointer !important;float:right">
+                Fechar
+              </button>
+
+              <button mat-flat-button color="primary"  (click)="preVisulizarSecao(primeiraSecaoSelecionada,'primeiraSecao')"
+                matTooltip="Pré-Visualizar"
+                style="cursor: pointer !important;float:right;margin-right: 5px">
+                Pré-Visualizar
+              </button>
+            </div>
+
+            <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 h1 titulos" *ngIf="!primeiraSecaoSelecionada.id">
+              Nova Seção A - Indíce:{{primeiraSecaoSelecionada.indice}}
+              <button mat-flat-button color="primary"  (click)="fecharPrimeiraSecao()"
+                matTooltip="Fechar"
+                style="cursor: pointer !important;float:right">
+                Fechar
+              </button>
+
+              <button mat-flat-button color="primary"  (click)="preVisulizarSecao(primeiraSecaoSelecionada,'primeiraSecao')"
+                matTooltip="Pré-Visualizar"
+                style="cursor: pointer !important;float:right;margin-right: 5px">
+                Pré-Visualizar
+              </button>
+            </div>
+
+          </div>
+
+          <mat-form-field class="col-md-2" style="margin-top: 1%;">
+            <mat-label>Índice geral</mat-label>
+            <input  #indicePrimeiraSecao="ngModel" pattern="^([1-9][0-9]{0,2}|1000)$" onKeyPress="if(this.value.length==4) return false;" name="indicePrimeiraSecao" matInput placeholder="Índice geral" [(ngModel)]="primeiraSecaoSelecionada.indice">
+            <mat-hint [hidden]="!indicePrimeiraSecao.invalid" style="font-size: 12px;color:red">Digite um valor entre 1 e 1000</mat-hint>
+          </mat-form-field>
+
+          <div class="col-md-12" style="margin-left:0px;margin-bottom: 1%;">
+            <mat-checkbox id="primeiraSecaoExibir" name="primeiraSecaoExibir"
+              [(ngModel)]="primeiraSecaoSelecionada.exibir">Exibir a seção na Home</mat-checkbox>
+          </div>
+
+          <div>
+            <div style="width: 67%;margin-left: 2%;">
+              <app-primeira-secao-view [primeiraSecao]="primeiraSecaoSelecionada"></app-primeira-secao-view>
+            </div>
+          </div>
+
+          <div class="col-lg-12" style="margin-top: 20px !important;">
+            <mat-label class="labelTextEditor">Título</mat-label>
+            <div [ngxSummernote]="editorCleanConfig" name="tituloPrimeiraSecao"
+              [(ngModel)]="primeiraSecaoSelecionada.primeiroTitulo"></div>
+            <mat-hint class="caracteres-editor">{{ primeiraSecaoSelecionada?.primeiroTitulo?.length || 0 }}/250
+            </mat-hint>
+          </div>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link do Título" maxlength="250" #inputLinkTituloPrimeiraSecao
+              name="linkTituloPrimeiraSecao" [(ngModel)]="primeiraSecaoSelecionada.primeiroTituloLink"
+              id="inputLinkTituloPrimeiraSecao" matTooltip="Endereço do Link do Título">
+            <mat-hint align="end">{{inputLinkTituloPrimeiraSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input [style.background]="primeiraSecaoSelecionada?.primeiroTituloCor" [cpPosition]="'top-right'"
+              [(colorPicker)]="primeiraSecaoSelecionada.primeiroTituloCor" />
+            <input matInput placeholder="Cor do Título" maxlength="10" #inputCorTituloPrimeiraSecao
+              name="corTituloPrimeiraSecao" [(ngModel)]="primeiraSecaoSelecionada.primeiroTituloCor"
+              id="corTituloPrimeiraSecao" matTooltip="Cor do título">
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Texto" maxlength="1000" #inputTextoPrimeiraSecao name="textoPrimeiraSecao"
+              [(ngModel)]="primeiraSecaoSelecionada.primeiroTexto" id="textoPrimeiraSecao" matTooltip="Texto">
+            <mat-hint align="end">{{ inputTextoPrimeiraSecao.value?.length || 0 }}/1000</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link do Texto" maxlength="250" #inputLinkTextoPrimeiraSecao
+              name="linkTextoPrimeiraSecao" [(ngModel)]="primeiraSecaoSelecionada.primeiroTextoLink"
+              id="inputLinkTextoPrimeiraSecao" matTooltip="Endereço do Link do Texto">
+            <mat-hint align="end">{{inputLinkTextoPrimeiraSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input [style.background]="primeiraSecaoSelecionada?.primeiroTextoCor" [cpPosition]="'top-right'"
+              [(colorPicker)]="primeiraSecaoSelecionada.primeiroTextoCor" />
+            <input matInput placeholder="Cor do Texto" maxlength="10" #inputCorTextoPrimeiraSecao
+              name="corTextoPrimeiraSecao" [(ngModel)]="primeiraSecaoSelecionada.primeiroTextoCor"
+              id="corTextoPrimeiraSecao" matTooltip="Cor do texto">
+          </mat-form-field>
+
+
+          <div class="text-right" style="margin-top: 10px !important;">
+            <button mat-flat-button color="primary" class="btnToRight" [disabled]="indicePrimeiraSecao?.invalid"
+              role="button" (click)='editarPrimeiraSecao()' matTooltip="Salvar Seção A">
+              <mat-icon>save</mat-icon>Salvar
+            </button>
+          </div>
+
+
+        </div>
+
+        <div *ngIf="segundaSecaoSelecionada">
+
+          <div class="row" style="padding-top: 2%;padding-bottom: 1%;">
+
+            <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 h1 titulos" *ngIf="segundaSecaoSelecionada.id">
+              Editar Seção B - Indíce:{{segundaSecaoSelecionada.indice}}
+              <button mat-flat-button color="primary"  (click)="fecharSegundaSecao()"
+                matTooltip="Fechar"
+                style="cursor: pointer !important;float:right">
+                Fechar
+              </button>
+
+              <button mat-flat-button color="primary"  (click)="preVisulizarSecao(segundaSecaoSelecionada,'segundaSecao')"
+                matTooltip="Pré-Visualizar"
+                style="cursor: pointer !important;float:right;margin-right: 5px">
+                Pré-Visualizar
+              </button>
+            </div>
+
+            <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 h1 titulos" *ngIf="!segundaSecaoSelecionada.id">
+              Nova Seção B - Indíce:{{segundaSecaoSelecionada.indice}}
+              <button mat-flat-button color="primary"  (click)="fecharSegundaSecao()"
+                matTooltip="Fechar"
+                style="cursor: pointer !important;float:right">
+                Fechar
+              </button>
+
+              <button mat-flat-button color="primary"  (click)="preVisulizarSecao(segundaSecaoSelecionada,'segundaSecao')"
+                matTooltip="Pré-Visualizar"
+                style="cursor: pointer !important;float:right;margin-right: 5px">
+                Pré-Visualizar
+              </button>
+            </div>
+
+          </div>
+
+          <mat-form-field class="col-md-2" style="margin-bottom: 1%;">
+            <mat-label>Índice geral</mat-label>
+            <input  #indiceSegundaSecao="ngModel" pattern="^([1-9][0-9]{0,2}|1000)$" onKeyPress="if(this.value.length==4) return false;" name="indiceSegundaSecao" matInput placeholder="Índice geral" [(ngModel)]="segundaSecaoSelecionada.indice">
+            <mat-hint [hidden]="!indiceSegundaSecao.invalid" style="font-size: 12px;color:red">Digite um valor entre 1 e 1000</mat-hint>
+          </mat-form-field>
+
+          <div class="col-md-12" style="margin-left:0px;margin-bottom: 1%;">
+            <mat-checkbox id="segundaSecaoExibir" name="segundaSecaoExibir" [(ngModel)]="segundaSecaoSelecionada.exibir">
+              Exibir a seção na Home</mat-checkbox>
+          </div>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Título" maxlength="250" #inputTituloPrincipalSegundaSecao
+              name="tituloPrincipalSegundaSecao" [(ngModel)]="segundaSecaoSelecionada.tituloPrincipal"
+              id="inputTituloPrincipalSegundaSecao" matTooltip="Título">
+            <mat-hint align="end">{{inputTituloPrincipalSegundaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link do Título" maxlength="250"
+              #inputLinkTituloPrincipalSegundaSecao name="linkTituloPrincipalSegundaSecao"
+              [(ngModel)]="segundaSecaoSelecionada.tituloPrincipalLink" id="inputLinkTituloPrincipalSegundaSecao"
+              matTooltip="Link do Título">
+            <mat-hint align="end">{{inputLinkTituloPrincipalSegundaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input [style.background]="segundaSecaoSelecionada.tituloPrincipalCor" [cpPosition]="'top-right'"
+              [(colorPicker)]="segundaSecaoSelecionada.tituloPrincipalCor" />
+            <input matInput placeholder="Cor do Título" maxlength="10"
+              #inputCorTituloPrincipalSegundaSecao name="corTituloPrincipalSegundaSecao"
+              [(ngModel)]="segundaSecaoSelecionada.tituloPrincipalCor" id="corTituloPrincipalSegundaSecao"
+              matTooltip="Cor do título/tema">
+          </mat-form-field>
+
+          <div>
+            <div style="width: 68%;margin-left: 1%;margin-top: 1%;">
+              <app-segunda-secao-view [segundaSecao]="segundaSecaoSelecionada"></app-segunda-secao-view>
+            </div>
+          </div>
+
+          <div style="margin-top:3%; margin-bottom: 3%;font-weight: bold;">
+            Configuração do Primeiro Banner
+            <hr class="hr-separador">
+          </div>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Título" maxlength="250" #inputPrimeiroTituloSegundaSecao
+              name="primeiroTituloSegundaSecao" [(ngModel)]="segundaSecaoSelecionada.primeiroTitulo"
+              id="inputPrimeiroTituloSegundaSecao" matTooltip="Título">
+            <mat-hint align="end">{{inputPrimeiroTituloSegundaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link do Título" maxlength="250"
+              #inputLinkPrimeiroTituloSegundaSecao name="linkPrimeiroTituloSegundaSecao"
+              [(ngModel)]="segundaSecaoSelecionada.primeiroTituloLink" id="inputLinkPrimeiroTituloSegundaSecao"
+              matTooltip="Endereço do Link do Título">
+            <mat-hint align="end">{{inputLinkPrimeiroTituloSegundaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input [style.background]="segundaSecaoSelecionada.primeiroTituloCor" [cpPosition]="'top-right'"
+              [(colorPicker)]="segundaSecaoSelecionada.primeiroTituloCor" />
+            <input matInput placeholder="Cor do Título" maxlength="10" #inputCorPrimeiroTituloSegundaSecao
+              name="corPrimeiroTituloSegundaSecao" [(ngModel)]="segundaSecaoSelecionada.primeiroTituloCor"
+              id="corPrimeiroTituloSegundaSecao" matTooltip="Cor do título">
+          </mat-form-field>
+
+          <div class="col-lg-12" style="margin-top: 20px !important;">
+            <mat-label class="labelTextEditor">Texto</mat-label>
+            <div [ngxSummernote]="editorCleanConfig" name="primeiroTextoSegundaSecao"
+              [(ngModel)]="segundaSecaoSelecionada.primeiroTexto"></div>
+            <mat-hint class="caracteres-editor">{{ segundaSecaoSelecionada?.primeiroTexto?.length || 0 }}/250</mat-hint>
+          </div>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link do Texto" maxlength="250" #inputLinkPrimeiroTextoSegundaSecao
+              name="linkPrimeiroTextoSegundaSecao" [(ngModel)]="segundaSecaoSelecionada.primeiroTextoLink"
+              id="inputLinkPrimeiroTextoSegundaSecao" matTooltip="Link do Texto">
+            <mat-hint align="end">{{inputLinkPrimeiroTextoSegundaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input [style.background]="segundaSecaoSelecionada.primeiroTextoCor" [cpPosition]="'top-right'"
+              [(colorPicker)]="segundaSecaoSelecionada.primeiroTextoCor" />
+            <input matInput placeholder="Cor do Texto" maxlength="10" #inputCorPrimeiroTextoSegundaSecao
+              name="corPrimeiroTextoSegundaSecao" [(ngModel)]="segundaSecaoSelecionada.primeiroTextoCor"
+              id="corPrimeiroTextoSegundaSecao" matTooltip="Cor do texto">
+          </mat-form-field>
+
+          <div class="col-md-12">
+            <input hidden #primeiraImagemSegundaSecao type="file" id="primeiraImagemSegundaSecao"
+              name="primeiraImagemSegundaSecao" accept="image/jpeg,image/png"
+              (change)="processImage($event, 'segundaSecaoPrimeiraImagem', segundaSecaoSelecionada)">
+            <button type="button" mat-raised-button (click)="primeiraImagemSegundaSecao.click()"
+              id="btnPrimeiraImagemSegundaSecao" name="primeiraImagemSegundaSecao" color="primary"
+              style="margin-top: 20px; cursor: pointer;" matTooltip="Upload da imagem">
+              <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar imagem (resolução ref. 500x500px)
+            </button>
+
+            <div class="containerGaleria" *ngIf="segundaSecaoSelecionada.primeiraImagem">
+              <img [src]="segundaSecaoSelecionada.primeiraImagemSafeUrl" style="width:100%">
+              <button type="button" mat-raised-button style="width:100%;"
+                (click)="removerPrimeiraImagemSegundaSecao(segundaSecaoSelecionada)">
+                <mat-icon class="btn-remover">delete</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link da Imagem" maxlength="250"
+              #inputLinkPrimeiraImagemSegundaSecao name="linkPrimeiraImagemSegundaSecao"
+              [(ngModel)]="segundaSecaoSelecionada.primeiraImagemLink" id="inputLinkPrimeiraImagemSegundaSecao"
+              matTooltip="Link da Imagem">
+            <mat-hint align="end">{{inputLinkPrimeiraImagemSegundaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Tooltip da Imagem" #inputPrimeiraImagemTooltipSegundaSecao name="inputPrimeiraImagemTooltipSegundaSecao"
+            [(ngModel)]="segundaSecaoSelecionada.primeiraImagemTooltip" id="inputPrimeiraImagemTooltipSegundaSecao"
+            matTooltip="Tooltip da Imagem">
+          </mat-form-field>
+
+          <div style="margin-top:3%; margin-bottom: 3%;font-weight: bold;">
+            Configuração do Segundo Banner
+            <hr class="hr-separador">
+          </div>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Título" maxlength="250" #inputSegundoTituloSegundaSecao
+              name="segundoTituloSegundaSecao" [(ngModel)]="segundaSecaoSelecionada.segundoTitulo"
+              id="inputSegundoTituloSegundaSecao" matTooltip="Título">
+            <mat-hint align="end">{{inputSegundoTituloSegundaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link do Título" maxlength="250" #inputLinkSegundoTituloSegundaSecao
+              name="linkSegundoTituloSegundaSecao" [(ngModel)]="segundaSecaoSelecionada.segundoTituloLink"
+              id="inputLinkSegundoTituloSegundaSecao" matTooltip="Endereço do Link do Título">
+            <mat-hint align="end">{{inputLinkSegundoTituloSegundaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input [style.background]="segundaSecaoSelecionada.segundoTituloCor" [cpPosition]="'top-right'"
+              [(colorPicker)]="segundaSecaoSelecionada.segundoTituloCor" />
+            <input matInput placeholder="Cor do Título" maxlength="10" #inputCorSegundoTituloSegundaSecao
+              name="corSegundoTituloSegundaSecao" [(ngModel)]="segundaSecaoSelecionada.segundoTituloCor"
+              id="corSegundoTituloSegundaSecao" matTooltip="Cor do título">
+          </mat-form-field>
+
+          <div class="col-lg-12" style="margin-top: 20px !important;">
+            <mat-label class="labelTextEditor">Texto</mat-label>
+            <div [ngxSummernote]="editorCleanConfig" name="segundoTextoSegundaSecao"
+              [(ngModel)]="segundaSecaoSelecionada.segundoTexto"></div>
+            <mat-hint class="caracteres-editor">{{ segundaSecaoSelecionada?.segundoTexto?.length || 0 }}/250</mat-hint>
+          </div>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link do Texto" maxlength="250" #inputLinkSegundoTextoSegundaSecao
+              name="linkSegundoTextoSegundaSecao" [(ngModel)]="segundaSecaoSelecionada.segundoTextoLink"
+              id="inputLinkSegundoTextoSegundaSecao" matTooltip="Link do Texto">
+            <mat-hint align="end">{{inputLinkSegundoTextoSegundaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input [style.background]="segundaSecaoSelecionada.segundoTextoCor" [cpPosition]="'top-right'"
+              [(colorPicker)]="segundaSecaoSelecionada.segundoTextoCor" />
+            <input matInput placeholder="Cor do Texto" maxlength="10" #inputCorSegundoTextoSegundaSecao
+              name="corSegundoTextoSegundaSecao" [(ngModel)]="segundaSecaoSelecionada.segundoTextoCor"
+              id="corSegundoTextoSegundaSecao" matTooltip="Cor do texto">
+          </mat-form-field>
+
+          <div class="col-md-12">
+            <input hidden #segundaImagemSegundaSecao type="file" id="segundaImagemSegundaSecao"
+              name="segundaImagemSegundaSecao" accept="image/jpeg,image/png"
+              (change)="processImage($event, 'segundaSecaoSegundaImagem', segundaSecaoSelecionada)">
+            <button type="button" mat-raised-button (click)="segundaImagemSegundaSecao.click()"
+              id="btnSegundaImagemSegundaSecao" name="segundaImagemSegundaSecao" color="primary"
+              style="margin-top: 20px; cursor: pointer;" matTooltip="Upload da imagem">
+              <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar imagem (resolução ref. 500x500px)
+            </button>
+
+            <div class="containerGaleria" *ngIf="segundaSecaoSelecionada.segundaImagem">
+              <img [src]="segundaSecaoSelecionada.segundaImagemSafeUrl" style="width:100%">
+              <button type="button" mat-raised-button style="width:100%;"
+                (click)="removerSegundaImagemSegundaSecao(segundaSecaoSelecionada)">
+                <mat-icon class="btn-remover">delete</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link da Imagem" maxlength="250" #inputLinkSegundaImagemSegundaSecao
+              name="linkSegundaImagemSegundaSecao" [(ngModel)]="segundaSecaoSelecionada.segundaImagemLink"
+              id="inputLinkSegundaImagemSegundaSecao" matTooltip="Link da imagem">
+            <mat-hint align="end">{{inputLinkSegundaImagemSegundaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Tooltip da Imagem" #inputSegundaImagemTooltipSegundaSecao name="inputSegundaImagemTooltipSegundaSecao"
+            [(ngModel)]="segundaSecaoSelecionada.segundaImagemTooltip" id="inputSegundaImagemTooltipSegundaSecao"
+            matTooltip="Tooltip da Imagem">
+          </mat-form-field>
+
+          <div class="text-right" style="margin-top: 10px !important;">
+            <button mat-flat-button color="primary" class="btnToRight"  [disabled]="indiceSegundaSecao?.invalid"
+              role="button" (click)='editarSegundaSecao()' matTooltip="Salvar Seção B">
+              <mat-icon>save</mat-icon>Salvar
+            </button>
+          </div>
+
+        </div>
+
+        <div *ngIf="terceiraSecaoSelecionada">
+
+            <div class="row" style="padding-top: 2%;padding-bottom: 1%;">
+
+              <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 h1 titulos" *ngIf="terceiraSecaoSelecionada.id">
+                Editar Seção C - Indíce:{{terceiraSecaoSelecionada.indice}}
+
+                <button mat-flat-button color="primary"  (click)="fecharTerceiraSecao()"
+                  matTooltip="Fechar"
+                  style="cursor: pointer !important;float:right">
+                  Fechar
+                </button>
+
+                <button mat-flat-button color="primary"  (click)="preVisulizarSecao(terceiraSecaoSelecionada,'terceiraSecao')"
+                  matTooltip="Pré-Visualizar"
+                  style="cursor: pointer !important;float:right;margin-right: 5px">
+                  Pré-Visualizar
+                </button>
+              </div>
+
+              <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 h1 titulos" *ngIf="!terceiraSecaoSelecionada.id">
+                Nova Seção C - Indíce:{{terceiraSecaoSelecionada.indice}}
+
+                <button mat-flat-button color="primary"  (click)="fecharTerceiraSecao()"
+                  matTooltip="Fechar"
+                  style="cursor: pointer !important;float:right">
+                  Fechar
+                </button>
+
+                <button mat-flat-button color="primary"  (click)="preVisulizarSecao(terceiraSecaoSelecionada,'terceiraSecao')"
+                  matTooltip="Pré-Visualizar"
+                  style="cursor: pointer !important;float:right;margin-right: 5px">
+                  Pré-Visualizar
+                </button>
+
+              </div>
+
+            </div>
+
+            <mat-form-field class="col-md-2" style="margin-bottom: 1%;">
+              <mat-label>Índice geral</mat-label>
+              <input  #indiceTerceiraSecao="ngModel" pattern="^([1-9][0-9]{0,2}|1000)$" onKeyPress="if(this.value.length==4) return false;" name="indiceTerceiraSecao" matInput placeholder="Índice geral" [(ngModel)]="terceiraSecaoSelecionada.indice">
+              <mat-hint [hidden]="!indiceTerceiraSecao.invalid" style="font-size: 12px;color:red">Digite um valor entre 1 e 1000</mat-hint>
+            </mat-form-field>
+
+            <div class="col-md-12" style="margin-left:0px;margin-bottom: 1%;">
+              <mat-checkbox id="terceiraSecaoExibir" name="terceiraSecaoExibir"
+                [(ngModel)]="terceiraSecaoSelecionada.exibir">Exibir a seção na Home</mat-checkbox>
+            </div>
+
+            <mat-form-field class="col-md-12">
+              <input matInput placeholder="Título" maxlength="250" #inputTituloPrincipalTerceiraSecao
+                name="tituloPrincipalTerceiraSecao" [(ngModel)]="terceiraSecaoSelecionada.tituloPrincipal"
+                id="inputTituloPrincipalTerceiraSecao" matTooltip="Título">
+              <mat-hint align="end">{{inputTituloPrincipalTerceiraSecao?.value?.length || 0 }}/250</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-12">
+              <input matInput placeholder="Link do Título" maxlength="250"
+                #inputLinkTituloPrincipalTerceiraSecao name="linkTituloPrincipalTerceiraSecao"
+                [(ngModel)]="terceiraSecaoSelecionada.tituloPrincipalLink" id="inputLinkTituloPrincipalTerceiraSecao"
+                matTooltip="Link do Título">
+              <mat-hint align="end">{{inputLinkTituloPrincipalTerceiraSecao?.value?.length || 0 }}/250</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-12">
+              <input [style.background]="terceiraSecaoSelecionada.tituloPrincipalCor" [cpPosition]="'top-right'"
+                [(colorPicker)]="terceiraSecaoSelecionada.tituloPrincipalCor" />
+              <input matInput placeholder="Cor do Título" maxlength="10"
+                #inputCorTituloPrincipalTerceiraSecao name="corTituloPrincipalTerceiraSecao"
+                [(ngModel)]="terceiraSecaoSelecionada.tituloPrincipalCor" id="corTituloPrincipalTerceiraSecao"
+                matTooltip="Cor do título">
+            </mat-form-field>
+
+            <div>
+              <div style="width: 68%;margin-left: 1%;margin-top: 1%;">
+                <app-terceira-secao-view [terceiraSecao]="terceiraSecaoSelecionada"></app-terceira-secao-view>
+              </div>
+            </div>
+
+
+            <div style="margin-top:3%; margin-bottom: 3%;font-weight: bold;">
+              Configuração do Primeiro Banner
+              <hr class="hr-separador">
+            </div>
+
+            <mat-form-field class="col-md-12">
+              <input matInput placeholder="Título" maxlength="250" #inputPrimeiroTituloTerceiraSecao
+                name="primeiroTituloTerceiraSecao" [(ngModel)]="terceiraSecaoSelecionada.primeiroTitulo"
+                id="inputPrimeiroTituloTerceiraSecao" matTooltip="Título">
+              <mat-hint align="end">{{inputPrimeiroTituloTerceiraSecao?.value?.length || 0 }}/250</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-12">
+              <input matInput placeholder="Link do Título" maxlength="250"
+                #inputLinkPrimeiroTituloTerceiraSecao name="linkPrimeiroTituloTerceiraSecao"
+                [(ngModel)]="terceiraSecaoSelecionada.primeiroTituloLink" id="inputLinkPrimeiroTituloTerceiraSecao"
+                matTooltip="Link do Título">
+              <mat-hint align="end">{{inputLinkPrimeiroTituloTerceiraSecao?.value?.length || 0 }}/250</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-12">
+              <input [style.background]="terceiraSecaoSelecionada.primeiroTituloCor" [cpPosition]="'top-right'"
+                [(colorPicker)]="terceiraSecaoSelecionada.primeiroTituloCor" />
+              <input matInput placeholder="Cor do Título" maxlength="10" #inputCorPrimeiroTituloTerceiraSecao
+                name="corPrimeiroTituloTerceiraSecao" [(ngModel)]="terceiraSecaoSelecionada.primeiroTituloCor"
+                id="corPrimeiroTituloTerceiraSecao" matTooltip="Cor do título">
+            </mat-form-field>
+
+            <div class="col-lg-12" style="margin-top: 20px !important;">
+              <mat-label class="labelTextEditor">Texto</mat-label>
+              <div [ngxSummernote]="editorCleanConfig" name="primeiroTextoTerceiraSecao"
+                [(ngModel)]="terceiraSecaoSelecionada.primeiroTexto"></div>
+              <mat-hint class="caracteres-editor">{{ terceiraSecaoSelecionada?.primeiroTexto?.length || 0 }}/250</mat-hint>
+            </div>
+
+            <mat-form-field class="col-md-12">
+              <input matInput placeholder="Link do Texto" maxlength="250"
+                #inputLinkPrimeiroTextoTerceiraSecao name="linkPrimeiroTextoTerceiraSecao"
+                [(ngModel)]="terceiraSecaoSelecionada.primeiroTextoLink" id="inputLinkPrimeiroTextoTerceiraSecao"
+                matTooltip="Link do Texto">
+              <mat-hint align="end">{{inputLinkPrimeiroTextoTerceiraSecao?.value?.length || 0 }}/250</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-12">
+              <input [style.background]="terceiraSecaoSelecionada.primeiroTextoCor" [cpPosition]="'top-right'"
+                [(colorPicker)]="terceiraSecaoSelecionada.primeiroTextoCor" />
+              <input matInput placeholder="Cor do Texto" maxlength="10" #inputCorPrimeiroTextoTerceiraSecao
+                name="corPrimeiroTextoTerceiraSecao" [(ngModel)]="terceiraSecaoSelecionada.primeiroTextoCor"
+                id="corPrimeiroTextoTerceiraSecao" matTooltip="Cor do texto">
+            </mat-form-field>
+
+            <div class="col-md-12">
+              <input hidden #primeiraImagemTerceiraSecao type="file" id="primeiraImagemTerceiraSecao"
+                name="primeiraImagemTerceiraSecao" accept="image/jpeg,image/png"
+                (change)="processImage($event, 'terceiraSecaoPrimeiraImagem', terceiraSecaoSelecionada)">
+              <button type="button" mat-raised-button (click)="primeiraImagemTerceiraSecao.click()"
+                id="btnPrimeiraImagemTerceiraSecao" name="primeiraImagemTerceiraSecao" color="primary"
+                style="margin-top: 20px; cursor: pointer;" matTooltip="Upload da imagem">
+                <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar imagem (resolução ref. 500x500px)
+              </button>
+
+              <div class="containerGaleria" *ngIf="terceiraSecaoSelecionada.primeiraImagem">
+                <img [src]="terceiraSecaoSelecionada.primeiraImagemSafeUrl" style="width:100%">
+                <button type="button" mat-raised-button style="width:100%;"
+                  (click)="removerPrimeiraImagemTerceiraSecao(terceiraSecaoSelecionada)">
+                  <mat-icon class="btn-remover">delete</mat-icon>
+                </button>
+              </div>
+            </div>
+
+            <mat-form-field class="col-md-12">
+              <input matInput placeholder="Link da Imagem" maxlength="250"
+                #inputLinkPrimeiraImagemTerceiraSecao name="linkPrimeiraImagemTerceiraSecao"
+                [(ngModel)]="terceiraSecaoSelecionada.primeiraImagemLink" id="inputLinkPrimeiraImagemTerceiraSecao"
+                matTooltip="Link da Imagem">
+              <mat-hint align="end">{{inputLinkPrimeiraImagemTerceiraSecao?.value?.length || 0 }}/250</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-12">
+              <input matInput placeholder="Tooltip da Imagem" #inputPrimeiraImagemTooltipTerceiraSecao name="inputPrimeiraImagemTooltipTerceiraSecao"
+              [(ngModel)]="terceiraSecaoSelecionada.primeiraImagemTooltip" id="inputPrimeiraImagemTooltipTerceiraSecao"
+              matTooltip="Tooltip da Imagem">
+            </mat-form-field>
+
+            <div style="margin-top:3%; margin-bottom: 3%;font-weight: bold;">
+              Configuração do Segundo Banner
+              <hr class="hr-separador">
+            </div>
+
+            <mat-form-field class="col-md-12">
+              <input matInput placeholder="Título" maxlength="250" #inputSegundoTituloTerceiraSecao
+                name="segundoTituloTerceiraSecao" [(ngModel)]="terceiraSecaoSelecionada.segundoTitulo"
+                id="inputSegundoTituloTerceiraSecao" matTooltip="Título">
+              <mat-hint align="end">{{inputSegundoTituloTerceiraSecao?.value?.length || 0 }}/250</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-12">
+              <input matInput placeholder="Link do Título" maxlength="250"
+                #inputLinkSegundoTituloTerceiraSecao name="linkSegundoTituloTerceiraSecao"
+                [(ngModel)]="terceiraSecaoSelecionada.segundoTituloLink" id="inputLinkSegundoTituloTerceiraSecao"
+                matTooltip="Link do Título">
+              <mat-hint align="end">{{inputLinkSegundoTituloTerceiraSecao?.value?.length || 0 }}/250</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-12">
+              <input [style.background]="terceiraSecaoSelecionada.segundoTituloCor" [cpPosition]="'top-right'"
+                [(colorPicker)]="terceiraSecaoSelecionada.segundoTituloCor" />
+              <input matInput placeholder="Cor do Título" maxlength="10" #inputCorSegundoTituloTerceiraSecao
+                name="corSegundoTituloTerceiraSecao" [(ngModel)]="terceiraSecaoSelecionada.segundoTituloCor"
+                id="corSegundoTituloTerceiraSecao" matTooltip="Cor do título">
+            </mat-form-field>
+
+            <div class="col-lg-12" style="margin-top: 20px !important;">
+              <mat-label class="labelTextEditor">Texto</mat-label>
+              <div [ngxSummernote]="editorCleanConfig" name="segundoTextoTerceiraSecao"
+                [(ngModel)]="terceiraSecaoSelecionada.segundoTexto"></div>
+              <mat-hint class="caracteres-editor">{{ terceiraSecaoSelecionada?.segundoTexto?.length || 0 }}/250</mat-hint>
+            </div>
+
+            <mat-form-field class="col-md-12">
+              <input matInput placeholder="Link do Texto" maxlength="250" #inputLinkSegundoTextoTerceiraSecao
+                name="linkSegundoTextoTerceiraSecao" [(ngModel)]="terceiraSecaoSelecionada.segundoTextoLink"
+                id="inputLinkSegundoTextoTerceiraSecao" matTooltip="Link do Texto">
+              <mat-hint align="end">{{inputLinkSegundoTextoTerceiraSecao?.value?.length || 0 }}/250</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-12">
+              <input [style.background]="terceiraSecaoSelecionada.segundoTextoCor" [cpPosition]="'top-right'"
+                [(colorPicker)]="terceiraSecaoSelecionada.segundoTextoCor" />
+              <input matInput placeholder="Cor do Texto" maxlength="10" #inputCorSegundoTextoTerceiraSecao
+                name="corSegundoTextoTerceiraSecao" [(ngModel)]="terceiraSecaoSelecionada.segundoTextoCor"
+                id="corSegundoTextoTerceiraSecao" matTooltip="Cor do texto">
+            </mat-form-field>
+
+            <div class="col-md-12">
+              <input hidden #segundaImagemTerceiraSecao type="file" id="segundaImagemTerceiraSecao"
+                name="segundaImagemTerceiraSecao" accept="image/jpeg,image/png"
+                (change)="processImage($event, 'terceiraSecaoSegundaImagem', terceiraSecaoSelecionada)">
+              <button type="button" mat-raised-button (click)="segundaImagemTerceiraSecao.click()"
+                id="btnSegundaImagemTerceiraSecao" name="segundaImagemTerceiraSecao" color="primary"
+                style="margin-top: 20px; cursor: pointer;" matTooltip="Upload da segunda imagem da Terceira Seção">
+                <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar imagem (resolução ref. 500x500px)
+              </button>
+
+              <div class="containerGaleria" *ngIf="terceiraSecaoSelecionada.segundaImagem">
+                <img [src]="terceiraSecaoSelecionada.segundaImagemSafeUrl" style="width:100%">
+                <button type="button" mat-raised-button style="width:100%;"
+                  (click)="removerSegundaImagemTerceiraSecao(terceiraSecaoSelecionada)">
+                  <mat-icon class="btn-remover">delete</mat-icon>
+                </button>
+              </div>
+            </div>
+
+            <mat-form-field class="col-md-12">
+              <input matInput placeholder="Link da Imagem" maxlength="250"
+                #inputLinkSegundaImagemTerceiraSecao name="linkSegundaImagemTerceiraSecao"
+                [(ngModel)]="terceiraSecaoSelecionada.segundaImagemLink" id="inputLinkSegundaImagemTerceiraSecao"
+                matTooltip="Link da imagem">
+              <mat-hint align="end">{{inputLinkSegundaImagemTerceiraSecao?.value?.length || 0 }}/250</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-12">
+              <input matInput placeholder="Tooltip da Imagem" #inputSegundaImagemTooltipTerceiraSecao name="inputSegundaImagemTooltipTerceiraSecao"
+              [(ngModel)]="terceiraSecaoSelecionada.segundaImagemTooltip" id="inputSegundaImagemTooltipTerceiraSecao"
+              matTooltip="Tooltip da Imagem">
+            </mat-form-field>
+
+            <div class="text-right" style="margin-top: 10px !important;">
+              <button mat-flat-button color="primary" class="btnToRight"  [disabled]="indiceTerceiraSecao?.invalid"
+                role="button" (click)='editarTerceiraSecao()' matTooltip="Salvar Seção C">
+                <mat-icon>save</mat-icon>Salvar
+              </button>
+            </div>
+
+        </div>
+
+        <div *ngIf="quartaSecaoSelecionada">
+
+          <div class="row" style="padding-top: 2%;padding-bottom: 1%;">
+
+            <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 h1 titulos" *ngIf="quartaSecaoSelecionada.id">
+              Editar Seção D - Indíce:{{quartaSecaoSelecionada.indice}}
+
+              <button mat-flat-button color="primary"  (click)="fecharQuartaSecao()"
+                matTooltip="Fechar"
+                style="cursor: pointer !important;float:right">
+                Fechar
+              </button>
+
+              <button mat-flat-button color="primary"  (click)="preVisulizarSecao(quartaSecaoSelecionada,'quartaSecao')"
+                matTooltip="Pré-Visualizar"
+                style="cursor: pointer !important;float:right;margin-right: 5px">
+                Pré-Visualizar
+              </button>
+            </div>
+
+            <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 h1 titulos" *ngIf="!quartaSecaoSelecionada.id">
+              Nova Seção D - Indíce:{{quartaSecaoSelecionada.indice}}
+
+              <button mat-flat-button color="primary"  (click)="fecharQuartaSecao()"
+                matTooltip="Fechar"
+                style="cursor: pointer !important;float:right">
+                Fechar
+              </button>
+
+              <button mat-flat-button color="primary"  (click)="preVisulizarSecao(quartaSecaoSelecionada,'quartaSecao')"
+                matTooltip="Pré-Visualizar"
+                style="cursor: pointer !important;float:right;margin-right: 5px">
+                Pré-Visualizar
+              </button>
+            </div>
+
+          </div>
+
+          <mat-form-field class="col-md-2" style="margin-bottom: 1%;">
+            <mat-label>Índice geral</mat-label>
+            <input  #indiceQuartaSecao="ngModel" pattern="^([1-9][0-9]{0,2}|1000)$" onKeyPress="if(this.value.length==4) return false;" name="indiceQuartaSecao" matInput placeholder="Índice geral" [(ngModel)]="quartaSecaoSelecionada.indice">
+            <mat-hint [hidden]="!indiceQuartaSecao.invalid" style="font-size: 12px;color:red">Digite um valor entre 1 e 1000</mat-hint>
+          </mat-form-field>
+
+
+          <div class="col-md-12" style="margin-left:0px;margin-bottom: 1%;">
+            <mat-checkbox id="quartaSecaoExibir" name="quartaSecaoExibir"
+              [(ngModel)]="quartaSecaoSelecionada.exibir">Exibir a seção na Home</mat-checkbox>
+          </div>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Título" maxlength="250" #inputTituloPrincipalQuartaSecao
+              name="tituloPrincipalQuartaSecao" [(ngModel)]="quartaSecaoSelecionada.tituloPrincipal"
+              id="inputTituloPrincipalQuartaSecao" matTooltip="Título">
+            <mat-hint align="end">{{inputTituloPrincipalQuartaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link do Título" maxlength="250"
+              #inputLinkTituloPrincipalQuartaSecao name="linkTituloPrincipalQuartaSecao"
+              [(ngModel)]="quartaSecaoSelecionada.tituloPrincipalLink" id="inputLinkTituloPrincipalQuartaSecao"
+              matTooltip="Link do Título">
+            <mat-hint align="end">{{inputLinkTituloPrincipalQuartaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input [style.background]="quartaSecaoSelecionada.tituloPrincipalCor" [cpPosition]="'top-right'"
+              [(colorPicker)]="quartaSecaoSelecionada.tituloPrincipalCor" />
+            <input matInput placeholder="Cor do Título" maxlength="10"
+              #inputCorTituloPrincipalQuartaSecao name="corTituloPrincipalQuartaSecao"
+              [(ngModel)]="quartaSecaoSelecionada.tituloPrincipalCor" id="corTituloPrincipalQuartaSecao"
+              matTooltip="Cor do título">
+          </mat-form-field>
+
+
+          <div>
+            <div style="width: 68%;margin-left: 1%;margin-top: 1%;">
+              <app-quarta-secao-view [quartaSecao]="quartaSecaoSelecionada"></app-quarta-secao-view>
+            </div>
+          </div>
+
+
+          <div style="margin-top:3%; margin-bottom: 3%;font-weight: bold;">
+            Configuração do Banner
+            <hr class="hr-separador">
+          </div>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Título" maxlength="250" #inputPrimeiroTituloQuartaSecao
+              name="primeiroTituloQuartaSecao" [(ngModel)]="quartaSecaoSelecionada.primeiroTitulo"
+              id="inputPrimeiroTituloQuartaSecao" matTooltip="Título">
+            <mat-hint align="end">{{inputPrimeiroTituloQuartaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link Título" maxlength="250"
+              #inputLinkPrimeiroTituloQuartaSecao name="linkPrimeiroTituloQuartaSecao"
+              [(ngModel)]="quartaSecaoSelecionada.primeiroTituloLink" id="linkPrimeiroTituloQuartaSecao"
+              matTooltip="Endereço do Link do Título">
+            <mat-hint align="end">{{inputLinkPrimeiroTituloQuartaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input [style.background]="quartaSecaoSelecionada.primeiroTituloCor" [cpPosition]="'top-right'"
+              [(colorPicker)]="quartaSecaoSelecionada.primeiroTituloCor" />
+            <input matInput placeholder="Cor do Título" maxlength="10" #inputCorPrimeiroTituloQuartaSecao
+              name="corPrimeiroTituloQuartaSecao" [(ngModel)]="quartaSecaoSelecionada.primeiroTituloCor"
+              id="corPrimeiroTituloQuartaSecao" matTooltip="Cor do título">
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Texto do botão" maxlength="250"
+              #inputPrimeiroBotaoTextoQuartaSecao name="primeiroBotaoTextoQuartaSecao"
+              [(ngModel)]="quartaSecaoSelecionada.primeiroBotaoTexto" id="primeiroBotaoTextoQuartaSecao"
+              matTooltip="Endereço do Link do Título">
+            <mat-hint align="end">{{inputPrimeiroBotaoTextoQuartaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link do botão" maxlength="250"
+              #inputLinkPrimeiroBotaoQuartaSecao name="linkPrimeiroBotaoQuartaSecao"
+              [(ngModel)]="quartaSecaoSelecionada.primeiroBotaoLink" id="linkPrimeiroBotaoQuartaSecao"
+              matTooltip="Endereço do Link do Botão">
+            <mat-hint align="end">{{inputLinkPrimeiroBotaoQuartaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input [style.background]="quartaSecaoSelecionada.primeiroBotaoTextoCor" [cpPosition]="'top-right'"
+              [(colorPicker)]="quartaSecaoSelecionada.primeiroBotaoTextoCor" />
+            <input matInput placeholder="Cor do Texto do botão" maxlength="10" #inputCorPrimeiroBotaoTextoQuartaSecao
+              name="corPrimeiroBotaoTextoQuartaSecao" [(ngModel)]="quartaSecaoSelecionada.primeiroBotaoTextoCor"
+              id="corPrimeiroBotaoTextoQuartaSecao" matTooltip="Cor do Texto do botão">
+          </mat-form-field>
+
+
+          <div class="col-md-12">
+            <input hidden #primeiraImagemQuartaSecao type="file" id="primeiraImagemQuartaSecao"
+              name="primeiraImagemQuartaSecao" accept="image/jpeg,image/png"
+              (change)="processImage($event, 'quartaSecaoPrimeiraImagem', quartaSecaoSelecionada)">
+            <button type="button" mat-raised-button (click)="primeiraImagemQuartaSecao.click()"
+              id="btnPrimeiraImagemQuartaSecao" name="primeiraImagemQuartaSecao" color="primary"
+              style="margin-top: 20px; cursor: pointer;" matTooltip="Upload da imagem da Quarta Seção">
+              <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar imagem (resolução ref. 1040x350px)
+            </button>
+
+            <div class="containerGaleria" *ngIf="quartaSecaoSelecionada.primeiraImagem">
+              <img [src]="quartaSecaoSelecionada.primeiraImagemSafeUrl" style="width:100%">
+              <button type="button" mat-raised-button style="width:100%;"
+                (click)="removerPrimeiraImagemQuartaSecao(quartaSecaoSelecionada)">
+                <mat-icon class="btn-remover">delete</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link da Imagem" maxlength="250"
+              #inputLinkPrimeiraImagemQuartaSecao name="linkPrimeiraImagemQuartaSecao"
+              [(ngModel)]="quartaSecaoSelecionada.primeiraImagemLink" id="inputLinkPrimeiraImagemQuartaSecao"
+              matTooltip="Endereço do Link da Imagem">
+            <mat-hint align="end">{{inputLinkPrimeiraImagemQuartaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Tooltip da Imagem" #inputPrimeiraImagemTooltipQuartaSecao name="inputPrimeiraImagemTooltipQuartaSecao"
+            [(ngModel)]="quartaSecaoSelecionada.primeiraImagemTooltip" id="inputPrimeiraImagemTooltipQuartaSecao"
+            matTooltip="Tooltip da Imagem">
+          </mat-form-field>
+
+          <div class="text-right" style="margin-top: 10px !important;">
+            <button mat-flat-button color="primary" class="btnToRight"  [disabled]="indiceQuartaSecao?.invalid"
+              role="button" (click)='editarQuartaSecao()' matTooltip="Salvar Seção D">
+              <mat-icon>save</mat-icon>Salvar
+            </button>
+          </div>
+
+        </div>
+
+
+        <div *ngIf="quintaSecaoSelecionada">
+
+          <div class="row" style="padding-top: 2%;padding-bottom: 1%;">
+
+            <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 h1 titulos" *ngIf="quintaSecaoSelecionada.id">
+              Editar Seção E - Indíce:{{quintaSecaoSelecionada.indice}}
+
+              <button mat-flat-button color="primary"  (click)="fecharQuintaSecao()"
+                matTooltip="Fechar"
+                style="cursor: pointer !important;float:right">
+                Fechar
+              </button>
+
+              <button mat-flat-button color="primary"  (click)="preVisulizarSecao(quintaSecaoSelecionada,'quintaSecao')"
+                matTooltip="Pré-Visualizar"
+                style="cursor: pointer !important;float:right;margin-right: 5px">
+                Pré-Visualizar
+              </button>
+
+            </div>
+
+            <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 h1 titulos" *ngIf="!quintaSecaoSelecionada.id">
+              Nova Seção E - Indíce:{{quintaSecaoSelecionada.indice}}
+
+              <button mat-flat-button color="primary"  (click)="fecharQuintaSecao()"
+                matTooltip="Fechar"
+                style="cursor: pointer !important;float:right">
+                Fechar
+              </button>
+
+              <button mat-flat-button color="primary"  (click)="preVisulizarSecao(quintaSecaoSelecionada,'quintaSecao')"
+                matTooltip="Pré-Visualizar"
+                style="cursor: pointer !important;float:right;margin-right: 5px">
+                Pré-Visualizar
+              </button>
+            </div>
+
+          </div>
+
+          <mat-form-field class="col-md-2" style="margin-bottom: 1%;">
+            <mat-label>Índice geral</mat-label>
+            <input  #indiceQuintaSecao="ngModel" pattern="^([1-9][0-9]{0,2}|1000)$" onKeyPress="if(this.value.length==4) return false;" name="indiceQuintaSecao" matInput placeholder="Índice geral" [(ngModel)]="quintaSecaoSelecionada.indice">
+            <mat-hint [hidden]="!indiceQuintaSecao.invalid" style="font-size: 12px;color:red">Digite um valor entre 1 e 1000</mat-hint>
+          </mat-form-field>
+
+          <div class="col-md-12" style="margin-left:0px;margin-bottom: 1%;">
+            <mat-checkbox id="quintaSecaoExibir" name="quintaSecaoExibir"
+              [(ngModel)]="quintaSecaoSelecionada.exibir">Exibir a seção na Home</mat-checkbox>
+          </div>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Título" maxlength="250" #inputTituloPrincipalQuintaSecao
+              name="tituloPrincipalQuintaSecao" [(ngModel)]="quintaSecaoSelecionada.tituloPrincipal"
+              id="inputTituloPrincipalQuintaSecao" matTooltip="Título">
+            <mat-hint align="end">{{inputTituloPrincipalQuintaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link do Título" maxlength="250"
+              #inputLinkTituloPrincipalQuintaSecao name="linkTituloPrincipalQuintaSecao"
+              [(ngModel)]="quintaSecaoSelecionada.tituloPrincipalLink" id="inputLinkTituloPrincipalQuintaSecao"
+              matTooltip="Link do Título">
+            <mat-hint align="end">{{inputLinkTituloPrincipalQuintaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input [style.background]="quintaSecaoSelecionada.tituloPrincipalCor" [cpPosition]="'top-right'"
+              [(colorPicker)]="quintaSecaoSelecionada.tituloPrincipalCor" />
+            <input matInput placeholder="Cor do Título" maxlength="10"
+              #inputCorTituloPrincipalQuintaSecao name="corTituloPrincipalQuintaSecao"
+              [(ngModel)]="quintaSecaoSelecionada.tituloPrincipalCor" id="corTituloPrincipalQuintaSecao"
+              matTooltip="Cor do título">
+          </mat-form-field>
+
+          <div>
+            <div style="width: 68%;margin-left: 1%;margin-top: 1%;">
+              <app-quinta-secao-view [quintaSecao]="quintaSecaoSelecionada"></app-quinta-secao-view>
+            </div>
+          </div>
+
+          <div style="margin-top:3%; margin-bottom: 3%;font-weight: bold;">
+            Configuração do primeiro Banner
+            <hr class="hr-separador">
+          </div>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Título" maxlength="250" #inputPrimeiroTituloQuintaSecao
+              name="primeiroTituloQuintaSecao" [(ngModel)]="quintaSecaoSelecionada.primeiroTitulo"
+              id="inputPrimeiroTituloQuintaSecao" matTooltip="Título">
+            <mat-hint align="end">{{inputPrimeiroTituloQuintaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link do Título" maxlength="250"
+              #inputLinkPrimeiroTituloQuintaSecao name="linkPrimeiroTituloQuintaSecao"
+              [(ngModel)]="quintaSecaoSelecionada.primeiroTituloLink" id="inputLinkPrimeiroTituloQuintaSecao"
+              matTooltip="Link do Título">
+            <mat-hint align="end">{{inputLinkPrimeiroTituloQuintaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input [style.background]="quintaSecaoSelecionada.primeiroTituloCor" [cpPosition]="'top-right'"
+              [(colorPicker)]="quintaSecaoSelecionada.primeiroTituloCor" />
+            <input matInput placeholder="Cor do Título" maxlength="10" #inputCorPrimeiroTituloQuintaSecao
+              name="corPrimeiroTituloQuintaSecao" [(ngModel)]="quintaSecaoSelecionada.primeiroTituloCor"
+              id="corPrimeiroTituloQuintaSecao" matTooltip="Cor do título">
+          </mat-form-field>
+
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Subtítulo" maxlength="250" #inputPrimeiroSubTituloQuintaSecao
+              name="primeiroSubTituloQuintaSecao" [(ngModel)]="quintaSecaoSelecionada.primeiroSubTitulo"
+              id="inputPrimeiroSubTituloQuintaSecao" matTooltip="Subtítulo">
+            <mat-hint align="end">{{inputPrimeiroSubTituloQuintaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link do Subtítulo" maxlength="250"
+              #inputLinkPrimeiroSubTituloQuintaSecao name="linkPrimeiroSubTituloQuintaSecao"
+              [(ngModel)]="quintaSecaoSelecionada.primeiroSubTituloLink" id="inputLinkPrimeiroSubTituloQuintaSecao"
+              matTooltip="Link do Subtítulo">
+            <mat-hint align="end">{{inputLinkPrimeiroSubTituloQuintaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input [style.background]="quintaSecaoSelecionada.primeiroSubTituloCor" [cpPosition]="'top-right'"
+              [(colorPicker)]="quintaSecaoSelecionada.primeiroSubTituloCor" />
+            <input matInput placeholder="Cor do subtítulo" maxlength="10" #inputCorPrimeiroSubTituloQuintaSecao
+              name="corPrimeiroSubTituloQuintaSecao" [(ngModel)]="quintaSecaoSelecionada.primeiroSubTituloCor"
+              id="corPrimeiroSubTituloQuintaSecao" matTooltip="Cor do subtítulo">
+          </mat-form-field>
+
+
+          <div class="col-lg-12" style="margin-top: 20px !important;">
+            <mat-label class="labelTextEditor">Texto</mat-label>
+            <div [ngxSummernote]="editorCleanConfig" name="primeiroTextoQuintaSecao"
+              [(ngModel)]="quintaSecaoSelecionada.primeiroTexto"></div>
+            <mat-hint class="caracteres-editor">{{ quintaSecaoSelecionada?.primeiroTexto?.length || 0 }}/250</mat-hint>
+          </div>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link do Texto" maxlength="250"
+              #inputLinkPrimeiroTextoQuintaSecao name="linkPrimeiroTextoQuintaSecao"
+              [(ngModel)]="quintaSecaoSelecionada.primeiroTextoLink" id="inputLinkPrimeiroTextoQuintaSecao"
+              matTooltip="Link do Texto">
+            <mat-hint align="end">{{inputLinkPrimeiroTextoQuintaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input [style.background]="quintaSecaoSelecionada.primeiroTextoCor" [cpPosition]="'top-right'"
+              [(colorPicker)]="quintaSecaoSelecionada.primeiroTextoCor" />
+            <input matInput placeholder="Cor do Texto" maxlength="10" #inputCorPrimeiroTextoQuintaSecao
+              name="corPrimeiroTextoQuintaSecao" [(ngModel)]="quintaSecaoSelecionada.primeiroTextoCor"
+              id="corPrimeiroTextoQuintaSecao" matTooltip="Cor do texto">
+          </mat-form-field>
+
+
+
+          <div style="margin-top:3%; margin-bottom: 3%;font-weight: bold;">
+            Configuração do segundo Banner
+            <hr class="hr-separador">
+          </div>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Título" maxlength="250" #inputSegundoTituloQuintaSecao
+              name="segundoTituloQuintaSecao" [(ngModel)]="quintaSecaoSelecionada.segundoTitulo"
+              id="inputSegundoTituloQuintaSecao" matTooltip="Título">
+            <mat-hint align="end">{{inputSegundoTituloQuintaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link do Título" maxlength="250"
+              #inputLinkSegundoTituloQuintaSecao name="linkSegundoTituloQuintaSecao"
+              [(ngModel)]="quintaSecaoSelecionada.segundoTituloLink" id="inputLinkSegundoTituloQuintaSecao"
+              matTooltip="Link do Título">
+            <mat-hint align="end">{{inputLinkSegundoTituloQuintaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input [style.background]="quintaSecaoSelecionada.segundoTituloCor" [cpPosition]="'top-right'"
+              [(colorPicker)]="quintaSecaoSelecionada.segundoTituloCor" />
+            <input matInput placeholder="Cor do Título" maxlength="10" #inputCorSegundoTituloQuintaSecao
+              name="corSegundoTituloQuintaSecao" [(ngModel)]="quintaSecaoSelecionada.segundoTituloCor"
+              id="corSegundoTituloQuintaSecao" matTooltip="Cor do título">
+          </mat-form-field>
+
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Subtítulo" maxlength="250" #inputSegundoSubTituloQuintaSecao
+              name="segundoSubTituloQuintaSecao" [(ngModel)]="quintaSecaoSelecionada.segundoSubTitulo"
+              id="inputSegundoSubTituloQuintaSecao" matTooltip="Subtítulo">
+            <mat-hint align="end">{{inputSegundoSubTituloQuintaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link do Subtítulo" maxlength="250"
+              #inputLinkSegundoSubTituloQuintaSecao name="linkSegundoSubTituloQuintaSecao"
+              [(ngModel)]="quintaSecaoSelecionada.segundoSubTituloLink" id="inputLinkSegundoSubTituloQuintaSecao"
+              matTooltip="Link do Subtítulo">
+            <mat-hint align="end">{{inputLinkSegundoSubTituloQuintaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input [style.background]="quintaSecaoSelecionada.segundoSubTituloCor" [cpPosition]="'top-right'"
+              [(colorPicker)]="quintaSecaoSelecionada.segundoSubTituloCor" />
+            <input matInput placeholder="Cor do subtítulo" maxlength="10" #inputCorSegundoSubTituloQuintaSecao
+              name="corSegundoSubTituloQuintaSecao" [(ngModel)]="quintaSecaoSelecionada.segundoSubTituloCor"
+              id="corSegundoSubTituloQuintaSecao" matTooltip="Cor do subtítulo">
+          </mat-form-field>
+
+
+          <div class="col-lg-12" style="margin-top: 20px !important;">
+            <mat-label class="labelTextEditor">Texto</mat-label>
+            <div [ngxSummernote]="editorCleanConfig" name="segundoTextoQuintaSecao"
+              [(ngModel)]="quintaSecaoSelecionada.segundoTexto"></div>
+            <mat-hint class="caracteres-editor">{{ quintaSecaoSelecionada?.segundoTexto?.length || 0 }}/250</mat-hint>
+          </div>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link do Texto" maxlength="250"
+              #inputLinkSegundoTextoQuintaSecao name="linkSegundoTextoQuintaSecao"
+              [(ngModel)]="quintaSecaoSelecionada.segundoTextoLink" id="inputLinkSegundoTextoQuintaSecao"
+              matTooltip="Link do Texto">
+            <mat-hint align="end">{{inputLinkSegundoTextoQuintaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input [style.background]="quintaSecaoSelecionada.segundoTextoCor" [cpPosition]="'top-right'"
+              [(colorPicker)]="quintaSecaoSelecionada.segundoTextoCor" />
+            <input matInput placeholder="Cor do Texto" maxlength="10" #inputCorSegundoTextoQuintaSecao
+              name="corSegundoTextoQuintaSecao" [(ngModel)]="quintaSecaoSelecionada.segundoTextoCor"
+              id="corSegundoTextoQuintaSecao" matTooltip="Cor do texto">
+          </mat-form-field>
+
+          <div class="text-right" style="margin-top: 10px !important;">
+            <button mat-flat-button color="primary" class="btnToRight"  [disabled]="indiceQuintaSecao?.invalid"
+              role="button" (click)='editarQuintaSecao()' matTooltip="Salvar Seção E">
+              <mat-icon>save</mat-icon>Salvar
+            </button>
+          </div>
+
+        </div>
+
+        <div *ngIf="sextaSecaoSelecionada">
+
+          <div class="row" style="padding-top: 2%;padding-bottom: 1%;">
+
+            <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 h1 titulos" *ngIf="sextaSecaoSelecionada.id">
+              Editar Seção F - Indíce:{{sextaSecaoSelecionada.indice}}
+
+              <button mat-flat-button color="primary"  (click)="fecharSextaSecao()"
+                matTooltip="Fechar"
+                style="cursor: pointer !important;float:right">
+                Fechar
+              </button>
+
+              <button mat-flat-button color="primary"  (click)="preVisulizarSecao(sextaSecaoSelecionada,'sextaSecao')"
+                matTooltip="Pré-Visualizar"
+                style="cursor: pointer !important;float:right;margin-right: 5px">
+                Pré-Visualizar
+              </button>
+            </div>
+
+            <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 h1 titulos" *ngIf="!sextaSecaoSelecionada.id">
+              Nova Seção F - Indíce:{{sextaSecaoSelecionada.indice}}
+
+              <button mat-flat-button color="primary"  (click)="fecharSextaSecao()"
+                matTooltip="Fechar"
+                style="cursor: pointer !important;float:right">
+                Fechar
+              </button>
+
+              <button mat-flat-button color="primary"  (click)="preVisulizarSecao(sextaSecaoSelecionada,'sextaSecao')"
+                matTooltip="Pré-Visualizar"
+                style="cursor: pointer !important;float:right;margin-right: 5px">
+                Pré-Visualizar
+              </button>
+
+            </div>
+
+          </div>
+
+          <mat-form-field class="col-md-2" style="margin-bottom: 1%;">
+            <mat-label>Índice geral</mat-label>
+            <input  #indiceSextaSecao="ngModel" pattern="^([1-9][0-9]{0,2}|1000)$" onKeyPress="if(this.value.length==4) return false;" name="indiceSextaSecao" matInput placeholder="Índice geral" [(ngModel)]="sextaSecaoSelecionada.indice">
+            <mat-hint [hidden]="!indiceSextaSecao.invalid" style="font-size: 12px;color:red">Digite um valor entre 1 e 1000</mat-hint>
+          </mat-form-field>
+
+          <div class="col-md-12" style="margin-left:0px;margin-bottom: 1%;">
+            <mat-checkbox id="sextaSecaoExibir" name="sextaSecaoExibir"
+              [(ngModel)]="sextaSecaoSelecionada.exibir">Exibir a seção na Home</mat-checkbox>
+          </div>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Título" maxlength="250" #inputTituloPrincipalSextaSecao
+              name="tituloPrincipalSextaSecao" [(ngModel)]="sextaSecaoSelecionada.tituloPrincipal"
+              id="inputTituloPrincipalSextaSecao" matTooltip="Título">
+            <mat-hint align="end">{{inputTituloPrincipalSextaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link do Título" maxlength="250"
+              #inputLinkTituloPrincipalSextaSecao name="linkTituloPrincipalSextaSecao"
+              [(ngModel)]="sextaSecaoSelecionada.tituloPrincipalLink" id="inputLinkTituloPrincipalSextaSecao"
+              matTooltip="Link do Título">
+            <mat-hint align="end">{{inputLinkTituloPrincipalSextaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input [style.background]="sextaSecaoSelecionada.tituloPrincipalCor" [cpPosition]="'top-right'"
+              [(colorPicker)]="sextaSecaoSelecionada.tituloPrincipalCor" />
+            <input matInput placeholder="Cor do Título" maxlength="10"
+              #inputCorTituloPrincipalSextaSecao name="corTituloPrincipalSextaSecao"
+              [(ngModel)]="sextaSecaoSelecionada.tituloPrincipalCor" id="corTituloPrincipalSextaSecao"
+              matTooltip="Cor do título">
+          </mat-form-field>
+
+          <div>
+            <div style="width: 68%;margin-left: 1%;margin-top: 1%;">
+              <app-sexta-secao-view [sextaSecao]="sextaSecaoSelecionada"></app-sexta-secao-view>
+            </div>
+          </div>
+
+
+          <div style="margin-top:3%; margin-bottom: 3%;font-weight: bold;">
+            Configuração do Primeiro Banner
+            <hr class="hr-separador">
+          </div>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Título" maxlength="250" #inputPrimeiroTituloSextaSecao
+              name="primeiroTituloSextaSecao" [(ngModel)]="sextaSecaoSelecionada.primeiroTitulo"
+              id="inputPrimeiroTituloSextaSecao" matTooltip="Título">
+            <mat-hint align="end">{{inputPrimeiroTituloSextaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link do Título" maxlength="250"
+              #inputLinkPrimeiroTituloSextaSecao name="linkPrimeiroTituloSextaSecao"
+              [(ngModel)]="sextaSecaoSelecionada.primeiroTituloLink" id="inputLinkPrimeiroTituloSextaSecao"
+              matTooltip="Link do Título">
+            <mat-hint align="end">{{inputLinkPrimeiroTituloSextaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input [style.background]="sextaSecaoSelecionada.primeiroTituloCor" [cpPosition]="'top-right'"
+              [(colorPicker)]="sextaSecaoSelecionada.primeiroTituloCor" />
+            <input matInput placeholder="Cor do Título" maxlength="10" #inputCorPrimeiroTituloSextaSecao
+              name="corPrimeiroTituloSextaSecao" [(ngModel)]="sextaSecaoSelecionada.primeiroTituloCor"
+              id="corPrimeiroTituloSextaSecao" matTooltip="Cor do título">
+          </mat-form-field>
+
+          <div class="col-lg-12" style="margin-top: 20px !important;">
+            <mat-label class="labelTextEditor">Texto</mat-label>
+            <div [ngxSummernote]="editorCleanConfig" name="primeiroTextoSextaSecao"
+              [(ngModel)]="sextaSecaoSelecionada.primeiroTexto"></div>
+            <mat-hint class="caracteres-editor">{{ sextaSecaoSelecionada?.primeiroTexto?.length || 0 }}/250</mat-hint>
+          </div>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link do Texto" maxlength="250"
+              #inputLinkPrimeiroTextoSextaSecao name="linkPrimeiroTextoSextaSecao"
+              [(ngModel)]="sextaSecaoSelecionada.primeiroTextoLink" id="inputLinkPrimeiroTextoSextaSecao"
+              matTooltip="Link do Texto">
+            <mat-hint align="end">{{inputLinkPrimeiroTextoSextaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input [style.background]="sextaSecaoSelecionada.primeiroTextoCor" [cpPosition]="'top-right'"
+              [(colorPicker)]="sextaSecaoSelecionada.primeiroTextoCor" />
+            <input matInput placeholder="Cor do Texto" maxlength="10" #inputCorPrimeiroTextoSextaSecao
+              name="corPrimeiroTextoSextaSecao" [(ngModel)]="sextaSecaoSelecionada.primeiroTextoCor"
+              id="corPrimeiroTextoSextaSecao" matTooltip="Cor do texto">
+          </mat-form-field>
+
+          <div class="col-md-12">
+            <input hidden #primeiraImagemSextaSecao type="file" id="primeiraImagemSextaSecao"
+              name="primeiraImagemSextaSecao" accept="image/jpeg,image/png"
+              (change)="processImage($event, 'sextaSecaoPrimeiraImagem', sextaSecaoSelecionada)">
+            <button type="button" mat-raised-button (click)="primeiraImagemSextaSecao.click()"
+              id="btnPrimeiraImagemSextaSecao" name="primeiraImagemSextaSecao" color="primary"
+              style="margin-top: 20px; cursor: pointer;" matTooltip="Upload da imagem">
+              <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar imagem (resolução ref. 500x500px)
+            </button>
+
+            <div class="containerGaleria" *ngIf="sextaSecaoSelecionada.primeiraImagem">
+              <img [src]="sextaSecaoSelecionada.primeiraImagemSafeUrl" style="width:100%">
+              <button type="button" mat-raised-button style="width:100%;"
+                (click)="removerPrimeiraImagemSextaSecao(sextaSecaoSelecionada)">
+                <mat-icon class="btn-remover">delete</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link da Imagem" maxlength="250"
+              #inputLinkPrimeiraImagemSextaSecao name="linkPrimeiraImagemSextaSecao"
+              [(ngModel)]="sextaSecaoSelecionada.primeiraImagemLink" id="inputLinkPrimeiraImagemSextaSecao"
+              matTooltip="Link da Imagem">
+            <mat-hint align="end">{{inputLinkPrimeiraImagemSextaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Tooltip da Imagem" #inputPrimeiraImagemTooltipSextaSecao name="inputPrimeiraImagemTooltipSextaSecao"
+            [(ngModel)]="sextaSecaoSelecionada.primeiraImagemTooltip" id="inputPrimeiraImagemTooltipSextaSecao"
+            matTooltip="Tooltip da Imagem">
+          </mat-form-field>
+
+          <div style="margin-top:3%; margin-bottom: 3%;font-weight: bold;">
+            Configuração do Segundo Banner
+            <hr class="hr-separador">
+          </div>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Título" maxlength="250" #inputSegundoTituloSextaSecao
+              name="segundoTituloSextaSecao" [(ngModel)]="sextaSecaoSelecionada.segundoTitulo"
+              id="inputSegundoTituloSextaSecao" matTooltip="Título">
+            <mat-hint align="end">{{inputSegundoTituloSextaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link do Título" maxlength="250"
+              #inputLinkSegundoTituloSextaSecao name="linkSegundoTituloSextaSecao"
+              [(ngModel)]="sextaSecaoSelecionada.segundoTituloLink" id="inputLinkSegundoTituloSextaSecao"
+              matTooltip="Link do Título">
+            <mat-hint align="end">{{inputLinkSegundoTituloSextaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input [style.background]="sextaSecaoSelecionada.segundoTituloCor" [cpPosition]="'top-right'"
+              [(colorPicker)]="sextaSecaoSelecionada.segundoTituloCor" />
+            <input matInput placeholder="Cor do Título" maxlength="10" #inputCorSegundoTituloSextaSecao
+              name="corSegundoTituloSextaSecao" [(ngModel)]="sextaSecaoSelecionada.segundoTituloCor"
+              id="corSegundoTituloSextaSecao" matTooltip="Cor do título">
+          </mat-form-field>
+
+          <div class="col-lg-12" style="margin-top: 20px !important;">
+            <mat-label class="labelTextEditor">Texto</mat-label>
+            <div [ngxSummernote]="editorCleanConfig" name="segundoTextoSextaSecao"
+              [(ngModel)]="sextaSecaoSelecionada.segundoTexto"></div>
+            <mat-hint class="caracteres-editor">{{ sextaSecaoSelecionada?.segundoTexto?.length || 0 }}/250</mat-hint>
+          </div>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link do Texto" maxlength="250" #inputLinkSegundoTextoSextaSecao
+              name="linkSegundoTextoSextaSecao" [(ngModel)]="sextaSecaoSelecionada.segundoTextoLink"
+              id="inputLinkSegundoTextoSextaSecao" matTooltip="Link do Texto">
+            <mat-hint align="end">{{inputLinkSegundoTextoSextaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input [style.background]="sextaSecaoSelecionada.segundoTextoCor" [cpPosition]="'top-right'"
+              [(colorPicker)]="sextaSecaoSelecionada.segundoTextoCor" />
+            <input matInput placeholder="Cor do Texto" maxlength="10" #inputCorSegundoTextoSextaSecao
+              name="corSegundoTextoSextaSecao" [(ngModel)]="sextaSecaoSelecionada.segundoTextoCor"
+              id="corSegundoTextoSextaSecao" matTooltip="Cor do texto">
+          </mat-form-field>
+
+          <div class="col-md-12">
+            <input hidden #segundaImagemSextaSecao type="file" id="segundaImagemSextaSecao"
+              name="segundaImagemSextaSecao" accept="image/jpeg,image/png"
+              (change)="processImage($event, 'sextaSecaoSegundaImagem', sextaSecaoSelecionada)">
+            <button type="button" mat-raised-button (click)="segundaImagemSextaSecao.click()"
+              id="btnSegundaImagemSextaSecao" name="segundaImagemSextaSecao" color="primary"
+              style="margin-top: 20px; cursor: pointer;" matTooltip="Upload da segunda imagem da Terceira Seção">
+              <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar imagem (resolução ref. 500x500px)
+            </button>
+
+            <div class="containerGaleria" *ngIf="sextaSecaoSelecionada.segundaImagem">
+              <img [src]="sextaSecaoSelecionada.segundaImagemSafeUrl" style="width:100%">
+              <button type="button" mat-raised-button style="width:100%;"
+                (click)="removerSegundaImagemSextaSecao(sextaSecaoSelecionada)">
+                <mat-icon class="btn-remover">delete</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link da Imagem" maxlength="250"
+              #inputLinkSegundaImagemSextaSecao name="linkSegundaImagemSextaSecao"
+              [(ngModel)]="sextaSecaoSelecionada.segundaImagemLink" id="inputLinkSegundaImagemSextaSecao"
+              matTooltip="Link da imagem">
+            <mat-hint align="end">{{inputLinkSegundaImagemSextaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Tooltip da Imagem" #inputSegundaImagemTooltipSextaSecao name="inputSegundaImagemTooltipSextaSecao"
+            [(ngModel)]="sextaSecaoSelecionada.segundaImagemTooltip" id="inputSegundaImagemTooltipSextaSecao"
+            matTooltip="Tooltip da Imagem">
+          </mat-form-field>
+
+          <div class="text-right" style="margin-top: 10px !important;">
+            <button mat-flat-button color="primary" class="btnToRight"  [disabled]="indiceSextaSecao?.invalid"
+              role="button" (click)='editarSextaSecao()' matTooltip="Salvar Seção C">
+              <mat-icon>save</mat-icon>Salvar
+            </button>
+          </div>
+
+        </div>
+
+        <div *ngIf="setimaSecaoSelecionada">
+
+          <div class="row" style="padding-top: 2%;padding-bottom: 1%;">
+
+            <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 h1 titulos" *ngIf="setimaSecaoSelecionada.id">
+              Editar Seção G - Indíce:{{setimaSecaoSelecionada.indice}}
+              <button mat-flat-button color="primary"  (click)="fecharSetimaSecao()"
+                matTooltip="Fechar"
+                style="cursor: pointer !important;float:right">
+                Fechar
+              </button>
+
+              <button mat-flat-button color="primary"  (click)="preVisulizarSecao(setimaSecaoSelecionada,'setimaSecao')"
+                matTooltip="Pré-Visualizar"
+                style="cursor: pointer !important;float:right;margin-right: 5px">
+                Pré-Visualizar
+              </button>
+            </div>
+
+            <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 h1 titulos" *ngIf="!setimaSecaoSelecionada.id">
+              Nova Seção G - Indíce:{{setimaSecaoSelecionada.indice}}
+              <button mat-flat-button color="primary"  (click)="fecharSetimaSecao()"
+                matTooltip="Fechar"
+                style="cursor: pointer !important;float:right">
+                Fechar
+              </button>
+
+              <button mat-flat-button color="primary"  (click)="preVisulizarSecao(setimaSecaoSelecionada,'setimaSecao')"
+                matTooltip="Pré-Visualizar"
+                style="cursor: pointer !important;float:right;margin-right: 5px">
+                Pré-Visualizar
+              </button>
+            </div>
+
+          </div>
+
+          <mat-form-field class="col-md-2" style="margin-bottom: 1%;">
+            <mat-label>Índice geral</mat-label>
+            <input  #indiceSetimaSecao="ngModel" pattern="^([1-9][0-9]{0,2}|1000)$" onKeyPress="if(this.value.length==4) return false;" name="indiceSetimaSecao" matInput placeholder="Índice geral" [(ngModel)]="setimaSecaoSelecionada.indice">
+            <mat-hint [hidden]="!indiceSetimaSecao.invalid" style="font-size: 12px;color:red">Digite um valor entre 1 e 1000</mat-hint>
+          </mat-form-field>
+
+          <div class="col-md-12" style="margin-left:0px;margin-bottom: 1%;">
+            <mat-checkbox id="setimaSecaoExibir" name="setimaSecaoExibir" [(ngModel)]="setimaSecaoSelecionada.exibir">
+              Exibir a seção na Home</mat-checkbox>
+          </div>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Título" maxlength="250" #inputTituloPrincipalSetimaSecao
+              name="tituloPrincipalSetimaSecao" [(ngModel)]="setimaSecaoSelecionada.tituloPrincipal"
+              id="inputTituloPrincipalSetimaSecao" matTooltip="Título">
+            <mat-hint align="end">{{inputTituloPrincipalSetimaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link do Título" maxlength="250"
+              #inputLinkTituloPrincipalSetimaSecao name="linkTituloPrincipalSetimaSecao"
+              [(ngModel)]="setimaSecaoSelecionada.tituloPrincipalLink" id="inputLinkTituloPrincipalSetimaSecao"
+              matTooltip="Link do Título">
+            <mat-hint align="end">{{inputLinkTituloPrincipalSetimaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input [style.background]="setimaSecaoSelecionada.tituloPrincipalCor" [cpPosition]="'top-right'"
+              [(colorPicker)]="setimaSecaoSelecionada.tituloPrincipalCor" />
+            <input matInput placeholder="Cor do Título" maxlength="10"
+              #inputCorTituloPrincipalSetimaSecao name="corTituloPrincipalSetimaSecao"
+              [(ngModel)]="setimaSecaoSelecionada.tituloPrincipalCor" id="corTituloPrincipalSetimaSecao"
+              matTooltip="Cor do título/tema">
+          </mat-form-field>
+
+          <div>
+            <div style="width: 68%;margin-left: 1%;margin-top: 1%;">
+              <app-setima-secao-view [setimaSecao]="setimaSecaoSelecionada"></app-setima-secao-view>
+            </div>
+          </div>
+
+          <div style="margin-top:3%; margin-bottom: 3%;font-weight: bold;">
+            Configuração do Primeiro Banner
+            <hr class="hr-separador">
+          </div>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Título" maxlength="250" #inputPrimeiroTituloSetimaSecao
+              name="primeiroTituloSetimaSecao" [(ngModel)]="setimaSecaoSelecionada.primeiroTitulo"
+              id="inputPrimeiroTituloSetimaSecao" matTooltip="Título">
+            <mat-hint align="end">{{inputPrimeiroTituloSetimaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link do Título" maxlength="250"
+              #inputLinkPrimeiroTituloSetimaSecao name="linkPrimeiroTituloSetimaSecao"
+              [(ngModel)]="setimaSecaoSelecionada.primeiroTituloLink" id="inputLinkPrimeiroTituloSetimaSecao"
+              matTooltip="Endereço do Link do Título">
+            <mat-hint align="end">{{inputLinkPrimeiroTituloSetimaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input [style.background]="setimaSecaoSelecionada.primeiroTituloCor" [cpPosition]="'top-right'"
+              [(colorPicker)]="setimaSecaoSelecionada.primeiroTituloCor" />
+            <input matInput placeholder="Cor do Título" maxlength="10" #inputCorPrimeiroTituloSetimaSecao
+              name="corPrimeiroTituloSetimaSecao" [(ngModel)]="setimaSecaoSelecionada.primeiroTituloCor"
+              id="corPrimeiroTituloSetimaSecao" matTooltip="Cor do título">
+          </mat-form-field>
+
+          <div class="col-lg-12" style="margin-top: 20px !important;">
+            <mat-label class="labelTextEditor">Texto</mat-label>
+            <div [ngxSummernote]="editorCleanConfig" name="primeiroTextoSetimaSecao"
+              [(ngModel)]="setimaSecaoSelecionada.primeiroTexto"></div>
+            <mat-hint class="caracteres-editor">{{ setimaSecaoSelecionada?.primeiroTexto?.length || 0 }}/250</mat-hint>
+          </div>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link do Texto" maxlength="250" #inputLinkPrimeiroTextoSetimaSecao
+              name="linkPrimeiroTextoSetimaSecao" [(ngModel)]="setimaSecaoSelecionada.primeiroTextoLink"
+              id="inputLinkPrimeiroTextoSetimaSecao" matTooltip="Link do Texto">
+            <mat-hint align="end">{{inputLinkPrimeiroTextoSetimaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input [style.background]="setimaSecaoSelecionada.primeiroTextoCor" [cpPosition]="'top-right'"
+              [(colorPicker)]="setimaSecaoSelecionada.primeiroTextoCor" />
+            <input matInput placeholder="Cor do Texto" maxlength="10" #inputCorPrimeiroTextoSetimaSecao
+              name="corPrimeiroTextoSetimaSecao" [(ngModel)]="setimaSecaoSelecionada.primeiroTextoCor"
+              id="corPrimeiroTextoSetimaSecao" matTooltip="Cor do texto">
+          </mat-form-field>
+
+          <div class="col-md-12">
+            <input hidden #primeiraImagemSetimaSecao type="file" id="primeiraImagemSetimaSecao"
+              name="primeiraImagemSetimaSecao" accept="image/jpeg,image/png"
+              (change)="processImage($event, 'setimaSecaoPrimeiraImagem', setimaSecaoSelecionada)">
+            <button type="button" mat-raised-button (click)="primeiraImagemSetimaSecao.click()"
+              id="btnPrimeiraImagemSetimaSecao" name="primeiraImagemSetimaSecao" color="primary"
+              style="margin-top: 20px; cursor: pointer;" matTooltip="Upload da imagem">
+              <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar imagem (resolução ref. 500x500px)
+            </button>
+
+            <div class="containerGaleria" *ngIf="setimaSecaoSelecionada.primeiraImagem">
+              <img [src]="setimaSecaoSelecionada.primeiraImagemSafeUrl" style="width:100%">
+              <button type="button" mat-raised-button style="width:100%;"
+                (click)="removerPrimeiraImagemSetimaSecao(setimaSecaoSelecionada)">
+                <mat-icon class="btn-remover">delete</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Link da Imagem" maxlength="250"
+              #inputLinkPrimeiraImagemSetimaSecao name="linkPrimeiraImagemSetimaSecao"
+              [(ngModel)]="setimaSecaoSelecionada.primeiraImagemLink" id="inputLinkPrimeiraImagemSetimaSecao"
+              matTooltip="Link da Imagem">
+            <mat-hint align="end">{{inputLinkPrimeiraImagemSetimaSecao?.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Tooltip da Imagem" #inputPrimeiraImagemTooltipSetimaSecao name="inputPrimeiraImagemTooltipSetimaSecao"
+            [(ngModel)]="setimaSecaoSelecionada.primeiraImagemTooltip" id="inputPrimeiraImagemTooltipSetimaSecao"
+            matTooltip="Tooltip da Imagem">
+          </mat-form-field>
+
+          <div class="text-right" style="margin-top: 10px !important;">
+            <button mat-flat-button color="primary" class="btnToRight"  [disabled]="indiceSetimaSecao?.invalid"
+              role="button" (click)='editarSetimaSecao()' matTooltip="Salvar Seção B">
+              <mat-icon>save</mat-icon>Salvar
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+      <div class="text-center" style="margin-top: 10px !important;" *ngIf="home.id">
+        <button mat-flat-button color="primary" matTooltip="Exibir/Ocultar Pré-visualização da Home" id="btnLimpar" (click)="toggleDisplayPreview()">Exibir/Ocultar Pré-visualização da Home</button>
+      </div>
+
+
+      <div class="text-right" style="margin-top: 10px !important;">
+        <button mat-flat-button color="primary" class="btnToRight"  *ngIf="!home.id"
+          role="button" (click)='salvar()' matTooltip="Salvar">
+          <mat-icon>save</mat-icon>Salvar
+        </button>
+      </div>
+    </form>
+
+  </mat-card>
+</div>
+
+
+
+
+<div class="search-results" style="background-color: white !important" *ngIf="isShowPreview">
+
+
+    <section class="home-banner owl-carousel owl-theme">
+      <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+          <li data-target="#carouselExampleIndicators" *ngFor="let x of homeVisualizacao?.galeriaDeImagens;let i = index"
+            [attr.data-slide-to]="i" ngClass="i == 0 ? 'active' : ''"></li>
+        </ol>
+        <div class="carousel-inner">
+          <div *ngFor="let item of homeVisualizacao?.galeriaDeImagens; let k = index"
+            [ngClass]="k == 0 ? 'carousel-item active' : 'carousel-item'">
+            <img class="img-carousel" loading="lazy" [src]="item.safeUrl" alt="Event Image">
+            <div class="area-pesquisa"  *ngIf="item.exibirBusca">
+            <div class="nome-da-pagina">
+              <h1>
+                BIBLIOTECA
+              </h1>
+            </div>
+            <div class="campo-pesquisa">
+                <button class="botao-pesquisa">
+                  <mat-icon class="mobile">search</mat-icon>
+                  <span class="desktop">BUSCA</span>
+                </button>
+                <input placeholder="Digite aqui" class="input-pesquisa">
+            </div>
+          </div>
+
+          <div class="carousel-caption d-none d-md-block" *ngIf="!item.exibirBusca">
+            <a style="color: white;" [href]="item.link"  onclick="return false;"
+              routerLinkActive="router-link-active" class="">
+              <div style="position: absolute;bottom: 0;width:100%;">
+                <h1 class="animated fadeInUp duration-3s delay-1s cursor-hand">{{item.titulo}}</h1>
+                <h4 class="animated fadeInUp duration-3s delay-1s cursor-hand">{{item.subtitulo}}</h4>
+                <h6 *ngIf="item.nomeAutor" class="animated fadeInUp duration-3s delay-1s cursor-hand">{{item.nomeAutor}}</h6>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev" *ngIf="homeVisualizacao?.galeriaDeImagens?.length > 1">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next" *ngIf="homeVisualizacao?.galeriaDeImagens?.length > 1">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
+    </section>
+
+
+    <section class="head-buttons-bar" *ngIf="homeVisualizacao?.homeBarra?.exibir">
+      <div class="underline-on-hover" [style.background-color]="homeVisualizacao.homeBarra.div1CorFundo">
+        <a [href]="homeVisualizacao.homeBarra.div1Link" [style.color]="homeVisualizacao.homeBarra.div1CorTexto" class="a-branco" onclick="return false;">{{homeVisualizacao.homeBarra.div1Texto}}</a>
+      </div>
+      <div class="underline-on-hover links" [style.background-color]="homeVisualizacao.homeBarra.div2CorFundo">
+        <a [href]="homeVisualizacao.homeBarra.div2Link" [style.color]="homeVisualizacao.homeBarra.div2CorTexto" class="a-branco" onclick="return false;">{{homeVisualizacao.homeBarra.div2Texto}}</a>
+      </div>
+      <div class="underline-on-hover" [style.background-color]="homeVisualizacao.homeBarra.div3CorFundo">
+        <a [href]="homeVisualizacao.homeBarra.div3Link" [style.color]="homeVisualizacao.homeBarra.div3CorTexto" class="a-branco" onclick="return false;">{{homeVisualizacao.homeBarra.div3Texto}}</a>
+      </div>
+      <div class="underline-on-hover links" [style.background-color]="homeVisualizacao.homeBarra.div4CorFundo">
+        <a [href]="homeVisualizacao.homeBarra.div4Link" [style.color]="homeVisualizacao.homeBarra.div4CorTexto" class="a-branco" onclick="return false;">{{homeVisualizacao.homeBarra.div4Texto}}</a>
+      </div>
+      <div class="underline-on-hover" [style.background-color]="homeVisualizacao.homeBarra.div5CorFundo">
+        <a [href]="homeVisualizacao.homeBarra.div5Link" [style.color]="homeVisualizacao.homeBarra.div5CorTexto" class="a-branco" onclick="return false;">{{homeVisualizacao.homeBarra.div5Texto}}</a>
+      </div>
+    </section>
+    <section class="cards">
+      <div class="row">
+        <div class="col-sm-12 col-md-8" style="margin-top: 3%;margin-bottom: 3%">
+
+
+            <div *ngFor="let secao of todasSecoes">
+
+              <div class="row" style="margin-right: 0px !important">
+                <app-primeira-secao-view style="margin-bottom: 3%;width: 100%;" [primeiraSecao]="secao" *ngIf="secao?.tipo == 'primeiraSecao'"></app-primeira-secao-view>
+              </div>
+
+              <div class="row" style="margin-right: 0px !important">
+                  <app-segunda-secao-view style="margin-bottom: 3%;width: 100%;" [segundaSecao]="secao" *ngIf="secao?.tipo == 'segundaSecao'"></app-segunda-secao-view>
+              </div>
+
+              <div class="row" style="margin-right: 0px !important">
+                <app-terceira-secao-view style="margin-bottom: 3%;width: 100%;" [terceiraSecao]="secao" *ngIf="secao?.tipo == 'terceiraSecao'"></app-terceira-secao-view>
+              </div>
+
+              <div class="row" style="margin-right: 0px !important">
+                <app-quarta-secao-view style="margin-bottom: 3%;width: 100%;" [quartaSecao]="secao" *ngIf="secao?.tipo == 'quartaSecao'"></app-quarta-secao-view>
+              </div>
+
+              <div class="row" style="margin-right: 0px !important">
+                <app-quinta-secao-view style="margin-bottom: 3%;width: 100%;" [quintaSecao]="secao" *ngIf="secao?.tipo == 'quintaSecao'"></app-quinta-secao-view>
+              </div>
+
+              <div class="row" style="margin-right: 0px !important">
+                <app-sexta-secao-view style="margin-bottom: 3%;width: 100%;" [sextaSecao]="secao" *ngIf="secao?.tipo == 'sextaSecao'"></app-sexta-secao-view>
+              </div>
+
+              <div class="row" style="margin-right: 0px !important">
+                <app-setima-secao-view style="margin-bottom: 3%;width: 100%;" [setimaSecao]="secao" *ngIf="secao?.tipo == 'setimaSecao'"></app-setima-secao-view>
+              </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="col-sm-12 col-md-4" style="margin-top: 3%;">
+
+          <div *ngFor="let secao of this.homeVisualizacao?.listaSecaoLateral">
+
+            <app-secao-lateral-view style="margin-bottom: 3%;width: 100%;" [secaoLateral]="secao"></app-secao-lateral-view>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+</div>
+
+
+

@@ -1,0 +1,27 @@
+  /*Container galeria de imagens*/
+  .containerGaleria {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 20px;
+  }
+  
+  .containerGaleria img {
+    width: 100%;
+    height: 200px;
+  }
+
+  .containerGaleria {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 20px;
+  }
+
+  .btn-remover {
+    color: red;
+  }
+
+  .containerGaleria iframe {
+    width: 100%;
+    height: 200px;
+  }
+  

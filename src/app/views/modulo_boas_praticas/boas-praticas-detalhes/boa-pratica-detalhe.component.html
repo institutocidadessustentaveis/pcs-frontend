@@ -1,0 +1,304 @@
+<div style="background: white;">
+  <!-- Imagem principal -->
+  <section class="home-banner owl-carousel owl-theme">
+    <div id="carouselExampleIndicators" class="carousel slide" ride="false">
+      <div class="carousel-inner">
+
+        <div class="home-banner" *ngIf="!boaPratica?.possuiFiltro">
+          <img class="img-carousel" loading="lazy" [src]="getImagePathBoaPratica(boaPratica)">
+          <div class="carousel-caption">
+            <div style="position: inherit;bottom: 0;width: 100%;">
+              <h1 class="animated fadeInUp duration-3s delay-2s">{{boaPratica?.titulo}}</h1>
+              <h4 class="animated fadeInUp duration-3s delay-2s">{{boaPratica?.subtitulo}}</h4>
+            </div>
+          </div>
+        </div>
+
+        <div class="home-banner-filtro" *ngIf="boaPratica?.possuiFiltro">
+          <img class="img-carousel-filtro" loading="lazy" [src]="getImagePathBoaPratica(boaPratica)">
+          <div class="carousel-caption">
+            <div style="position: inherit;bottom: 0;width: 100%;">
+              <h1 class="animated fadeInUp duration-3s delay-2s">{{boaPratica?.titulo}}</h1>
+              <h4 class="animated fadeInUp duration-3s delay-2s">{{boaPratica?.subtitulo}}</h4>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section style="background-color: #8a9ea1;">
+    <div class="row" style="margin: 0% 5% 0% 5%;padding-bottom: 2%;">
+
+      <div class="col-md-6">
+        <div class="row box-desktop" style="justify-content: left; margin-left:0%; margin-bottom:2%">
+
+          <div class="row" style="width: 100%;">
+            <app-breadcrumb2 class="breadcrumb"></app-breadcrumb2>
+          </div>
+
+          <div class="rich-icon box-overlay">
+            <div class="name" >{{cidadeSelecionada?.nome ? cidadeSelecionada?.nome : '-'}}</div>
+            <div class="small">Cidade</div>
+            <div class="name" [ngStyle]="cidadeSelecionada?.nome?.length <= 50 && {'margin-top':'15px'}">{{cidadeSelecionada?.nomeEstado ? cidadeSelecionada?.nomeEstado : '-'}}</div>
+            <div class="small">Estado</div>
+          </div>
+
+          <div class="rich-icon box-overlay">
+            <div class="name" >{{cidadeSelecionada?.nomePais ? cidadeSelecionada?.nomePais : '-'}}</div>
+            <div class="small">País</div>
+            <div class="name" style="margin-top: 15px;">{{cidadeSelecionada?.nomeContinente ? cidadeSelecionada?.nomeContinente : '-'}}</div>
+            <div class="small">Continente</div>
+          </div>
+
+          <div class="rich-icon box-overlay">
+            <div class="name" *ngIf="!cidadeSelecionada?.populacao">-</div>
+            <div class="name" *ngIf="cidadeSelecionada?.populacao" >{{cidadeSelecionada?.populacao | number:'':'pt-BR'}}</div>
+            <div class="small">Habitantes</div>
+            <div class="name" style="margin-top: 15px;">{{cidadeSelecionada?.anoDaPopulacao ? cidadeSelecionada?.anoDaPopulacao : '-'}}</div>
+            <div class="small">Ano</div>
+          </div>
+
+        </div>
+
+        <div class="row box-mobile">
+          <div class="col-md-12">
+
+            <div class="row" style="width: 100%;">
+              <app-breadcrumb2 class="breadcrumb"></app-breadcrumb2>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12 div-indicador" style="padding-top: 1%;">
+                <label class="col-md-12">{{cidadeSelecionada?.nome? 'Cidade: '+ cidadeSelecionada?.nome : 'Cidade: -'}}</label>
+                <label class="col-md-12">{{cidadeSelecionada?.nome? 'Estado: ' + cidadeSelecionada?.nomeEstado : 'Estado: -'}}</label>
+              </div>
+              <div class="col-md-12 div-indicador" style="margin-top: 1%;padding-top: 1%;">
+                <label class="col-md-12">{{cidadeSelecionada?.nomePais ? 'País: ' + cidadeSelecionada?.nomePais : 'País: -'}}</label>
+                <label class="col-md-12">{{cidadeSelecionada?.nomeContinente ? 'Continente: ' + cidadeSelecionada?.nomeContinente : 'Continente: -'}}</label>
+              </div>
+              <div class="col-md-12 div-indicador" style="margin-top: 1%;margin-bottom: 2%;padding-top: 1%;">
+                <label class="col-md-12" *ngIf="!cidadeSelecionada?.populacao">População: -</label>
+                <label class="col-md-12" *ngIf="cidadeSelecionada?.populacao">População: {{cidadeSelecionada?.populacao | number:'':'pt-BR'}}</label>
+                <label class="col-md-12">{{cidadeSelecionada?.anoDaPopulacao ? 'Ano: ' + cidadeSelecionada?.anoDaPopulacao : 'Ano: -'}}</label>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <section >
+            <label class="label-eixo" style="font-family: Source Sans Pro,Arial Black,Helvetica,Arial,sans-serif;">EIXO PCS</label>
+            <br>
+            <!--h5>
+              <a class="link-eixo" href="https://www.cidadessustentaveis.org.br/institucional/pagina/eixos-do-pcs" target="_blank">{{boaPratica?.nomeEixo}}</a>
+            </h5-->
+
+            <a [href]="boaPratica.linkEixo" target="_blank">
+              <img style="margin-right: 1em;" width="100" height="100" [src]="url+'eixo/imagem/'+boaPratica.idEixo"  [matTooltip]="boaPratica.nomeEixo">
+            </a>
+
+        </section>
+
+        <section style="margin-top: 2%;" *ngIf="listaOds?.length > 0" >
+            <label class="label-eixo" style="font-family: Source Sans Pro,Arial Black,Helvetica,Arial,sans-serif;">ODS RELACIONADO</label>
+            <div class="news__grid--3">
+                <div class="news__grid-inner">
+                    <div class="square" *ngFor="let item of listaOds">
+                        <div class="content">
+                          <a style="color:white;" href="institucional/ods/{{item.id}}" title="Ir para página de ODS" target="_blank">
+                            <img class="icone-ods" [src]="gerarLinkImagem(item)"  />
+                          </a>
+                        </div>
+                      </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section *ngIf="boaPratica?.dataPublicacao">
+          <label class="label-eixo" style="font-family: Source Sans Pro,Arial Black,Helvetica,Arial,sans-serif;">DATA DE PUBLICAÇÃO</label>
+          <div style="color: white;">
+            {{boaPratica?.dataPublicacao | date: 'dd/MM/yyyy'}}
+          </div>
+        </section>
+
+      </div>
+
+      <div class="col-md-6">
+        <div class="map" style="margin-top: 46px;">
+            <div style="height: 540px;" leaflet [leafletOptions]="options" [leafletLayers]="layersControl"
+              (leafletMapReady)="onMapReady($event)">
+            </div>
+        </div>
+        </div>
+    </div>
+  </section>
+
+
+  <!-- Objetivo geral -->
+  <section [hidden]="objetivoGeralVazio">
+    <div class="pontos-background summernote">
+      <label class="label-titulo" style="font-family: Source Sans Pro,Arial Black,Helvetica,Arial,sans-serif;">Objetivo Geral</label>
+      <div [ngxSummernoteView]="boaPratica?.objetivoGeral"
+        class="animated bounceInLeft duration-3s delay-2s text-column"></div>
+    </div>
+  </section>
+
+  <!-- Objetivos específicos -->
+  <section [hidden]="objetivosEspecificosVazio">
+    <div style="background: white;" class="div-default summernote">
+      <label style="font-family: Source Sans Pro,Arial Black,Helvetica,Arial,sans-serif;" class="label-titulo">Objetivos específicos</label>
+      <div [ngxSummernoteView]="boaPratica?.objetivoEspecifico"
+        class="animated bounceInRight duration-3s delay-2s text-column text-column"></div>
+    </div>
+  </section>
+
+  <!-- principais resultados -->
+  <section [hidden]="principaisResultadosVazio">
+    <div class="div-default summernote" style="background-color: rgba(18, 80, 105); color: white">
+      <label style="font-family: Source Sans Pro,Arial Black,Helvetica,Arial,sans-serif;" class="label-titulo-white">Principais resultados</label>
+      <div [ngxSummernoteView]="boaPratica?.principaisResultados" class="text-column"></div>
+    </div>
+  </section>
+
+  <!-- Aprendizado fundamental -->
+  <section [hidden]="umAprendizadoFundamentalVazio">
+    <div class="pontos-background summernote">
+      <label  style="font-family: Source Sans Pro,Arial Black,Helvetica,Arial,sans-serif;" class="label-titulo">Um aprendizado fundamental</label>
+      <div [ngxSummernoteView]="boaPratica?.aprendizadoFundamental" class="text-column"></div>
+    </div>
+  </section>
+
+  <!-- Parceiros envolvidos -->
+  <section [hidden]="parceirosEnvolvidosVazio">
+    <div class="div-default summernote" style="background-color: #8a9ea1; color: white; text-align: center">
+      <label style="font-family: Source Sans Pro,Arial Black,Helvetica,Arial,sans-serif;" class="label-titulo-white">Parceiros envolvidos</label>
+      <div [ngxSummernoteView]="boaPratica?.parceirosEnvolvidos" class="text-column"> </div>
+    </div>
+  </section>
+
+  <!-- Público atingido -->
+  <section [hidden]="publicoAtingidoVazio">
+    <div class="pontos-background summernote">
+      <label style="font-family: Source Sans Pro,Arial Black,Helvetica,Arial,sans-serif;" class="label-titulo">Público atingido</label>
+      <div [ngxSummernoteView]="boaPratica?.publicoAtingido" class="text-column"></div>
+    </div>
+  </section>
+
+  <!-- Resultados Quantitativos -->
+  <section [hidden]="resultadosQuantitativosVazio">
+    <div class="div-default summernote" style="background-color: #408559; color: white; width: 100%;">
+      <label style="font-family: Source Sans Pro,Arial Black,Helvetica,Arial,sans-serif;" class="label-titulo-white">Resultados quantitativos</label>
+      <div [ngxSummernoteView]="boaPratica?.resultadosQuantitativos" class="text-column"></div>
+    </div>
+  </section>
+
+  <!-- Resultados qualitativos -->
+  <section [hidden]="resultadosQualitativosVazio">
+    <div class="div-default summernote" style="background-color: #408559; color: white; width: 100%;">
+      <label style="font-family: Source Sans Pro,Arial Black,Helvetica,Arial,sans-serif;" class="label-titulo-white">Resultados qualitativos</label>
+      <div [ngxSummernoteView]="boaPratica?.resultadosQualitativos" class="text-column"></div>
+    </div>
+  </section>
+
+  <!-- Parâmetros contemplados -->
+  <section [hidden]="parametrosContempladosVazio">
+    <div class="div-default summernote">
+      <label style="font-family: Source Sans Pro,Arial Black,Helvetica,Arial,sans-serif;" class="label-titulo">Parâmetros contemplados</label>
+      <div [ngxSummernoteView]="boaPratica?.parametrosContemplados" class="text-column"></div>
+    </div>
+  </section>
+
+  <!-- Fontes de referência -->
+  <section class="pontos-background" [hidden]="fontesDeReferenciaVazio">
+    <div>
+      <label style="font-family: Source Sans Pro,Arial Black,Helvetica,Arial,sans-serif;" class="label-titulo">Fontes de Referência</label>
+      <div [ngxSummernoteView]="boaPratica?.fontesReferencia" class="text-column"></div>
+    </div>
+  </section>
+
+  <!-- Contato -->
+  <section [hidden]="parceirosEnvolvidosVazio">
+    <div class="div-default" style="background-color: #8a9ea1; color: white; text-align: center">
+      <label style="font-family: Source Sans Pro,Arial Black,Helvetica,Arial,sans-serif;" class="label-titulo-white">Contato</label>
+      <div [ngxSummernoteView]="boaPratica?.informacoesComplementares" class="text-column"> </div>
+    </div>
+  </section>
+
+  <!-- Galeria de vídeos e imagens-->
+  <section style="padding-bottom: 1.5%;background: white;" class="text-column">
+
+    <div class="col-lg-12" [hidden]="galeriaDeImagensVazio">
+      <label style="font-family: Source Sans Pro,Arial Black,Helvetica,Arial,sans-serif;"
+        class="label-titulo-galeria">Galeria de imagens</label>
+      <div>
+        <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+      </div>
+    </div>
+
+    <div class="col-lg-12" [hidden]="galeriaDeVideosVazio">
+      <label style="font-family: Source Sans Pro,Arial Black,Helvetica,Arial,sans-serif;"
+        class="label-titulo-galeria">Galeria de vídeos</label>
+      <div>
+        <div id="carousel-example" class="carousel slide">
+          <ol class="carousel-indicators">
+            <li data-target="#carouselExampleIndicators" *ngFor="let x of galeriaDeVideos;let i = index"
+              [attr.data-slide-to]="i" ngClass="i == 0 ? 'active' : ''"></li>
+          </ol>
+          <div class="carousel-inner">
+            <div *ngFor="let item of galeriaDeVideos; let k = index"
+              [ngClass]="k == 0 ? 'carousel-item active' : 'carousel-item'">
+              <div>
+                <iframe class="embed-responsive-item" [src]="item.safeUrl" allowfullscreen
+                  style="height: 400px; width:100%;"></iframe>
+              </div>
+            </div>
+          </div>
+          <a class="carousel-control-prev" href="#carousel-example" role="button" data-slide="prev"
+            style="margin-bottom: 10%; margin-top: 10%;">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#carousel-example" role="button" data-slide="next"
+            style="margin-bottom: 10%; margin-top: 10%;">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Texto de responsabilidade -->
+  <section style="background: white;" *ngIf="this.boaPratica?.tipo !== 'PCS'">
+    <div class="col-md-12">
+      <p class="txt-responsabilidade">
+        <fa name="info-circle" size="lg"></fa>
+        A Boa Prática apresentada nesta seção é de responsabilidade exclusiva da Prefeitura de {{boaPratica?.nomeCidade}},
+        signatária do Programa Cidades
+        Sustentáveis.
+      </p>
+    </div>
+  </section>
+
+  <section class="pontos-background" [hidden]="solucoesVazio">
+    <div class="row">
+      <label style="font-family: Source Sans Pro,Arial Black,Helvetica,Arial,sans-serif;" class="label-titulo">
+        SOLUÇÕES DO OBSERVATÓRIO DE INOVAÇÃO RELACIONADAS COM A BOA PRÁTICA.
+      </label>
+    </div>
+    <div class="animated bounceInLeft duration-3s delay-2s text-column">
+        <p>O Observatório de Inovação para Cidades Sustentáveis (OICS) é uma plataforma de conteúdos sobre sustentabilidade urbana que conta com um banco de soluções para os desafios que nossos municípios enfrentam, oferecendo modelos alternativos e replicáveis.</p> 
+        <p>As soluções identificadas pelo OICS estão relacionadas com as boas práticas do PCS, oferecendo ao usuário um conteúdo integrado e complementar sobre o assunto que está pesquisando.</p>
+        <p>Clique e confira a(s) solução(ões) relacionada(s) a esta boa prática:</p>
+    </div>
+    <div class="solucao">
+      <div class="row">
+        <app-card-solucao *ngFor="let solucao of boaPratica?.solucoes | slice : 0" [solucao]="solucao" class="col-lg-4"></app-card-solucao>
+      </div>
+    </div>
+  </section>
+</div>

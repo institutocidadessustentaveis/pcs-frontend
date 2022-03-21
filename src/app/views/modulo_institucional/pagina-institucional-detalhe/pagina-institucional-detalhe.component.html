@@ -1,0 +1,51 @@
+<!-- Imagem principal -->
+<section class="home-banner owl-carousel owl-theme" matTooltip='{{pagina.nomeAutor}}'>
+  <div id="carouselExampleIndicators" class="carousel slide" ride="false">
+    <div class="carousel-inner">
+      <div class="home-banner" *ngIf="!pagina?.possuiFiltro">
+        <img class="img-carousel" [src]="getImagePath(pagina.id)">
+        <div class="carousel-caption">
+          <div style="position: absolute;bottom: 0;">
+            <h1 class="animated fadeInUp duration-3s delay-1s">{{pagina.titulo}}</h1>
+          </div>
+        </div>
+      </div>
+
+      <div class="home-banner-filtro" *ngIf="pagina?.possuiFiltro">
+        <img class="img-carousel-filtro" [src]="getImagePath(pagina.id)">
+        <div class="carousel-caption">
+          <div style="position: absolute;bottom: 0;">
+            <h1 class="animated fadeInUp duration-3s delay-1s">{{pagina.titulo}}</h1>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Resumo -->
+<div class="row" style="margin-right: 0% !important;" *ngIf="pagina.subtitulo">
+  <div class="col-lg-3 col-md-12 col-xs-12 col-sm-12 resumo">
+    <div [ngxSummernoteView]="pagina?.caminhoMigalhas" class="breadcrumb" ></div>
+  </div>
+  <div class="col-lg-6 col-md-12 col-xs-12 col-sm-12 resumo" >
+    <h2 style="font-family: Open Sans,Helvetica,Arial,sans-serif;" class="half-center" [innerHTML]="pagina.subtitulo"></h2>
+    <div class="div-btn-transparent mb-2" style="text-align: center;">
+      <button *ngIf="pagina.txtBotaoSubtitulo" class="btn-transparent" id="btn_subtitulo"
+        (click)="verificaTipoLink()">{{pagina.txtBotaoSubtitulo}}
+      </button>
+    </div>
+
+  </div>
+  <div class="col-lg-3 col-md-12 col-xs-12 col-sm-12 resumo">
+  </div>
+</div>
+
+<app-template01 [pagina]="pagina" [tituloPagina]="pagina.titulo" [dadosDownloadUser]="dadosDownload" *ngIf="pagina.template01"></app-template01>
+
+<app-template02 [pagina]="pagina" [tituloPagina]="pagina.titulo" [dadosDownloadUser]="dadosDownload" *ngIf="pagina.template02"></app-template02>
+
+<app-template03 [pagina]="pagina" [tituloPagina]="pagina.titulo" [dadosDownloadUser]="dadosDownload" *ngIf="pagina.template03"></app-template03>
+
+<app-template04 [pagina]="pagina" *ngIf="pagina.template04"></app-template04>

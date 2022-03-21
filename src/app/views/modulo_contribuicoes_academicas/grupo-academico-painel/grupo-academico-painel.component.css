@@ -1,0 +1,19 @@
+table {
+    vertical-align: middle;
+    margin-top: 24px;
+}
+.mat-form-field + .mat-form-field {
+    margin-left: 8px;
+}
+.titulo {
+  color: rgb(64, 133, 89);
+  width: 1700px;
+}
+
+td{
+    padding: 12px;
+    transition: 0.4s;
+}
+td:hover {
+    background-color:rgb(250 250 250);
+}

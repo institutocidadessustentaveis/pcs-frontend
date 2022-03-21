@@ -1,0 +1,75 @@
+<div class="row">
+    <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+        <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <form [formGroup]="formReenvioEmail">
+                <mat-card-title>Formulário de Reenvio de Email para Aprovação</mat-card-title>
+                <hr>
+                <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                    <div class="row">
+                        <div class="col-md-4 col-lg-4">
+                            <label><b>Prefeitura: </b>{{pedidoAprovacaoPrefeitura.prefeitura.cidade.nome}}</label>
+                        </div>
+                        <div class="col-md-4 col-lg-4">
+                            <label><b>Estado:
+                                </b>{{pedidoAprovacaoPrefeitura.prefeitura.cidade.provinciaEstado.nome}}</label>
+                        </div>
+                        <div class="col-md-4 col-lg-4">
+                            <label><b>Responsável: </b>{{pedidoAprovacaoPrefeitura.prefeitura.nome}}</label>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12">
+                            <mat-form-field>
+                                <input matInput placeholder="Email" value="" formControlName="email" maxlength="60" #txtEmail type="email">
+                                <mat-hint align="end">{{txtEmail.value?.length || 0}}/60</mat-hint>
+                                <mat-error
+                                    *ngIf="!formReenvioEmail.controls['email'].valid && formReenvioEmail.controls['email'].touched">
+                                    Email invalido, favor digite um email valido!
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-12 col-lg-12 text-right">
+                            <button mat-flat-button id="btnAddEmail" color="primary"
+                                (click)="addEmail()" type="submit" matTooltip="Adicionar email"
+                                [disabled]="!formReenvioEmail.valid" style="margin-top:10px !important;">
+                                <mat-icon>add</mat-icon> Adicionar
+                            </button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row" style="margin-top: 16px" *ngIf="listaEmail.length > 0">
+                        <div class="col-md-12 col-lg-12">
+                            <div class="alert alert-success alertPCS" role="alert">
+                                Lista de Email:
+                                 {{listaEmail}}
+                             </div>
+                        </div>
+                        <div class="col-md-12 col-lg-12 text-right">
+                            <button mat-flat-button id="btnCadastrarIndicador" class="btnToRight" color="primary"
+                                (click)="cleanListEmail()" type="submit" matTooltip="limpar lista"
+                                [disabled]="listaEmail.length === 0" style="margin-top:5px !important;">
+                                <mat-icon>clear_all</mat-icon> Limpar lista
+                            </button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12 text-right" style="margin-top: 16px">
+                            <button mat-flat-button id="btnCadastrarIndicador" class="btnToRight" color="primary"
+                                (click)="reenviarEmail()" type="submit" matTooltip="Reenviar email"
+                                [disabled]="listaEmail.length === 0">
+                                <mat-icon>send</mat-icon> Reenviar email
+                            </button>
+                            <button id="btnFechar" mat-flat-button color="accent" class="btnToRight" style="margin-top: 4px" (click)="fechar()"
+                                matTooltip="Fechar">
+                                <mat-icon>close</mat-icon>
+                                Fechar
+                            </button>
+                        </div>
+                    </div>
+                </mat-card>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

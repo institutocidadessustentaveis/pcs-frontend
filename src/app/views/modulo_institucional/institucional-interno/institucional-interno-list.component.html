@@ -1,0 +1,96 @@
+<div class="contentBody" style="position: relative;">
+  <app-breadcrumb style="position: relative;"></app-breadcrumb>
+  <mat-card>
+    <div class="row">
+      <div class="col-md-8 col-lg-9 col-xs-12 col-sm-12">
+        <h2>Cadastro de Páginas Institucionais</h2>
+      </div>
+
+
+      <div class="col-md-4 col-lg-3 col-xs-12 col-sm-12" style="text-align: right;">
+        <button mat-flat-button class="btnCadastrar" color="primary" type="button"
+          [routerLink]="['/institucional-interno/cadastrar']" matTooltip="Cadastrar"
+          style="cursor: pointer !important; margin-bottom: 5px;">
+          <mat-icon>add</mat-icon>Cadastrar Institucional
+        </button>
+      </div>
+
+    </div>
+
+    <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+      <mat-divider></mat-divider>
+    </div>
+
+    <br>
+
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtro de busca">
+    </mat-form-field>
+
+    <br>
+    <br>
+
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <mat-card-title>Lista de Páginas Institucionais Cadastradas</mat-card-title>
+      <mat-divider></mat-divider>
+    </div>
+
+    <table mat-table [dataSource]="dataSource" matSort>
+      <!--
+      <ng-container matColumnDef="iconeReduzido">
+        <th mat-header-cell *matHeaderCellDef style="width: 10%;"></th>
+        <td mat-cell *matCellDef="let ods" style="width: 10%;">
+          <img [src]="domSanitizationService.bypassSecurityTrustUrl('data:image/png;base64, ' + ods.iconeReduzido)" width="60" height="60"/>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="numeroCol">
+        <th mat-header-cell *matHeaderCellDef style="width: 10%;" mat-sort-header="numero">Número</th>
+        <td mat-cell *matCellDef="let ods" class='m-card-title' data-label='Número'>
+            <span class="mobile-label">Número:</span>{{ods.numero}} </td>
+      </ng-container>
+      -->
+      <ng-container matColumnDef="titulo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="titulo">Título</th>
+        <td mat-cell *matCellDef="let institucional" class='m-card-title' data-label='Título'>
+          <span class="mobile-label">Título:</span>{{institucional.titulo}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="subtitulo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="subtitulo" style="width:40%;">Subtítulo</th>
+        <td mat-cell *matCellDef="let institucional" class='m-card-title' data-label='Subtítulo'>
+          <div style="overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">
+            <span class="mobile-label">Subtítulo:</span> <p [innerHTML]="institucional.subtitulo"></p> 
+          </div>
+        </td>
+      </ng-container>
+      <!--
+      <ng-container matColumnDef="arquivo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="arquivo">Arquivo</th>
+        <td mat-cell *matCellDef="let institucional" class='m-card-title' data-label='Título'>
+              <span class="mobile-label">Arquivo:</span>{{institucional.arquivo}} </td>
+      </ng-container>
+      -->
+      <ng-container matColumnDef="acoes">
+        <th mat-header-cell *matHeaderCellDef>Ações</th>
+        <td mat-cell *matCellDef="let ods" class='m-card-title' data-label='Ações'>
+          <span *ngIf="hasRole('ROLE_ODS')">
+            <button mat-flat-button color="primary" [routerLink]="['/institucional-interno/editar', ods.id]"
+              class="btnTabela" matTooltip="Editar">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </span>
+          <span *ngIf="hasRole('ROLE_ODS')">
+            <button mat-flat-button color="warn" (click)="deletar(ods)" class="btnTabela" matTooltip="Excluir">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </span>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator>
+  </mat-card>
+</div>

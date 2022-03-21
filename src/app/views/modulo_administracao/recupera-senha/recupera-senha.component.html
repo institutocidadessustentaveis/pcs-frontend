@@ -1,0 +1,53 @@
+<div class="contentBody">
+  <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+    <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12 marginToTop">
+      <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <mat-card-title>Recuperação de Senha</mat-card-title>
+        <hr>
+      </div>
+      <div [hidden]="!loading">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </div>
+      <br>
+      <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+
+        <form [formGroup]="formRecuperaSenha">
+
+          <mat-form-field class="marginToComponent">
+            <input matInput placeholder="Nova Senha" value="" #txtSenha [type]="hideSenha ? 'password' : 'text'"
+              formControlName="Senha" id="txtSenha" required />
+            <mat-icon matSuffix (click)="hideSenha = !hideSenha">{{hideSenha ? 'visibility_off' : 'visibility'}}
+            </mat-icon>
+            <mat-hint>Deve ter pelo menos 6 caracteres, contendo letra(s) e número(s)</mat-hint>
+            <mat-hint align="end">{{ txtSenha.value?.length || 0 }}/10</mat-hint>
+            <mat-error
+              *ngIf="!formRecuperaSenha.controls['Senha'].valid && formRecuperaSenha.controls['Senha'].touched">
+              {{ getErrorSenha() }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="marginfield">
+            <input matInput placeholder="Confirmar Senha" value="" #txtConfirmaSenha
+              [type]="hideConfirmaSenha ? 'password' : 'text'" formControlName="ConfirmaSenha" id="txtConfirmaSenha" required />
+            <mat-icon matSuffix (click)="hideConfirmaSenha = !hideConfirmaSenha">
+              {{hideConfirmaSenha ? 'visibility_off' : 'visibility'}}</mat-icon>
+            <mat-hint align="end">{{ txtConfirmaSenha.value?.length || 0 }}/10</mat-hint>
+            <mat-error
+              *ngIf="!formRecuperaSenha.controls['ConfirmaSenha'].valid && formRecuperaSenha.controls['ConfirmaSenha'].touched">
+              {{ getErrorConfirmaSenha() }}
+            </mat-error>
+          </mat-form-field>
+        </form>
+
+        <br>
+
+        <div class="text-right">
+          <button mat-flat-button color="primary" *ngIf="!checked" matTooltip="Salvar" (click)="salvar()"
+            [disabled]="!formRecuperaSenha.valid" style="margin-right: 10px !important;" id="btnSave">
+            <mat-icon>save</mat-icon> Salvar
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

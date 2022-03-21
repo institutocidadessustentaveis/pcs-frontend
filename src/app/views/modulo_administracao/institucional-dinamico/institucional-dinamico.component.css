@@ -1,0 +1,384 @@
+
+
+section {
+  width: 100%;
+  max-width: 100%;
+}
+
+.carousel-caption {
+height: 480px;
+color: #fff;
+text-align: center;
+display: -webkit-flex;
+display: flex;
+-webkit-align-items: center;
+align-items: center;
+-webkit-justify-content: center;
+justify-content: center;
+margin-bottom: 13px;
+}
+.home-banner h1 {
+font-family: Source Sans Pro;
+font-weight: 700;
+font-size: calc(17px + 1.5vw);
+line-height: 1.25em;
+text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+text-transform: uppercase;
+}
+
+h4 {
+font-size: calc(10px + 1.0vw) !important;
+font-weight: normal !important;
+}
+
+
+/* cyrillic-ext */
+@font-face {
+font-family: "Open Sans";
+font-style: normal;
+font-weight: 400;
+font-display: swap;
+src: local("Open Sans Regular"), local("OpenSans-Regular"),
+  url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFWJ0bbck.woff2)
+    format("woff2");
+unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F,
+  U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+font-family: "Open Sans";
+font-style: normal;
+font-weight: 400;
+font-display: swap;
+src: local("Open Sans Regular"), local("OpenSans-Regular"),
+  url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFUZ0bbck.woff2)
+    format("woff2");
+unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+font-family: "Open Sans";
+font-style: normal;
+font-weight: 400;
+font-display: swap;
+src: local("Open Sans Regular"), local("OpenSans-Regular"),
+  url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFWZ0bbck.woff2)
+    format("woff2");
+unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+font-family: "Open Sans";
+font-style: normal;
+font-weight: 400;
+font-display: swap;
+src: local("Open Sans Regular"), local("OpenSans-Regular"),
+  url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFVp0bbck.woff2)
+    format("woff2");
+unicode-range: U+0370-03FF;
+}
+/* vietnamese */
+@font-face {
+font-family: "Open Sans";
+font-style: normal;
+font-weight: 400;
+font-display: swap;
+src: local("Open Sans Regular"), local("OpenSans-Regular"),
+  url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFWp0bbck.woff2)
+    format("woff2");
+unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+font-family: "Open Sans";
+font-style: normal;
+font-weight: 400;
+font-display: swap;
+src: local("Open Sans Regular"), local("OpenSans-Regular"),
+  url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFW50bbck.woff2)
+    format("woff2");
+unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB,
+  U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+font-family: "Open Sans";
+font-style: normal;
+font-weight: 400;
+font-display: swap;
+src: local("Open Sans Regular"), local("OpenSans-Regular"),
+  url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFVZ0b.woff2)
+    format("woff2");
+unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+  U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+  U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+font-family: "Source Sans Pro";
+font-style: normal;
+font-weight: 700;
+font-display: swap;
+src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+  url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmhduz8A.woff2)
+    format("woff2");
+unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F,
+  U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+font-family: "Source Sans Pro";
+font-style: normal;
+font-weight: 700;
+font-display: swap;
+src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+  url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwkxduz8A.woff2)
+    format("woff2");
+unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+font-family: "Source Sans Pro";
+font-style: normal;
+font-weight: 700;
+font-display: swap;
+src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+  url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmxduz8A.woff2)
+    format("woff2");
+unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+font-family: "Source Sans Pro";
+font-style: normal;
+font-weight: 700;
+font-display: swap;
+src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+  url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwlBduz8A.woff2)
+    format("woff2");
+unicode-range: U+0370-03FF;
+}
+/* vietnamese */
+@font-face {
+font-family: "Source Sans Pro";
+font-style: normal;
+font-weight: 700;
+font-display: swap;
+src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+  url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmBduz8A.woff2)
+    format("woff2");
+unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+font-family: "Source Sans Pro";
+font-style: normal;
+font-weight: 700;
+font-display: swap;
+src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+  url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmRduz8A.woff2)
+    format("woff2");
+unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB,
+  U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+font-family: "Source Sans Pro";
+font-style: normal;
+font-weight: 700;
+font-display: swap;
+src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+  url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwlxdu.woff2)
+    format("woff2");
+unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+  U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+  U+FEFF, U+FFFD;
+}
+/*...Imagem principal*/
+
+/* Deafult */
+.half-center {
+  text-align: justify !important;
+  margin-left: 20px;
+  margin-right: 20px;
+  color: white;
+  font-size: 3vh;
+}
+
+.resumo {
+
+  padding-top: 1em;
+}
+
+.breadcrumbs a:active,
+.breadcrumbs a:hover,
+.breadcrumbs a:link,
+.breadcrumbs a:visited {
+color: white;
+text-decoration: underline white;
+}
+
+.breadcrumbs {
+  font-size: 1em;
+  line-height: 1.5em;
+  color: white;
+  margin-left: 5%;
+}
+/* ...Deafult */
+
+/* Template 01 */
+.first-section, .third-section {
+  background: url("../../../../assets/boas-praticas-inicial/pontos-light.png");
+  padding-bottom: 2%;
+}
+
+.second-section {
+  background-color: #554f20;
+  color: white;
+  padding-bottom: 2%;
+}
+
+.fourth-section {
+  /* background-color: rgba(106,104,71,.8); */
+  color: white;
+  background: url("../../../../assets/boas-praticas-inicial/home-banner.png");
+  padding-bottom: 2%;
+}
+
+.label-titulo {
+  font-weight: bold;
+  font-size: 30px;
+  text-align: justify;
+  margin: 2% 5% 1% 5%;
+  color: #408559;
+  text-transform: uppercase;
+}
+
+.label-titulo-white {
+  font-weight: bold;
+  font-size: 30px;
+  text-align: justify;
+  margin: 2% 5% 1% 5%;
+  color: white;
+  text-transform: uppercase;
+}
+
+.one-column {
+  text-align: justify;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.one-column-with-image {
+  text-align: justify;
+  margin-left: 5%;
+}
+
+.two-columns {
+  text-align: justify;
+  margin-left: 5%;
+  margin-right: 5%;
+  column-count: 2;
+  column-gap: 60px;
+}
+
+.two-columns-with-image {
+  text-align: justify;
+  padding-right: 5% !important;
+  column-count: 2;
+  column-gap: 60px;
+}
+
+.div-img-first-section{
+  margin-left: 5%;
+}
+
+.three-columns {
+  text-align: justify;
+  margin-left: 5%;
+  margin-right: 5%;
+  column-count: 3;
+  column-gap: 60px;
+}
+
+.div-img-third-section{
+  margin-left: 3%;
+  width: 38%;
+}
+
+.img-third-section{
+  width: 100%;
+  height: 100%;
+}
+
+.btn-transparent {
+  margin-top: 1%;
+  background: transparent;
+  border: 1px white solid;
+  border-radius: 12px;
+  color: white;
+  min-height: 36px;
+  min-width: 150px;
+}
+/* ...Template 01 */
+
+/* Rodapé */
+.btn-outline-theme-light, .btn-outline-theme-white {
+  border: 1px solid #6e6e6e !important;
+  width: 330px;
+  border-radius: 12px !important;
+  padding: 15px 0 !important;
+  color: #6e6e6e !important;
+  font-size: 16px !important;
+}
+
+.btn-outline-theme-white {
+  border: 1px solid white !important;
+  color: white !important;
+}
+
+.logoCenter {
+  text-align: center;
+  margin-top: 2%;
+}
+
+@media (max-width: 600px) {
+  .logoCenter img{
+      width: 100%;
+  }
+
+  .btn-transparent {
+      width: 200px;
+  }
+}
+/* ...Rodapé */
+
+.breadcrumb {
+position: relative;
+color: white;
+padding-left: 20%;
+}
+
+@media (max-width: 640px) {
+.breadcrumb {
+  position: relative;
+  left:0px;
+  color: white;
+}
+}
+
+:host::ng-deep p .note-float-left {
+  margin-right: 1rem;
+}
+
+:host::ng-deep p .note-float-right {
+  margin-left: 1rem;
+}
+
+:host::ng-deep .note-float-left {
+  margin-right: 1rem;
+}
+
+:host::ng-deep .note-float-right {
+  margin-left: 1rem;
+}

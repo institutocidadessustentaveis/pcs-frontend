@@ -1,0 +1,187 @@
+<div class="contentBody">
+  <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+    <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12 marginToTop">
+      <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <mat-card-title>Rodapé do sistema</mat-card-title>
+        <hr>
+      </div>
+
+      <div [hidden]="!loading">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </div>
+
+      <br>
+
+      <mat-tab-group>
+        <mat-tab label="Links">
+          <br>
+
+          <form [formGroup]="formLinksRodape" #formDirective="ngForm" (ngSubmit)="adicionarLinkPcs(formDirective)">
+            <mat-form-field class="col-md-3">
+              <input matInput placeholder="Título do link" type="text" autocomplete="off"
+                      formControlName="tituloLink" id="tituloLink" required maxlength="50"/>
+            </mat-form-field>
+  
+            <mat-form-field class="col-md-6">
+              <input matInput placeholder="URL do link" type="url" autocomplete="off"
+                      formControlName="urlLink" id="urlLink" required maxlength="500"/>
+            </mat-form-field>
+
+            <mat-checkbox formControlName="abrirNovaJanela"  id="abrirNovaJanela" style="margin: 20px;">
+              Abrir em nova janela
+            </mat-checkbox>
+
+            <button mat-flat-button color="primary" type="submit" matTooltip="Salvar" id="btnSave">
+              Adicionar
+            </button>
+          </form>
+
+          <table mat-table [dataSource]="dataSourceLinks">
+            <ng-container matColumnDef="Título">
+              <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Título do link </th>
+              <td mat-cell *matCellDef="let registro" class='m-card-title' data-label="Título do link">{{registro.titulo}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="URL">
+              <th mat-header-cell *matHeaderCellDef style="width: 10%;"> URL </th>
+              <td mat-cell *matCellDef="let registro" class='m-card-title' data-label="URL">
+                <a href="{{registro.url}}" target="_blank" rel="noopener">{{registro.url}}</a>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Ações">
+              <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Ações </th>
+
+              <td mat-cell *matCellDef="let registro" class='m-card-title' data-label="Ações">
+                <button mat-flat-button color="primary" (click)="moverLinkPcsCima(registro)"
+                        class="btnTabela" matTooltip="Mover para cima">
+                  <mat-icon>arrow_upward</mat-icon>
+                </button>
+
+                <button mat-flat-button color="primary" (click)="moverLinkPcsBaixo(registro)"
+                        class="btnTabela" matTooltip="Mover para baixo">
+                  <mat-icon>arrow_downward</mat-icon>
+                </button> 
+
+                <button mat-flat-button color="warn" 
+                        class="btnTabela" matTooltip="Excluir"
+                        (click)="removerLinkPcs(registro)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsLinks"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsLinks;"></tr>
+          </table>
+        </mat-tab>
+
+        <mat-tab label="Contato">
+          <br>
+
+          <form [formGroup]="formContatoRodape" #formDirective="ngForm" (ngSubmit)="salvarContatoPcs(formDirective)">
+            <mat-form-field class="col-md-12">
+              <input matInput placeholder="Endereço" type="text" 
+                      formControlName="endereco" id="endereco" required maxlength="200"/>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6">
+              <input matInput placeholder="Cidade" type="text" autocomplete="off"
+                      formControlName="cidade" id="cidade" required maxlength="50" />
+            </mat-form-field>
+
+            <mat-form-field class="col-md-3">
+              <input matInput placeholder="Telefone" type="text" autocomplete="off"
+                      formControlName="telefone" id="telefone" required maxlength="50"/>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-3">
+              <input matInput placeholder="CEP" type="text" autocomplete="off"
+                      formControlName="cep" id="cep" required maxlength="15"/>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-12">
+              <input matInput placeholder="URL do link" type="url" autocomplete="off"
+                      formControlName="link" id="link" maxlength="500"/>
+            </mat-form-field>
+  
+            <div class="col-lg-12 text-right" style="margin-top: 10px !important;">
+              <button mat-flat-button type="submit" class="btnToRight" color="primary" matTooltip="Salvar">
+                Salvar
+              </button>
+            </div>
+          </form>
+        </mat-tab>
+
+        <mat-tab label="Redes sociais">
+            <br>
+
+            <form [formGroup]="formRedesSociaisRodape" #formDirective="ngForm" (ngSubmit)="salvarRedesSociaisPcs(formDirective)">
+              <mat-form-field class="col-md-3">
+                <mat-label>Rede social</mat-label>
+                <mat-select [(value)]="redeSocialSelecionada">
+                  <mat-option value="FACEBOOK">Facebook</mat-option>
+                  <mat-option value="TWITTER">Twitter</mat-option>
+                  <mat-option value="LINKEDIN">Linkedin</mat-option>
+                  <mat-option value="INSTAGRAM">Instagram</mat-option>
+                  <mat-option value="YOUTUBE">YouTube</mat-option>
+                  <mat-option value="GITHUB">GitHub</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-8">
+                <input matInput placeholder="URL do perfil" type="url" autocomplete="off"
+                        formControlName="url" id="url" required maxlength="500"/>
+              </mat-form-field>
+
+              <button mat-flat-button type="submit" class="btnToRight" color="primary" matTooltip="Salvar">
+                Adicionar
+              </button>
+            </form>
+
+            <table mat-table [dataSource]="dataSourceRedesSociais">
+
+              <ng-container matColumnDef="Rede social">
+                <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Rede social </th>
+                <td mat-cell *matCellDef="let registro" class='m-card-title' data-label="Rede social">{{capitalize(registro.tipo)}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="Link do perfil">
+                <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Link do perfil </th>
+                <td mat-cell *matCellDef="let registro" class='m-card-title' data-label="Link do perfil">
+                  <a rel="noopener" target="_blank" href="{{registro.urlPerfil}}">{{registro.urlPerfil}}</a>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="Ações">
+                <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Ações </th>
+  
+                <td mat-cell *matCellDef="let registro" class='m-card-title' data-label="Ações">
+                  <button mat-flat-button color="primary" (click)="moverRedeSocialPcsCima(registro)"
+                          class="btnTabela" matTooltip="Mover para cima">
+                    <mat-icon>arrow_upward</mat-icon>
+                  </button>
+  
+                  <button mat-flat-button color="primary" (click)="moverRedeSocialPcsBaixo(registro)"
+                          class="btnTabela" matTooltip="Mover para baixo">
+                    <mat-icon>arrow_downward</mat-icon>
+                  </button> 
+  
+                  <button mat-flat-button color="warn" 
+                          class="btnTabela" matTooltip="Excluir"
+                          (click)="removerRedeSocialPcs(registro)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsRedesSociais"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsRedesSociais;"></tr>
+            </table>
+
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card>
+
+  </div>
+</div>

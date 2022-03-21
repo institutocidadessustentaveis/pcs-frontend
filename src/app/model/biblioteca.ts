@@ -1,0 +1,43 @@
+import { AreaInteresse } from './area-interesse';
+import { Cidade } from './cidade';
+import { Eixo } from './eixo';
+import { Indicador } from './indicadores';
+import { MetaObjetivoDesenvolvimentoSustentavel } from './metaObjetivoDesenvolvimentoSustentavel';
+import { ObjetivoDesenvolvimentoSustentavel } from './objetivoDesenvolvimentoSustentavel';
+import { Pais } from './pais';
+import { Usuario } from './usuario';
+import { Arquivo } from './arquivo';
+
+export class Biblioteca {
+    id: number;
+    areasInteresse: Array<Number>;
+    autor: String;
+    tipoAutor: Array<String>;
+    cidade: number;
+    dataPublicacao: any;
+    eixos: Array<Number>;
+    idioma: String;
+    imagemCapa: Arquivo;
+    indicadores: Array<Number>;
+    instituicao: String;
+    meta: Array<Number>;
+    ods: Array<Number>;
+    paisPublicacao: number;
+    palavraChave: String;
+    publicoAlvo: Array<String>;
+    descricao: string;
+    subtitulo: String;
+    tipoMaterial: String;
+    tituloPublicacao: String;
+    usuario: number;
+    localExibicao: String;
+    modulo: Array<String>;
+    estado: number;
+    galeriaDeVideos: string[];
+    galeriaDeAudios: Arquivo[];
+    arquivoMultimidia: Arquivo[];
+    possuiImagem: boolean;
+    grupoAcademico: number;
+    shapeFiles: number[];
+    grupoAcademicoNome: string;
+}

@@ -1,0 +1,263 @@
+.secao {
+  margin-left: 128px;
+  margin-right: 128px;
+  margin-bottom: 3em;
+  margin-top: 3em;
+}
+
+.secao-mapa{
+  padding-left: 128px;
+  padding-right: 128px;
+  background-color: #8a9ea1 ;
+  padding-bottom: 2em;
+  padding-top: 2.4em;
+  font-weight: 600;
+}
+.secao-mapa h1{
+  margin-left: 128px;
+  color: white;
+}
+@media (max-width: 1023px) {
+  .secao {
+    margin-left: 48px;
+    margin-right: 48px;
+  }
+  .secao-mapa h1{
+    margin-left: 48px;
+    color: white;
+  }
+}
+
+.view-more {
+  place-self: center;
+  font-size: 1.25em;
+  line-height: 2.4em;
+  background-color: transparent;
+  border: 0.05em #6e6e6e solid;
+  padding: 0.55em;
+  width: 25%;
+  min-width: 300px;
+  border-radius: 10px;
+  outline: none;
+  cursor: pointer;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.secao-filtro{
+  background-color: #8a9ea1;
+  margin-bottom: 1em;
+  padding-top: 3em;
+  padding-bottom: 3em;
+}
+
+.secao-filtro > h1 span {
+  color: #fff;
+  position: relative;
+  z-index: 2;
+}
+
+.secao-filtro header {
+  color: #fff;
+  padding-left: 30px;
+}
+
+.secao-filtro > header h1 {
+  font-size: 2em;
+  line-height: 2em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #fff;
+  text-align: left;
+  position: relative;
+}
+
+.search-form-color ::ng-deep .mat-select-value-text {
+  color: white !important;
+}
+
+.search-form-color ::ng-deep .mat-focused .mat-form-field-label {
+  color: white !important;
+}
+
+.search-form-color ::ng-deep .mat-form-field-label {
+  color: white !important;
+}
+
+.search-form-color ::ng-deep.mat-form-field-underline {
+  background-color: white !important;
+}
+
+.search-form-color ::ng-deep.mat-form-field-ripple {
+  background-color: white !important;
+}
+
+.search-form-color ::ng-deep .mat-select-arrow {
+  color: white !important;
+}
+
+.search-form-color ::ng-deep .mat-form-field-empty.mat-form-field-label {
+  color: white !important;
+}
+
+.search-form-color ::ng-deep .mat-datepicker-toggle {
+  color: white !important;
+}
+
+.search-form-color ::ng-deep .mat-datepicker {
+  color: white !important;
+}
+
+.search-form-color ::ng-deep input.mat-input-element {
+  color: white;
+}
+
+.label-titulo {
+  font-weight: bold;
+  font-size: 30px;
+  color: #408559;
+  text-transform: uppercase;
+}
+
+.second-section{
+    padding-bottom: 2%;
+    margin-left: 5%;
+    margin-right: 5%;
+    }
+
+.label-titulo-second-section {
+    font-weight: bold;
+    font-size: 30px;
+
+    margin: 2% 0% 1% 5%;
+    color: #408559;
+    text-transform: uppercase;
+}
+
+.conteudo {
+  width: 100%;
+  max-width: 100%;
+}
+
+.home-banner h1 {
+  font-weight: 700 !important;
+  font-size: calc(17px + 1.5vw);
+  line-height: 1.25em;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+  text-transform: uppercase;
+}
+
+.home-banner h4 {
+  font-size: calc(10px + 1.0vw) !important;
+}
+
+.itens-filtro div{
+  padding-left: 25px;
+  padding-right: 20px;
+}
+
+.data-periodo {
+  border: 1px #fff solid;
+  position: absolute;
+  z-index: 10;
+  top: -2em;
+  background-color: #8a9ea1;
+  height: 13em;
+  border-radius: 0.5em;
+  padding-top: 1em;
+  width: 100%;
+  min-width: 300px;
+}
+
+.div-botao-periodo {
+  padding-right: 0px  !important;
+}
+
+.periodo {
+  border: 1px #fff solid;
+  border-radius: 0.5em;
+  color: #fff;
+  width: 100%;
+  margin-bottom: 1em;
+}
+
+.limpar-filtro {
+  border-radius: 0.5em;
+  color: #fff;
+  height: 36px;
+  min-width: 150px;
+}
+
+.btn-eventos {
+  margin-right: 10px;
+  height: 36px;
+  width: 160px;
+  min-width: 150px;
+}
+
+@media(min-width: 1098px) {
+  .botoes-pesquisa {
+    display: inline;
+  }
+  .botoes-pesquisa-p {
+    display: none;
+  }
+}
+
+@media(min-width: 992px) and (max-width: 1097px) {
+  .botoes-pesquisa {
+    display: none;
+  }
+  .botoes-pesquisa-p {
+    display: inline;
+    width: 100%;
+  }
+}
+
+@media(max-width: 991px) and (min-width: 380px){
+  .botoes-pesquisa {
+    display: inline;
+  }
+  .botoes-pesquisa-p {
+    display: none;
+  }
+  .btn-group {
+    text-align: right !important;
+    display: initial;
+  }
+}
+
+@media(max-width: 379px) {
+  .botoes-pesquisa {
+    display: none;
+  }
+  .botoes-pesquisa-p {
+    display: inline;
+    width: 100%;
+  }
+}
+
+
+@media(min-width: 424px) {
+  .btn-sociais-desktop {
+    display: inline;
+   }
+   .btn-sociais-div-p {
+    display: none;
+   }
+}
+
+@media(max-width: 423px) {
+  .btn-sociais-desktop {
+    display: none;
+   }
+   .btn-sociais-div-p {
+    display: flex;
+   }
+}
+
+.botoes-sociais {
+  display: inline;
+  text-align: right !important;
+ }
+

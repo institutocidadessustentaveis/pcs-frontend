@@ -1,0 +1,68 @@
+<div style="background-color: white;">
+
+  <section *ngIf="noticia?.imagemPrincipal">
+    <section class="home-banner owl-carousel owl-theme" title={{noticia.legendaImagem}}>
+
+      <div id="carouselExampleIndicators" class="carousel slide" ride="false">
+        <div class="carousel-inner">
+
+          <div class="home-banner-filtro" *ngIf="noticia?.possuiFiltro">
+            <img class="img-carousel-filtro" [src]="safeUrlBanner" *ngIf="noticia.possuiFiltro">
+            <div class="carousel-caption">
+              <div style="position: inherit;bottom: 0;width: 100%;">
+                <h1 class="animated fadeInUp duration-3s delay-1s">{{noticia?.titulo}}</h1>
+                <h4 class="animated fadeInUp duration-3s delay-1s">{{noticia?.subtitulo}}</h4>
+              </div>
+            </div>
+          </div>
+
+          <div class="home-banner" *ngIf="!noticia?.possuiFiltro">
+            <img class="img-carousel" [src]="safeUrlBanner" *ngIf="!noticia.possuiFiltro">
+            <div class="carousel-caption">
+              <div style="position: inherit;bottom: 0;width: 100%;">
+                <h1 class="animated fadeInUp duration-3s delay-1s">{{noticia?.titulo}}</h1>
+                <h4 class="animated fadeInUp duration-3s delay-1s">{{noticia?.subtitulo}}</h4>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      
+    </section>
+  </section>
+
+  <div class="row summernote">
+    <div class="col-12 col-md-3 breadcrumbpcs">
+      <app-breadcrumb></app-breadcrumb>
+    </div>
+    <div class="col-12 col-md-9 col-lg-6">
+
+      <!-- <div class="news news--full"> -->
+      <div class="news news--full">
+        <div></div>
+        <article class="news__article">
+          <section class="news-info">
+            <p>
+              {{noticia?.autor}}
+            </p>
+
+            <p>
+              Publicado em
+              <span class="data-publicacao">{{ noticia?.dataHoraPublicacao ? (noticia?.dataHoraPublicacao |
+                date:'dd/MM/yyyy HH:mm:ss') : (this.noticia?.dataHoraCriacao | date:'dd/MM/yyyy HH:mm:ss') }}
+              </span>
+              <span>
+                {{ noticia?.dataHoraPublicacao ? (noticia?.dataHoraPublicacao | tempoPercorrido) :
+                (noticia?.dataHoraCriacao | tempoPercorrido) }}
+              </span>
+            </p>
+          </section>
+
+          <section class="news-text">
+            <p [ngxSummernoteView]="noticia?.corpoTexto"></p>
+          </section>
+        </article>
+      </div>
+    </div>
+  </div>

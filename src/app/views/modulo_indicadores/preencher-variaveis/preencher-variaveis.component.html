@@ -1,0 +1,60 @@
+<div class="contentBody">
+  <div class="row">
+    <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+      <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <mat-card-title>Preenchimento de Variáveis</mat-card-title>
+        <mat-divider [hidden]="loading"></mat-divider>
+        <mat-progress-bar mode="indeterminate" [hidden]="!loading"></mat-progress-bar>
+      </mat-card-content>
+
+      <div class="col-lg-12">
+        <form [formGroup]="form">
+          <mat-form-field class="col-lg-4">
+            <mat-label> Subdivisão </mat-label>
+            <mat-select formControlName="subdivisao" name="subdivisao" id="subdivisao" (selectionChange)="carregarVariaveis()">
+              <mat-option [value]="null">Nenhuma</mat-option>
+              <mat-option *ngFor="let subdivisao of listaSubdivisao" [value]="subdivisao.id">
+                {{subdivisao.tipoSubdivisao.nome}} - {{ subdivisao.nome }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="col-lg-4">
+              <input formControlName="nome" matInput (keyup)="applyFilter($event.target.value)" placeholder="Nome">
+          </mat-form-field>
+          <mat-form-field class="col-lg-4">
+            <input type="number" formControlName="idVariavel" matInput (keyup)="applyFilter($event.target.value)" placeholder="Id da variável">
+        </mat-form-field>
+        </form>
+      </div>
+
+      <div style="overflow-x:auto;"  >
+        <table class="table table-striped table-xl" *ngIf="!loading">
+            <tr>
+              <th class="text-left"> Variável </th>
+              <th class="text-center"> Status </th>
+            </tr>
+            <ng-container *ngFor="let item of this.listaVariavel">
+              <tr>
+                <td class="text-left clickable align-middle"  (click)="carregarInformacoes(item)" style="cursor: pointer"
+                    data-toggle="collapse" [attr.data-target]="'#accordion'+ item.id">
+                  <mat-icon [@indicatorRotate]="item.exibirDados ? 'expanded': 'collapsed'"
+                    style="display: inline-flex; vertical-align: middle;">expand_more</mat-icon>
+                  {{item.nome}}
+                </td>
+
+                <td class="text-center" style="vertical-align: bottom;">
+                  <label [style.color]="item.preenchida ? '#47825e' : '#ff9800' "> <b>{{ item.preenchida ? 'Preenchido':'Pendente' }} </b> </label>
+                </td>
+              </tr>
+              <tr [attr.id]="'accordion'+ item.id" class="collapse" style="width: 100%">
+                <td [attr.colspan]="6" *ngIf="item.exibirDados">
+                  <app-preenchimento-variavel [variavel]="item" [idSubdivisao]="form.controls.subdivisao.value" (foiPreenchido)="recarregarVariavel($event)"></app-preenchimento-variavel>
+                </td>
+              </tr>
+          </ng-container>
+
+        </table>
+      </div>
+    </mat-card>
+  </div>
+</div>

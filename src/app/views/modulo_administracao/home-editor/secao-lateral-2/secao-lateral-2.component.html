@@ -1,0 +1,35 @@
+<!-- Seção Lateral -->
+
+<section>
+
+  <div class="row" *ngIf="secaoLateral.segundaImagemSafeUrl">
+    <div class="col-md-12 row-card-side-bar" >
+      <div class="h-100" style="cursor: pointer;">
+        <div class="card-body" style="padding: 0px !important;">
+          <div class="container" style="padding: 0px !important;">
+            
+            <a [href]="secaoLateral.segundaImagemLink" onclick="return false;">
+              <img class="img-carousel-side" loading="lazy" [src]="secaoLateral.segundaImagemSafeUrl" alt="Event Image">
+              <div class="centered">
+                  <div class="row">
+                    <a class="h5 titulos-inside-image  underline-on-hover"
+                      [style.border-color]="secaoLateral.segundoTituloCor"
+                      [style.color]="secaoLateral.segundoTituloCor"
+                      style="width: 100%;margin-bottom: 2%;text-align: center;" [href]="secaoLateral.segundoTituloLink" onclick="return false;"
+                      [innerHTML]="secaoLateral.segundoTitulo"></a>
+          
+                    <a class="subtitulos-inside-image underline-on-hover" style="color: #231f20; text-align:center !important"
+                      [style.color]="secaoLateral.segundoTextoCor" [innerHTML]="secaoLateral.segundoTexto"
+                      [href]="secaoLateral.segundoTextoLink" onclick="return false;" ></a>
+                  </div>
+              </div>
+            </a>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</section>

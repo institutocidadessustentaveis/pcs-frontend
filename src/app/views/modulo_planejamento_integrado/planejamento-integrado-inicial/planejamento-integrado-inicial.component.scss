@@ -1,0 +1,195 @@
+ ::ng-deep .leaflet-control-measure-toggle {
+      background: url('data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAACaSURBVDhPY2RgYDgdGRlpAqTBYPny5SCxZ0AxSYgIfsAIVPgfygZplgFSTyE8wiA4OPg/E5QNBkDDnkCZRAE2NjYGuAEg26HOJwnADQDZjuwdYgGKF6BhQBKgKAxAYBiEAUpCAgESvfEI5PT/UEOkIWKkAaxhAKXlieGjhAEUyIMIoOQDMI8AHyMMSAVMwEA7CWWTDJYvX34EAE++THHcu/YeAAAAAElFTkSuQmCC')
+      
+}
+
+
+
+// leaflet-measure.scss
+
+$color-divider: #ddd;
+$color-button: #5e66cc;
+$color-lightertext: #999;
+
+$spacing-external: 12px;
+$spacing-internal: 10px;
+
+$max-width: 280px;
+
+$button-icon-size: 12px;
+$button-icon-spacing: 4px;
+
+@mixin hoverbutton {
+  color: $color-button;
+  text-decoration: none;
+  &:hover {
+    opacity: 0.5;
+    text-decoration: none;
+  }
+}
+
+@mixin button ($icon) {
+  display: inline;
+  width: auto;
+  height: auto;
+  padding-left: 20px;
+  margin-right: $button-icon-spacing;
+  line-height: 1em;
+  border: 0;
+  text-align: left;
+  color: $color-button;
+  &,
+  &:hover {
+    background-color: transparent;
+  }
+  background: {
+    repeat: no-repeat;
+    position: 0% 50%;
+    size: $button-icon-size $button-icon-size;
+  }
+
+
+  @include hoverbutton;
+}
+
+::ng-deep .leaflet-control-measure,
+::ng-deep .leaflet-measure-resultpopup {
+  h3 {
+    margin: 0 0 $spacing-external 0;
+    padding-bottom: $spacing-internal;
+    border-bottom: solid 1px $color-divider;
+    font-size: smaller !important;
+  }
+  p {
+    margin: $spacing-internal 0 0 0;
+    line-height: 1.5em;
+    &:first-child {
+      margin-top: 0;
+    }
+    font-size: smaller !important;
+  }
+  .tasks {
+    margin: $spacing-external 0 0 0;
+    padding: $spacing-internal 0 0 0;
+    border-top: solid 1px $color-divider;
+    text-align: right;
+
+    list-style: none;
+    list-style-image: none;
+    font-size: smaller !important;
+
+    li {
+      display: inline;
+      margin: 0 $spacing-internal 0 0;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .coorddivider {
+    color: $color-lightertext;
+  }
+}
+
+::ng-deep .leaflet-control-measure {
+  max-width: $max-width;
+  background: #fff;
+  
+
+  .leaflet-control-measure-toggle,
+  .leaflet-control-measure-toggle:hover {
+    border: 0;
+    border-radius: 4px;
+    .leaflet-touch & {
+      border-radius: 2px;
+    }
+
+    // Hide text
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+
+    .leaflet-touch & {
+      background-size: 16px 16px;
+    }
+  }
+
+  // Special styling because start prompt has no content, just header and tasks
+  .startprompt {
+    h3 {
+      margin-bottom: $spacing-internal;
+    }
+    .tasks {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: 0;
+      text-align: left;
+    }
+  }
+
+  .leaflet-control-measure-interaction {
+    padding: $spacing-internal $spacing-external;
+    h3 {
+      font-size: smaller !important;
+    }
+    ul {
+      font-size: smaller !important;
+    }
+  }
+
+  .results {
+    .group {
+      margin-top: $spacing-internal;
+      padding-top: $spacing-internal;
+      border-top: dotted 1px lighten($color-divider, 5);
+      &:first-child {
+        margin-top: 0;
+        padding-top: 0;
+        border-top: 0;
+      }
+    }
+    .heading {
+      margin-right: $spacing-internal * 0.5;
+      color: $color-lightertext;
+    }
+  }
+
+  a.start {
+    @include button(start);
+  }
+  a.cancel {
+    @include button(cancel);
+  }
+  a.finish {
+    @include button(check);
+  }
+}
+
+::ng-deep .leaflet-measure-resultpopup {
+  a.zoomto {
+    @include button(focus);
+  }
+  a.deletemarkup {
+    @include button(trash);
+  }
+}
+
+
+// ::ng-deep .leaflet-retina .leaflet-control-measure .leaflet-control-measure-toggle, .leaflet-retina .leaflet-control-measure .leaflet-control-measure-toggle:hover, .leaflet-control-measure .leaflet-control-measure-toggle, .leaflet-control-measure .leaflet-control-measure-toggle:hover {
+//   display: block;
+//   width: 72px;
+//   height: 72px;
+//   background-size: 36px 36px;
+//   // background-image: url(images/rulers.png); // Swap image
+// }
+
+// // Change something about the popup via CSS
+// ::ng-deep .leaflet-popup { // Or.. .leaflet-measure-resultpopup for only applying to measure
+//   color: #339966;
+//   font-size: 1em;
+// }
+// ::ng-deep .leaflet-retina .leaflet-measure-resultpopup a.zoomto, .leaflet-retina .leaflet-measure-resultpopup a.deletemarkup, .leaflet-measure-resultpopup a.deletemarkup, .leaflet-measure-resultpopup a.zoomto, .leaflet-measure-resultpopup a.deletemarkup {
+//   padding-left: 28px;
+//   background-size: 20px 20px;
+// }

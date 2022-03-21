@@ -1,0 +1,78 @@
+<div class="contentBody" style="position: relative;">
+    <app-breadcrumb style="position: relative;"></app-breadcrumb>
+  <mat-card>
+
+    <div class="row">
+
+      <div class="col-md-8 col-lg-9 col-xs-12 col-sm-12">
+        <h2>Cadastro de Eixo</h2>
+      </div>
+
+      <div class="col-md-4 col-lg-3 col-xs-12 col-sm-12" style="text-align: right;">
+        <button matTooltip="Cadastrar eixo" mat-flat-button color="primary" [routerLink]="['/eixo/cadastrar']"
+          style="cursor: pointer !important;" id="btnCadastro" style="cursor: pointer !important; margin-bottom: 5px;">
+          <mat-icon>add</mat-icon> Cadastrar eixo
+        </button>
+      </div>
+
+    </div>
+
+    <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+      <mat-divider></mat-divider>
+    </div>
+
+    <br>
+
+    <div [hidden]="!loading">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtro">
+    </mat-form-field>
+
+    <br>
+    <br>
+
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <mat-card-title>Lista de Eixos Cadastrados</mat-card-title>
+      <mat-divider></mat-divider>
+    </div>
+
+    <table mat-table matSort [dataSource]="dataSource" matSort>
+
+      <ng-container matColumnDef="Icone">
+        <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Ícone </th>
+        <td mat-cell *matCellDef="let element" class='m-card-title' data-label='Ícone'> <span *ngIf="!element.possuiImagem">Sem ícone</span><img *ngIf="element.id !== null && element.possuiImagem"
+            loading="lazy" [src]="getImagePath(element.id)" width="24"
+            height="24" /> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Nome">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="nome"> Nome </th>
+        <td mat-cell *matCellDef="let element" class='m-card-title' data-label='Nome'>
+          <span class="mobile-label">Nome:</span>{{element.nome}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="#Acoes" *ngIf="hasRole('ROLE_USUARIOS')">
+        <th mat-header-cell *matHeaderCellDef colspan="2" >Ações</th>
+        <td mat-cell *matCellDef="let element" class='m-card-title' data-label='Ações'>
+          <button matTooltip="Editar" mat-flat-button color="primary" style="cursor: pointer;"
+            [routerLink]="['/eixo/editar', element.id]" id="btnEditar" class="btnTabela">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button matTooltip="Excluir" mat-flat-button color="warn" style="cursor: pointer;" (click)="excluir(element)"
+            id="btnExcluir" class="btnTabela">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator style="text-align: center !important;" class="float-none" [pageSizeOptions]="[10,25,50,100]"
+      showFirstLastButtons></mat-paginator>
+  </mat-card>
+
+</div>

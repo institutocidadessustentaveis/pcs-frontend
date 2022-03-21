@@ -1,0 +1,89 @@
+<div cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+  <h4 class="col-md-12" mat-dialog-title mat-dialog-draggable-title *ngIf="data.lat">Criar Polígono</h4>
+  <br>
+  <h5 class="indicador-nome" mat-dialog-title mat-dialog-draggable-title *ngIf="!data.lat" style="margin-bottom: 2%">
+      Crie polígonos definindo as coordenadas de cada ponto, ou inserindo a coordenada inicial e azimutes e distâncias ou mesmo clicando ponto a ponto sobre o mapa
+  </h5>
+
+
+
+  <div class="row col-md-12">
+      <mat-form-field >
+          <input name="Latitude Inicial" matInput placeholder="Latitude inicial" [(ngModel)]="data.lat"  type="number" >
+      </mat-form-field>
+      <mat-form-field >
+          <input name="Longitude Inicial" matInput placeholder="Longitude inicial" [(ngModel)]="data.long"  type="number" >
+      </mat-form-field>
+
+  </div>
+
+
+  <h5 class="indicador-nome" *ngIf="!data.lat && !data.long">
+      ou
+  </h5>
+
+
+
+
+
+
+
+  <button mat-flat-button color="primary" style="margin-top: 2%" *ngIf="!data.lat && !data.long" (click)="selectPoint()">Selecione o ponto inicial no mapa</button>
+  <button mat-flat-button color="accent" *ngIf="!data.lat && !data.long" (click)="cancelar()" style="margin-left: 20px;">Cancelar</button>
+  <form class="example-form" *ngIf="data.lat && data.long">
+    <div class="row col-md-12" *ngFor="let item of data.lista; let i = index">
+
+
+
+      <div class="row col-md-12" style="margin-left:0px;">
+          <button name="{{'btnGrauDistancia'+i}}" *ngIf="!item.hideBtnsSel" mat-flat-button color="primary" (click)="selecionarGrauDistancia(item)">Inserir Graus(°) e Distância em metros</button>
+          <span *ngIf="!item.hideBtnsSel"> ou  </span>
+          <button name="{{'btnLatLong'+i}}" *ngIf="!item.hideBtnsSel" mat-flat-button color="primary" (click)="selecionarLatLong(item)">Inserir Latitude e Longitude</button>
+      </div>
+
+      <div class="col-md-1" *ngIf="item.selGrauDistancia == true">
+
+      </div>
+
+      <mat-form-field class="col-md-4" *ngIf="item.selGrauDistancia == true">
+        <mat-label>Graus(°) a partir do norte</mat-label>
+        <input name="{{'inptAtributo'+i}}" matInput placeholder="Graus(°) a partir do norte" [(ngModel)]="item.azimuth"  type="number" >
+      </mat-form-field>
+
+      <mat-form-field class="col-md-5" *ngIf="item.selGrauDistancia == true">
+        <mat-label>Distância em metros</mat-label>
+        <input name="{{'inptValor'+i}}" matInput placeholder="Distância em metros" [(ngModel)]="item.distancia" type="number">
+      </mat-form-field>
+
+
+      <div class="col-md-1"  *ngIf="item.selLatLong == true">
+          <button name="{{'btnLatLong'+i}}" style="height: 32px; width: 37px;"  color="primary"  (click)="selectPoint(item)"><mat-icon>my_location</mat-icon></button>
+      </div>
+
+
+      <mat-form-field class="col-md-4" *ngIf="item.selLatLong == true">
+          <mat-label>Latitude</mat-label>
+          <input name="{{'inptLatValor'+i}}" matInput placeholder="Latitude" [(ngModel)]="item.latitude" type="number">
+      </mat-form-field>
+
+      <mat-form-field class="col-md-5" *ngIf="item.selLatLong == true">
+            <mat-label>Longitude</mat-label>
+            <input name="{{'inptLongValor'+i}}" matInput placeholder="Longitude" [(ngModel)]="item.longitude" type="number">
+      </mat-form-field>
+
+
+      <span *ngIf="item.hideBtnsSel">
+          <mat-icon class="col-md-1"  (click)="removerAtributo(i)" *ngIf="data.lista.length > 1" style="cursor: pointer; color: red;">delete</mat-icon>
+          <mat-icon class="col-md-1"  (click)="adicionarAtributo()" *ngIf="(i+1) == data.lista.length" style="cursor: pointer; color: green;">add</mat-icon>
+      </span>
+
+    </div>
+    <br>
+
+    <div class="col-md-12">
+      <button mat-flat-button color="primary" (click)="salvarAtributosDoShape()" >Exibir no Mapa</button>
+      <button mat-flat-button color="accent" (click)="cancelar()" style="margin-left: 20px;">Cancelar</button>
+    </div>
+  </form>
+
+</div>

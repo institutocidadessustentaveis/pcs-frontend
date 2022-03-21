@@ -1,0 +1,301 @@
+<div class="contentBody">
+  <div class="row">
+
+    <div class="col-md-12">
+
+      <mat-card>
+        <mat-card-title *ngIf="cidade.id !== null && cidade.id !== undefined">Alterar cidade</mat-card-title>
+        <mat-card-title *ngIf="cidade.id === null || cidade.id === undefined">Criar cidade</mat-card-title>
+        <hr />
+        <mat-card-content>
+
+          <form #cidadeForm="ngForm">
+
+            <div class="col-lg-12">
+              <mat-form-field>
+                <mat-label [hidden]="!exibeCampos">{{cidade?.provinciaEstado?.pais?.nome}}</mat-label>
+                <mat-label [hidden]="exibeCampos ">-- Selecione um País --</mat-label>
+                <mat-select id="idPais" name="pais" (selectionChange)="paisSelecionado($event.value)"
+                  [(value)]="paisEscolhido" required disabled="true">
+                  <mat-option *ngFor="let pais of paisesCombo" [value]="pais.id">{{pais.nome}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="col-lg-12">
+              <mat-form-field>
+                <mat-label [hidden]="!exibeCampos">{{cidade?.provinciaEstado?.nome}}</mat-label>
+                <mat-label [hidden]="exibeCampos">-- Selecione um estado --</mat-label>
+                <mat-select id="idEstado" name="estado" required [(value)]="estadoEscolhido"
+                  (selectionChange)="changeEstado($event.value)" disabled="true">
+                  <mat-option *ngFor="let estado of provinciaEstadoCombo " [value]="estado.id">{{estado.nome}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="col-lg-12" style="margin-top: 10px !important;">
+              <mat-form-field class="full-width">
+                <input id="idCodigoIbge" type="number" matInput placeholder="Código IBGE" maxlength="150"
+                  [(ngModel)]="cidade.codigoIbge" name="codigoIbge" #codigoIBGE="ngModel" disabled="true" />
+              </mat-form-field>
+            </div>
+
+            <div class="col-lg-12" style="margin-top: 10px !important;">
+              <mat-form-field class="full-width">
+                <input id="idNome" type="text" matInput placeholder="Nome" maxlength="150" [(ngModel)]="cidade.nome"
+                  name="nome" #nome="ngModel" required disabled="true" />
+              </mat-form-field>
+            </div>
+
+            <div class="col-lg-12" style="margin-top: 10px !important;">
+              <mat-form-field class="full-width">
+                <input id="idEnderecoDaPrefeitura" type="text" matInput placeholder="Endereço da prefeitura"
+                  maxlength="300" [(ngModel)]="cidade.enderecoDaPrefeitura" name="enderecoDaPrefeitura"
+                  #nome="ngModel" />
+              </mat-form-field>
+            </div>
+
+            <div class="col-lg-12" style="margin-top: 10px !important;">
+              <mat-form-field class="full-width">
+                <input id="idPopulacao" type="number" matInput placeholder="População" [(ngModel)]="cidade.populacao"
+                  name="populacao" #nome="ngModel" />
+              </mat-form-field>
+            </div>
+
+            <div class="col-lg-12" style="margin-top: 10px !important;">
+              <mat-form-field class="full-width">
+                <input id="idAnoDaPopulacao" type="number" matInput placeholder="Ano da população"
+                  [(ngModel)]="cidade.anoDaPopulacao" name="anoDaPopulacao" #nome="ngModel" />
+              </mat-form-field>
+            </div>
+
+            <div class="row col-md-12">
+              <mat-form-field class="col-md-11">
+                <input id="idSubdivisao" matInput placeholder="Subdivisão" [(ngModel)]="subdivisao.nome"
+                  name="subdivisao" #nome="ngModel" type="text" disabled="true" />
+              </mat-form-field>
+
+              <div class="col-md-1" style="text-align: end;">
+                <button id="btnAdicionaSubdivisao" [disabled]="subdivisao.nome === '' " type="button" mat-fab
+                  color="primary" (click)="adicionarSubdivisao($event)">
+                  <mat-icon>add</mat-icon>
+                </button>
+              </div>
+            </div>
+
+            <div class="col-lg-12" style="margin-top: 20px !important;" [hidden]="this.dataSource.data?.length === 0">
+              <table mat-table [dataSource]="dataSource">
+                <ng-container matColumnDef="nome">
+                  <th mat-header-cell *matHeaderCellDef>Nome</th>
+                  <td mat-cell *matCellDef="let subdivisao"> {{subdivisao.nome}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="remover">
+                  <th mat-header-cell *matHeaderCellDef>Remover</th>
+                  <td mat-cell *matCellDef="let subdivisao">
+                    <button mat-flat-button color="warn" name="btnDeletaSubdivisao"
+                      (click)='deletarSubdivisao(subdivisao)' class="btnTabela">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="col-lg-12">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Site da prefeitura" [(ngModel)]="cidade.site" name="site">
+              </mat-form-field>
+            </div>
+            <div class="col-lg-12">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Área" [(ngModel)]="cidade.area" name="area">
+              </mat-form-field>
+            </div>
+            <div class="col-lg-12">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Densidade demográfica" [(ngModel)]="cidade.densidadeDemografica"
+                  name="densidadeDemografica">
+              </mat-form-field>
+            </div>
+            <div class="col-lg-12">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Salário médio mensal dos trabalhadores formais"
+                  [(ngModel)]="cidade.salarioMedioMensal" name="salarioMedioMensal">
+              </mat-form-field>
+            </div>
+            <div class="col-lg-12">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="População ocupada" [(ngModel)]="cidade.populacaoOcupada"
+                  name="populacaoOcupada">
+              </mat-form-field>
+            </div>
+            <div class="col-lg-12">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="PIB per capita" [(ngModel)]="cidade.pibPerCapita" name="pibPerCapita">
+              </mat-form-field>
+            </div>
+            <div class="col-lg-12">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="IDH-M" [(ngModel)]="cidade.idhM" name="idhM">
+              </mat-form-field>
+            </div>
+            <div class="col-lg-12">
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="Texto da cidade" rows="10" [(ngModel)]="cidade.textoCidade"
+                  name="textoCidade"></textarea>
+              </mat-form-field>
+            </div>
+
+            <div class="col-lg-12">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Nome para contato" [(ngModel)]="cidade.nomeContato" name="nomeContato">
+              </mat-form-field>
+            </div>
+        
+            <div class="col-lg-12">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="E-mail para contato" [(ngModel)]="cidade.emailContato" name="emailContato">
+              </mat-form-field>
+            </div>
+        
+            <div class="row">
+              <div class="col-md-6">
+                <mat-form-field style="padding: 0px 15px">
+                  <input matInput placeholder="Telefone fixo para contato" [(ngModel)]="cidade.telFixoContato" name="telFixoContato">
+                </mat-form-field>
+              </div>
+        
+              <div class="col-md-6">
+                <mat-form-field style="padding: 0px 15px">
+                  <input matInput placeholder="Telefone móvel para contato" [(ngModel)]="cidade.telMovelContato" name="telMovelContato">
+                </mat-form-field>
+              </div>
+            </div>
+        
+            <div class="col-lg-12">
+              <mat-form-field class="example-full-width">
+                <textarea matInput maxlength="200" placeholder="Campo de observação" rows="10" [(ngModel)]="cidade.campoObservacao" name="campoObservacao"></textarea>
+              </mat-form-field>
+              <mat-hint class="caracteres-editor">{{  cidade?.campoObservacao ? cidade.campoObservacao.length : 0 || 0 }}/200</mat-hint>
+            </div>
+            
+
+            <div class="col-md-12">
+              <input hidden #inputFotoCidade type="file" id="inputFotoCidade" name="inputFotoCidade"
+                accept="image/jpeg, image/jpg, image/png" (change)="processImage($event)">
+              <button type="button" mat-raised-button (click)="inputFotoCidade.click()" id="btnUpload" name="btnUpload"
+                color="primary" style="margin-top: 20px; cursor: pointer;">
+                <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar foto da cidade
+              </button>
+
+              <div class="containerPrincipal" *ngIf="fotoCidade?.safeUrl">
+                <img [src]="fotoCidade.safeUrl" style="width:100%; max-height: 400px;">
+                <button type="button" mat-raised-button style="width:100%;" (click)="deletarFotoCidade()">
+                  <mat-icon class="btn-remover">delete</mat-icon>
+                </button>
+              </div>
+
+              <br>
+
+              <input hidden #inputPlanoMetas type="file" id="planoMetas" name="planoMetas" 
+                accept=".pdf, .doc, .docx, .xls, .xlsx" (change)="processFilePlanoMetas($event)">
+              <button type="button" mat-raised-button (click)="inputPlanoMetas.click()" id="btnPlanoMetas" name="btnPlanoMetas"
+                color="primary" style="margin-top: 20px; cursor: pointer;" matTooltip="Carregar plano de metas">
+                <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar Plano de Metas
+              </button>
+
+              <mat-label *ngIf="cidade?.arquivoPlanoMetas?.nomeArquivo">  {{cidade?.arquivoPlanoMetas?.nomeArquivo}} 
+                  <mat-icon matTooltip="Excluir plano de metas" style="margin-right: 5px; cursor: pointer; color: red;" (click)="deletarPlanoMetas()">delete</mat-icon>
+              </mat-label>
+
+              <br>
+
+              <input hidden #inputRelatorioContas type="file" id="relatorioContas" name="relatorioContas" 
+                accept=".pdf, .doc, .docx, .xls, .xlsx" (change)="processFileRelatorioContas($event)">
+              <button type="button" mat-raised-button (click)="inputRelatorioContas.click()" id="btnRelatorioContas" name="btnRelatorioContas"
+                color="primary" style="margin-top: 20px; cursor: pointer;" matTooltip="Carregar relatório de prestação de contas">
+                <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar Relatório de prestação de contas
+              </button>
+
+              <mat-label *ngIf="cidade?.arquivoRelatorioContas?.nomeArquivo">  {{cidade?.arquivoRelatorioContas?.nomeArquivo}} 
+                  <mat-icon matTooltip="Excluir relatório de prestação de contas" style="margin-right: 5px; cursor: pointer; color: red;" (click)="deletarRelatorioContas()">delete</mat-icon>
+              </mat-label>
+  
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+            <br>
+
+            <div class="col-lg-12 col-md-12">
+              <h5>Coordenadas</h5>
+              <h6>Entre com latitude e longitude ou selecione um local no mapa</h6>
+
+              <div class="row">
+                <div class="col-md-3">
+
+                </div>
+
+                <mat-form-field class="col-md-3 text-center">
+                  <input matInput type="number" placeholder="Latitude" min="-90" max="90" [(ngModel)]="cidade.latitude"
+                    #nome="ngModel" name="latitude" (ngModelChange)="latitudeChange($event)" />
+                </mat-form-field>
+
+                <mat-form-field class="col-md-3 text-center">
+                  <input matInput type="number" placeholder="Longitude" min="-180" max="180"
+                    [(ngModel)]="cidade.longitude" #nome="ngModel" name="longitude"
+                    (ngModelChange)="longitudeChange($event)" />
+                </mat-form-field>
+              </div>
+
+              <div leaflet style="height: 500px;"
+              leafletDraw
+              [leafletOptions]="mapOptions"
+              [leafletDrawOptions]="drawOptions"
+              (leafletMapReady)="onMapReady($event)"
+              [leafletLayers]="layersControl">
+              </div>
+              
+            </div>
+
+            <div class="text-right" style="margin-top: 10px !important;">
+              <br />
+              <button mat-flat-button color="primary" class="btnToRight" role="button" (click)="salvar()"
+                [disabled]="!cidadeForm.form.valid" matTooltip="Salvar">
+                <mat-icon>save</mat-icon>Salvar
+              </button>
+            </div>
+            <br />
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

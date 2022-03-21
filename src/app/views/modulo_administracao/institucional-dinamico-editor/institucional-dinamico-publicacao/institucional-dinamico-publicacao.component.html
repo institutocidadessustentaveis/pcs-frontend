@@ -1,0 +1,85 @@
+
+<mat-dialog-content>
+  <div class="col-lg-12">
+    <strong>Preencha os dados abaixo:</strong>
+    <div >
+      <div class="col-md-12 summernote" style="margin-top: 20px;">
+        <mat-label class="labelTextEditor">Insira o Título da Publicação</mat-label>
+        <div [ngxSummernote]="editorConfig" name="titulo" [(ngModel)]="titulo" (ngModelChange)="onChangeTitulo($event)"></div>
+        <mat-hint class="caracteres-editor">{{  tituloSemTags.length || 0 }}/500</mat-hint>
+      </div>
+    </div>
+
+    <div>
+      <mat-form-field class="full-width">
+        <input matInput placeholder="Tooltip do Título" id="tooltipTitulo" [(ngModel)]="tooltipTitulo" name="tooltipTitulo"
+         maxlength="500">
+      </mat-form-field>
+    </div>
+
+    <div >
+      <div class="col-md-12 summernote" style="margin-bottom: 20px;">
+        <mat-label class="labelTextEditor">Insira um texto para a publicação</mat-label>
+        <div [ngxSummernote]="editorConfig" name="texto" [(ngModel)]="texto" (ngModelChange)="onChangeTexto($event)"></div>
+        <mat-hint class="caracteres-editor">{{  textoSemTags.length || 0 }}/500</mat-hint>
+      </div>
+    </div>
+
+    <div>
+
+    <div >
+      <mat-form-field class="full-width">
+        <input matInput placeholder="Insira um Link para a Publicação" id="link" [(ngModel)]="link" name="link"
+          minlength="3" maxlength="500">
+      </mat-form-field>
+    </div>
+
+    <mat-form-field class="full-width" >
+      <input matInput placeholder="Tooltip da Imagem" id="tooltipTexto" [(ngModel)]="tooltipTexto" name="tooltipTexto"
+         maxlength="500">
+    </mat-form-field>
+  </div>
+
+    <div class="col-md-12 text-center">
+      <input hidden #imagemPublicacao type="file" id="imagemPrincipal" name="imagemPrincipal"
+        accept="image/jpeg,image/png" (change)="fileChangeEvent($event)">
+      <button type="button" mat-raised-button (click)="imagemPublicacao.click()" id="btnIcone" name="icone"
+        color="primary" style="margin-top: 20px; cursor: pointer;" matTooltip="Upload Imagem">
+        <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar imagem (resolução ref. 600x400px)
+      </button>
+      <br /><br><br>
+      <span  [hidden]="!publicacao?.imagem">
+        <div class="containerGaleria" [hidden]="imageChanged">
+          <img *ngIf="publicacao?.id && publicacao?.imagem"  [src]="urlbackend + 'institucionalDinamico/publicacao/imagem/' + publicacao.id" alt="" style="width:100%">
+          <button type="button" mat-raised-button style="width:100%;" (click)="removerImagemPrincipal()" *ngIf="publicacao?.imagem">
+            <mat-icon class="btn-remover">delete</mat-icon>
+          </button>
+        </div>
+      </span>
+      <div style="background-color:  rgba(0, 0, 0, 0.03);">
+
+        <span *ngIf="imageChangedEvent" >Você pode Recortar a Imagem</span>
+        <image-cropper style="max-height: 500px;" [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="false"
+          [aspectRatio]="1 / 1" [resizeToWidth]="0" format="png" (imageCropped)="imageCropped($event)">
+        </image-cropper>
+      </div>
+      <mat-divider></mat-divider>
+      <br>
+
+      <div class="containerGaleria" style="background-color:  rgba(0, 0, 0, 0.03);" *ngIf="imagemSafeUrl">
+        <span *ngIf="imageChangedEvent" >Visualização</span>
+        <img [src]="imagemSafeUrl" style="width:100%">
+        <button type="button" mat-raised-button style="width:100%;" (click)="removerImagemPrincipal()">
+          <mat-icon class="btn-remover">delete</mat-icon>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <br>
+  <div class="text-right">
+    <button mat-stroked-button color="primary" (click)="confirmar()" style="margin-right: 1em;">Confirmar</button>
+    <button mat-stroked-button color="accent" (click)="cancelar()">Cancelar</button>
+  </div>
+</mat-dialog-content>

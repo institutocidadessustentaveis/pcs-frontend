@@ -1,0 +1,48 @@
+<app-breadcrumb></app-breadcrumb>
+<div class="contentBody">
+  <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <h2>Prefeituras aguardando avaliação de variáveis</h2>
+      <mat-divider></mat-divider>
+    </div>
+    <div [hidden]="!loading">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+    <br>
+    <form [formGroup]="formPrefeitura">
+      <mat-form-field class="col-md-6">
+        <input matInput placeholder="Prefeitura" class="cursorBlock" id="txtPrefeitura" #txtPrefeitura
+          formControlName="prefeitura" readonly="true" />
+        <mat-hint align="end">{{ txtPrefeitura.value?.length || 0 }}/100</mat-hint>
+      </mat-form-field>
+      <mat-form-field class="col-md-6">
+        <input matInput placeholder="Prefeito ou Prefeita" id="txtNomePref" #txtNomePref formControlName="nome"
+          readonly="true" />
+        <mat-hint align="end">{{ txtNomePref.value?.length || 0 }}/100</mat-hint>
+      </mat-form-field>
+    </form>
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 marginToTop">
+      <mat-accordion>
+        <mat-expansion-panel *ngFor="let itemIndicador of listaIndicador">
+          <mat-expansion-panel-header class="bgPanel">
+            <mat-panel-title>
+              {{itemIndicador.nomeIndicador}} - {{itemIndicador.anoIndicador}}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-tab-group class="marginToComponent">
+            <mat-tab label="{{itemVariavel.nomeVariavel}}" *ngFor="let itemVariavel of itemIndicador.avaliacaoVariavelPreenchidaDetalhesDTO">
+              <app-avaliacao-variaveis-detalhes [objetoVariavel]="itemVariavel"></app-avaliacao-variaveis-detalhes>
+            </mat-tab>
+          </mat-tab-group>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+    <br>
+    <div class="col-md-12 text-right">
+      <button mat-flat-button color="accent" matTooltip="Voltar" style="cursor: pointer;"
+        [routerLink]="['/avaliacaoVariavel']" id="btnVoltar">
+        <mat-icon>arrow_back_ios</mat-icon> Voltar
+      </button>
+    </div>
+  </mat-card>
+</div>

@@ -1,0 +1,42 @@
+<div class="row card-biblioteca ">
+  <div class="col-lg-3">
+    <a *ngIf="biblioteca" [routerLink]="['/biblioteca/detalhe/',biblioteca.id]">
+      <img *ngIf="biblioteca.possuiImagem" style=" height: 220px;width: 100%;object-fit: cover; "
+        class="publicacao-material-apoio text-center pointer"
+        [style.backgroundImage]="'url('+urlbackend+'biblioteca/imagem/'+biblioteca.id+')'">
+      <img *ngIf="!biblioteca.possuiImagem" style=" height: 220px;width: 100%;object-fit: cover; "
+        class="publicacao-material-apoio text-center pointer" [src]="urlImagem()">
+    </a>
+  </div>
+  <div class="col-lg-9 card-biblioteca" *ngIf="biblioteca">
+    <div>
+      <div class="titulo-card">
+
+        <div class="row publicacao-material-apoio-titulo pointer">
+          <div class="col-lg-11" style="padding: 0;">
+            <a [routerLink]="['/biblioteca/detalhe/',biblioteca.id]" class="link-noticia">
+              {{ biblioteca?.tituloPublicacao }}
+            </a>
+          </div>
+          <div class="col-lg-1" style="padding: 0;">
+            <div class="icone-card" *ngIf="icone">
+              <mat-icon>{{icone}}</mat-icon>
+            </div>
+          </div>
+        </div>
+        <div>
+          <a [routerLink]="['/biblioteca/detalhe/',biblioteca.id]" class="link-noticia">
+            <strong> {{biblioteca?.autor}} - {{biblioteca?.dataPublicacao | date:'yyyy'}}</strong>
+          </a>
+        </div>
+        <span style="color: black; word-break: break-word;" [innerHTML]="truncateHTML(biblioteca?.descricao)"></span>
+        <span [hidden]="!mostrarLinkLerMais">
+          <a [routerLink]="['/biblioteca/detalhe/',biblioteca.id]" class="link-noticia">
+            Leia Mais
+          </a>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+<hr>

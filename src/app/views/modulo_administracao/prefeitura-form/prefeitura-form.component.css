@@ -1,0 +1,173 @@
+.mat-radio-button ~ .mat-radio-button {
+  margin-left: 16px;
+}
+
+body{
+  color: #6e6e6e;
+}
+.paper--heavy {
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,.3);
+}
+.paper {
+  box-sizing: border-box;
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,.15);
+  padding: 24px;
+  width: 100%;
+  position: relative;
+  color: #6e6e6e;
+}
+
+.paper>header h1:before, .paper>header h2:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 23px;
+  height: 2px;
+  background-color: #6e6e6e;
+  z-index: 1;
+}
+
+::selection {
+  background: #00c100;
+  color: #fff;
+  text-shadow: none;
+}
+
+.paper>header h1 span, .paper>header h2 span {
+  display: inline-block;
+  padding-left: 12px;
+  padding-right: 12px;
+  background-color: #fff;
+  position: relative;
+  z-index: 2;
+}
+.paper>header h1, .paper>header h2 {
+display: block;
+font-size:40px;
+line-height: 1.3333333333em;
+text-transform: uppercase;
+color: #6e6e6e;
+text-align: center;
+position: relative;
+cursor: default;
+}
+
+.paper>header h1, .paper>header h2, .text-cols .text-cols__title, .text-cols>header h1, .text-cols>header h2, .text-full .text-full__title, .text-grid .text-grid__title, .title, .title-1, .title-2, .title-3, .title-4, .title-5, .title-6, .title-raw {
+
+  font-family:"calibri";
+  font-weight: 700;
+  color: #757373;
+}
+a, abbr, acronym, address, applet, article, aside, audio, b, big, blockquote, body, canvas, caption, center, cite, code, dd, del, details, dfn, div, dl, dt, em, embed, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, html, i, iframe, img, ins, kbd, label, legend, li, mark, menu, nav, object, ol, output, p, pre, q, ruby, s, samp, section, small, span, strike, strong, sub, summary, sup, table, tbody, td, tfoot, th, thead, time, tr, tt, u, ul, var, video {
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+:-webkit-any(article,aside,nav,section) h1 {
+  font-size: 1.5em;
+  margin-block-start: 0.83em;
+  margin-block-end: 0.83em;
+}
+
+.btn-fake-green, .btn-green {
+  background-color: #408559;
+  color: #fff;
+}
+.btn-fake-wide, .btn-wide {
+  width: 100%;
+}
+.btn-bigger, .btn-fake-bigger {
+  font-size: 1.125em;
+  line-height: 1.3333333333em;
+  font-weight: 700;
+  padding: 1.3333333333em 24px;
+  height: 4em;
+}
+.btn, .btn-fake {
+  border: none;
+  padding: .75em 12px;
+  border-radius: 7px;
+  text-transform: uppercase;
+  font-weight: 700;
+  outline: none;
+  cursor: pointer;
+  font-size: 1.4333333em;
+  line-height: 1.5333333333em;
+  box-sizing: border-box;
+}
+
+button {
+  -webkit-appearance: button;
+  -webkit-writing-mode: horizontal-tb !important;
+  text-rendering: auto;
+  color: buttontext;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-transform: none;
+  text-indent: 0px;
+  text-shadow: none;
+  display: inline-block;
+  text-align: center;
+  align-items: flex-start;
+  cursor: default;
+  background-color: buttonface;
+  box-sizing: border-box;
+  margin: 0em;
+  font: 400 13.3333px Arial;
+  padding: 1px 6px;
+  border-width: 2px;
+  border-style: outset;
+  border-color: buttonface;
+  border-image: initial;
+}
+.grid-2 {
+  grid: auto/repeat(2,1fr);
+}
+.grid {
+  display: grid;
+  gap: 100px;
+}
+.m-v-48 {
+  margin-top: 48px!important;
+  margin-bottom: 48px!important;
+}
+
+.paper p {
+  font-size: 1.3em;
+  line-height: 1.5em;
+  margin-bottom: 1.5em;
+}
+.grid .self-w {
+  place-self: center start;
+}
+
+h1 span {
+  font-size: 1.233333333em
+}
+
+@media screen and (max-width: 960px) {
+  .grid{
+    visibility: hidden;
+    height: 1px !important;
+  }
+  .grid-2 {
+    grid: auto/repeat(2,1fr);
+    visibility: hidden;
+    height: 1px !important;
+  }
+  .isMobile{
+    visibility: true;
+  }
+}
+
+@media screen and (min-width: 961px) {
+  .isMobile{
+    height: 1px !important;
+    visibility: hidden;
+  }
+}

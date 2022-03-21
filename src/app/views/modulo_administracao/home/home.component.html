@@ -1,0 +1,301 @@
+<div [hidden]="!loading" class="loading-indicator">
+  <mat-progress-spinner class="example-margin" style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+</div>
+
+<div class="search-results" style="background-color: white !important" >
+  <section class="home-banner owl-carousel owl-theme" *ngIf="!permitirBuscaAvancada">
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+      <ol class="carousel-indicators">
+        <li data-target="#carouselExampleIndicators" *ngFor="let x of home?.galeriaDeImagens;let i = index"
+          [attr.data-slide-to]="i" ngClass="i == 0 ? 'active' : ''"></li>
+      </ol>
+      <div class="carousel-inner">
+
+          <div *ngFor="let item of home?.galeriaDeImagens; let k = index"
+            [ngClass]="k == 0 ? 'carousel-item active' : 'carousel-item'" [matTooltip]="item?.nomeAutor" matTooltipPosition="below">
+            <img class="img-carousel" loading="lazy"  [src]="getImagePath(item.id)" alt="Event Image">
+
+            <div class="area-pesquisa"  *ngIf="item.exibirBusca">
+              <div class="nome-da-pagina">
+                <a [routerLink]="['/inicial/biblioteca']">
+                  <h1>
+                    BIBLIOTECA
+                  </h1>
+                </a>
+              </div>
+              <div class="campo-pesquisa">
+                  <button class="botao-pesquisa"  (click)="buscarBibliotecas()">
+                    <mat-icon class="mobile">search</mat-icon>
+                    <span class="desktop">BUSCA</span>
+                  </button>
+                  <input placeholder="Digite aqui a palavra desejada" class="input-pesquisa"
+                  [(ngModel)]="palavraChave">
+              </div>
+
+              <div class="filtros-avancados">
+                <button class="botao-busca-avancada" (click)="mostrarBuscaAvancada()">
+                  BUSCA AVANÇADA
+                </button>
+              </div>
+            </div>
+
+
+
+
+            <div class="carousel-caption d-none d-md-block" *ngIf="!item.exibirBusca">
+              <a *ngIf="item.link" style="color: white;" [href]="item.link" 
+                routerLinkActive="router-link-active" class="">
+                <div style="position: absolute;bottom: 0;width:100%;">
+                  <h1 class="animated fadeInUp duration-3s delay-1s cursor-hand">{{item.titulo}}</h1>
+                  <h4 class="animated fadeInUp duration-3s delay-1s cursor-hand">{{item.subtitulo}}</h4>
+                </div>
+              </a>
+
+              <a *ngIf="!item.link" style="color: white;" 
+                routerLinkActive="router-link-active" class="">
+                <div style="position: absolute;bottom: 0;width:100%;">
+                  <h1 class="animated fadeInUp duration-3s delay-1s cursor-hand">{{item.titulo}}</h1>
+                  <h4 class="animated fadeInUp duration-3s delay-1s cursor-hand">{{item.subtitulo}}</h4>
+                </div>
+              </a>
+            </div>
+          </div>
+
+
+      </div>
+      <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev" *ngIf="home?.galeriaDeImagens?.length > 1">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next" *ngIf="home?.galeriaDeImagens?.length > 1">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="secao-filtro" class="secao-filtro" *ngIf="permitirBuscaAvancada">
+    <header>
+      <h1><span style="font-weight: 700 !important;color: white;">FAÇA UMA BUSCA NA BIBLIOTECA</span></h1>
+    </header>
+    <div class="row search-form-color">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 search-form-color">
+        <form [formGroup]="formFiltro" (submit)="buscarBibliotecaAvancada()" class="example-form">
+
+          <div class="col-lg-12 search-form-color">
+            <mat-form-field>
+              <input matInput formControlName="palavraChave" placeholder="Palavra chave">
+            </mat-form-field>
+          </div>
+
+          <mat-form-field class="col-lg-4 search-form-color">
+            <mat-label>Áreas de Interesse</mat-label>
+            <mat-select id="inputAreaInteresse" name="areaInteresse" formControlName="idAreaInteresse" >
+              <mat-option [value]=""></mat-option>
+              <mat-option *ngFor="let item of areasInteresseCombo" value="{{item.id}}">{{item.nome}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-4 search-form-color">
+            <mat-label>Módulo</mat-label>
+            <mat-select id="modulo" name="modulo" formControlName="modulo" multiple>
+                <mat-option [value]='modulo' *ngFor="let modulo of modulos" >{{modulo}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="col-lg-4 search-form-color">
+            <mat-label>Eixo</mat-label>
+            <mat-select id="idEixo" name="idEixo" formControlName="idEixo" (openedChange)="onEixoChange($event)">
+              <mat-option [value]=""></mat-option>
+              <mat-option *ngFor="let item of eixosCombo" value="{{item.id}}">{{item.label}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="col-lg-4 search-form-color">
+            <mat-label>Indicador</mat-label>
+            <mat-select id="idIndicador" name="idIndicador" formControlName="idIndicador">
+              <mat-option [value]=""></mat-option>
+              <mat-option *ngFor="let item of indicadoresCombo" value="{{item.id}}" [matTooltip]="item.label">{{item.label}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="col-lg-4 search-form-color">
+            <mat-label>ODS</mat-label>
+            <mat-select id="idOds" name="idOds" formControlName="idOds" (openedChange)="onOdsChange($event)">
+              <mat-option [value]=""></mat-option>
+              <mat-option *ngFor="let item of odsCombo" value="{{item.id}}">{{item.label}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="col-lg-4 search-form-color">
+            <mat-label>Meta ODS</mat-label>
+            <mat-select id="idMetasOds" name="idMetasOds" formControlName="idMetasOds">
+              <mat-option [value]=""></mat-option>
+              <mat-option *ngFor="let item of metasOdsCombo" value="{{item.id}}" [matTooltip]="item.label">{{item.label}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-4 search-form-color">
+            <mat-label>País da publicação</mat-label>
+            <mat-select id="idPais" name="idPais" formControlName="idPais" (selectionChange)="onPaisChange($event)">
+              <mat-option [value]=""></mat-option>
+              <mat-option *ngFor="let item of paisesCombo" value="{{item.id}}">{{item.label}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-4 search-form-color">
+            <mat-label>Estado da publicação</mat-label>
+            <mat-select id="idProvinciaEstado" name="idProvinciaEstado" formControlName="idProvinciaEstado"
+              (selectionChange)="onEstadoChange($event)">
+              <mat-option [value]=""></mat-option>
+              <mat-option *ngFor="let item of provinciaEstadoCombo" value="{{item.id}}">{{item.label}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-4 search-form-color">
+            <mat-label>Cidade da publicação</mat-label>
+            <mat-select id="idCidade" name="idCidade" formControlName="idCidade">
+              <mat-option [value]=""></mat-option>
+              <mat-option *ngFor="let item of cidadesCombo" value="{{item.id}}">{{item.label}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <div class="col-lg-12 text-right botoes-pesquisa" style="margin-top: 10px !important;">
+            <button matTooltip="Buscar Bibliotecas" mat-flat-button color="primary" id="btnBuscarBibliotecas" style="margin-right: 10px"
+              class="btnpesquisar btn-filtro-buscar" type="submit">
+              <mat-icon style="margin-top: -1px !important">search</mat-icon> Buscar
+            </button>
+
+            <button matTooltip="Fechar Busca Avançada" mat-flat-button color="accent" class="btnpesquisar btn-filtro-fechar"
+              (click)="fecharBuscaAvancada()">
+              <mat-icon style="margin-top: -1px !important">close</mat-icon> Fechar
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="head-buttons-bar" *ngIf="home?.homeBarra?.exibir">
+    <div class="underline-on-hover" [style.background-color]="home.homeBarra.div1CorFundo">
+    <a *ngIf="home.homeBarra.div1Texto && home.homeBarra.div1Link && !verificaLinks(home.homeBarra.div1Link)" 
+     [href]="home.homeBarra.div1Link" 
+     target="_blank"
+     [style.color]="home.homeBarra.div1CorTexto" class="a-branco">{{home.homeBarra.div1Texto}}</a>
+
+    <a *ngIf="home.homeBarra.div1Texto && home.homeBarra.div1Link && verificaLinks(home.homeBarra.div1Link)" 
+      (click)="validacaoDownload(home.homeBarra.div1Link)" style="cursor: pointer"
+     [style.color]="home.homeBarra.div1CorTexto" class="a-branco">{{home.homeBarra.div1Texto}}</a>
+  
+     <a *ngIf="home.homeBarra.div1Texto && !home.homeBarra.div1Link"
+    [style.color]="home.homeBarra.div1CorTexto" class="a-branco">{{home.homeBarra.div1Texto}}</a>
+  
+    </div>
+  <div class="underline-on-hover links" [style.background-color]="home.homeBarra.div2CorFundo">
+    <a *ngIf="home.homeBarra.div2Texto && home.homeBarra.div2Link && !verificaLinks(home.homeBarra.div2Link)" 
+      [href]="home.homeBarra.div2Link" target="_blank"
+     [style.color]="home.homeBarra.div2CorTexto" class="a-branco">{{home.homeBarra.div2Texto}}</a>
+
+    <a *ngIf="home.homeBarra.div2Texto && home.homeBarra.div2Link && verificaLinks(home.homeBarra.div2Link)"  
+    (click)="validacaoDownload(home.homeBarra.div2Link)" style="cursor: pointer" 
+    [style.color]="home.homeBarra.div2CorTexto" class="a-branco">{{home.homeBarra.div2Texto}}</a>
+
+    <a *ngIf="home.homeBarra.div2Texto && !home.homeBarra.div2Link"
+    [style.color]="home.homeBarra.div2CorTexto" class="a-branco">{{home.homeBarra.div2Texto}}</a>
+  </div>
+  <div class="underline-on-hover" [style.background-color]="home.homeBarra.div3CorFundo">
+    <a *ngIf="home.homeBarra.div3Texto && home.homeBarra.div3Link && !verificaLinks(home.homeBarra.div3Link)" 
+    [href]="home.homeBarra.div3Link" target="_blank"
+    [style.color]="home.homeBarra.div3CorTexto" class="a-branco">{{home.homeBarra.div3Texto}}</a>
+
+    <a *ngIf="home.homeBarra.div3Texto && home.homeBarra.div3Link && verificaLinks(home.homeBarra.div3Link)" 
+    (click)="validacaoDownload(home.homeBarra.div3Link)" style="cursor: pointer"
+    [style.color]="home.homeBarra.div3CorTexto" class="a-branco">{{home.homeBarra.div3Texto}}</a>
+
+    <a *ngIf="home.homeBarra.div3Texto && !home.homeBarra.div3Link"
+    [style.color]="home.homeBarra.div3CorTexto" class="a-branco">{{home.homeBarra.div3Texto}}</a>
+  </div>
+  <div class="underline-on-hover links" [style.background-color]="home.homeBarra.div4CorFundo">
+    <a *ngIf="home.homeBarra.div4Texto && home.homeBarra.div4Link && !verificaLinks(home.homeBarra.div4Link)" 
+    [href]="home.homeBarra.div4Link" target="_blank"
+    [style.color]="home.homeBarra.div4CorTexto" class="a-branco">{{home.homeBarra.div4Texto}}</a>
+
+    <a *ngIf="home.homeBarra.div4Texto && home.homeBarra.div4Link && verificaLinks(home.homeBarra.div4Link)" 
+    (click)="validacaoDownload(home.homeBarra.div4Link)" style="cursor: pointer;"
+    [style.color]="home.homeBarra.div4CorTexto" class="a-branco">{{home.homeBarra.div4Texto}}</a>
+
+    <a *ngIf="home.homeBarra.div4Texto && !home.homeBarra.div4Link"
+    [style.color]="home.homeBarra.div4CorTexto" class="a-branco">{{home.homeBarra.div4Texto}}</a>
+  </div>
+  <div class="underline-on-hover" [style.background-color]="home.homeBarra.div5CorFundo">
+    <a *ngIf="home.homeBarra.div5Texto && home.homeBarra.div5Link && !verificaLinks(home.homeBarra.div5Link)" 
+    [href]="home.homeBarra.div5Link" target="_blank"
+    [style.color]="home.homeBarra.div5CorTexto" class="a-branco">{{home.homeBarra.div5Texto}}</a>
+
+    <a *ngIf="home.homeBarra.div5Texto && home.homeBarra.div5Link && verificaLinks(home.homeBarra.div5Link)" 
+    (click)="validacaoDownload(home.homeBarra.div5Link)" style="cursor: pointer;"
+    [style.color]="home.homeBarra.div5CorTexto" class="a-branco">{{home.homeBarra.div5Texto}}</a>
+
+    <a *ngIf="home.homeBarra.div5Texto && !home.homeBarra.div5Link"
+    [style.color]="home.homeBarra.div5CorTexto" class="a-branco">{{home.homeBarra.div5Texto}}</a>
+  </div>
+  </section>
+  <section class="cards">
+    <div class="row">
+      <div class="col-sm-12 col-md-8" style="margin-top: 3%;margin-bottom: 3%">
+
+
+          <div *ngFor="let secao of todasSecoes">
+
+            <div class="row" style="margin-right: 0px !important">
+              <app-primeira-secao style="margin-bottom: 3%;width: 100%;" [primeiraSecao]="secao" [tituloHome]="home.titulo" [dadosDownloadUser]="dadosDownload" *ngIf="secao?.tipo == 'primeiraSecao'"></app-primeira-secao>
+            </div>
+
+            <div class="row" style="margin-right: 0px !important">
+                <app-segunda-secao style="margin-bottom: 3%;width: 100%;" [segundaSecao]="secao" [tituloHome]="home.titulo" [dadosDownloadUser]="dadosDownload" *ngIf="secao?.tipo == 'segundaSecao'"></app-segunda-secao>
+            </div>
+
+            <div class="row" style="margin-right: 0px !important">
+              <app-terceira-secao style="margin-bottom: 3%;width: 100%;" [terceiraSecao]="secao" [tituloHome]="home.titulo" [dadosDownloadUser]="dadosDownload" *ngIf="secao?.tipo == 'terceiraSecao'"></app-terceira-secao>
+            </div>
+
+            <div class="row" style="margin-right: 0px !important">
+              <app-quarta-secao style="margin-bottom: 3%;width: 100%;" [quartaSecao]="secao" [tituloHome]="home.titulo" [dadosDownloadUser]="dadosDownload" *ngIf="secao?.tipo == 'quartaSecao'"></app-quarta-secao>
+            </div>
+
+            <div class="row" style="margin-right: 0px !important">
+              <app-quinta-secao style="margin-bottom: 3%;width: 100%;" [quintaSecao]="secao" [tituloHome]="home.titulo" [dadosDownloadUser]="dadosDownload" *ngIf="secao?.tipo == 'quintaSecao'"></app-quinta-secao>
+            </div>
+
+            <div class="row" style="margin-right: 0px !important">
+              <app-sexta-secao style="margin-bottom: 3%;width: 100%;" [sextaSecao]="secao" [tituloHome]="home.titulo" [dadosDownloadUser]="dadosDownload" *ngIf="secao?.tipo == 'sextaSecao'"></app-sexta-secao>
+            </div>
+
+            <div class="row" style="margin-right: 0px !important">
+              <app-setima-secao style="margin-bottom: 3%;width: 100%;" [setimaSecao]="secao" [tituloHome]="home.titulo" [dadosDownloadUser]="dadosDownload" *ngIf="secao?.tipo == 'setimaSecao'"></app-setima-secao>
+            </div>
+
+          </div>
+
+
+      </div>
+
+
+
+      <div class="col-sm-12 col-md-4" style="margin-top: 3%;">
+
+        <div *ngFor="let secao of this.home?.listaSecaoLateral">
+
+          <app-secao-lateral style="margin-bottom: 3%;width: 100%;" [secaoLateral]="secao" [tituloHome]="home.titulo" [dadosDownloadUser]="dadosDownload"></app-secao-lateral>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+</div>
+
+
+

@@ -1,0 +1,207 @@
+<div class="contentBody">
+  <div class="row">
+    <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+      <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <mat-card-title>Lista de Preenchimento de Indicadores</mat-card-title>
+        <mat-divider [hidden]="loading"></mat-divider>
+        <mat-progress-bar mode="indeterminate" [hidden]="!loading"></mat-progress-bar>
+          <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <br />
+            <mat-card-subtitle align="end">
+              <label>Indicador com status <b style="color: #47825e !important;">Preenchido</b>, corresponde as variáveis
+                preenchidas do ano vigente.<br>
+                Indicador com status <b style="color: #00b0ff !important;"> Preenchido (anos anteriores)</b>, corresponde as variáveis preenchidas para anos 
+                anteriores ao vigente.<br>
+                Indicador com status <b style="color: #ff9800 !important;"> Pendente</b>, corresponde as variáveis não preenchidas.<br>
+                <b style="color: #47825e !important;">{{ quantidadePreenchida }}%</b>
+                dos indicadores correspondentes ao ano vigente foram<b style="color: #47825e !important;"> Preenchidos</b>.<br>
+                <b style="color: #00b0ff !important">{{quantidadePreenchidaAnosAnteriores}}%</b> dos indicadores correspondentes aos anos anteriores foram <b style="color: #00b0ff !important">Preenchidos (anos anteriores)</b>.<br>
+                <b style="color: #ff9800 !important">{{quantidadeNaoPreenchida}}%</b> dos indicadores não foram <b style="color: #ff9800 !important">Preenchidos</b>.
+              </label>
+            </mat-card-subtitle>
+            <div class="desktop">
+                <button  mat-flat-button color="accent" (click)="validacaoDownloadTabelaVariaveis()" matTooltip="Download da tabela de variáveis">
+                    <mat-icon style="margin-right: 5px;">cloud_download</mat-icon>
+                    Download da tabela de variáveis
+                </button>
+                <br />
+                <span>*Nunca altere os valores das colunas "ID" e "Nome"</span>
+              <br />
+              <br />
+              <button  mat-flat-button color="primary" (click)="arquivo.click()" matTooltip="Importar valores das variáveis">
+                  <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>
+                  Importar valores das variáveis
+              </button>
+            </div>
+            <div class="mobile">
+              <button  mat-flat-button color="accent" (click)="validacaoDownloadTabelaVariaveis()">
+                  <mat-icon style="margin-right: 5px;">cloud_download</mat-icon>
+                  Download tabela de variáveis
+              </button>
+              <br />
+              <br />
+              <button  mat-flat-button color="primary" (click)="arquivo.click()">
+                  <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>
+                  Importar variáveis
+              </button>
+            </div>
+            <input hidden #arquivo type="file"
+             id="arquivo"
+             name="arquivo"
+             (change)="enviarArquivo($event)"
+             accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+              />
+              <br />
+            <hr>
+            <mat-nav-list>
+              <form [formGroup]="form" class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                <div class="row">
+                  <mat-form-field class="col-lg-6 col-md-6 col-xl-6 col-xs-12 col-sm-12">
+                    <mat-label>Escolha uma subdivisão</mat-label>
+                    <mat-select formControlName="subdivisao" (selectionChange)="buscarTodosIndicadores()">
+                      <mat-option [value]="null">Nenhuma</mat-option>
+                      <mat-option *ngFor="let subdivisao of listaSubdivisoes" [value]="subdivisao.id">
+                        {{subdivisao.tipoSubdivisao.nome}} - {{ subdivisao.nome }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field class="col-lg-6 col-md-6 col-xl-6 col-xs-12 col-sm-12">
+                    <mat-label>Filtrar Indicador por ID</mat-label>
+                    <input type="number" matInput placeholder="Digite o ID do indicador" #txtBusca formControlName="id"
+                      (keyup)="buscarIndicadorPorNome()" id="id" autocomplete="off" />
+                  </mat-form-field>
+
+                  <mat-form-field class="col-lg-4 col-md-4 col-xl-4 col-xs-12 col-sm-12">
+                    <mat-label>Filtrar Indicador por Nome</mat-label>
+                    <input matInput placeholder="Digite o nome do indicador" #txtBusca formControlName="busca"
+                      (keyup)="buscarIndicadorPorNome()" id="textBusca" autocomplete="off" />
+                  </mat-form-field>
+
+                  <mat-form-field class="col-lg-4 col-md-4 col-xl-4 col-xs-12 col-sm-12">
+                    <mat-label>Buscar por Id Variável</mat-label>
+                    <input matInput placeholder="Digite o Id da variável" #txtBusca formControlName="buscaIdVariavel"
+                      (keyup)="buscarIndicadorPorNome()" id="textBuscaIdVariavel" autocomplete="off" />
+                  </mat-form-field>
+
+                  <mat-form-field class="col-lg-4 col-md-4 col-xl-4 col-xs-12 col-sm-12">
+                    <mat-label>Buscar por Nome da Variável</mat-label>
+                    <input matInput placeholder="Digite o nome da variável" #txtBusca formControlName="buscaNomeVariavel"
+                      (keyup)="buscarIndicadorPorNome()" id="textBuscaNomeVariavel" autocomplete="off" />
+                  </mat-form-field>
+
+                  <mat-form-field class="col-lg-4 col-md-4 col-xl-4 col-xs-12 col-sm-12">
+                    <mat-label>Buscar Por Status</mat-label>
+                    <mat-select formControlName="status" (selectionChange)="buscarIndicadorPorNome()">
+                      <mat-option value='Todos' selected>
+                        Todos os Indicadores
+                      </mat-option>
+                      <mat-option value='Preenchido'>
+                        Indicadores Preenchidos
+                      </mat-option>
+                      <mat-option value='Preenchido (anos anteriores)'>
+                        Indicadores Preenchidos (anos anteriores)
+                      </mat-option>
+                      <mat-option value='Pendente'>
+                        Indicadores Pendente
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field class="col-lg-4 col-md-4 col-xl-4 col-xs-12 col-sm-12">
+                    <mat-label>Buscar Por Eixo</mat-label>
+                    <mat-select formControlName="eixo" (selectionChange)="buscarIndicadorPorNome()">
+                      <mat-option [value]=null selected>
+                        Todos os Eixos
+                      </mat-option>
+                      <mat-option *ngFor="let eixo of listaEixos" [value]="eixo.id">
+                        {{eixo.nome}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </form>
+              <hr>
+              
+
+              <div class="subdivisao-escolhida" #subEscolhida>
+                <h5 *ngIf="!form.controls.subdivisao.value" >
+                  Lista de Indicadores de: {{cidadeUsuario.nome}} - {{cidadeUsuario.siglaEstado}}  
+                </h5>
+                <h5 *ngIf="form.controls.subdivisao.value" >
+                  Lista de Indicadores da subdivisão: {{subdivisaoSelecionada.nome }} ({{subdivisaoSelecionada.tipoSubdivisao.nome }})
+                </h5>
+              </div>
+              
+              <div style="overflow-x:auto;">
+                  <table class="table table-striped table-xl">
+                      <tr>
+                        <th class="text-left"> Nome </th>
+                        <th class="text-center"> Status </th>
+                        <th class="text-center"> Ações </th>
+                      </tr>
+                      <ng-container *ngFor="let item of indicadoresDTOPaginado">
+                        <tr [id]="'indicador-'+(item.nome | slugify)">
+                          <td [id]="'td-'+(item.nome | slugify)"  class="text-left clickable align-middle" (click)="exibirVariaveis(item)" style="white-space: nowrap;cursor: pointer"
+                              data-toggle="collapse" [attr.data-target]="'#accordion'+ item.id">
+                            <mat-icon [@indicatorRotate]="item.exibirListaVariaveis ? 'expanded': 'collapsed'"
+                              style="display: inline-flex; vertical-align: middle;">expand_more</mat-icon>
+                            {{ item.nome }}
+                          </td>
+
+                          <td class="text-center" style="white-space: nowrap;vertical-align: bottom;">
+                            <label [style.color]="definirCorStatus(item.status)"> <b>{{ item.status }} </b> </label>
+                          </td>
+
+                          <td class="text-center" style="white-space: nowrap">
+                            <button mat-flat-button color="primary" type="button" name="button" style="margin-left: 10px;"
+                              [routerLink]="isGestor() ? form.controls.subdivisao.value ? ['/preencher-indicador/'+item.id+'/'+form.controls.subdivisao.value] : ['/preencher-indicador/'+item.id] : []" class="btnTabela" id="btnPreencherIndicador" matTooltip="Preencher">
+                              <mat-icon>edit</mat-icon>
+                            </button>
+                          </td>
+
+                        </tr>
+                        <tr [attr.id]="'accordion'+ item.id" class="collapse" style="width: 100%">
+                          <td [attr.colspan]="6" *ngIf="item.exibirListaVariaveis">
+                            <div class="informacao-valores">
+                              <div *ngIf="!form.controls.subdivisao.value" >Valores referentes a cidade de: {{cidadeUsuario.nome}} - {{cidadeUsuario.siglaEstado}} </div>
+                              <div *ngIf="form.controls.subdivisao.value" >Valores referentes a subdivisão: {{subdivisaoSelecionada.nome }} ({{subdivisaoSelecionada.tipoSubdivisao.nome }})</div>
+                            </div>
+                          <app-lista-variavel-preenchida [anoInicial]="anoInicial" [anoFinal]="anoFinal" [cidade]="cidade"
+                              [indicador]="item.id" [idVariavel]="form.controls.buscaIdVariavel.value"  [idSubdivisao]="form.controls.subdivisao.value"></app-lista-variavel-preenchida>
+                          </td>
+                        </tr>
+                      </ng-container>
+
+                    </table>
+              </div>
+              <div #subBottom class="subdivisao-escolhida-bottom" ></div>
+              <div class="subdivisao-escolhida-bottom"  [hidden]="subBottom.offsetTop - subEscolhida.offsetTop < tamanhoTela() "> 
+                <div *ngIf="!form.controls.subdivisao.value" >Lista de Indicadores de: {{cidadeUsuario.nome}} - {{cidadeUsuario.siglaEstado}} </div>
+                <div *ngIf="form.controls.subdivisao.value" >Lista de Indicadores da subdivisão: {{subdivisaoSelecionada.nome }} ({{subdivisaoSelecionada.tipoSubdivisao.nome }})</div>
+              </div>
+              
+            </mat-nav-list>
+          </mat-card-content>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <ng-template #modalLoading>
+    <div class="centralizar-loading">
+       <div id="circularG">
+        <div id="circularG_1" class="circularG"></div>
+        <div id="circularG_2" class="circularG"></div>
+        <div id="circularG_3" class="circularG"></div>
+        <div id="circularG_4" class="circularG"></div>
+        <div id="circularG_5" class="circularG"></div>
+        <div id="circularG_6" class="circularG"></div>
+        <div id="circularG_7" class="circularG"></div>
+        <div id="circularG_8" class="circularG"></div>
+      </div> 
+      <div class="mt-2" style="text-align: center">
+        <p>Por favor aguarde, isso pode demorar alguns minutos.</p>
+      </div>
+    </div>
+  </ng-template>
+</div>

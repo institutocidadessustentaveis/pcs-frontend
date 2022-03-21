@@ -1,0 +1,115 @@
+
+<!-- Segunda seção --> 
+
+  <section > 
+      <div class="col-md-12" *ngIf="segundaSecao?.tituloPrincipal" style="margin-bottom:3%" >
+        <div class="row">
+          <div class="caixa"  [style.background-color]="segundaSecao?.tituloPrincipalCor" ></div>
+          <a *ngIf="segundaSecao?.tituloPrincipal && segundaSecao?.tituloPrincipalLink && !verificaLinks(segundaSecao?.tituloPrincipalLink)" class="h1 titulos" style="margin-bottom:0 !important;" [style.border-color]="segundaSecao?.tituloPrincipalCor" 
+          [style.color]="segundaSecao?.tituloPrincipalCor" target="_blank"
+          [href]="segundaSecao?.tituloPrincipalLink">{{segundaSecao?.tituloPrincipal}}</a>
+          
+          <a *ngIf="segundaSecao?.tituloPrincipal && segundaSecao?.tituloPrincipalLink && verificaLinks(segundaSecao?.tituloPrincipalLink)" class="h1 titulos" style="margin-bottom:0 !important; cursor: pointer" [style.border-color]="segundaSecao?.tituloPrincipalCor" 
+          [style.color]="segundaSecao?.tituloPrincipalCor" 
+          (click)="validacaoDownload(segundaSecao?.tituloPrincipalLink)">{{segundaSecao?.tituloPrincipal}}</a>
+
+          <a *ngIf="segundaSecao?.tituloPrincipal && !segundaSecao?.tituloPrincipalLink" class="h1 titulos" style="margin-bottom:0 !important;" [style.border-color]="segundaSecao?.tituloPrincipalCor" 
+          [style.color]="segundaSecao?.tituloPrincipalCor">{{segundaSecao?.tituloPrincipal}}</a>
+        </div>
+      </div>
+        
+
+      <div class="row" style="width: 100%; margin-bottom: 3%;" *ngIf="segundaSecao?.primeiraImagemSafeUrl">
+        <div class="col underline-on-hover one-column-center one-column-fix"  
+            style="padding-left: 0% !important;padding-right: 0%; margin-left: 15px;" [style.background-color]="this.corTemaAux" >
+          <a *ngIf="segundaSecao.primeiraImagemSafeUrl && segundaSecao.primeiraImagemLink && !verificaLinks(segundaSecao.primeiraImagemLink)" class="one-column-center" style="height: 100%;width: 100%;"  [style.background-color]="this.corTemaAux"
+            [href]="segundaSecao.primeiraImagemLink" target="_blank" rel="noopener"> 
+              <img [src]="segundaSecao.primeiraImagemSafeUrl" [matTooltip]="segundaSecao?.primeiraImagemTooltip" class="img-third-section" >
+          </a>
+
+          <a *ngIf="segundaSecao.primeiraImagemSafeUrl && segundaSecao.primeiraImagemLink && verificaLinks(segundaSecao.primeiraImagemLink)" class="one-column-center" style="height: 100%;width: 100%; cursor: pointer;"  [style.background-color]="this.corTemaAux"
+          (click)="validacaoDownload(segundaSecao.primeiraImagemLink)" rel="noopener"> 
+              <img [src]="segundaSecao.primeiraImagemSafeUrl" [matTooltip]="segundaSecao?.primeiraImagemTooltip" class="img-third-section" >
+          </a>
+
+          <a *ngIf="segundaSecao.primeiraImagemSafeUrl && !segundaSecao.primeiraImagemLink" class="one-column-center" style="height: 100%;width: 100%;"  [style.background-color]="this.corTemaAux"
+             target="_blank" rel="noopener"> 
+              <img [src]="segundaSecao.primeiraImagemSafeUrl" [matTooltip]="segundaSecao?.primeiraImagemTooltip" class="img-third-section" >
+          </a>
+        </div>
+        <div class="col-md-6 one-column-center one-column-fix" 
+              style="margin-right: 15px;padding-top:3%; padding-bottom: 3%;" [style.background-color]="this.corTemaAux" >
+          <div class="row" style="padding-left: 15px;">
+            <a *ngIf="segundaSecao?.primeiroTitulo && segundaSecao?.primeiroTituloLink && !verificaLinks(segundaSecao?.primeiroTituloLink)" class="h5 titulos-no-border underline-on-hover" style="margin-bottom:3% !important;width: 100%;" [style.border-color]="segundaSecao?.primeiroTituloCor" 
+            [style.color]="segundaSecao?.primeiroTituloCor" target="_blank"
+            [href]="segundaSecao?.primeiroTituloLink">{{segundaSecao?.primeiroTitulo}}</a>
+
+            <a *ngIf="segundaSecao?.primeiroTitulo && segundaSecao?.primeiroTituloLink && verificaLinks(segundaSecao?.primeiroTituloLink)" class="h5 titulos-no-border underline-on-hover" style="margin-bottom:3% !important;width: 100%; cursor: pointer;" [style.border-color]="segundaSecao?.primeiroTituloCor" 
+            [style.color]="segundaSecao?.primeiroTituloCor"
+            (click)="validacaoDownload(segundaSecao?.primeiroTituloLink)">{{segundaSecao?.primeiroTitulo}}</a>
+
+            <a *ngIf="segundaSecao?.primeiroTitulo && !segundaSecao?.primeiroTituloLink" class="h5 titulos-no-border underline-on-hover" style="margin-bottom:3% !important;width: 100%;" [style.border-color]="segundaSecao?.primeiroTituloCor" 
+            [style.color]="segundaSecao?.primeiroTituloCor">{{segundaSecao?.primeiroTitulo}}</a>
+
+
+
+            <a *ngIf="segundaSecao?.primeiroTexto && segundaSecao?.primeiroTextoLink && !verificaLinks(segundaSecao?.primeiroTextoLink)" class="one-column-texto-small underline-on-hover"  style="color: #231f20;width: 100%;text-align: left;padding-right: 30px;" [style.color]="segundaSecao?.primeiroTextoCor" 
+            [innerHTML]="segundaSecao?.primeiroTexto" [href]="segundaSecao?.primeiroTextoLink" target="_blank"></a>
+
+            <a *ngIf="segundaSecao?.primeiroTexto && segundaSecao?.primeiroTextoLink && verificaLinks(segundaSecao?.primeiroTextoLink)" class="one-column-texto-small underline-on-hover"  style="color: #231f20;width: 100%;text-align: left;padding-right: 30px; cursor: pointer;" [style.color]="segundaSecao?.primeiroTextoCor" 
+            [innerHTML]="segundaSecao?.primeiroTexto" (click)="validacaoDownload(segundaSecao?.primeiroTextoLink)"></a>
+
+            <a *ngIf="segundaSecao?.primeiroTexto && !segundaSecao?.primeiroTextoLink" class="one-column-texto-small underline-on-hover"  style="color: #231f20;width: 100%;text-align: left;padding-right: 30px;" [style.color]="segundaSecao?.primeiroTextoCor" 
+            [innerHTML]="segundaSecao?.primeiroTexto"></a>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row" style="width: 100%;margin-top:4%; margin-bottom: 3%;" *ngIf="segundaSecao?.segundaImagemSafeUrl">
+
+        <div class="col-md-6 one-column-center one-column-fix" 
+              style="margin-left: 15px;padding-top:3%; padding-bottom: 3%;" [style.background-color]="this.corTemaAux" >
+          <div class="row" style="padding-left: 15px;">
+            <a *ngIf="segundaSecao?.segundoTitulo && segundaSecao?.segundoTituloLink && !verificaLinks(segundaSecao?.segundoTituloLink)" class="h5 titulos-no-border underline-on-hover" style="margin-bottom:3% !important;width: 100%;" [style.border-color]="segundaSecao?.segundoTituloCor" 
+            [style.color]="segundaSecao?.segundoTituloCor" target="_blank"
+            [href]="segundaSecao?.segundoTituloLink">{{segundaSecao?.segundoTitulo}}</a>
+
+            <a *ngIf="segundaSecao?.segundoTitulo && segundaSecao?.segundoTituloLink && verificaLinks(segundaSecao?.segundoTituloLink)" class="h5 titulos-no-border underline-on-hover" style="margin-bottom:3% !important;width: 100%; cursor: pointer;" [style.border-color]="segundaSecao?.segundoTituloCor" 
+            [style.color]="segundaSecao?.segundoTituloCor"
+            (click)="validacaoDownload(segundaSecao?.segundoTituloLink)">{{segundaSecao?.segundoTitulo}}</a>
+
+            <a *ngIf="segundaSecao?.segundoTitulo && !segundaSecao?.segundoTituloLink" class="h5 titulos-no-border underline-on-hover" style="margin-bottom:3% !important;width: 100%;" [style.border-color]="segundaSecao?.segundoTituloCor" 
+            [style.color]="segundaSecao?.segundoTituloCor">{{segundaSecao?.segundoTitulo}}</a>
+
+
+
+            <a *ngIf="segundaSecao?.segundoTexto && segundaSecao?.segundoTextoLink && !verificaLinks(segundaSecao?.segundoTextoLink)" class="one-column-texto-small underline-on-hover"  style="color: #231f20;width: 100%;text-align: left;padding-right: 30px;" [style.color]="segundaSecao?.segundoTextoCor" 
+            [innerHTML]="segundaSecao?.segundoTexto" [href]="segundaSecao?.segundoTextoLink" target="_blank"></a>
+            
+            <a *ngIf="segundaSecao?.segundoTexto && segundaSecao?.segundoTextoLink && verificaLinks(segundaSecao?.segundoTextoLink)" class="one-column-texto-small underline-on-hover"  style="color: #231f20;width: 100%;text-align: left;padding-right: 30px; cursor: pointer;" [style.color]="segundaSecao?.segundoTextoCor" 
+            [innerHTML]="segundaSecao?.segundoTexto" (click)="validacaoDownload(segundaSecao?.segundoTextoLink)"></a>
+
+            <a *ngIf="segundaSecao?.segundoTexto && !segundaSecao?.segundoTextoLink" class="one-column-texto-small underline-on-hover"  style="color: #231f20;width: 100%;text-align: left;padding-right: 30px;" [style.color]="segundaSecao?.segundoTextoCor" 
+            [innerHTML]="segundaSecao?.segundoTexto"></a>
+          </div>
+        </div>
+        <div class="col underline-on-hover one-column-center one-column-fix" 
+        style="padding-right: 0% !important;padding-left: 0% !important;margin-right: 15px;" [style.background-color]="this.corTemaAux">
+            <a *ngIf="segundaSecao.segundaImagemSafeUrl && segundaSecao.segundaImagemLink && !verificaLinks(segundaSecao.segundaImagemLink)" class="one-column-center" style="height: 100%;width: 100%;"  [style.background-color]="this.corTemaAux" 
+              [href]="segundaSecao.segundaImagemLink" target="_blank" rel="noopener"> 
+              <img [src]="segundaSecao.segundaImagemSafeUrl" [matTooltip]="segundaSecao?.segundaImagemTooltip" class="img-third-section" >
+            </a>
+
+            <a *ngIf="segundaSecao.segundaImagemSafeUrl && segundaSecao.segundaImagemLink && verificaLinks(segundaSecao.segundaImagemLink)" class="one-column-center" style="height: 100%;width: 100%; cursor: pointer;"  [style.background-color]="this.corTemaAux" 
+            (click)="validacaoDownload(segundaSecao.segundaImagemLink)" rel="noopener"> 
+              <img [src]="segundaSecao.segundaImagemSafeUrl" [matTooltip]="segundaSecao?.segundaImagemTooltip" class="img-third-section" >
+            </a>
+
+            <a *ngIf="segundaSecao.segundaImagemSafeUrl && !segundaSecao.segundaImagemLink" class="one-column-center" style="height: 100%;width: 100%;"  [style.background-color]="this.corTemaAux" > 
+              <img [src]="segundaSecao.segundaImagemSafeUrl" [matTooltip]="segundaSecao?.segundaImagemTooltip" class="img-third-section" >
+            </a>
+        </div>
+      </div>
+  </section>
+  

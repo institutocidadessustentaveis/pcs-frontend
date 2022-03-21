@@ -1,0 +1,138 @@
+<div class="contentBody" style="position: relative;">
+    <app-breadcrumb style="position: relative;"></app-breadcrumb>
+  <mat-card>
+
+    <br>
+    <form [formGroup]="form">
+        <h6>Entre com uma ou mais palavras-chave abaixo</h6>
+      <div style="max-width: 70%;" class="row">
+        <div class="col-md-3">
+          <mat-form-field>
+            <input formControlName="palavrasChave" matInput placeholder="Palavra Chave" autocomplete="off">
+          </mat-form-field>
+        </div>
+      
+        <div class="col-md-3"> <button mat-flat-button color="primary" [disabled]="!form.valid" (click)="buscarPorPalavraChave()">
+            <mat-icon>search</mat-icon> Pesquisar
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <div class="row">
+      <div class="col-lg-6" *ngIf="buscar?.noticias">
+        <mat-list>
+          <h3 style="color:rgb(0, 0, 255);padding-left: 16px;">
+            Notícias</h3>
+
+          <div class="alert alert-warning" [hidden]="buscar?.noticias?.length > 0">
+            Nenhuma notícia encontrada com essas palavras-chave.
+          </div>
+
+          <div class="alert alert-warning" [hidden]="buscar.porcentagemNoticiasPalavraChaveExata > 60 || buscar.porcentagemNoticiasPalavraChaveExata == 0">
+            Foram encontradas algumas notícias não exatamente relacionadas a sua pesquisa, mas parecidas.
+          </div>
+
+          <div class="alert alert-warning" [hidden]="(buscar.porcentagemNoticiasPalavraChaveExata != 0 && buscar.noticias.length > 0) || buscar.noticias.length == 0">
+            Não foram encontradas notícias com os termos pesquisados. Essas são notícias semelhantes.
+          </div>
+
+          <div [hidden]="!loading">
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+          </div>
+
+          <mat-list-item *ngFor="let noticia of buscar?.noticias">
+            <a [href]="gerarLinkNoticia(noticia)" target="_blank">{{truncate(noticia.label, 10, '...')}}</a>
+          </mat-list-item>
+
+        </mat-list>
+      </div>
+
+      <div class="col-lg-6" *ngIf="buscar?.boasPraticas">
+        <mat-list>
+          <h3 style="color:rgb(0, 0, 255);padding-left: 16px;">Boas Práticas</h3>
+
+          <div class="alert alert-warning" [hidden]="buscar?.boasPraticas?.length > 0">
+            Nenhuma boa prática encontrada com essas palavras-chave.
+          </div>
+
+          <div class="alert alert-warning" [hidden]="buscar.porcentagemBoasPraticasPalavraChaveExata > 60 || buscar.porcentagemBoasPraticasPalavraChaveExata == 0">
+            Foram encontradas algumas boas práticas não exatamente relacionadas a sua pesquisa, mas parecidas.
+          </div>
+
+          <div class="alert alert-warning" [hidden]="(buscar.porcentagemBoasPraticasPalavraChaveExata != 0 && buscar.boasPraticas.length > 0) || buscar.boasPraticas.length == 0">
+            Não foram encontradas boas práticas com os termos pesquisados. Essas são boas práticas semelhantes.
+          </div>
+
+          <div [hidden]="!loading">
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+          </div>
+
+          <mat-list-item  *ngFor="let boaPratica of buscar?.boasPraticas">
+            <a [href]="gerarLinkBoaPratica(boaPratica)" target="_blank">{{truncate(boaPratica.label, 10, '...')}}</a>
+          </mat-list-item>
+        </mat-list>
+      </div>
+
+      <div class="col-lg-6" *ngIf="buscar?.institucionais">
+          <mat-list>
+            <h3 style="color:rgb(0, 0, 255);padding-left: 16px;">
+              Institucional</h3>
+  
+            <div class="alert alert-warning" [hidden]="buscar?.institucionais?.length > 0">
+              Nenhum página institucional encontrada com essas palavras-chave.
+            </div>
+
+            <div class="alert alert-warning" [hidden]="buscar.porcentagemInstitucionaisPalavraChaveExata > 60 || buscar.porcentagemInstitucionaisPalavraChaveExata == 0">
+              Foram encontradas algumas páginas institucionais não exatamente relacionadas a sua pesquisa, mas parecidas.
+            </div>
+
+            <div class="alert alert-warning" [hidden]="(buscar.porcentagemInstitucionaisPalavraChaveExata != 0 && buscar.institucionais.length > 0) || buscar.institucionais.length == 0">
+              Não foram encontradas páginas institucionais com os termos pesquisados. Essas são páginas institucionais semelhantes.
+            </div>
+
+            <div [hidden]="!loading">
+              <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+            </div>
+  
+            <mat-list-item *ngFor="let institucional of buscar?.institucionais">
+              <a routerLink="{{gerarLinkMaterialInstitucional(institucional)}}" target="_blank">{{truncate(institucional.label, 10, '...')}}</a>
+            </mat-list-item>
+  
+          </mat-list>
+        </div>
+
+        <div class="col-lg-6" *ngIf="buscar?.indicadores">
+          <mat-list>
+            <h3 style="color:rgb(0, 0, 255);padding-left: 16px;">
+              Indicadores</h3>
+  
+            <div class="alert alert-warning" [hidden]="buscar?.indicadores?.length > 0">
+              Nenhum indicador encontrado com essas palavras-chave.
+            </div>
+
+            <div class="alert alert-warning" [hidden]="buscar.porcentagemIndicadoresPalavraChaveExata > 60 || buscar.porcentagemIndicadoresPalavraChaveExata == 0">
+              Foram encontradas algumas páginas institucionais não exatamente relacionadas a sua pesquisa, mas parecidas.
+            </div>
+
+            <div class="alert alert-warning" [hidden]="(buscar.porcentagemIndicadoresPalavraChaveExata != 0 && buscar.indicadores.length > 0) || buscar.indicadores.length == 0">
+              Não foram encontradas páginas institucionais com os termos pesquisados. Essas são páginas institucionais semelhantes.
+            </div>
+
+            <div [hidden]="!loading">
+              <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+            </div>
+  
+            <mat-list-item *ngFor="let indicador of buscar?.indicadores">
+              <a routerLink="{{gerarLinkIndicador(indicador)}}" target="_blank">{{truncate(indicador.label, 10, '...')}}</a>
+            </mat-list-item>
+  
+          </mat-list>
+        </div>
+
+    </div>
+
+    <br>
+
+  </mat-card>
+</div>

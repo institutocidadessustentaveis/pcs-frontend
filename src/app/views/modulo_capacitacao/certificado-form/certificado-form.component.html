@@ -1,0 +1,154 @@
+<div class="contentBody" style="position: relative;">
+  <app-breadcrumb style="position: relative;"></app-breadcrumb>
+  <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+    <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <mat-card-title>
+        Cadastrar Certificados
+      </mat-card-title>
+    </mat-card-content>
+    <hr>
+
+    <form #certificadoForm="ngForm">
+      <mat-form-field class="col-md-6">
+        <mat-label>Orientação</mat-label>
+        <mat-select id="orientacaoPaisagem" name="orientacaoPaisagem" [(value)]="certificado.orientacaoPaisagem" required>
+          <mat-option [value]=false>Retrato</mat-option>
+          <mat-option [value]=true>Paisagem</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6">
+        <input matInput placeholder="Título do Certificado" name="titulo" [(ngModel)]="certificado.titulo" maxlength="200"
+          #inputTitulo id="inputTitulo" required>
+        <mat-hint align="end">{{ inputTitulo.value?.length || 0 }}/100</mat-hint>
+      </mat-form-field>
+      <br>
+    </form>
+    <br>
+    <div class="col-md-12" align="center">
+      <span>Obs.: Adicione <strong>%nome%</strong> e/ou <strong>%data%</strong> em qualquer um dos campos de texto nos locais que deseja que apareçam o nome do usuário e a data de emissão</span>
+    </div>
+    <br>
+    <div class="col-md-12 summernote">
+      <mat-label>Texto 1 </mat-label>
+      <div [ngxSummernote]="editorConfig" [(ngModel)]="certificado.texto1"></div>
+    </div>
+    <br>
+
+    <div class="col-md-12 summernote">
+      <mat-label>Texto 2</mat-label>
+      <div [ngxSummernote]="editorConfig" [(ngModel)]="certificado.texto2"></div>
+    </div>
+    <br>
+
+    <div class="col-md-12 summernote">
+      <mat-label>Texto 3</mat-label>
+      <div [ngxSummernote]="editorConfig" [(ngModel)]="certificado.texto3"></div>
+    </div>
+    <br>
+
+    <div class="col-md-12">
+      <input hidden #imagem type="file" id="imagem" name="imagem" accept="image/jpeg,image/png, .tiff, .gif, .bmp"
+        (change)="processImage($event)">
+      <button type="button" mat-raised-button (click)="imagem.click()" id="btnImagemPrincipal" name="btnImagemPrincipal"
+        color="primary" style="margin-top: 20px; cursor: pointer;" matTooltip="Carregar Imagem de Capa">
+        <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar imagem de fundo (resolução ref. {{certificado.orientacaoPaisagem ? '3508x2480px' : '2480x3508px'}})
+      </button>
+
+      <div>
+        <image-cropper style="max-height: 500px;"
+        [imageChangedEvent]="imageChangedEvent"
+        [maintainAspectRatio]="false" 
+        [aspectRatio]="1 / 1"
+        [resizeToWidth]="0" format="png" 
+        (imageCropped)="imageCropped($event)"
+        ></image-cropper>
+      </div>
+
+      <br>
+      <div *ngIf="certificado?.imagem" style="width: 100%;">
+        <mat-label class="labelpcs">Imagem de fundo</mat-label><br />
+        <img style=" width: 20%;" [src]="mostrarImagem()" />
+        <mat-icon matTooltip="Excluir imagem" style="margin-right: 5px; cursor: pointer; color: red;"
+          (click)="excluirImagemCapa()">delete</mat-icon>
+      </div>
+    </div>
+
+    <div class="col-md-12" align="end" [hidden]="loading">
+      <button mat-flat-button color="primary" [disabled]="!certificadoForm.form.valid" (click)="salvar()" matTooltip="Salvar Certificado">
+        <mat-icon>save</mat-icon> Salvar
+      </button>
+    </div>
+
+  </mat-card>
+</div>
+
+<div class="contentBody" style="position: relative;">
+
+  <mat-card style=" margin: 0 auto; width:855px;" *ngIf="!certificado.orientacaoPaisagem">
+    <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <mat-card-title>
+        Pré-visualização
+      </mat-card-title>
+    </mat-card-content>
+    
+    <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <div class="col-md-12" style="width:793px; height:1122px; padding:20px; border: 10px; background-size: cover;"
+        [style.background-image]="safeUrlBackground" id="teste">
+        <div class="col-md-12" style="width:750px; height:1085px; padding:20px; border: 5px">
+          <div style="height:100%;">
+            <span>
+              <div [ngxSummernoteView]="certificado?.texto1"
+                class="animated bounceInLeft duration-3s delay-2s text-column">
+              </div>
+            </span>
+            <span>
+              <div [ngxSummernoteView]="certificado?.texto2"
+                class="animated bounceInLeft duration-3s delay-2s text-column">
+              </div>
+            </span>
+            <span>
+              <div [ngxSummernoteView]="certificado?.texto3"
+                class="animated bounceInLeft duration-3s delay-2s text-column">
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card style=" margin: 0 auto; width: fit-content;" *ngIf="certificado.orientacaoPaisagem">
+    <mat-card-content>
+      <mat-card-title>
+        Pré-visualização
+      </mat-card-title>
+    </mat-card-content>
+    
+    <mat-card-content>
+      <div class="col-md-12" style="width:1122px; height:793px; padding:20px; border: 10px; background-size: cover;"
+        [style.background-image]="safeUrlBackground" id="teste">
+        <div class="col-md-12" style="width:1085px; height:750px; padding:20px; border: 5px">
+          <div style="height:100%;">
+            <span>
+              <div [ngxSummernoteView]="certificado?.texto1"
+                class="animated bounceInLeft duration-3s delay-2s text-column">
+              </div>
+            </span>
+            <span>
+              <div [ngxSummernoteView]="certificado?.texto2"
+                class="animated bounceInLeft duration-3s delay-2s text-column">
+              </div>
+            </span>
+            <span>
+              <div [ngxSummernoteView]="certificado?.texto3"
+                class="animated bounceInLeft duration-3s delay-2s text-column">
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+<br>

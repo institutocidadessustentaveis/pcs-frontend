@@ -1,0 +1,67 @@
+<div class="contentBody" style="position: relative;">
+  <mat-card>
+
+    <div class="row">
+      <div class="col-md-8 col-lg-9 col-xs-12 col-sm-12">
+        <h2>Cadastro de Temas Geoespaciais</h2>
+      </div>
+    </div>
+
+    <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+      <mat-divider></mat-divider>
+    </div>
+
+    <br>
+    <div class="col-lg-12 text-right" style="margin-top: 10px !important;">
+      <button mat-flat-button color="primary" [routerLink]="['/planejamento-integrado/temas-geoespaciais/cadastro']" class="btnCadastrar"
+        id="btnCadastrar" matTooltip="Cadastrar" *ngIf="'ROLE_CADASTRAR_TEMA_GEOESPACIAL' | hasRole">
+        <mat-icon>add</mat-icon>Cadastrar Tema Geoespacial
+      </button>
+    </div>
+
+    <div *ngIf="loading" class="loading-indicator">
+      <mat-progress-spinner style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+    </div>
+    <br>
+    <br>
+
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <mat-card-title>Lista de Temas Geoespaciais</mat-card-title>
+      <mat-divider></mat-divider>
+    </div>
+
+    <table mat-table [dataSource]="dataSource" matSort>
+      <!-- Título Column -->
+      <ng-container matColumnDef="nome">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="nome">Nome</th>
+        <td mat-cell *matCellDef="let item"> {{item.nome}} </td>
+      </ng-container>
+
+      <!-- Ações Column -->
+      <ng-container matColumnDef="acoes" >
+        <th mat-header-cell *matHeaderCellDef> Ações </th>
+        <td mat-cell *matCellDef="let item" class='m-card-title' data-label='Ações' style="width: 150px;">
+          <button mat-flat-button
+            color="primary" type="button" name="button"
+            [routerLink]="['/planejamento-integrado/temas-geoespaciais/cadastro', item.id]"
+            class="btnTabela" id="btnEditar"
+            matTooltip="Editar" *ngIf="'ROLE_EDITAR_TEMA_GEOESPACIAL' | hasRole">
+            <mat-icon> edit </mat-icon>
+          </button>
+          <button mat-flat-button color="warn" type="button" name="button"
+             class="btnTabela" id="btnExcluir" matTooltip="Visualizar" (click)="questionarExclusao(item.id, item.nome)"
+            *ngIf="'ROLE_DELETAR_TEMA_GEOESPACIAL' | hasRole">
+            <mat-icon> delete </mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator style="text-align: center !important;" class="float-none" [pageSizeOptions]="[10,25,50,100]"
+      showFirstLastButtons></mat-paginator>
+
+  </mat-card>
+</div>

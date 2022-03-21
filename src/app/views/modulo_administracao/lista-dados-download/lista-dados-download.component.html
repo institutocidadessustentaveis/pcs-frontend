@@ -1,0 +1,176 @@
+<div class="contentBody" style="position: relative;">
+  <app-breadcrumb style="position: relative;"></app-breadcrumb>
+
+  <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+
+    <div class="col-lg-12 col-md-12">
+      <h2>Lista de Dados de Downloads</h2>
+      <mat-divider></mat-divider>
+    </div>
+
+    <br>
+
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <form class="example-form" [formGroup]="formFiltro">
+          <div>
+            <app-datepicker formControlName="dataInicio" placeholder="Escolha a data inicial"></app-datepicker>
+          </div>
+
+          <div>
+            <app-datepicker formControlName="dataFim" placeholder="Escolha a data final"></app-datepicker>
+          </div>
+
+          <div class="col-lg-12">
+            <mat-form-field>
+              <mat-label>Selecione uma página</mat-label>
+              <mat-select formControlName="pagina" name="pagina" id="pagina">
+                <mat-option value=""></mat-option>
+                <mat-option *ngFor="let pagina of listaPaginas" [value]="pagina">
+                  {{ pagina.label }} 
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          
+
+          <div class="col-lg-12">
+            <mat-form-field>
+              <mat-label>Selecione uma ação</mat-label>
+              <mat-select formControlName="acao" name="acao" id="acao">
+                <mat-option value=""></mat-option>
+                <mat-option *ngFor="let acao of listaAcao" [value]="acao">
+                  {{ acao.label }} 
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="col-lg-12">
+            <mat-form-field>
+              <mat-label>Selecione uma cidade</mat-label>
+              <mat-select formControlName="cidade" name="cidade" id="cidade">
+                <mat-option value=""></mat-option>
+                <mat-option *ngFor="let cidade of listaCidades" [value]="cidade">
+                  {{ cidade.label }} 
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+        </form>
+      </div>
+
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right" style="margin-top: 10px !important;">
+        <button mat-flat-button color="primary" class="float-right" matTooltip="Gerar Relatório" id="btnGerarRelatorio"
+          class="botaoGeraRelatorio" (click)="buscarDadosFiltrados()">
+          <mat-icon style="margin-top: -1px !important">search</mat-icon> Buscar
+        </button>
+      </div>
+
+
+      <mat-progress-bar mode="indeterminate" [hidden]="!loading" style="margin-top:20px;"></mat-progress-bar>
+
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"  [hidden]="resultadoEncontrado" style="margin-top:25px;">
+        <p class="alert alert-warning" *ngIf="pesquisou" role="alert">Nenhum registro encontrado!</p>
+      </div>
+
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px !important;">
+
+        <table mat-table [dataSource]="dataSource" matSort #tbRelatorio id="tbRelatorio">
+
+          <ng-container matColumnDef="cidade">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="cidade">Cidade</th>
+            <td mat-cell *matCellDef="let element" class='m-card-title' data-label='Cidade'>
+              <span class="mobile-label">Cidade:</span>
+              {{ element.nomeCidade ? element.nomeCidade : '' }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="email">Email</th>
+            <td mat-cell *matCellDef="let element" class='m-card-title' data-label='Email'>
+              <span class="mobile-label">Email:</span>
+              {{ element.email }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="nome">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="nome">Nome</th>
+            <td mat-cell *matCellDef="let element" class='m-card-title' data-label='Nome'>
+              <span class="mobile-label">Nome:</span>
+              {{ element.nome }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="organizacao">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="organizacao">Organização</th>
+            <td mat-cell *matCellDef="let element" class='m-card-title' data-label='Organização'>
+              <span class="mobile-label">Organização:</span>
+              {{ element.organizacao ? element.organizacao : ''}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="boletim">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="boletim">Boletim</th>
+            <td mat-cell *matCellDef="let element" class='m-card-title' data-label='Boletim'>
+              <span class="mobile-label">Boletim:</span>
+              {{ element.boletim? 'Sim' : 'Não'}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="arquivo">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="arquivo">Arquivo</th>
+            <td mat-cell *matCellDef="let element" class='m-card-title' data-label='Arquivo'>
+              <span class="mobile-label">Arquivo:</span>
+              {{ element.arquivo }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="dataDownload">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="dataDownload">Data de Download</th>
+            <td mat-cell *matCellDef="let element" class='m-card-title' data-label='Data Download'>
+              <span class="mobile-label">Data Download:</span>
+              {{ element.dataDownload | date:'dd/MM/yyyy' }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="usuario">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="usuario">Usuário</th>
+            <td mat-cell *matCellDef="let element" class='m-card-title' data-label='Usuário'>
+              <span class="mobile-label">Usuário:</span>
+              {{ element.usuarioNome ?  element.usuarioNome : '' }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="acao">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="acao">Ação</th>
+            <td mat-cell *matCellDef="let element" class='m-card-title' data-label='Ação'>
+              <span class="mobile-label">Ação:</span>
+              {{ element.acao }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="pagina">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="pagina">Página</th>
+            <td mat-cell *matCellDef="let element" class='m-card-title' data-label='Página'>
+              <span class="mobile-label">Página:</span>
+              {{ element.pagina }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </div>
+
+      <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" style="margin-top: 20px !important;">
+        <mat-paginator style="text-align: center !important;" class="float-none" [pageSizeOptions]="[10,25,50,100]"
+          showFirstLastButtons>
+        </mat-paginator>
+      </div>
+
+    </div>
+
+  </mat-card>
+</div>

@@ -1,0 +1,100 @@
+<section class="home-banner owl-carousel owl-theme">
+  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+      <li data-target="#carouselExampleIndicators" *ngFor="let x of home?.galeriaDeImagens;let i = index"
+        [attr.data-slide-to]="i" ngClass="i == 0 ? 'active' : ''"></li>
+    </ol>
+    <div class="carousel-inner">
+
+        <div *ngFor="let item of home?.galeriaDeImagens; let k = index"
+          [ngClass]="k == 0 ? 'carousel-item active' : 'carousel-item'">
+          <img class="img-carousel" loading="lazy" [src]="getImagePath(item.id)" alt="Event Image">
+
+          <div class="carousel-caption d-none d-md-block" *ngIf="!item.exibirBusca">
+            <a style="color: white;" [href]="item.link"
+              routerLinkActive="router-link-active" class="">
+              <div style="position: absolute;bottom: 10px;width:100%;">
+                <h1 class="animated fadeInUp duration-3s delay-1s cursor-hand">{{item.titulo}}</h1>
+                <h4 class="animated fadeInUp duration-3s delay-1s cursor-hand">{{item.subtitulo}}</h4>
+                <h6 *ngIf="item.nomeAutor" class="animated fadeInUp duration-3s delay-1s cursor-hand">{{item.nomeAutor}}</h6>
+              </div>
+            </a>
+          </div>
+        </div>
+
+
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev" *ngIf="home?.galeriaDeImagens?.length > 1">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next" *ngIf="home?.galeriaDeImagens?.length > 1">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+</section>
+
+<section class="head-buttons-bar" *ngIf="home?.homeBarra?.exibir">
+  <div class="underline-on-hover" [style.background-color]="home.homeBarra.div1CorFundo">
+    <a *ngIf="home.homeBarra.div1Texto && home.homeBarra.div1Link && !verificaLinks(home.homeBarra.div1Link)" 
+     [href]="home.homeBarra.div1Link" 
+     [style.color]="home.homeBarra.div1CorTexto" class="a-branco">{{home.homeBarra.div1Texto}}</a>
+
+    <a *ngIf="home.homeBarra.div1Texto && home.homeBarra.div1Link && verificaLinks(home.homeBarra.div1Link)" 
+      (click)="validacaoDownload(home.homeBarra.div1Link)" style="cursor: pointer"
+     [style.color]="home.homeBarra.div1CorTexto" class="a-branco">{{home.homeBarra.div1Texto}}</a>
+  
+     <a *ngIf="home.homeBarra.div1Texto && !home.homeBarra.div1Link"
+    [style.color]="home.homeBarra.div1CorTexto" class="a-branco">{{home.homeBarra.div1Texto}}</a>
+  
+    </div>
+  <div class="underline-on-hover links" [style.background-color]="home.homeBarra.div2CorFundo">
+    <a *ngIf="home.homeBarra.div2Texto && home.homeBarra.div2Link && !verificaLinks(home.homeBarra.div2Link)" 
+      [href]="home.homeBarra.div2Link"
+     [style.color]="home.homeBarra.div2CorTexto" class="a-branco">{{home.homeBarra.div2Texto}}</a>
+
+    <a *ngIf="home.homeBarra.div2Texto && home.homeBarra.div2Link && verificaLinks(home.homeBarra.div2Link)"  
+    (click)="validacaoDownload(home.homeBarra.div2Link)" style="cursor: pointer" 
+    [style.color]="home.homeBarra.div2CorTexto" class="a-branco">{{home.homeBarra.div2Texto}}</a>
+
+    <a *ngIf="home.homeBarra.div2Texto && !home.homeBarra.div2Link"
+    [style.color]="home.homeBarra.div2CorTexto" class="a-branco">{{home.homeBarra.div2Texto}}</a>
+  </div>
+  <div class="underline-on-hover" [style.background-color]="home.homeBarra.div3CorFundo">
+    <a *ngIf="home.homeBarra.div3Texto && home.homeBarra.div3Link && !verificaLinks(home.homeBarra.div3Link)" 
+    [href]="home.homeBarra.div3Link" 
+    [style.color]="home.homeBarra.div3CorTexto" class="a-branco">{{home.homeBarra.div3Texto}}</a>
+
+    <a *ngIf="home.homeBarra.div3Texto && home.homeBarra.div3Link && verificaLinks(home.homeBarra.div3Link)" 
+    (click)="validacaoDownload(home.homeBarra.div3Link)" style="cursor: pointer"
+    [style.color]="home.homeBarra.div3CorTexto" class="a-branco">{{home.homeBarra.div3Texto}}</a>
+
+    <a *ngIf="home.homeBarra.div3Texto && !home.homeBarra.div3Link"
+    [style.color]="home.homeBarra.div3CorTexto" class="a-branco">{{home.homeBarra.div3Texto}}</a>
+  </div>
+  <div class="underline-on-hover links" [style.background-color]="home.homeBarra.div4CorFundo">
+    <a *ngIf="home.homeBarra.div4Texto && home.homeBarra.div4Link && !verificaLinks(home.homeBarra.div4Link)" 
+    [href]="home.homeBarra.div4Link" 
+    [style.color]="home.homeBarra.div4CorTexto" class="a-branco">{{home.homeBarra.div4Texto}}</a>
+
+    <a *ngIf="home.homeBarra.div4Texto && home.homeBarra.div4Link && verificaLinks(home.homeBarra.div4Link)" 
+    (click)="validacaoDownload(home.homeBarra.div4Link)" style="cursor: pointer;"
+    [style.color]="home.homeBarra.div4CorTexto" class="a-branco">{{home.homeBarra.div4Texto}}</a>
+
+    <a *ngIf="home.homeBarra.div4Texto && !home.homeBarra.div4Link"
+    [style.color]="home.homeBarra.div4CorTexto" class="a-branco">{{home.homeBarra.div4Texto}}</a>
+  </div>
+  <div class="underline-on-hover" [style.background-color]="home.homeBarra.div5CorFundo">
+    <a *ngIf="home.homeBarra.div5Texto && home.homeBarra.div5Link && !verificaLinks(home.homeBarra.div5Link)" 
+    [href]="home.homeBarra.div5Link" 
+    [style.color]="home.homeBarra.div5CorTexto" class="a-branco">{{home.homeBarra.div5Texto}}</a>
+
+    <a *ngIf="home.homeBarra.div5Texto && home.homeBarra.div5Link && verificaLinks(home.homeBarra.div5Link)" 
+    (click)="validacaoDownload(home.homeBarra.div5Link)" style="cursor: pointer;"
+    [style.color]="home.homeBarra.div5CorTexto" class="a-branco">{{home.homeBarra.div5Texto}}</a>
+
+    <a *ngIf="home.homeBarra.div5Texto && !home.homeBarra.div5Link"
+    [style.color]="home.homeBarra.div5CorTexto" class="a-branco">{{home.homeBarra.div5Texto}}</a>
+  </div>
+</section>

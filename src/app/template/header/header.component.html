@@ -1,0 +1,47 @@
+<div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
+  <div class="row" style="background-color: #3f51b5 !important; padding: 10px;">
+    <div class="col-lg-10 col-md-10 text-left">
+      <div class="row">
+        <div class="col-lg-1 col-md-1"><button mat-icon-button (click)="snav.toggle()" *ngIf="isAuthenticated()"
+            style="color: white;">
+            <mat-icon>menu</mat-icon>
+          </button></div>
+        <div class="col-lg-11 col-md-11"><label
+            style="color: white !important; font-weight:bold; font-size: 20px; margin-top: 2px !important;">Programa
+            Cidades Sustentáveis</label></div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-2 text-right">
+      <button *ngIf="isAuthenticated()" mat-flat-button color="primary" routerLink="/alterarSenha"
+        class="text-right">Alterar Senha </button>
+      <button *ngIf="isAuthenticated()" mat-flat-button color="primary" (click)="logout()">Logout</button>
+    </div>
+  </div>
+
+  <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+    <mat-sidenav #snav mode='over' [fixedInViewport]="mobileQuery.matches" fixedTopGap="80">
+      <mat-nav-list>
+        <a mat-list-item routerLink="/institucional" *ngIf="hasRole('ROLE_PERFIS')"
+          (click)="snav.toggle()">Institucional</a>
+        <a mat-list-item routerLink="/cadastroCidadao" (click)="snav.toggle()">Cadastro Cidadão</a>
+        <a mat-list-item routerLink="/aprovacao-prefeitura" (click)="snav.toggle()">Cadastrar Carta Compromisso</a>
+        <a mat-list-item routerLink="/perfis" *ngIf="hasRole('ROLE_PERFIS')"
+          (click)="snav.toggle()">Perfis</a>
+        <a mat-list-item routerLink="/usuarios" (click)="snav.toggle()">Usuários</a>
+        <a mat-list-item routerLink="/cadastroindicadores" (click)="snav.toggle()">Indicadores</a>
+        <a mat-list-item routerLink="/relatorio" (click)="snav.toggle()">Relatórios</a>
+        <a mat-list-item routerLink="/pais" *ngIf="hasRole('ROLE_PERFIS')" (click)="snav.toggle()">Pais</a>
+        <a mat-list-item routerLink="/eixo">Eixo</a>
+        <a mat-list-item routerLink="/ods" (click)="snav.toggle()">ODS</a>
+        <a mat-list-item routerLink="/provincia-estado" (click)="snav.toggle()">Provincia/Estado</a>
+        <a mat-list-item routerLink="/cidade" (click)="snav.toggle()">Cidades</a>
+        <a mat-list-item routerLink="/aprovacao-prefeitura" *ngIf="hasRole('ROLE_AP')"
+          (click)="snav.toggle()">Aprovação de Prefeitura</a>
+        <a mat-list-item routerLink="/variaveis" (click)="snav.toggle()">Variáveis</a>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

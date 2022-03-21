@@ -1,0 +1,302 @@
+/* cyrillic-ext */
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local("Open Sans Regular"), local("OpenSans-Regular"),
+    url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFWJ0bbck.woff2)
+      format("woff2");
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F,
+    U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local("Open Sans Regular"), local("OpenSans-Regular"),
+    url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFUZ0bbck.woff2)
+      format("woff2");
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local("Open Sans Regular"), local("OpenSans-Regular"),
+    url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFWZ0bbck.woff2)
+      format("woff2");
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local("Open Sans Regular"), local("OpenSans-Regular"),
+    url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFVp0bbck.woff2)
+      format("woff2");
+  unicode-range: U+0370-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local("Open Sans Regular"), local("OpenSans-Regular"),
+    url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFWp0bbck.woff2)
+      format("woff2");
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local("Open Sans Regular"), local("OpenSans-Regular"),
+    url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFW50bbck.woff2)
+      format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB,
+    U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local("Open Sans Regular"), local("OpenSans-Regular"),
+    url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFVZ0b.woff2)
+      format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+    U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+    url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmhduz8A.woff2)
+      format("woff2");
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F,
+    U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+    url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwkxduz8A.woff2)
+      format("woff2");
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+    url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmxduz8A.woff2)
+      format("woff2");
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+    url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwlBduz8A.woff2)
+      format("woff2");
+  unicode-range: U+0370-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+    url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmBduz8A.woff2)
+      format("woff2");
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+    url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmRduz8A.woff2)
+      format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB,
+    U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+    url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwlxdu.woff2)
+      format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+    U+FEFF, U+FFFD;
+}
+
+::ng-deep .leaflet-control-layers-base {
+  text-align: left !important;
+}
+
+::ng-deep .leaflet-control-layers-overlays {
+  text-align: left !important;
+}
+
+.search-form-color
+  ::ng-deep .mat-select-value-text  {
+  color: white !important;
+  font-size: large;
+}
+
+.search-form-color
+  ::ng-deep .mat-focused .mat-form-field-label {
+  color: white !important;
+  font-size: large;
+}
+
+.search-form-color
+  ::ng-deep .mat-form-field-label {
+  color: white !important;
+  font-size: large;
+}
+
+.search-form-color
+  ::ng-deep.mat-form-field-underline {
+  background-color: white !important;
+  font-size: large;
+}
+
+.search-form-color
+  ::ng-deep.mat-form-field-ripple {
+  background-color: white !important;
+  font-size: large;
+}
+
+.search-form-color
+  ::ng-deep .mat-select-arrow {
+  color: white !important;
+  font-size: large;
+}
+
+.search-form-color
+  ::ng-deep .mat-form-field-empty.mat-form-field-label {
+  color:white;
+  font-size: large;
+}
+
+.search-form-color
+  ::ng-deep input.mat-input-element {
+  color: white;
+  font-size: large;
+}
+
+.search-form-color
+  ::ng-deep .mat-focused .mat-form-field-underline .mat-form-field-ripple{
+  background-color: white !important;
+  font-size: large;
+}
+.mat-form-field{
+  font-size: large;
+}
+
+h1{
+  font-family: Source Sans Pro;
+  font-weight: 700 !important;
+  font-size: calc(17px + 1.5vw);
+  line-height: 1.25em;
+  text-transform: uppercase;
+}
+
+h2{
+  font-family: Source Sans Pro;
+  font-weight: 700 !important;
+  font-size: calc(15px + 1vw);
+  line-height: 1.25em;
+  text-transform: uppercase;
+}
+.cabecalho h1 {
+  color: white;
+  margin-bottom: 0px;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.cabecalho h2 {
+  color: white;
+  margin-top: 1em;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+div{
+  font-size: large;
+}
+.titulo {
+  margin-top: 4em;
+}
+.mapa {
+  margin-top: 0px;
+}
+.btn-subdivisao {
+  margin-right: 1em;
+  min-width: 10em;
+}
+
+.filtros {
+  background-color: #8a9ea1;
+  padding-bottom: 2em;
+}
+
+.cabecalho{
+  margin: 0em 4em;
+}
+
+.informacoes{
+  font-size: large;
+}
+
+.dados-indicador{
+  margin: 2em 0px;
+  font-size: large;
+}
+.chip {
+  font-size:large;
+}
+
+@media(max-width: 900px) {
+  .cabecalho{
+    margin: 0em 0em;
+  }
+}
+
+.legenda-mapa{
+  list-style-type: none;
+  margin-top: 1em;
+  margin-left: 0px;
+  padding-left: 0px;
+}

@@ -1,0 +1,537 @@
+.contentBody {
+  font-family: Open Sans, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+}
+
+.carousel-caption {
+  height: 480px;
+  color: #fff;
+  text-align: center;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  /* -webkit-justify-content: center;
+  justify-content: center; */
+}
+
+.item-container {
+  padding: 15px;
+}
+
+.item-table {
+  padding: 10px;
+}
+
+.home-banner {
+  position: relative;
+  height: 480px;
+  background-color: #115c0a;
+}
+.img-carousel {
+  opacity: .4;
+}
+
+.home-banner h1 {
+  font-family: Source Sans Pro;
+  font-weight: 700;
+  font-size: calc(17px + 1.5vw);
+  line-height: 1.25em;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+  text-transform: uppercase;
+}
+h4 {
+  font-size: calc(10px + 1.0vw) !important;
+  font-weight: normal;
+}
+
+p,
+div,
+span {
+  font-size: 1.03em;
+  line-height: 1.3em;
+}
+
+.conteudo {
+  width: 100%;
+  max-width: 100%;
+}
+
+.imagemPrincipal {
+  width: 100%;
+  max-width: 100%;
+  min-height: 500px;
+  max-height: 550px;
+  /*background-image: url("../../../../../assets/foto_de_todos_os_indicadores.jpg");*/
+  background-position: center bottom;
+  background-size: cover;
+  position: relative;
+}
+
+.textoImagem {
+  width: 100%;
+  color: white;
+  text-align: center;
+  position: absolute;
+  bottom: 3em;
+  padding: 0px 10em;
+}
+@media (max-width: 950px) {
+  .textoImagem {
+    padding: 0px 1em;
+  }
+}
+@media (max-width: 650px) {
+  .textoImagem {
+    padding: 0px 0px;
+  }
+}
+
+.textoImagem h1 {
+  color: white;
+  font-size: 2.8em;
+}
+
+mat-form-field {
+  font-size: 1em;
+  color: white;
+}
+
+.search-form-color ::ng-deep .mat-select-value-text {
+  color: white !important;
+}
+
+.search-form-color ::ng-deep .mat-focused .mat-form-field-label {
+  color: white !important;
+}
+
+.search-form-color ::ng-deep .mat-form-field-label {
+  color: white !important;
+}
+
+.search-form-color ::ng-deep.mat-form-field-underline {
+  background-color: white !important;
+}
+
+.search-form-color ::ng-deep.mat-form-field-ripple {
+  background-color: white !important;
+}
+
+.search-form-color ::ng-deep .mat-select-arrow {
+  color: white !important;
+}
+
+.search-form-color ::ng-deep .mat-form-field-empty.mat-form-field-label {
+  color: white;
+}
+
+.search-form-color ::ng-deep input.mat-input-element {
+  color: white;
+}
+
+.content {
+  position: relative;
+  width: 90px;
+  height: 90px;
+}
+
+.icone-ods {
+  width: 90px;
+  height: 90px;
+  cursor: pointer;
+}
+
+.square {
+  position: relative;
+  width: 10%;
+  margin-left: 1%;
+  margin-top: 1%;
+}
+
+.square:after {
+  content: "";
+  display: block;
+  padding-bottom: 100%;
+}
+
+.square:hover{
+  /* autoprefixer: ignore next */
+-webkit-transform: scale(1.1);
+-ms-transform: scale(1.1);
+transform: scale(1.1);
+}
+
+.news__grid--3 {
+  grid: auto/1fr;
+  gap: 4px;
+}
+.news__grid--3 .news__grid-inner {
+  display: grid;
+  grid: auto/repeat(4, 1fr);
+  gap: 4px;
+}
+
+  @media (max-width: 1300px) {
+    .box-desktop{
+      display: none;
+    }
+
+    .news__grid--3 .news__grid-inner {
+      grid: auto/repeat(4, 1fr);
+    }
+  }
+
+@media (max-width: 1300px) {
+  .box-desktop{
+    display: none;
+  }
+
+  .news__grid--3 .news__grid-inner {
+    grid: auto/repeat(4, 1fr);
+  }
+}
+
+@media (min-width: 1301px) {
+  .box-mobile{
+    display: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  .news__grid--3 .news__grid-inner {
+    grid: auto/repeat(3, 1fr);
+  }
+}
+
+
+.text-full--attention {
+  background-color: #408559;
+}
+.text-full {
+  display: block;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 3em 128px;
+
+  padding-left: 128px;
+  padding-right: 128px;
+}
+.text-full .text-full__title {
+  column-span: all;
+  font-size: 2.375em;
+  line-height: 1.2631578947em;
+  margin-bottom: 1em;
+}
+.text-full--attention :not(.no-rewrite) {
+  color: #fff !important;
+}
+.btn-white.btn-hollow.btn-big {
+  font-size: 1.3em;
+  line-height: 1.5em;
+  border: 0.0555555556em solid #fff;
+  padding: 1.2777777778em;
+  font-weight: 400;
+}
+.btn-white.btn-hollow {
+  color: white;
+  font-size: 1.3em;
+  line-height: 1.5em;
+  border: 0.0555555556em solid #fff;
+  padding: 0.5em;
+  font-weight: 400;
+}
+
+.big-block__section {
+  padding-left: 128px;
+  padding-right: 128px;
+  padding-bottom: 3em;
+  margin-top: 1em;
+}
+.big-block {
+  margin-top: 1em;
+  background-color: #124f6b;
+  color: #fff;
+  padding: 24px;
+  text-align: center;
+  min-height: 12em;
+}
+@media (max-width: 1350px) {
+  .big-block__section {
+    padding: 1em;
+  }
+}
+
+@media (max-width: 1023px) {
+  .resultados {
+    padding-left: 1em;
+    padding-right: 1em;
+  }
+}
+
+.btn-grey.btn-hollow.btn-big {
+  font-size: 1.3em;
+  line-height: 1.5em;
+  border: 0.0555555556em solid #aaa;
+  padding: 1.2777777778em;
+  font-weight: 400;
+}
+.btn-grey.btn-hollow {
+  color: #aaa;
+  font-size: 1.3em;
+  line-height: 1.5em;
+  border: 0.0555555556em solid #aaa;
+  padding: 0.5em;
+  font-weight: 400;
+}
+
+.secao-botoes {
+  margin-bottom: 2em;
+}
+
+.secao-tabela {
+  margin-bottom: 2em;
+}
+.secao-mapa {
+  margin-bottom: 2em;
+}
+.secao-grafico {
+  margin-bottom: 2em;
+}
+
+.mapa_resultado {
+  padding: 1em;
+  min-width: 100%;
+}
+
+
+
+/*CSS REFERENTE AS INFORMAÇÕES DO INDICADOR LOGO ABAIXO DA IMAGEM INICIO*/
+.text-cols--centered {
+  padding-left: 20rem;
+  padding-right: 20rem;
+}
+
+.text-cols--2 {
+  columns: 2 220px;
+}
+
+.text-cols {
+  columns: 2 220px;
+  column-gap: 4em;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 3em 128px;
+}
+/*CSS REFERENTE AS INFORMAÇÕES DO INDICADOR LOGO ABAIXO DA IMAGEM FIM*/
+
+/*CSS REFERENTE A ROW CINZA COM OS 3 SELECTS INICIO*/
+.section-default.mb {
+  margin-bottom: 3em;
+}
+.grid.mb {
+  margin-bottom: 3em;
+}
+.section-default--highlight-grayscale {
+  background-color: #b3b3b3;
+}
+.section-default {
+  padding: 3em 128px;
+}
+.grid-3 {
+  grid: auto/repeat(3,1fr);
+}
+
+.grid {
+  display: grid;
+  gap: 48px;
+}
+
+.combo {
+  color: #fff;
+  padding-top: 5px;
+}
+/*CSS REFERENTE A ROW CINZA COM OS 3 SELECTS FIM*/
+
+#botao{ text-align: center }
+.botaoEnviar{
+    width: 350px;
+    text-align: center;
+    padding: 15px 20px;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    background-color: #FCC302;
+    font-size: 18px;
+}
+
+.mandato-selecionado{
+  text-decoration: underline;
+}
+
+.mandato-nao-selecionado{
+  text-decoration: underline;
+}
+
+
+/* cyrillic-ext */
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local("Open Sans Regular"), local("OpenSans-Regular"),
+    url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFWJ0bbck.woff2)
+      format("woff2");
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F,
+    U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local("Open Sans Regular"), local("OpenSans-Regular"),
+    url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFUZ0bbck.woff2)
+      format("woff2");
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local("Open Sans Regular"), local("OpenSans-Regular"),
+    url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFWZ0bbck.woff2)
+      format("woff2");
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local("Open Sans Regular"), local("OpenSans-Regular"),
+    url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFVp0bbck.woff2)
+      format("woff2");
+  unicode-range: U+0370-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local("Open Sans Regular"), local("OpenSans-Regular"),
+    url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFWp0bbck.woff2)
+      format("woff2");
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local("Open Sans Regular"), local("OpenSans-Regular"),
+    url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFW50bbck.woff2)
+      format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB,
+    U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local("Open Sans Regular"), local("OpenSans-Regular"),
+    url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFVZ0b.woff2)
+      format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+    U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+    url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmhduz8A.woff2)
+      format("woff2");
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F,
+    U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+    url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwkxduz8A.woff2)
+      format("woff2");
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+    url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmxduz8A.woff2)
+      format("woff2");
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+    url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwlBduz8A.woff2)
+      format("woff2");
+  unicode-range: U+0370-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+    url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmBduz8A.woff2)
+      format("woff2");
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+    url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmRduz8A.woff2)
+      format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB,
+    U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+    url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwlxdu.woff2)
+      format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+    U+FEFF, U+FFFD;
+}
+

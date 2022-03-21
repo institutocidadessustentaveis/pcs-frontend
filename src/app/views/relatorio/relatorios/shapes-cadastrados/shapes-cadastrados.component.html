@@ -1,0 +1,102 @@
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <form [formGroup]="formFiltro" class="example-form">
+
+      <div style="margin-top: 20px !important;">
+        <app-datepicker formControlName="dataCriacao" placeholder="Data de cadastro"></app-datepicker>
+      </div>
+
+      <div>
+        <app-datepicker formControlName="dataEdicao" placeholder="Data de edição"></app-datepicker>
+      </div>
+
+      <div class="col-lg-12">
+        <mat-form-field>
+          <mat-label>-- Selecione um usuário -- </mat-label>
+          <mat-select formControlName="usuario" name="usuario" id="usuario">
+            <mat-option value=""></mat-option>
+            <mat-option *ngFor="let usuario of listaUsuario" [value]="usuario.id">
+              {{ usuario.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-12">
+        <mat-form-field>
+          <input matInput placeholder="Título do shape" formControlName="tituloShape">
+        </mat-form-field>
+      </div>
+    </form>
+  </div>
+
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right" style="margin-top: 10px !important;">
+    <button matTooltip="Gerar Relatório" mat-flat-button color="primary" (click)="gerarRelatorio()"
+      id="btnGerarRelatorio" class="botaoGeraRelatorio">
+      <mat-icon style="margin-top: -1px !important">insert_drive_file</mat-icon> Gerar Relatório
+    </button>
+  </div>
+
+  <mat-progress-bar mode="indeterminate" [hidden]="!loading" style="margin-top:20px;"></mat-progress-bar>
+
+  <app-exportador-relatorios [registros]="formatarParaExportar(registros)" [titulo]="titulo" [colunas]="colunas">
+  </app-exportador-relatorios>
+
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" [hidden]="resultadoEncontrado" style="margin-top:25px;">
+    <p class="alert alert-warning" role="alert" *ngIf="pesquisou">Nenhum registro encontrado!</p>
+  </div>
+
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px !important;"
+    [hidden]="registros.length == 0">
+
+    <table mat-table [dataSource]="dataSource" matSort #tbRelatorio id="tbRelatorio" [hidden]="registros.length === 0">
+      <ng-container matColumnDef="usuario">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="usuario">Nome do usuário</th>
+        <td mat-cell *matCellDef="let element">{{ element.usuario }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="cidade">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="cidade">Cidade</th>
+        <td mat-cell *matCellDef="let element">{{ element.cidade }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="tituloShape">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="tituloShape">Título</th>
+        <td mat-cell *matCellDef="let element">{{ element.tituloShape }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="dataCriacao">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="dataCriacao">Data de criação</th>
+        <td mat-cell *matCellDef="let element">{{ element.dataCriacao | date: "dd/MM/yyyy" }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="dataEdicao">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="dataEdicao">Data de edição</th>
+        <td mat-cell *matCellDef="let element">{{ element.dataEdicao | date: "dd/MM/yyyy" }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="arquivo">
+        <th mat-header-cell *matHeaderCellDef >Arquivo</th>
+        <td mat-cell *matCellDef="let element">
+          <button matTooltip="Download do Plano de Metas" mat-flat-button color="accent"
+            (click)="validacaoDownload(element.id, element.cidade)" class="btnToRight" style="cursor: pointer !important;"
+            id="btnPdf">
+            <mat-icon>cloud_download</mat-icon>
+          </button>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+
+  <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" style="margin-top: 20px !important;"
+    [hidden]="registros.length == 0">
+    <mat-toolbar style="background-color:white !important;">
+      <mat-toolbar-row>
+        <mat-paginator style="text-align: center !important;" class="float-none" [pageSizeOptions]="[10,25,50,100]"
+          showFirstLastButtons></mat-paginator>
+      </mat-toolbar-row>
+    </mat-toolbar>
+  </div>
+</div>

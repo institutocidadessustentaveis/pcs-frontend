@@ -1,0 +1,15 @@
+.aplicarnegrito{
+    font-weight: bold;
+}
+
+.marginToComponent{
+    margin-top: 10px !important;
+}
+
+.marginToCard{
+    margin-top: 30px !important;
+}
+
+.clickable{
+    cursor: pointer !important;
+}

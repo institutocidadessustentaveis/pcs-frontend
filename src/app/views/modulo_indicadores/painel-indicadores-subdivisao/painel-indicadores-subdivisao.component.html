@@ -1,0 +1,38 @@
+<div class="filtros">
+
+  <div class="row">
+    <div class="col-lg-12 text-center titulo">
+      <h1>Subdivisões de {{cidade.nome}} - {{cidade.nomeEstado}}</h1>
+    </div>
+  </div>
+  <div class="container">
+
+    <div class="row">
+      <section id='filtros' class="col-lg-4 text-center">
+        <div class="row">
+          <div class="col-lg-12" >
+            <h2>Lista de Subdivisões</h2>
+          </div>
+
+          <div *ngFor="let item of arvoreSubdivisao" class="col-lg-12">
+            <app-lista-subdivisoes [subdivisao]="item"></app-lista-subdivisoes>
+          </div>
+        </div>
+      </section>
+      <div id='mapa' class="col-lg-8 text-center">
+        <div class="row">
+          <div class='col-lg-12 text-center'>
+            <h2>Mapa de subdivisões</h2>
+          </div>
+          <div class='col-lg-12 text-center'>
+            <div style=" height: 500px ;width: 100%; " leaflet [leafletOptions]="optionsLeaflet"
+              [(leafletCenter)]="mapCenter" [(leafletZoom)]="mapZoom" [leafletLayersControl]="layersControl"
+              [leafletLayers]="leafletLayers" (leafletMapReady)="onMapReady($event)">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    </div>
+</div>

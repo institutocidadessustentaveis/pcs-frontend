@@ -1,0 +1,24 @@
+<ul *ngIf="paginas?.length >0" class="pagination">
+
+  <li *ngIf="!paginador.first">
+    <a class="page-link" [routerLink]="['/usuarios/page', 0]">&lt;&lt;</a>
+  </li>
+
+  <li class="page-item" *ngIf="paginador.number > 0">
+    <a class="page-link" [routerLink]="['/usuarios/page', paginador.number-1]">&lt;</a>
+  </li>
+
+  <li class="page-item" *ngFor="let pagina of paginas" [ngClass]="pagina-1 == paginador.number?'disabled':''">
+    <span class="page-link" *ngIf="pagina-1 == paginador.number">{{pagina}}</span>
+    <a class="page-link" *ngIf="pagina-1 != paginador.number" [routerLink]="['/usuarios/page', pagina-1]">{{pagina}}</a>
+  </li>
+
+  <li class="page-item" *ngIf="paginador.number < paginador.totalPages-1">
+    <a class="page-link" [routerLink]="['/usuarios/page', paginador.number+1]">&gt;</a>
+  </li>
+
+  <li *ngIf="!paginador.last">
+    <a class="page-link" [routerLink]="['/usuarios/page', paginador.totalPages-1]">&gt;&gt;</a>
+  </li>
+
+</ul>

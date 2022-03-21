@@ -1,0 +1,37 @@
+<div class="contentBody" style="position: relative;">
+  <app-breadcrumb style="position: relative;"></app-breadcrumb>
+</div>
+<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+  <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12 marginToTop">
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <mat-card-title >Importar Arquivo de Prefeituras</mat-card-title>
+      <hr>
+    </div>
+    <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+
+      <p>
+        <button mat-flat-button color="primary" (click)="file.click()" >Importar arquivo de Prefeituras</button>
+      </p>
+
+    <input type="file" accept=".xls, .xlsx" (change)="onFileChange($event)" multiple="false" style="visibility: hidden;" #file />
+
+      <table *ngIf="data" >
+        <tr>
+          <th *ngFor="let item of colunas" >{{item}}</th>
+        </tr>
+        <tr *ngFor="let linha of data">
+          <td *ngFor="let item of linha">
+            {{item}}
+          </td>
+        </tr>
+      </table>
+
+      <div *ngIf="data">
+        <p>
+          <button mat-flat-button color="primary" (click)="cadastrar()" > Cadastrar Prefeituras e Enviar email </button>
+        </p>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+</div>

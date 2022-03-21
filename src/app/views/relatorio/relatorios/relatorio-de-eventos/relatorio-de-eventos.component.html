@@ -1,0 +1,154 @@
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <form [formGroup]="formFiltro" class="example-form">
+
+      <div class="col-lg-12">
+        <mat-form-field>
+          <mat-label> Selecione um tipo </mat-label>
+          <mat-select formControlName="tipo" name="tipo" id="tipo">
+            <mat-option [value]="null"></mat-option>
+            <mat-option value="PCS"> PCS </mat-option> 
+            <mat-option value="Prefeitura"> Prefeitura </mat-option> 
+            <mat-option value="Terceiros"> Terceiros </mat-option> 
+            <mat-option value="Rede Nossa São Paulo"> Rede Nossa São Paulo </mat-option> 
+            <mat-option value="Capacitação para Prefeituras Signatárias"> Capacitação para Prefeituras Signatárias </mat-option> 
+            <mat-option value="Academia"> Academia </mat-option> 
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div>
+        <app-datepicker formControlName="dataInicial" placeholder="Escolha a data inicial"></app-datepicker>
+      </div>
+
+      <div>
+        <app-datepicker formControlName="dataFinal" placeholder="Escolha a data final"></app-datepicker>
+      </div>
+
+      <div class="col-lg-12">
+        <mat-form-field>
+          <input matInput placeholder="Local" formControlName="endereco">
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-12">
+        <mat-form-field>
+          <input matInput placeholder="Título" formControlName="titulo">
+        </mat-form-field>
+      </div>
+      
+      <div class="col-lg-12">
+        <mat-form-field>
+          <mat-label> Selecione um pais </mat-label>
+          <mat-select formControlName="pais" name="pais" id="pais"
+            (selectionChange)="paisSelecionado($event.value)">
+            <mat-option [value]="null"></mat-option>
+            <mat-option *ngFor="let pais of listaPaises" [value]="pais.id">
+              {{ pais.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-12">
+        <mat-form-field>
+          <mat-label> Selecione um estado/província </mat-label>
+          <mat-select formControlName="estado" name="estado" id="estado"
+            (selectionChange)="estadoSelecionado($event.value)">
+            <mat-option [value]="null"></mat-option>
+            <mat-option *ngFor="let estado of listaProvinciasEstados" [value]="estado.id">
+              {{ estado.nome }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-12">
+        <mat-form-field>
+          <mat-label> Selecione uma cidade </mat-label>
+          <mat-select formControlName="cidade" name="cidade" id="cidade">
+            <mat-option [value]="null"></mat-option>
+            <mat-option *ngFor="let cidade of listaCidades" [value]="cidade.id">
+              {{ cidade.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+    </form>
+  </div>
+
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right" style="margin-top: 10px !important;">
+    <button matTooltip="Gerar Relatório" mat-flat-button color="primary" (click)="gerarRelatorio()"
+      id="btnGerarRelatorio" class="botaoGeraRelatorio">
+      <mat-icon style="margin-top: -1px !important">insert_drive_file</mat-icon> Gerar Relatório
+    </button>
+  </div>
+
+  <mat-progress-bar mode="indeterminate" [hidden]="!loading" style="margin-top:20px;"></mat-progress-bar>
+
+  <app-exportador-relatorios [registros]="formatarParaExportar(registros)" [registrosXls]="formatarParaXls(registros)" [titulo]="tituloRelatorio" [colunas]="colunas">
+  </app-exportador-relatorios>
+
+
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" [hidden]="resultadoEncontrado" style="margin-top:25px;">
+    <p class="alert alert-warning" role="alert" *ngIf="pesquisou">Nenhum registro encontrado!</p>
+  </div>
+
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px !important;"
+    [hidden]="registros.length == 0">
+
+    <table mat-table [dataSource]="dataSource" matSort #tbRelatorio id="tbRelatorio" [hidden]="registros.length === 0">
+      <ng-container matColumnDef="titulo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="titulo">Título</th>
+        <td mat-cell *matCellDef="let element">{{ element.nome }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="tipo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="tipo">Tipo</th>
+        <td mat-cell *matCellDef="let element">{{ element.tipo }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="dataEvento">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="dataEvento">Data evento</th>
+        <td mat-cell *matCellDef="let element">{{ element.dataEvento | date: "dd/MM/yyyy" }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="endereco">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="endereco">Local</th>
+        <td mat-cell *matCellDef="let element">{{ element.endereco }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="organizador">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="organizador">Organizador</th>
+        <td mat-cell *matCellDef="let element">{{ element.organizador }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="site">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="site">Site</th>
+        <td mat-cell *matCellDef="let element">{{ element.site }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="publicado">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="publicado">Publicado</th>
+        <td mat-cell *matCellDef="let element">
+          <mat-icon *ngIf="element.publicado == true">check</mat-icon>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+
+  <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" style="margin-top: 20px !important;"
+    [hidden]="registros.length == 0">
+    <mat-toolbar style="background-color:white !important;">
+      <mat-toolbar-row>
+        <mat-paginator style="text-align: center !important;" class="float-none" [pageSizeOptions]="[10,25,50,100]"
+          showFirstLastButtons></mat-paginator>
+      </mat-toolbar-row>
+    </mat-toolbar>
+  </div>
+</div>
+

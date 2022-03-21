@@ -1,0 +1,122 @@
+<div style="background-color: white;">
+  <div [hidden]="!loading" class="loading-indicator">
+    <mat-progress-spinner class="example-margin" style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+  </div>
+
+  <section class="home-banner owl-carousel owl-theme">
+    <div id="carouselExampleIndicators" class="carousel slide" ride="false">
+      <div class="carousel-inner">
+        <div>
+          <img class="img-carousel" loading="lazy" [src]="getImagePath(material?.id)">
+          <div class="carousel-caption">
+            <div style="position: inherit;bottom: 0;width: 100%;">
+              <h1 class="animated fadeInUp duration-3s delay-1s">{{material?.titulo}}</h1>
+              <span>{{material?.subtitulo}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="row">
+    <section class="section_bread col-lg-3">
+        <app-breadcrumb style="position: relative;"></app-breadcrumb>
+    </section>
+
+    <div class="col-md-9 col-lg-6 news_div">
+      <div class="news news--full">
+        <article class="news__article">
+
+          <div class="col-lg-12">
+            <div class="row div-titulo">
+              <div class="caixa" ></div>
+              <span class="h1 titulos" style="margin-bottom:0 !important;">Resumo</span>
+            </div>
+            <div class="news-text col-lg-12">
+              <p [ngxSummernoteView]="material?.resumo"></p>
+            </div>
+          </div>  
+          
+          <div class="col-lg-12 mt-5" *ngIf="material.eixoNome.length > 0">
+            <div class="row div-titulo">
+              <div class="caixa" ></div>
+              <span class="h1 titulos" style="margin-bottom:0 !important;">Eixo</span>
+            </div>
+            <p *ngFor="let eixonome of material.eixoNome"> {{eixonome}}
+              <br/>
+            </p>
+          </div> 
+          
+          <div class="col-lg-12 mt-5" *ngIf="material.indicadorNome.length > 0">
+            <div class="row div-titulo">
+              <div class="caixa" ></div>
+              <span class="h1 titulos" style="margin-bottom:0 !important;">Indicador</span>
+            </div>
+            <p *ngFor="let indicadorNome of material.indicadorNome"> {{indicadorNome}}
+              <br/>
+            </p>
+          </div>  
+
+          <div class="col-lg-12 mt-5" *ngIf="material.odsNome.length > 0">
+            <div class="row div-titulo">
+              <div class="caixa" ></div>
+              <span class="h1 titulos titulos-grande-responsivo" style="margin-bottom:0 !important;">Objetivo Desenvolvimento Sustentavel</span>
+            </div>
+            <p *ngFor="let odsNome of material.odsNome"> {{odsNome}}
+              <br/>
+            </p>
+          </div>  
+
+          <div class="col-lg-12 mt-5" *ngIf="material.metaOdsNome.length > 0">
+            <div class="row div-titulo">
+              <div class="caixa" ></div>
+              <span class="h1 titulos titulos-grande-responsivo" style="margin-bottom:0 !important;">Meta Objetivo Desenvolvimento Sustentavel</span>
+            </div>
+            <p *ngFor="let metaOdsNome of material.metaOdsNome"> {{metaOdsNome}}
+              <br/>
+            </p>
+          </div>  
+
+          <div class="col-lg-12 mt-5">
+            <span *ngIf="material.publicoAlvo != null"><b>Publico alvo:</b> {{material.publicoAlvo}}</span>
+            <br>
+            <span *ngIf="material.localExibicao != null"><b>Local de Exibição:</b> {{material.localExibicao}}</span>  
+          </div>
+
+
+          <div class="news-info mt-3">
+            <span style="font-style: italic; font-weight: bold;">{{material.autor}} - {{material.instituicao}}</span>
+            <p style="margin-bottom: 0px !important">
+              {{material.continente != null ? material.continente + ' -' : ''}} 
+              {{material.paisNome != null ? material.paisNome + ' -': ''}}
+              {{material.provinciaEstadoNome != null ? material.provinciaEstadoNome + ' -' : ''}}
+              {{material.cidadeNome != null ? material.cidadeNome + ' -' : null}}
+            </p>
+            <p>
+              Publicado em
+              <span class="data-publicacao">{{ material.dataPublicacao | date:'dd/MM/yyyy'}}
+              </span>
+            </p>
+          </div>
+        </article>
+
+
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="downloads">
+        <div>
+          <label class="label-titulo-white">FAÇA O DOWNLOAD</label>
+          <div style="text-align: center">
+            <button type="button" class="btn-downloads-transparent"
+              (click)="validacaoDownloadMaterialApoio()">{{material?.arquivoPublicacao?.nomeArquivo}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3"></div>
+    <div class="col-md-9 news_div">
+
+    </div>
+  </div>

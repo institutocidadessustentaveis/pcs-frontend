@@ -1,0 +1,51 @@
+//import { GrupoAcademicoBibliotecaPainel } from './grupoAcademicoBibliotecaPainel';
+
+import { Eixo } from "./eixo";
+
+export class GrupoAcademicoDetalheDTO {
+    id: number;
+    nomeCidade: string;
+    nomeEstado: string;
+    nomePais: string;
+    paginaOnline: string;
+    nomeContato: string;
+    emailContato: string;
+    telefoneContato: string;
+    emailInstitucional: string;
+    telefoneInstitucional: string;
+    linkBaseDados: string;
+    observacoes: string;
+    descricaoInstituicao: string;
+    experienciasDesenvolvidas: string;
+    logradouro: string;
+    numero: string;
+    complemento: string;
+    nomeAcademia: string;
+    nomeApl: string;
+    descricaoApl: string;
+    areasInteresse: string[];
+    eixos: Array<Eixo>;
+    ods: string[];
+    vinculo: string;
+    tipoFundacao: string;
+    atuaProjetoSustentabilidade: boolean;
+    associadaEthos: boolean;
+    latitude: number;
+    longitude: number;
+    nomeGrupo: string;
+    porteEmpresa: string;
+    setorEconomico: string;
+    quantidadeFuncionarios: number;
+    receitaAnual: number;
+    participaApl: boolean;
+    tipoCadastro: string;
+    continente: string;
+    cidade: string;
+    estado: string;
+    pais: string;
+    cidadesApl: string[];
+    setoresApl: string[];
+    quantidadeAlunos: number;
+    tipo: string;
+    //bibliotecas: GrupoAcademicoBibliotecaPainel[];
+}

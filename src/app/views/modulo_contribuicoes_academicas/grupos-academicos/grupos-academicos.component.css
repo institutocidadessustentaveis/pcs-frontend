@@ -1,0 +1,408 @@
+.teaser--dotted{
+  background-size: 15px;
+  background-repeat: repeat;
+  background-attachment: scroll;
+}
+  .news__section {
+    margin-left: 128px;
+    margin-right: 128px;
+    margin-bottom: 3em;
+  }
+  @media (max-width: 1023px) {
+    .news__section {
+      margin-left: 48px;
+      margin-right: 48px;
+    }
+  }
+  .news__section > header {
+    display: block;
+    width: 100%;
+    background-position: center 10px;
+    margin-bottom: 3em;
+    vertical-align: bottom;
+  }
+  .news__section > header h1 {
+    display: inline-block;
+    background-color: #6e6e6e;
+    color: #fff;
+    padding-left: 12px;
+    padding-right: 12px;
+    font-size: 1.125em;
+    line-height: 2.6666666667em;
+    font-weight: 700;
+    min-width: 29%;
+    vertical-align: bottom;
+    text-transform: uppercase;
+  }
+  .news__section--alt-title > header {
+    text-align: center;
+    background: none;
+  }
+  .news__section--alt-title > header h1 {
+    background-color: transparent;
+    color: #333;
+  }
+
+  .teaser {
+    padding: 3em 128px;
+    margin-top: 3em;
+    margin-bottom: 3em;
+    cursor: default;
+  }
+  @media (max-width: 1023px) {
+    .teaser {
+      padding-left: 48px;
+      padding-right: 48px;
+    }
+  }
+  .teaser--inverted {
+    background-color: #333;
+    color: #fff;
+  }
+  .teaser--inverted :not(.no-rewrite) {
+    color: #fff !important;
+  }
+  .teaser--blue {
+    background-color: #15506c;
+  }
+  .teaser--blue :not(.no-rewrite) {
+    color: #fff !important;
+  }
+  .teaser--highlight {
+    background-color: #554f20;
+  }
+  .teaser--highlight :not(.no-rewrite) {
+    color: #fff !important;
+  }
+  .teaser--highlight-grayscale {
+    background-color: #b3b3b3;
+  }
+  .teaser--highlight-grayscale :not(.no-rewrite) {
+    color: #fff !important;
+  }
+  .teaser--highlight-dark-grayscale {
+    background-color: #6e6e6e;
+  }
+  .teaser--highlight-dark-grayscale :not(.no-rewrite) {
+    color: #fff !important;
+  }
+  .teaser--grayscale :not(.no-rewrite) {
+    color: #6e6e6e !important;
+  }
+  .teaser--desaturate {
+    background-color: #8a9ea1;
+  }
+  .teaser--desaturate :not(.no-rewrite) {
+    color: #fff !important;
+  }
+  .teaser--attention {
+    background-color: #408559;
+  }
+  .teaser--attention :not(.no-rewrite) {
+    color: #fff !important;
+  }
+  .teaser--small-container {
+    padding-left: 20rem !important;
+    padding-right: 20rem !important;
+  }
+  @media (min-width: 1024px) and (max-width: 1279px) {
+    .teaser--small-container {
+      padding-left: 10rem !important;
+      padding-right: 10rem !important;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .teaser--small-container {
+      padding-left: 128px !important;
+      padding-right: 128px !important;
+    }
+  }
+  @media (max-width: 767px) {
+    .teaser--small-container {
+      padding-left: 48px !important;
+      padding-right: 48px !important;
+    }
+  }
+  .teaser .breadcrumbs {
+    position: absolute;
+    left: 128px;
+    width: calc(25% - 176px);
+  }
+  @media (max-width: 1439px) {
+    .teaser .breadcrumbs {
+      left: 48px;
+      width: calc(25% - 48px);
+    }
+  }
+  @media (max-width: 1023px) {
+    .teaser .breadcrumbs {
+      position: static;
+      left: auto;
+      width: 100%;
+    }
+  }
+  .teaser header h1 {
+    font-size: 2.25em;
+    line-height: 1.3333333333em;
+    margin-bottom: 0.6666666667em;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  .teaser header h2 {
+    font-size: 1.5em;
+    line-height: 1.5em;
+    margin-bottom: 1em;
+    font-weight: 700;
+    text-align: center;
+  }
+  .teaser header:last-child h1,
+  .teaser header:last-child h2 {
+    margin-bottom: 0 !important;
+  }
+  .teaser header:last-child h2 {
+    padding-top: 1em;
+    padding-bottom: 1em;
+  }
+  .teaser > p {
+    font-size: 1.125em;
+    line-height: 1.3333333333em;
+    margin-bottom: 1.3333333333em;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    min-width: 600px;
+    text-align: center;
+  }
+  @media (max-width: 767px) {
+    .teaser > p {
+      min-width: auto;
+      width: 100%;
+    }
+  }
+
+  .mapa{
+    margin-top: 1em;
+    margin-bottom: 1em;
+    height: 86vh;
+  }
+  
+  
+  ::ng-deep .marker-cluster-small {
+    background-color:rgba(211, 20, 20, 0.918);
+  }
+  
+  ::ng-deep .marker-cluster-small div {
+    background-color: white !important;
+  }
+  
+  ::ng-deep .marker-cluster-medium {
+    background-color: rgba(211, 20, 20, 0.918);
+  }
+  ::ng-deep .marker-cluster-medium div {
+    background-color: white !important;
+  }
+  
+  ::ng-deep .marker-cluster-large {
+    background-color:  rgba(211, 20, 20, 0.918);
+  }
+  ::ng-deep .marker-cluster-large div {
+    background-color: white !important;
+  }
+  
+  
+  
+  ::ng-deep .marker-cluster {
+    background-clip: padding-box;
+    border-radius: 20px;
+    width: 30px !important;
+    height: 30px !important;
+  }
+  ::ng-deep .marker-cluster div {
+    width: 20px !important;
+    height: 20px !important;
+    margin-left: 5px;
+    margin-top: 5px;
+    color: black;
+  
+    text-align: center;
+    border-radius: 15px;
+    font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
+  }
+  ::ng-deep .marker-cluster span {
+    line-height: 25px;
+  }
+  
+  .secao {
+    margin-left: 128px;
+    margin-right: 128px;
+    margin-bottom: 3em;
+    margin-top: 3em;
+    font-weight: 600;
+  }
+
+  .secao h1 {
+    text-transform: uppercase;
+    font-weight: 700;
+    text-align: center;
+    font-size: 1.5em;
+  }
+
+  .secao-mapa{
+    padding-left: 128px;
+    padding-right: 128px;
+    background-color: #408559 ;
+    padding-bottom: 2em;
+    padding-top: 2.4em;
+    font-weight: 600;
+  }
+  .secao-mapa h1{
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    font-size: 1.5em;
+  }
+
+  @media (max-width: 1023px) {
+    .secao-mapa h1{
+      margin-left: 48px;
+      color: white;
+    }
+  }
+
+  .pontos-background {
+    background: url("../../../../assets/boas-praticas-inicial/pontos-light.png");
+  }
+
+.div-titulo h1{
+  color: rgb(64, 133, 89);
+  text-transform: uppercase;
+  font-weight: 700;
+  text-align: center;
+  font-size: 1.5em;
+}
+
+
+td{
+padding: 12px;
+transition: 0.4s;
+}
+td:hover {
+  background-color:rgb(250 250 250);
+}
+table {
+  vertical-align: middle;
+  margin-top: 24px;
+}
+.secao-filtro{
+  background-color: #8a9ea1;
+  padding-left: 128px;
+  padding-right: 128px;
+  padding-top: 3em;
+  padding-bottom: 3em;
+}
+
+.secao-filtro > header {
+  padding-top: 1.5em;
+  padding-bottom: 1.5em;
+}
+.secao-filtro > header h1 {
+  font-size: 1.5em;
+  line-height: 2em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  position: relative;
+}
+.secao-filtro > header h1:before {
+  content: "";
+  width: 100%;
+  height: 2px;
+  background-color: #fff;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+.secao-filtro > header h1 span {
+  background-color: #8a9ea1;
+  color: #fff;
+  position: relative;
+  z-index: 2;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.search-form-color ::ng-deep .mat-select-value-text {
+  color: white !important;
+}
+
+.search-form-color ::ng-deep .mat-focused .mat-form-field-label {
+  color: white !important;
+}
+
+.search-form-color ::ng-deep .mat-form-field-label {
+  color: white !important;
+}
+
+.search-form-color ::ng-deep.mat-form-field-underline {
+  background-color: white !important;
+}
+
+.search-form-color ::ng-deep.mat-form-field-ripple {
+  background-color: white !important;
+}
+
+.search-form-color ::ng-deep .mat-select-arrow {
+  color: white !important;
+}
+
+.search-form-color ::ng-deep .mat-form-field-empty.mat-form-field-label {
+  color: white !important;
+}
+
+.search-form-color ::ng-deep .mat-datepicker-toggle {
+  color: white !important;
+}
+
+.search-form-color ::ng-deep .mat-datepicker {
+  color: white !important;
+}
+
+.search-form-color ::ng-deep input.mat-input-element {
+  color: white;
+}
+
+.search-form-color ::ng-deep .mat-checkbox .mat-checkbox-frame {
+  border-color: white;
+}
+
+.btnpesquisar {
+  display: inline-block;
+  font-weight: 400;
+  color: #212529;
+  text-align: center;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  color: #f8f9fa;
+  border-color: #f8f9fa;
+}
+
+.white {
+  text-decoration: none; 
+  color: white;
+  padding-left: 15px;
+  padding-right: 15px;
+}

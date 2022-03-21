@@ -1,0 +1,39 @@
+
+.informacoes {
+    color:#3e7152;
+    display: flex;
+    flex-direction: row;
+}
+
+.info-item {
+    margin-right: 20px;
+}
+
+.comment-info{
+  color:#3e7152;
+  font-weight: 500;
+}
+
+.align-icon {
+  position: relative;
+  top: 5px;
+}
+
+.comment-info-flex {
+  display: flex;
+}
+
+@media (max-width: 807px) {
+.comment-info-flex {
+  display: flex;
+  flex-direction: column;
+}
+}
+
+.flex-item-comment {
+  margin-right: 35px;
+}
+
+.spacer{
+  flex: 1 1 auto;
+}

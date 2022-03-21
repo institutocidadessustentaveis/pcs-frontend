@@ -1,0 +1,95 @@
+<div class="contentBody" style="position: relative;">
+<mat-card>
+  <mat-card-title>Cadastrar Tema Geoespacial</mat-card-title>
+  <mat-divider></mat-divider>
+  <div *ngIf="loading" class="loading-indicator">
+    <mat-progress-spinner style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+  </div>
+  <br>
+
+  <form [formGroup]="formGroup">
+
+    <mat-form-field class="col-md-12">
+      <input matInput placeholder="Nome" formControlName="nome" maxlength="250" #inputTitulo id="inputTitulo" required>
+      <mat-hint align="end">{{ inputTitulo.value?.length || 0 }}/250</mat-hint>
+      <mat-error *ngIf="formGroup.controls['nome'].hasError('required')">
+        Campo obrigatório.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- <mat-form-field class="col-md-12">
+      <textarea matInput  formControlName="descricao"  #inputDescricao id="inputDescricao"> </textarea>
+      <mat-hint align="end">{{ inputDescricao.value?.length || 0 }}/250</mat-hint>
+    </mat-form-field> -->
+
+    <mat-form-field class="col-md-12">
+      <textarea matInput placeholder="Descrição" formControlName="descricao" maxlength="500" #inputDescricao id="inputDescricao"
+                cdkTextareaAutosize
+                #autosize="cdkTextareaAutosize"
+                cdkAutosizeMinRows="1"
+                cdkAutosizeMaxRows="5">
+              </textarea>
+              <mat-hint align="end">{{ inputDescricao.value?.length || 0 }}/500</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6 marginToComponent">
+      <mat-label>Áreas de Interesse:</mat-label>
+      <mat-select id="area" multiple
+        formControlName="areasInteresse">
+        <mat-option *ngFor="let item of areas" [value]="item.id">
+          {{item.nome}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6 marginToComponent">
+      <mat-label>Eixos:</mat-label>
+      <mat-select id="eixos" multiple
+        formControlName="eixos"
+        (selectionChange)="tradeEixo($event.value)" >
+        <mat-option *ngFor="let item of eixos" [value]="item.id" >
+          {{item.nome}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+    <mat-form-field class="col-md-6 marginToComponent">
+      <mat-label>ODS:</mat-label>
+      <mat-select id="ods" multiple
+        formControlName="ods"
+        (selectionChange)="tradeOds($event.value)">
+        <mat-option *ngFor="let item of ods" [value]="item.id">
+          {{item.label}}{{ !item.label ? (item.numero+" - "+item.titulo):''}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6 marginToComponent">
+      <mat-label>Metas:</mat-label>
+      <mat-select id="meta" multiple
+        formControlName="metas">
+        <mat-option *ngFor="let item of metas" [value]="item.id" [matTooltip]="item.descricao">
+          {{( item.numero+" - "+item.descricao )}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br>
+    <div class="col-md-12 text-right">
+
+      <button mat-flat-button color="primary" matTooltip="Salvar" *ngIf="'ROLE_CADASTRAR_TEMA_GEOESPACIAL' | hasRole"
+        style="cursor: pointer; margin-right: 5px !important;" id="btnSalvar"
+        [disabled]="!formGroup.valid " (click)="salvar()">
+        <mat-icon>save</mat-icon> Salvar
+      </button>
+      <button mat-flat-button color="accent" matTooltip="Voltar" style="cursor: pointer;" [routerLink]="['/planejamento-integrado/temas-geoespaciais']"
+            id="btnVoltar">
+            <mat-icon>arrow_back_ios</mat-icon> Voltar
+          </button>
+    </div>
+
+
+  </form>
+
+</mat-card>
+</div>

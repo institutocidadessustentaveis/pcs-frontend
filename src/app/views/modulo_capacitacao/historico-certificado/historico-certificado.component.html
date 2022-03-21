@@ -1,0 +1,74 @@
+<div class="contentBody" style="position: relative;">
+  <app-breadcrumb style="position: relative;"></app-breadcrumb>
+  <mat-card>
+    <div class="row">
+      <div class="col-md-8 col-lg-9 col-xs-12 col-sm-12">
+        <h2>Histórico de Certificados</h2>
+      </div>
+
+
+      <div class="col-md-4 col-lg-3 col-xs-12 col-sm-12" style="text-align: right;">
+        <button mat-flat-button class="btnCadastrar" color="primary" type="button"   
+        [routerLink]="['/capacitacao/emitir-certificados']" matTooltip="Cadastrar"
+          style="cursor: pointer !important; margin-bottom: 5px;">
+          <mat-icon>add</mat-icon>Emitir Certificado
+        </button>
+      </div>
+
+    </div>
+
+    <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+      <mat-divider></mat-divider>
+    </div>
+
+    <br>
+
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtro de busca">
+    </mat-form-field>
+
+    <br>
+    <br>
+
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <mat-card-title>Lista de Histórico de Certificados</mat-card-title>
+      <mat-divider></mat-divider>
+    </div>
+
+    <table mat-table class="col-lg-12" [dataSource]="dataSource" matSort>
+
+      <ng-container matColumnDef="nomeUsuario">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="nomeUsuario">Nome</th>
+        <td mat-cell *matCellDef="let historicoCertificado" class='m-card-title' data-label='Nome' class="">
+          <span class="mobile-label">Nome:</span>{{historicoCertificado.nomeUsuario}} </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="certificado">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="certificado">Template</th>
+        <td mat-cell *matCellDef="let historicoCertificado" class='m-card-title' data-label='Template' class="">
+          <span class="mobile-label">Template:</span>{{historicoCertificado.certificado}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="data">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="data">Data</th>
+        <td mat-cell *matCellDef="let historicoCertificado" class='m-card-title' data-label='Data' class="">
+          <span class="mobile-label">Data:</span>{{historicoCertificado.data | date: 'dd/MM/yyyy'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="acoes">
+        <th mat-header-cell *matHeaderCellDef>Ações</th>
+        <td mat-cell *matCellDef="let historicoCertificado" class='m-card-title' data-label='Ações'>
+          <span >
+            <button mat-flat-button color="warn" (click)="deletar(historicoCertificado)" class="btnTabela" matTooltip="Excluir">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </span>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator>
+  </mat-card>
+</div>

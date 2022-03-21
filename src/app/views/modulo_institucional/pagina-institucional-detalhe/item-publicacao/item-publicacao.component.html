@@ -1,0 +1,56 @@
+<div class="container">
+  <a [href]="abrirMaterialApoio()">
+    <div *ngIf="publicacao && publicacao?.idMaterialApoio" class="publicacao-material-apoio text-center pointer"
+      [style.backgroundImage]="'url('+urlbackend+'materialapoio/imagem/'+publicacao.idMaterialApoio+')'"
+      (click)="abrirMaterialApoio()" [matTooltip]="publicacao.tooltipTexto">
+    </div>
+  
+    <div *ngIf="publicacao && publicacao?.idMaterialApoio">
+      <h2 class="publicacao-material-apoio-titulo pointer" [matTooltip]="publicacao.tooltipTitulo"
+        (click)="abrirMaterialApoio()">
+        {{ publicacao?.materialApoio?.titulo }}<br>
+      </h2>
+      <p class="pointer publicacao-material-apoio-texto"
+        (click)="abrirMaterialApoio()">
+        {{ publicacao?.materialApoio?.subtitulo }}
+      </p>
+    </div>
+  </a>
+  
+  <div *ngIf="publicacao && publicacao.idMaterialInstitucional"
+    [style.background-image]="'url('+urlbackend+'publicacao/imagem/'+publicacao.id +')'"
+    class="publicacao-material-apoio text-center" (click)="validacaoDownloadMaterialInstitucional()"
+    [matTooltip]="publicacao.tooltipTexto">
+  </div>
+  
+  <div *ngIf="publicacao && publicacao.idMaterialInstitucional" class="" (click)="validacaoDownloadMaterialInstitucional()">
+    <h2 class="publicacao-material-apoio-titulo pointer" [matTooltip]="publicacao.tooltipTitulo">
+      {{ publicacao?.materialInstitucional?.titulo }}<br>
+    </h2>
+    <p class="pointer publicacao-material-apoio-texto" [matTooltip]="publicacao.tooltipTexto">
+      {{ publicacao?.materialInstitucional?.subtitulo }}
+    </p>
+  
+  </div>
+  
+  <a [href]="publicacao.link" target="_blank">
+    <div *ngIf="publicacao && publicacao.titulo" class="publicacao-livre pointer" [matTooltip]="publicacao.tooltipTexto"
+      [style.background-image]="'url('+urlbackend+'publicacao/imagem/'+publicacao.id +')'">
+  
+    </div>
+  </a>
+  
+  <div *ngIf="publicacao && publicacao.titulo">
+    <a [href]="publicacao.link" target="_blank" [matTooltip]="publicacao.tooltipTitulo">
+      <h2 class="publicacao-material-apoio-titulo pointer">
+        {{ publicacao.titulo }}
+        <br>
+      </h2>
+    </a>
+    <a [href]="publicacao.link" target="_blank">
+      <p class="publicacao-material-apoio-texto pointer">
+        {{ publicacao.texto }}
+      </p>
+    </a>
+  </div>
+</div>

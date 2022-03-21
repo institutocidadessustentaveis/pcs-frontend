@@ -1,0 +1,94 @@
+<div class="contentBody" style="position: relative;">
+  
+  <mat-card>
+    <div class="row">
+      <div class="col-md-8 col-lg-9 col-xs-12 col-sm-12">
+        <h2>Cadastro de Usuários Responsáveis</h2>
+      </div>
+    
+      <div class="col-md-4 col-lg-3 col-xs-12 col-sm-12" style="text-align: right;">
+        <button mat-flat-button color="primary" (click)="cadastrar()" class="btnCadastrar"
+          matTooltip="Cadastrar" style="cursor: pointer !important; margin-bottom: 5px;">
+          <mat-icon>add</mat-icon> Cadastrar Usuário
+        </button>
+      </div>
+    </div>
+  
+  
+    <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+      <mat-divider></mat-divider>
+    </div>
+    
+    <br>
+
+    <div class="col-lg-12" style="margin-top: 20px !important;">
+      <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <mat-card-title>Lista de Usuários Cadastrados</mat-card-title>
+        <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+          <mat-divider></mat-divider>
+        </div>
+        
+        <table mat-table class="col-lg-12" [dataSource]="dataSource" matSort>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        
+          <ng-container matColumnDef="nome">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="nome">Nome</th>
+            <td mat-cell *matCellDef="let usuario" class='m-card-title' data-label='Nome'>
+              <span class="mobile-label">Nome:</span>
+              <span>{{ usuario.nome }}</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="email">E-mail</th>
+            <td mat-cell *matCellDef="let usuario" class='m-card-title' data-label='E-mail'>
+              <span class="mobile-label">E-mail:</span>
+              <span>{{ usuario.email }}</span>
+            </td>
+          </ng-container>
+          
+          <ng-container matColumnDef="perfil">
+            <th mat-header-cell *matHeaderCellDef >Perfil</th>
+            <td mat-cell *matCellDef="let usuario" class='m-card-title' data-label='perfil'>
+              <span class="mobile-label">Perfil:</span>
+              <span>{{ usuario.nomePerfil }}</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="telefone">
+            <th mat-header-cell *matHeaderCellDef style="min-width: 150px;" >Telefone</th>
+            <td mat-cell *matCellDef="let usuario" class='m-card-title' data-label='Telefone' style="min-width: 150px;" >
+              <span class="mobile-label">Telefone:</span>
+              <span>{{ usuario.telefone | mask: '(00) 00000-0000' }}</span>
+            </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="acoes">
+            <th mat-header-cell *matHeaderCellDef style="min-width: 150px;" >Ações</th>
+            <td mat-cell *matCellDef="let usuario" style="min-width: 150px;">
+              <span >
+                <button mat-flat-button color="primary" (click)="editar(usuario.id)"
+                  class="btnTabela" matTooltip="Editar">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <span >
+                  <button *ngIf="!desabilitarBtnDeletar(usuario)" mat-flat-button color="warn" class="btnTabela"
+                    matTooltip="Excluir" (click)="deletarUsuario(usuario)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </span>
+              </span>
+            </td>
+          </ng-container>
+        
+        </table>
+      </div>
+    </div>
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" style="margin-top: 20px !important;"
+    [hidden]="listaUsuarios.length == 0">
+    <mat-paginator style="text-align: center !important;" class="float-none" [pageSizeOptions]="[10,25,50,100]"
+      showFirstLastButtons>
+    </mat-paginator>
+  </div>
+  </mat-card>
+</div>

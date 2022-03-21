@@ -1,0 +1,194 @@
+<footer style="background-color: white">
+  <section class="head-buttons-bar">
+    <div class="first-div">
+      <div class="title-4" *ngIf="links.length > 0">O PCS</div>
+
+      <br>
+
+      <ul class="list-links-side-bar">
+        <li *ngFor="let link of links">
+          <a class="link-side-bar" href="{{link.url}}"
+              target="{{link.abrirNovaJanela ? '_blank' : '_self'}}" rel="noopener">{{link.titulo}}</a>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <div class="title-4">CONTATO</div>
+      <br>
+      <ul class="list-links-side-bar">
+        <li>
+          <address>
+            <a class="link-side-bar" target="_blank" rel="noopener noreferrer" *ngIf="contato.link !== undefined" href="{{contato.link}}">
+              {{contato.endereco}}
+              <br>
+              CEP {{contato.cep}}
+              <br>
+              {{contato.cidade}}
+              <br>
+              Tel. {{contato.telefone}}
+            </a>
+
+            <a class="link-side-bar" *ngIf="contato.link === undefined">
+              {{contato.endereco}}
+              <br>
+              CEP {{contato.cep}}
+              <br>
+              {{contato.cidade}}
+              <br>
+              Tel. {{contato.telefone}}
+            </a>
+          </address>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <div class="title-4">CONECTE-SE</div>
+      <br>
+      <ul class="list-links-side-bar">
+        <a *ngFor="let redeSocial of redesSociais" href="{{redeSocial.urlPerfil}}" target="_blank" rel="noopener">
+          <button mat-icon-button class="btnTabela" style="background-color:white;color:#6E6E6E;margin-top: 9px !important;">
+            <fa name="{{redeSocial.tipo.toLowerCase()}}" size="xs"></fa>
+          </button>
+        </a>
+      </ul>
+    </div>
+
+    <div class="search-form-color" style="padding-right: 50px">
+      <div class="title-4">RECEBA NOSSO BOLETIM</div>
+      <ul class="list-links-side-bar">
+        <form>
+          <mat-form-field>
+            <input matInput placeholder="Digite seu e-mail" [(ngModel)]="emailNewsletter"
+              [formControl]="emailFormControl">
+            <span matSuffix>
+              <button mat-button (click)="assinarNewsletter()">ASSINAR
+              </button>
+            </span>
+            <mat-hint *ngIf="success" class="white-color">
+              Boletim assinado
+            </mat-hint>
+            <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+              Entre com um e-mail válido
+            </mat-error>
+            <mat-error *ngIf="emailFormControl.hasError('required')">
+              Entre com um e-mail
+            </mat-error>
+          </mat-form-field>
+        </form>
+      </ul>
+
+      <a href="#" onclick="doGTranslate('pt|zh-TW');return false;" title="Chinese (Traditional)" class="gflag nturl"
+      style="background-position:-400px -0px;"><img src="//gtranslate.net/flags/blank.png" height="16" width="16"
+      alt="Chinese (Traditional)" /></a><a href="#" onclick="doGTranslate('pt|zh-CN');return false;" title="Chinese (Simplified)" class="gflag nturl"
+      style="background-position:-300px -0px;"><img src="//gtranslate.net/flags/blank.png" height="16" width="16"
+      alt="Chinese (Simplified)" /></a><a href="#" onclick="doGTranslate('pt|en');return false;" title="English" class="gflag nturl"
+      style="background-position:-0px -0px;"><img src="//gtranslate.net/flags/blank.png" height="16" width="16"
+        alt="English" /></a><a href="#" onclick="doGTranslate('pt|fr');return false;" title="French"
+      class="gflag nturl" style="background-position:-200px -100px;"><img src="//gtranslate.net/flags/blank.png"
+        height="16" width="16" alt="French" /></a><a href="#" onclick="doGTranslate('pt|de');return false;"
+      title="German" class="gflag nturl" style="background-position:-300px -100px;"><img
+        src="//gtranslate.net/flags/blank.png" height="16" width="16" alt="German" /></a><a href="#"
+      onclick="doGTranslate('pt|it');return false;" title="Italian" class="gflag nturl"
+      style="background-position:-600px -100px;"><img src="//gtranslate.net/flags/blank.png" height="16"
+        width="16" alt="Italian" /></a><a href="#" onclick="doGTranslate('pt|pt');return false;" title="Portuguese">
+      <img src="../../../../../assets/bandeira_brasil.png" width="16" alt="Portuguese" style="margin-bottom: 10px !important; height: 12px !important;"/></a>
+        <a href="#" onclick="doGTranslate('pt|ru');return false;" title="Russian" class="gflag nturl"
+      style="background-position:-500px -200px;"><img src="//gtranslate.net/flags/blank.png" height="16"
+        width="16" alt="Russian" /></a><a href="#" onclick="doGTranslate('pt|es');return false;" title="Spanish"
+      class="gflag nturl" style="background-position:-600px -200px;"><img src="//gtranslate.net/flags/blank.png"
+        height="16" width="16" alt="Spanish" /></a>
+
+    <br/>
+    <div id="google_translate_element2"></div>
+
+    <br/>
+    <div vw class="enabled">
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper>
+        <div class="vw-plugin-top-wrapper"></div>
+      </div>
+    </div>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="row" style="max-width:100%;padding: 1em;">
+      <div class="col-md-6">
+        <div class="left">
+          <span style="margin-bottom: 30px;">Coordenação e execução</span>
+
+          <div class="row">
+            <div class="col-md-12">
+              <a>
+                <img src="../../../../../assets/logos/f-logo__programa-cidades-sustentaveis.jpg" alt="">
+              </a>
+            </div>
+          </div>
+
+          <div class="row line" style="margin-top: 2em;">
+            <div class="col-md-12">
+              <a href="https://icidadessustentaveis.org.br/" target="_blank"><img src="../../../../../assets/logos/f-logo__instituto-cidades-sustentaveis.jpg" alt=""></a>
+              <a href="https://www.ethos.org.br/" target="_blank"><img src="../../../../../assets/logos/f-logo__instituto-ethos.jpg" alt=""></a>
+              <a href="https://www.redecidades.org.br/" target="_blank"><img src="../../../../../assets/logos/f-logo__rede-cidades.jpg" alt=""></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="right">
+          <div class="apoio-size" style="margin-bottom: 30px;text-align: right;">Apoio</div>
+
+          <div class="row">
+            <div class="col-1 col-sm-1 col-md-9"></div>
+
+            <div class="col-sm-12 col-md-2">
+              <a href="https://www.citinova.org.br/" target="_blank">
+                <img class="citnova_rodape" src="../../../../../assets/logos/CITinova_Logo Secundária_Cor.png" alt="">
+              </a>
+            </div>
+          </div>
+
+          <div class="row line" style="margin-top: 2em;">
+            <div class="col-lg-2">
+              <a href="http://www.thegef.org/" target="_blank"><img class="gef_rodape" src="../../../../../assets/logos/GEF_Brand_1C_Color_full.png" alt=""></a>
+            </div>
+
+            <div class="col-lg-3">
+              <a href="https://nacoesunidas.org/agencia/onumeioambiente/" target="_blank"><img class="onu_rodape" src="../../../../../assets/logos/UNEP_2019_Portuguese-01.jpg" alt=""></a>
+            </div>
+
+            <div class="col-lg-7">
+              <a href="http://www.mctic.gov.br/" target="_blank">
+                <img class="ministerio_ciencia_rodape" src="../../../../../assets/logos/logo_mcti_horizontal_cor_positiva.png" alt="">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <br>
+  <br>
+
+  <section style="text-align: center !important">
+    <div class="level-3">
+      <div class="links">
+        <a href="https://www.gnu.org/philosophy/free-sw.pt-br.html" target="_blank" rel="noopener">SOFTWARE LIVRE</a> |
+        <a href="https://github.com/programacidadessustentaveis" target="_blank" rel="noopener">GITHUB</a> |
+        <a href="https://opendefinition.org/od/2.1/en/" target="_blank" rel="noopener">DADOS ABERTOS</a> |
+        <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/br/" target="_blank" rel="noopener">
+          TODO CONTEÚDO DO SITE É LICENCIADO SOB A CREATIVE COMMONS ATTRIBUTION
+        </a>
+      </div>
+      <div>
+        <a href="http://www.iacit.com.br/" target="_blank" rel="noopener">Desenvolvido por: IACIT Soluções Tecnológicas S.A</a> |
+        <a href="http://www.mediacts.com/" target="_blank" rel="noopener">Design: Mediacts</a>
+      </div>
+    </div>
+  </section>
+
+</footer>

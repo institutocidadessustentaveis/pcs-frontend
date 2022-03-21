@@ -1,0 +1,102 @@
+<div class="col-md-12 mt-2">
+  <form #formVariaveis="ngForm">
+
+    <mat-form-field class="col-md-12">
+      <mat-select id="idvariavel" placeholder="Variável" [(ngModel)]="filtroVariaveisPorMunicipios.idVariavelSelecionada" required name="variavel" (selectionChange)="variavelSelecionada($event.value)" >
+        <mat-option *ngFor="let variavel of variaveisCombo" [value]="variavel.id">{{variavel.label}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6">
+    <input name="inputValorPreenchido" matInput placeholder="Valor preenchido" [(ngModel)]="filtroVariaveisPorMunicipios.valorPreenchido">
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6">
+      <mat-select id="idano" placeholder="Ano de preenchimento" [(ngModel)]="filtroVariaveisPorMunicipios.anoSelecionado" name="anoSelecionado">
+        <mat-option *ngFor="let ano of anosCombo" [value]="ano">{{ano}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-12">
+      <mat-label>Exibição no mapa</mat-label>
+      <mat-select name="inputVisualizar" [(ngModel)]="filtroVariaveisPorMunicipios.visualizarComoPontos">
+        <mat-option *ngFor="let opcao of opcoes" [value]="opcao.value">
+          {{opcao.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+    <div class="row" style="padding-left: 3%;padding-right: 3%;">
+      <button mat-raised-button [disabled]="!formVariaveis.valid" color="primary" id="btnCarregar" class="col-md-5" style="margin-right: 5%;" (click)="buscarCidadesComVariavelPreenchida()">
+        Carregar no mapa
+      </button>
+    
+      <button mat-raised-button color="primary" id="btnExportar" class="col-md-5" style="margin-right: 5%;" (click)="exportarShapeVariaveis()">
+        Exportar shape
+      </button>
+    </div>
+
+    <div class="row" style="padding-left: 3%;padding-right: 3%;padding-top: 1%;">
+      <button mat-raised-button color="accent" id="btnRemover" class="col-md-5" style="margin-right: 5%;" (click)="clear()">
+        Remover do mapa
+      </button>
+
+      <button mat-raised-button color="primary" id="btnEstilo" class="col-md-5" style="margin-right: 5%;" 
+        (click)="openDialogPropriedades()" [disabled]="!exibirEstilo">
+        Alterar estilo
+      </button>
+    </div>
+ 
+  </form>
+
+  <form #formConsulta="ngForm" *ngIf="isAuthenticated()">
+
+    <mat-form-field class="col-md-4" style="margin-top: 3%;">
+      <input matInput placeholder="Nome da consulta:" value="" id="consultanome" required [disabled]="filtroVariaveisPorMunicipios.idConsulta"
+        [(ngModel)]="filtroVariaveisPorMunicipios.nomeConsulta" name="consultanome"/>
+    </mat-form-field>
+
+ 
+      <button mat-raised-button color="primary" [disabled]="!formConsulta.valid || !(filtroVariaveisPorMunicipios.idConsulta == null)" (click)="salvarConsultaVariaveis()"
+       id="btnSalvarConsulta">
+      <mat-icon> save </mat-icon>
+    </button>
+   
+    <mat-form-field class="col-md-4">
+      <mat-label class="bmd-label-floating">Selecione uma consulta</mat-label>
+      <mat-select id="idCidade"  name="filtroConsulta" [(ngModel)]="consultaSelecionada" (selectionChange)="onChangeConsultaVariavel($event.value)">
+        <mat-option>Selecione uma</mat-option>
+        <mat-option *ngFor="let filtro of listaConsultasVariaveis" [value]="filtro">{{filtro.nomeConsulta}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-flat-button color="warn" type="button" name="button" (click)="excluirConsultaVariavel(filtroVariaveisPorMunicipios.idConsulta)"
+         id="btnExcluir"  *ngIf="filtroVariaveisPorMunicipios.idConsulta" >
+      <mat-icon> delete </mat-icon>
+    </button>
+
+    <button mat-flat-button color="primary"  style="margin-left: 1%;" *ngIf="filtroVariaveisPorMunicipios.idConsulta" (click)="limparFiltroVariaveisPorMunicipios()"
+        id="btnAdd">Limpar
+    </button>
+
+  </form>
+
+  <ng-template #modalLoading>
+    <div class="centralizar-loading">
+       <div id="circularG">
+        <div id="circularG_1" class="circularG"></div>
+        <div id="circularG_2" class="circularG"></div>
+        <div id="circularG_3" class="circularG"></div>
+        <div id="circularG_4" class="circularG"></div>
+        <div id="circularG_5" class="circularG"></div>
+        <div id="circularG_6" class="circularG"></div>
+        <div id="circularG_7" class="circularG"></div>
+        <div id="circularG_8" class="circularG"></div>
+      </div> 
+      <div class="mt-2" style="text-align: center">
+        <p><strong>Carregando...</strong></p>
+      </div>
+    </div>
+  </ng-template>
+</div>

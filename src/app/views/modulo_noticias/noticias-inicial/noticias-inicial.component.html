@@ -1,0 +1,136 @@
+
+
+    <div class="search-results"  infiniteScroll [infiniteScrollDistance]="scrollDistance" [infiniteScrollThrottle]="throttle" [alwaysCallback]="true"
+  [infiniteScrollUpDistance]="scrollUpDistance" (scrolled)="onScrollDown($event)" [scrollWindow]="false" [fromRoot]="true" [infiniteScrollContainer]="'.mat-drawer-content'" >
+
+    <section class="home-banner owl-carousel owl-theme">
+      <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+          <li data-target="#carouselExampleIndicators" *ngFor="let x of listNoticiasCarousel;let i = index"
+            [attr.data-slide-to]="i" ngClass="i == 0 ? 'active' : ''"></li>
+        </ol>
+        <div class="carousel-inner">
+          <div *ngFor="let item of listNoticiasCarousel; let k = index"
+            [ngClass]="k == 0 ? 'carousel-item active' : 'carousel-item'">
+            <img class="img-carousel" loading="lazy" [src]="item.urlImagem | async" alt="Event Image">
+            <div class="carousel-caption d-none d-md-block">
+                <a style="color: white;" href="#" [routerLink]="['/noticia',item.idNoticia]"
+                routerLinkActive="router-link-active" class="">
+              <div style="position: absolute;bottom: 0;width:100%;">
+                <h1 class="animated fadeInUp duration-3s delay-1s">{{item.titulo}}</h1>
+                <h4 class="animated fadeInUp duration-3s delay-1s">{{item?.subtitulo}}</h4>
+              </div></a>
+            </div>
+          </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="search news-filter mb">
+        <app-breadcrumb2 class="breadcrumb"></app-breadcrumb2>
+      <header>
+        <h1 class="small"><strong><i class="material-icons search-icon">search</i>FILTRAR</strong>
+          &nbsp;<div class="mat-tooltip" matTooltip="A busca por notícias pode ser feita usando uma ou mais opções de filtros. Observe que ao utilizar
+          duas ou mais opções as notícias resultantes serão apenas aquelas que correspondem a todas elas. Caso use apenas uma opção
+          o resultado estará relacionado apenas a ela." class="material-icons">help</div></h1>
+      </header >
+      <div class="filters">
+        <div>
+          <label for="pcs">Eixo PCS</label>
+          <div>
+            <mat-form-field>
+              <mat-select id="idEixo" [(ngModel)]="filtroNoticiasInicial.idEixo" name="eixo">
+                <mat-option value="">Nenhum</mat-option>
+                <mat-option *ngFor="let eixo of listaEixos" [value]="eixo.id">{{eixo.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div>
+          <label for="ods">ODS</label>
+          <div>
+            <mat-form-field class="col-md-11">
+              <mat-select id="idOds" [(ngModel)]="filtroNoticiasInicial.idOds" name="ods" (selectionChange)="odsSelecionado($event.value)">
+                <mat-option value="">Nenhum</mat-option>
+                <mat-option *ngFor="let ods of listaOds" [value]="ods.id">{{ods.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <a style="color:white;" href="institucional/ods/{{idOdsSelecionado}}" title="Ir para página de ODS" target="_blank"><i
+                class="material-icons">help</i></a>
+          </div>
+        </div>
+        <div>
+          <label for="ai">Áreas de Interesse</label>
+          <div>
+            <mat-form-field>
+              <mat-select id="idArea" [(ngModel)]="filtroNoticiasInicial.idAreaInteresse" name="area">
+                <mat-option value="">Nenhuma</mat-option>
+                <mat-option *ngFor="let area of listaAreaInteresses" [value]="area.id">{{area.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div>
+          <label for="tag">Palavra Chave</label>
+          <div>
+            <mat-form-field>
+              <input matInput id="palavraChave" [(ngModel)]="filtroNoticiasInicial.palavraChave" name="palavraChave"
+                maxlength="150" />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div><button matTooltip="PESQUISAR" class="btn btn-outline-light btn-block mt-3" (click)="pesquisarNoticias()"
+            id="btnPesquisar">PESQUISAR</button>
+        </div>
+        <div>
+          <button style="width:45%;margin-right: 10px;" matTooltip="Limpar" class="btn btn-outline-light mt-3" (click)="clear()"
+            id="btnLimpar">LIMPAR</button>
+            <button style="width:47%;" matTooltip="Ajuda" class="btn btn-outline-light mt-3" (click)="msgAjuda()"
+            id="btnAjuda">AJUDA</button>
+        </div>
+
+
+      </div>
+    </section>
+
+  <section class="news__section">
+    <header>
+      <h1>Últimas notícias</h1>
+    </header>
+    <div class="news__grid news__grid--3">
+      <div class="news__grid-inner">
+        <article (click)="irDetalheNoticia(item)" style="cursor: pointer;border:0;"
+          *ngFor="let item of listNoticias; let k = index">
+          <header>
+            <h2>
+              <a href="{{gerarLinkNoticia(item)}}">{{item.titulo}}</a>
+            </h2>
+          </header>
+
+            <a href="{{gerarLinkNoticia(item)}}">
+              <figure>
+                <img style=" height: 300px;width: 100%;object-fit: cover;" loading="lazy" [src]="item.urlImagem | async">
+              </figure>
+            </a>
+
+            <div class="options">{{item.dataHoraPublicacao | date:'shortDate'}}</div>
+            <p>
+              {{pcsUtil.replaceHtmlTags(pcsUtil.subStringSemCortarTexto(item.subtitulo,190))}} <a
+                href="{{gerarLinkNoticia(item)}}">
+                [Leia Mais]</a>
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+  </div>

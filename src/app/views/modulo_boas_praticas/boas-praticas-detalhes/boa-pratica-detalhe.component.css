@@ -1,0 +1,535 @@
+
+.carousel-caption {
+  height: 480px;
+  color: #fff;
+  text-align: center;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  /* -webkit-justify-content: center;
+  justify-content: center; */
+}
+.home-banner {
+  position: relative;
+  height: 480px;
+  background-color: #115c0a;
+}
+.img-carousel {
+  opacity: .4;
+}
+
+.home-banner h1 {
+  font-family: Source Sans Pro;
+  font-weight: 700 !important;
+  font-size: calc(17px + 1.5vw);
+  line-height: 1.25em;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+  text-transform: uppercase;
+}
+h4 {
+  font-size: calc(10px + 1.0vw) !important;
+}
+
+/* cyrillic-ext */
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local("Open Sans Regular"), local("OpenSans-Regular"),
+    url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFWJ0bbck.woff2)
+      format("woff2");
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F,
+    U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local("Open Sans Regular"), local("OpenSans-Regular"),
+    url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFUZ0bbck.woff2)
+      format("woff2");
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local("Open Sans Regular"), local("OpenSans-Regular"),
+    url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFWZ0bbck.woff2)
+      format("woff2");
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local("Open Sans Regular"), local("OpenSans-Regular"),
+    url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFVp0bbck.woff2)
+      format("woff2");
+  unicode-range: U+0370-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local("Open Sans Regular"), local("OpenSans-Regular"),
+    url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFWp0bbck.woff2)
+      format("woff2");
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local("Open Sans Regular"), local("OpenSans-Regular"),
+    url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFW50bbck.woff2)
+      format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB,
+    U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local("Open Sans Regular"), local("OpenSans-Regular"),
+    url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFVZ0b.woff2)
+      format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+    U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+    url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmhduz8A.woff2)
+      format("woff2");
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F,
+    U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+    url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwkxduz8A.woff2)
+      format("woff2");
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+    url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmxduz8A.woff2)
+      format("woff2");
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+    url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwlBduz8A.woff2)
+      format("woff2");
+  unicode-range: U+0370-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+    url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmBduz8A.woff2)
+      format("woff2");
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+    url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmRduz8A.woff2)
+      format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB,
+    U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+    url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwlxdu.woff2)
+      format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+    U+FEFF, U+FFFD;
+}
+
+  /*...Imagem principal*/
+
+  .text-column {
+    text-align: left;
+    margin-left: 25%;
+    margin-right: 25%;
+  }
+
+  .label-titulo {
+      font-weight: bold;
+      font-size: 30px;
+      text-align: justify;
+      margin: 1% 25% 1% 25%;
+      color: #408559;
+      text-transform: uppercase;
+  }
+
+  .label-titulo-oics {
+    font-weight: bold;
+    font-size: 25px;
+    text-align: justify;
+    margin: 1% 25% 1% 25%;
+    color: #408559;
+    text-transform: uppercase;
+}
+
+  .label-titulo-white {
+      font-weight: bold;
+      font-size: 30px;
+      text-align: justify;
+      margin: 1% 25% 1% 25%;
+      color: white;
+      text-transform: uppercase;
+  }
+
+  .pontos-background {
+      background: url("../../../../assets/boas-praticas-inicial/pontos-light.png");
+      padding-bottom: 1.5%;
+  }
+
+  .div-default {
+      padding-bottom: 1.5%;
+  }
+  .label-titulo-galeria {
+      font-weight: bold;
+      font-size: 30px;
+      text-align: justify;
+      color: #408559;
+      text-transform: uppercase;
+      margin-top: 1%;
+  }
+
+  @media (max-width: 767px) {
+      /* ... */
+      .top-content .carousel-control-prev, .top-content .carousel-control-next {
+          display: none;
+      }
+      .top-content .carousel-indicators li {
+          margin-left: 10px;
+          margin-right: 10px;
+      }
+      /* ... */
+  }
+
+  .txt-responsabilidade {
+      margin-left: 5%;
+      margin-right: 5%;
+      font-style: italic;
+  }
+
+  @media (max-width: 600px) {
+    .text-column{
+      margin-top:5%;
+      margin-bottom:5%;
+      margin-left: 10%;
+      margin-right: 10%;
+    }
+
+    .label-titulo {
+      font-weight: bold;
+      font-size: 25px;
+      text-align: center;
+      margin: 5% 10% 5% 10%;
+    }
+    .label-titulo-white {
+      text-align: center;
+      font-size: 25px;
+      margin: 5% 5% 5% 5%;
+    }
+
+    .label-titulo-galeria {
+      font-size: 25px;
+      text-align: center;
+      margin: 5% 5% 5% 5%;
+    }
+
+  }
+
+  img {
+      max-width: 100%;
+  }
+
+  /* Rodapé */
+
+  .call-to-action {
+      background: #408559;
+      padding: 40px;
+  }
+
+  .call-to-action p {
+      color: white;
+  }
+
+  .call-to-action h1 {
+      color: white;
+      margin: 20px 0 60px;
+      padding: 0 20px;
+      font-weight: 700;
+      font-size: 34px;
+      text-align: center;
+  }
+
+  .btn-outline-theme-light, .btn-outline-theme-white {
+      border: 1px solid #6e6e6e !important;
+      width: 330px;
+      border-radius: 12px !important;
+      padding: 15px 0 !important;
+      color: #6e6e6e !important;
+      font-size: 16px !important;
+  }
+
+  .btn-outline-theme-white {
+      border: 1px solid white !important;
+      color: white !important;
+  }
+
+  .logoCenter {
+      text-align: center;
+  }
+
+  ::ng-deep .ngx-gallery-image-text {
+    font-size: 12px !important;
+    padding: 0px !important;
+  }
+
+
+  .box-overlay{
+    background-color: rgba(128, 128, 128, 0);
+    width: 300px;
+    padding: 20px;
+    display: block;
+    color: white;
+    font-size: 24px;
+    margin-right: 2%;
+  }
+
+
+  .rich-icon {
+    box-sizing: border-box;
+    width: 180px;
+    height: 180px;
+    border: 1px solid #fff;
+    border-radius: 10px;
+    color: #fff;
+    /* padding: 30px; */
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-flow: column nowrap;
+    flex-flow: column nowrap;
+    -ms-flex-pack: justify;
+    /* justify-content: space-between; */
+    /* display: flex; */
+    align-items: center;
+    justify-content: center;
+  }
+
+  .rich-icon-mobile {
+      width: 300px;
+      border: 15px solid green;
+      padding: 50px;
+  }
+
+  .rich-icon .name {
+      font-size: .7em;
+      /* line-height: 1.8461538462em; */
+      font-weight: bold;
+      text-align: center;
+  }
+
+  .rich-icon .number {
+      font-size: 1.375em;
+      line-height: 1.0909090909em;
+  }
+
+  .rich-icon .small {
+      font-size: .625em;
+      /* line-height: 2.4em; */
+  }
+
+  .div-indicador {
+    border: 1px white solid;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+    cursor: default;
+  }
+
+  .box-mobile{
+    padding-left: 2%;
+    padding-right: 2%;
+  }
+
+.label-eixo {
+  font-size: 1.7em;
+  line-height: 1.7em;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  color: #fff;
+  text-align: center;
+  position: relative;
+}
+
+.link-eixo{
+  color: #fff;
+  text-align: center;
+  position: relative;
+}
+
+.content {
+  position: relative;
+  width: 90px;
+  height: 90px;
+}
+
+.icone-ods {
+  width: 90px;
+  height: 90px;
+  cursor: pointer;
+}
+
+.square {
+  position: relative;
+  width: 10%;
+  margin-left: 1%;
+  margin-top: 1%;
+}
+
+.square:after {
+  content: "";
+  display: block;
+  padding-bottom: 100%;
+}
+
+.square:hover{
+  /* autoprefixer: ignore next */
+-webkit-transform: scale(1.1);
+-ms-transform: scale(1.1);
+transform: scale(1.1);
+}
+
+.news__grid--3 {
+  grid: auto/1fr;
+  gap: 4px;
+}
+.news__grid--3 .news__grid-inner {
+  display: grid;
+  grid: auto/repeat(6, 1fr);
+  gap: 4px;
+}
+
+  @media (max-width: 1300px) {
+    .box-desktop{
+      display: none;
+    }
+
+    .news__grid--3 .news__grid-inner {
+      grid: auto/repeat(4, 1fr);
+    }
+  }
+
+  @media (min-width: 1301px) {
+    .box-mobile{
+      display: none;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .news__grid--3 .news__grid-inner {
+      grid: auto/repeat(3, 1fr);
+    }
+  }
+
+  .breadcrumb {
+    background-color: #8a9ea1;
+    color: white !important;
+  }
+
+  .summernote ::ng-deep img {
+    vertical-align: middle;
+    padding-top: 15px;
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-bottom: 15px;
+  }
+
+  .home-banner {
+    position: relative;
+    background-color: black;
+    height: 480px;
+  }
+
+  .home-banner-filtro {
+    position: relative;
+    background-color: rgb(17, 92, 10);
+    height: 480px;
+  }
+
+  .img-carousel {
+    background-color: Black !important;
+    height: 480px;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .img-carousel-filtro {
+    background-color: Black !important;
+    height: 480px;
+    width: 100%;
+    object-fit: cover;
+    opacity: 0.5;
+  }
+
+  .solucao {
+    margin-left: 128px;
+    margin-right: 128px;
+    margin-bottom: 3em;
+    margin-top: 3em;
+  }
+  

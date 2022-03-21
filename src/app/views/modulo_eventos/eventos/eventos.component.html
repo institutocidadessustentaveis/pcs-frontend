@@ -1,0 +1,117 @@
+<div class="contentBody" style="position: relative;">
+  <mat-card>
+  
+    <div class="row">
+    
+      <div class="col-md-8 col-lg-9 col-xs-12 col-sm-12">
+        <h2>Cadastro de Evento</h2>
+      </div>
+    
+      <div class="col-md-4 col-lg-3 col-xs-12 col-sm-12" style="text-align: right;">
+        <button mat-flat-button color="primary" [routerLink]="['/eventos/cadastro']" class="btnCadastrar"
+          id="btnCadastrar" matTooltip="Cadastrar" style="cursor: pointer !important; margin-bottom: 5px;">
+          <mat-icon>add</mat-icon>Cadastrar Evento
+        </button>
+      </div>
+    
+    </div>
+    
+    <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+      <mat-divider></mat-divider>
+    </div>
+    
+    <br>
+    <br>
+    
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <mat-card-title>Lista de Eventos</mat-card-title>
+      <mat-divider></mat-divider>
+    </div>
+    <br>
+    <form [formGroup]="formFiltro" class="example-form">
+      <div class="row">
+        <mat-form-field class="col-md-3">
+          <input matInput placeholder="Evento" formControlName="nome" name="nome">
+        </mat-form-field>
+        <div class="col-md-3">
+          <app-datepicker name="dataInicio" formControlName="dataInicio" placeholder="Escolha a data inicial"></app-datepicker>
+        </div>
+        <div class="col-md-3">
+          <app-datepicker name="dataFim" formControlName="dataFim" placeholder="Escolha a data final"></app-datepicker>
+        </div>
+        <div class="col-md-3">
+          <button mat-flat-button color="primary" type="submit" name="button" class="btnFiltrar" id="btnFiltrar"
+            matTooltip="Filtrar" style="cursor: pointer !important; margin-bottom: 5px;" (click)="buscarEventosFiltradosPorNomeData()">
+            <mat-icon> search </mat-icon>
+            Buscar Eventos
+          </button>
+
+          <button mat-stroked-button color="primary" style="margin-left: 3px" (click)="limparFiltro()" alt="Limpar Filtro">Limpar Filtro</button>
+        </div>
+      </div>
+    </form>
+
+    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
+   
+      <!-- Nome Column -->
+      <ng-container matColumnDef="nome">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="nome">Nome</th>
+        <td mat-cell *matCellDef="let item" class='m-card-title' data-label='Nome'>
+          <span class="mobile-label">Nome</span>
+          {{item.nome}}
+        </td>
+      </ng-container>
+    
+      <!-- Tipo Column -->
+      <ng-container matColumnDef="tipo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="tipo">Tipo</th>
+        <td mat-cell *matCellDef="let item"> {{item.tipo}} </td>
+      </ng-container>
+    
+      <!-- Data Column -->
+      <ng-container matColumnDef="data">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="data">Data</th>
+        <td mat-cell *matCellDef="let item"> {{item.data | date:'dd/MM/yyyy'}} </td>
+      </ng-container>
+
+      <!-- Publicado Column -->
+      <ng-container matColumnDef="publicado">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="publicado">Publicado</th>
+        <td mat-cell *matCellDef="let item">
+          <div *ngIf="item.publicado == true; then ckecked else unckecked"></div>
+          <ng-template #ckecked><mat-icon>check</mat-icon></ng-template>
+          <ng-template #unckecked>-</ng-template>
+        </td>
+      </ng-container>
+    
+      <!-- Ações Column -->
+      <ng-container matColumnDef="acoes">
+        <th mat-header-cell *matHeaderCellDef> Ações </th>
+        <td mat-cell *matCellDef="let item" class='m-card-title' data-label='Ações'>
+    
+          <button mat-flat-button color="primary" type="button" name="button"
+            [routerLink]="['editar', item.id]" class="btnTabela" id="btnEditar" matTooltip="Editar" >
+            <mat-icon> edit </mat-icon>
+          </button>
+
+          <button mat-flat-button color="accent" type="button" [hidden]="!clonar" (click)="replicarEvento(item.id)" class="btnTabela" matTooltip="Cadastra um novo evento igual a este">
+            <mat-icon>file_copy</mat-icon>
+          </button>
+    
+          <button mat-flat-button color="warn" type="button" name="button"
+            class="btnTabela" id="btnExcluir" matTooltip="Excluir" (click)="excluirEvento(item.id)">
+            <mat-icon> delete </mat-icon>
+          </button>
+    
+        </td>
+      </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      
+    </table>
+    <mat-paginator style="text-align: center !important;" class="float-none" [pageSizeOptions]="[10,25,50,100]"
+    showFirstLastButtons></mat-paginator>
+  </mat-card>
+</div>
+  

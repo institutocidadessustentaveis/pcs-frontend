@@ -1,0 +1,32 @@
+<div class="importar-pontos">
+  <p>
+    <span>Clique no botão abaixo para importar o seu arquivo de pontos.</span><br>
+  </p>
+  <div class="row" style="padding-bottom: 15px;">
+    <div class="col-md-6" id="right" style="">
+      <button mat-flat-button color="primary" (click)="file.click()" >Importar arquivo de pontos</button>
+    </div>
+
+    <div class="col-md-6" id="left" style="">
+      <button mat-raised-button style="margin-right: 5%;" color="accent" (click)="removerPontosImportados()" id="btnRemoverPontos">
+        Remover do Mapa
+      </button>
+    </div>
+  </div>
+  <p>
+    Antes de importar seu arquivo, verifique se ele está no formato correto:<br>
+    1º - Deve ser um arquivo Excel (.xls ou .xlsx), onde cada linha corresponde a um ponto.<br>
+    2º - A primeira coluna deve ter o nome Latitude, seguida de seus valores nas linhas de baixo.<br>
+    3º - A segunda coluna deve ter o nome Longitude, seguida de seus valores nas linhas de baixo.<br>
+    4º - Caso o arquivo tenha mais que duas colunas, as informações contidas nas células serão tratadas como atributos dos pontos que serão criados. O nome do atributo será o conteúdo da primeira célula de cada coluna. <br>
+    5º - Nenhuma das colunas poderá ter seu nome com mais do que 10 caracteres.<br>
+    6º - As coordenadas devem estar no padrão graus e decimais do grau, usando virgula para separar o grau de seus decimais e o sinal negativo para coordenadas nos quadrantes Sul e Oeste, tal como neste exemplo para Brasília-DF: Latitude -15,794220; e Longitude -47,882117.
+
+  </p>
+
+  <input type="file" (change)="onFileChange($event)" multiple="false" style="visibility: hidden;" #file />
+
+
+  
+</div>
+

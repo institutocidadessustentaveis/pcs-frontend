@@ -1,0 +1,79 @@
+<div class="card-body">
+  <div *ngIf="carregando">
+    Carregando
+  </div>
+  <div class="table-responsive-lg" style="height: 100%" *ngIf="!carregando">
+    <table class="table table-striped table-xl">
+      <tr>
+        <th class="text-left"> Indicador </th>
+        <th class="text-center"> {{ anoInicial }}</th>
+        <th class="text-center"> {{ anoInicial +1 }}</th>
+        <th class="text-center"> {{ anoInicial +2}}</th>
+        <th class="text-center"> {{ anoInicial +3}}</th>
+        <th class="text-center"> Referência</th>
+      </tr>
+      <ng-container *ngFor="let linha of tabela">
+        <tr data-toggle="collapse" (click)="selecionar(linha)" [attr.data-target]="'#accordion' + linha[0]"
+          class="clickable align-middle">
+          <td class="text-left wrap align-middle">
+              <div [matTooltip]="linha[12]">
+                {{linha[1]}}
+                <a [routerLink]="geradorURL(linha[0])" class="align-middle">
+                  <mat-icon>open_in_new</mat-icon>
+                </a>
+              </div>
+          </td>
+          <td class="text-center" style="white-space: nowrap">
+            {{ linha[2] ? (linha[2] =='Preenchido' || linha[2].includes('[') || linha[2].includes(' - ') ? '' : linha[2] ) : '-' }}
+            <mat-icon *ngIf="linha[2] =='Preenchido'">check</mat-icon>
+            <mat-icon [matTooltip]="linha[2]"  *ngIf="linha[2] && linha[2].includes('[')">check</mat-icon>
+            <mat-icon [matTooltip]="linha[2]"  *ngIf="linha[2] && linha[2].includes(' - ')">check</mat-icon>
+          </td>
+          <td class="text-center" style="white-space: nowrap">
+            {{ linha[3] ? (linha[3] =='Preenchido' || linha[3].includes('[') || linha[3].includes(' - ') ? '' : linha[3] ) : '-' }}
+            <mat-icon *ngIf="linha[3] =='Preenchido'">check</mat-icon>
+            <mat-icon [matTooltip]="linha[3]" *ngIf="linha[3] && linha[3].includes('[')">check</mat-icon>
+            <mat-icon [matTooltip]="linha[3]"  *ngIf="linha[3] && linha[3].includes(' - ')">check</mat-icon>
+          </td>
+          <td class="text-center" style="white-space: nowrap">
+            {{ linha[4] ? (linha[4] =='Preenchido' || linha[4].includes('[') || linha[4].includes(' - ') ? '' : linha[4] ) : '-' }}
+            <mat-icon *ngIf="linha[4] =='Preenchido'">check</mat-icon>
+            <mat-icon [matTooltip]="linha[4]"  *ngIf="linha[4] && linha[4].includes('[')">check</mat-icon>
+            <mat-icon [matTooltip]="linha[4]"  *ngIf="linha[4] && linha[4].includes(' - ')">check</mat-icon>
+          </td>
+          <td class="text-center" style="white-space: nowrap">
+            {{ linha[5] ? (linha[5] == 'Preenchido' || linha[5].includes('[') || linha[5].includes(' - ') ? '' : linha[5] ) : '-' }}
+            <mat-icon *ngIf="linha[5] =='Preenchido'">check</mat-icon>
+            <mat-icon [matTooltip]="linha[5]"  *ngIf="linha[5] && linha[5].includes('[')">check</mat-icon>
+            <mat-icon [matTooltip]="linha[5]"  *ngIf="linha[5] && linha[5].includes(' - ')">check</mat-icon>
+          </td>
+          <td class="text-center" style="white-space: nowrap">
+            <mat-icon
+              [ngStyle]="{'background-color': linha[7] | corReferenciaPipe, 'margin-right': '1px', 'border-radius': '20px'} "
+              [matTooltip]="linha[13]">
+            </mat-icon>
+            <mat-icon
+              [ngStyle]="{'background-color': linha[8] | corReferenciaPipe, 'margin-right': '1px', 'border-radius': '20px'} "
+              [matTooltip]="linha[14]">
+            </mat-icon>
+            <mat-icon
+              [ngStyle]="{'background-color': linha[9]| corReferenciaPipe, 'margin-right': '1px', 'border-radius': '20px'} "
+              [matTooltip]="linha[15]">
+            </mat-icon>
+            <mat-icon
+              [ngStyle]="{'background-color': linha[10]  | corReferenciaPipe, 'margin-right': '1px', 'border-radius': '20px'} "
+              [matTooltip]="linha[16]">
+            </mat-icon>
+          </td>
+        </tr>
+
+        <tr [attr.id]="'accordion' + linha[0]" class="collapse" style="width: 100%">
+          <td [attr.colspan]="6" *ngIf="linha[6]">
+            <app-lista-variavel-preenchida [anoInicial]="anoInicial" [anoFinal]="anoFinal" [cidade]="cidade"
+              [indicador]="linha[0]"></app-lista-variavel-preenchida>
+          </td>
+        </tr>
+      </ng-container>
+    </table>
+  </div>
+</div>

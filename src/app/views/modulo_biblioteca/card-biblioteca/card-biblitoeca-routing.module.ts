@@ -1,0 +1,19 @@
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { CardBibliotecaComponent } from './card-biblioteca.component';
+
+
+const routes: Routes = [
+  {
+    path: '',
+    component: CardBibliotecaComponent,
+  },
+
+
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class CardBibliotecaRoutingModule { }

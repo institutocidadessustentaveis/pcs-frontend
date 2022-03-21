@@ -1,0 +1,208 @@
+<div class="contentBody" style="position: relative;" *ngIf="!carregando" >
+  <div [hidden]="!carregando" class="loading-indicator">
+    <mat-progress-spinner class="example-margin" style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+  </div>
+  <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+    <div class="row">
+      <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+        <h2>{{ formulario.nome }}</h2>
+      </div>
+    </div>
+
+
+
+    <div class="row mt-3">
+      <div class="col-sm-12">
+        <label>
+          {{formulario.prefeituraCidade ? 'Prefeitura de ' + formulario.prefeituraCidade : 'Instituto Cidades Sustentáveis'}} |
+          Formulário criado em: {{formatardata(formulario.dataCriacao)}} |
+          Data inicial para respostas: {{formatardata(formulario.inicioPeriodoAtividade)}} <span *ngIf="statusFormularioInicio">(Não iniciado)</span> |
+          Data limite para respostas: {{formatardata(formulario.fimPeriodoAtividade)}} <span *ngIf="statusFormulario">(Encerrado)</span>
+        </label>
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="row">
+      <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+        <strong>Descrição</strong>
+        <div [innerHtml]="formulario.descricao"></div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="row mt-3">
+      <div class="col-md-4 col-sm-12" *ngIf="formulario.eixosNomes.length > 0">
+        <strong>Eixos do PCS</strong>
+        <br>
+        <a *ngFor="let eixo of formulario.eixos" [href]="eixo.link" target="_blank">
+          <img style="margin-right: 1em;" width="80" height="80" [src]="url+'eixo/imagem/'+eixo.id">
+        </a><br>
+      </div>
+
+      <div class="col-md-4 col-sm-12" *ngIf="formulario.ods.length > 0">
+        <strong>ODS</strong>
+        <div>
+          <a *ngFor="let ods of formulario.ods" style="color:white;" href="institucional/ods/{{ods}}"
+            title="Ir para página de ODS" target="_blank">
+            <img class="icone-ods" [src]="gerarLinkImagemODS(ods)" />
+          </a>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-sm-12 margin-top-mobile" *ngIf="formulario.temasNomes.length > 0">
+        <strong>Temas</strong>
+        <p>
+          <label>{{formatarStringInterpolacao(formulario.temasNomes)}}</label>
+        </p>
+      </div>
+
+
+    </div>
+
+    <hr>
+    <div class="row">
+      <div *ngIf="formulario.secoes" class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+        <mat-vertical-stepper [linear]="true" #stepper  >
+          <div *ngFor="let secao of formulario.secoes; let i = index">
+            <mat-step *ngIf="secao" [stepControl]="formularioSecao[i]" >
+              <ng-template matStepLabel>{{secao.nome}}</ng-template>
+              <form [formGroup]="formularioSecao[i]">
+                <div class="row">
+                  <div *ngFor="let pergunta of secao.perguntas"  class="col-12">
+                    <p [innerHTML]="pergunta.pergunta"></p>
+
+                    <div *ngIf="pergunta.tipo == 'SimNao'">
+                      <mat-radio-group
+                        class="escolha"
+                        [name]="pergunta.id"
+                        [formControlName]="pergunta.id">
+                        <mat-radio-button class="escolha-radio-button" [value]="'true'"> Sim </mat-radio-button>
+                        <mat-radio-button class="escolha-radio-button" [value]="'false'"> Não </mat-radio-button>
+                      </mat-radio-group>
+                      <mat-error *ngIf="formularioSecao[i].controls[pergunta.id].hasError('required')">
+                        Campo obrigatório.
+                      </mat-error>
+                    </div>
+
+                    <div *ngIf="pergunta.tipo == 'Multiplo'">
+                      <div *ngIf="pergunta.multiplaSelecao" >
+                        <div class="col-md-12" *ngFor="let resposta of pergunta.respostas">
+                          <mat-checkbox
+                            [formControlName]="pergunta.id"
+                            [checked]="resposta.id"
+                            (change)="selecionarCheckbox(pergunta.id, resposta.id)">
+                            {{resposta.resposta}}
+                          </mat-checkbox>
+                        </div>
+                        <mat-error *ngIf="!this.mapCheckbox.has(pergunta.id)">
+                          Campo obrigatório.
+                        </mat-error>
+                      </div>
+                      <div *ngIf="!pergunta.multiplaSelecao" >
+                        <mat-radio-group
+                          class="escolha"
+                          [name]="pergunta.id"
+                          [formControlName]="pergunta.id">
+                          <mat-radio-button class="escolha-radio-button"
+                            *ngFor="let resposta of pergunta.respostas"
+                            [value]="resposta.id">
+                            {{ resposta.resposta }}
+                          </mat-radio-button>
+                        </mat-radio-group>
+                        <mat-error *ngIf="formularioSecao[i].controls[pergunta.id].hasError('required')">
+                          Campo obrigatório.
+                        </mat-error>
+                      </div>
+                    </div>
+                    <div *ngIf="pergunta.tipo == 'MultiploOutro'">
+                      <div *ngIf="pergunta.multiplaSelecao" >
+                        <div class="col-md-12" *ngFor="let resposta of pergunta.respostas">
+                          <mat-checkbox (change)="selecionarCheckbox(pergunta.id, resposta.id)"
+                            [formControlName]="pergunta.id"
+                            [checked]="resposta.id">
+                            {{resposta.resposta}}
+                          </mat-checkbox>
+                        </div>
+                        <mat-form-field class="col-md-12">
+                          <input
+                            matInput
+                            placeholder="Caso não tenha encontrado uma opção, descreva sua resposta aqui."
+                            [formControlName]="pergunta.id+'-outro'"
+                            [name]="pergunta.id+'-outro'"                          >
+                        </mat-form-field>
+                        <mat-error *ngIf="!this.mapCheckbox.has(pergunta.id) && (!formularioSecao[i].controls[pergunta.id+'-outro'].value || !formularioSecao[i].controls[pergunta.id+'-outro'].value.trim()) ">
+                          Campo obrigatório.
+                        </mat-error>
+                      </div>
+                      <div *ngIf="!pergunta.multiplaSelecao" >
+                        <mat-radio-group
+                          class="escolha"
+                          [name]="pergunta.id"
+                          [formControlName]="pergunta.id">
+                          <mat-radio-button class="escolha-radio-button"
+                            *ngFor="let resposta of pergunta.respostas"
+                            [value]="resposta.id"
+                            (change)="alterarValorTextoOutro(formularioSecao[i],pergunta.id)">
+                            {{ resposta.resposta }}
+                          </mat-radio-button>
+                        </mat-radio-group>
+                        <mat-form-field class="col-md-12">
+                          <input
+                            matInput
+                            placeholder="Caso não tenha encontrado uma opção, descreva sua resposta aqui."
+                            [formControlName]="pergunta.id+'-outro'"
+                            (change)="limparValorRadioOutro(formularioSecao[i],pergunta.id)"
+                            [name]="pergunta.id+'-outro'"                          >
+                        </mat-form-field>
+                        <mat-error *ngIf="!formularioSecao[i].controls[pergunta.id].value && (!formularioSecao[i].controls[pergunta.id+'-outro'].value || !formularioSecao[i].controls[pergunta.id+'-outro'].value.trim()) ">
+                          Campo obrigatório.
+                        </mat-error>
+                      </div>
+                    </div>
+                    <div *ngIf="pergunta.tipo == 'TextoLivre'">
+                      <mat-form-field class="col-md-12">
+                        <textarea
+                          matInput
+                          placeholder="Responda a pergunta acima."
+                          [formControlName]="pergunta.id"
+                          [name]="pergunta.id"
+                          required
+                          id="nome"></textarea>
+                        </mat-form-field>
+                        <mat-error *ngIf="formularioSecao[i].controls[pergunta.id].hasError('required')">
+                          Campo obrigatório.
+                        </mat-error>
+                    </div>
+
+                    <hr>
+                  </div>
+                </div>
+                <div class="col-12 text-right">
+                  <button type="button" color="accent" mat-flat-button matStepperPrevious *ngIf="i > 0" >Voltar</button>
+                  <button type="button" color="primary" style="margin-left: 5px;" mat-flat-button matStepperNext *ngIf="liberarBotaoFormulario(formularioSecao[i],i) && (i+1) < formularioSecao.length"> Próxima Seção</button>
+                </div>
+              </form>
+            </mat-step>
+          </div>
+
+        </mat-vertical-stepper>
+      </div>
+    </div>
+    <div class="col-md-12 text-right">
+      <ngx-recaptcha2 id="captcha" #captchaElem [siteKey]="siteKey" (success)="handleSuccess($event)"
+        [useGlobalDomain]="false" class="col-md-7" formControlName="recaptcha">
+      </ngx-recaptcha2><br>
+      <button type="button" [disabled]="(!dataValida || !habilitarSalvar || !captcha)" mat-flat-button color="primary"
+      class="btnToRight" (click)="salvar()" >
+            Salvar  
+      </button>
+    </div>
+    
+
+
+
+  </mat-card>
+</div>

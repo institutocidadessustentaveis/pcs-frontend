@@ -1,0 +1,9 @@
+<h2 mat-dialog-title>Informações da importação</h2>
+<mat-dialog-content class="mat-typography">
+  <p>Quantidade de variáveis importadas: {{ varPreenchidas }}</p>
+  <p>Quantidade de variáveis de subdivisão importadas: {{ varPreenchidasSub }}</p>
+  <p>Quantidade de variáveis não importadas ou com erros: {{ qtdTotalErros }}</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Sair</button>
+</mat-dialog-actions>

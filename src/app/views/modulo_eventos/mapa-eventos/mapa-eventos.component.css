@@ -1,0 +1,77 @@
+.legend {
+  line-height: 18px;
+  color: #555;
+}
+.legend i {
+  width: 18px;
+  height: 18px;
+  float: left;
+  margin-right: 8px;
+  opacity: 0.7;
+}
+
+.mapa{
+  margin-top: 1em;
+  margin-bottom: 1em;
+  height: 86vh;
+}
+
+
+/* ...markerClusters - cidades no mapa */
+::ng-deep .marker-cluster-small {
+  background-color:rgba(211, 20, 20, 0.918);
+}
+
+::ng-deep .marker-cluster-small div {
+  background-color: white !important;
+}
+
+::ng-deep .marker-cluster-medium {
+  background-color: rgba(211, 20, 20, 0.918);
+}
+::ng-deep .marker-cluster-medium div {
+  background-color: white !important;
+}
+
+::ng-deep .marker-cluster-large {
+  background-color:  rgba(211, 20, 20, 0.918);
+}
+::ng-deep .marker-cluster-large div {
+  background-color: white !important;
+}
+
+
+
+::ng-deep .marker-cluster {
+  background-clip: padding-box;
+  border-radius: 20px;
+  width: 30px !important;
+  height: 30px !important;
+}
+::ng-deep .marker-cluster div {
+  width: 20px !important;
+  height: 20px !important;
+  margin-left: 5px;
+  margin-top: 5px;
+  color: black;
+
+  text-align: center;
+  border-radius: 15px;
+  font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+::ng-deep .marker-cluster span {
+  line-height: 20px;
+}
+
+::ng-deep .div-cluster-legenda {
+  width: 18px;
+  height: 18px;
+  float: left;
+  margin-right: 8px;
+  opacity: 0.7;
+  background: white; 
+  border-radius:50%;
+  border-style: solid;
+  border-color: rgba(211, 20, 20, 0.918);
+  border-width: 3px;
+}

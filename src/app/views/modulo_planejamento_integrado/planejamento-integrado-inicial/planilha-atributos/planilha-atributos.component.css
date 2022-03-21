@@ -1,0 +1,81 @@
+.btn-abrir-planilha{
+  position: absolute;
+  z-index: 999;
+  pointer-events: visiblePainted; /* IE 9-10 doesn't have auto */
+  pointer-events: auto;
+  
+}
+
+.btn-abrir-planilha button{
+  height: 32px !important;
+  width: 35px !important;
+  min-width: 0px !important;
+  padding: 0px !important;
+  border-radius: 4px !important;
+  border: 2px solid rgba(0,0,0,0.2) !important;
+  line-height: 0px !important;
+  background-clip: padding-box !important;
+  z-index: 999;
+}
+
+
+.planilha-atributos{
+  position:  absolute;
+  left: 100px;
+  min-width: 400px;
+  min-height: 300px;
+  max-width: 1000px;
+  z-index: 1001;
+  background-color: white;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.cabecalho-planilha-titulo{
+  padding-top: .3em;
+  white-space: nowrap
+}
+.cabecalho-planilha{
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.12);
+  margin-bottom: 0em;
+}
+.camadas{
+  padding: 0em 1em;
+  resize: both;
+  overflow: auto;
+  overflow-y: scroll;
+  overflow-x: scroll;
+  height:395px;
+  max-width: 100%;
+  max-height: 60vh;
+  min-width: 20em;
+  min-height: 10em;
+}
+
+.camada{
+  margin-bottom: 1em;
+}
+th {
+  min-width:  10em;
+}
+td {
+  white-space:nowrap;
+  margin: 0px 1em;
+  padding-right: 1em;
+}
+
+.formulario-novo-atributo{
+  padding: 0em 2em;
+  margin: 1em;
+}
+.strong{
+  font-weight: bold;
+}
+.menu-planilha{
+  border-bottom: 1px;border-bottom-style: groove;
+}
+
+.row-selected {
+  background-color: #B0BED9 !important;
+}

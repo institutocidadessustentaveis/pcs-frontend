@@ -1,0 +1,117 @@
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <form [formGroup]="formFiltro" class="example-form">
+
+      <div class="col-lg-12">
+        <mat-form-field>
+          <mat-label>-- Selecione uma Estado -- </mat-label>
+          <mat-select formControlName="estado" name="estado" id="estado" (selectionChange)="estadoSelecionado($event.value)">
+            <mat-option value=""></mat-option>
+            <mat-option *ngFor="let estado of listaEstados" [value]="estado.id">
+              {{estado.nome}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-12">
+        <mat-form-field>
+          <mat-label>-- Selecione uma Cidade -- </mat-label>
+          <mat-select formControlName="cidade" name="cidade" id="cidade">
+            <mat-option value=""></mat-option>
+            <mat-option *ngFor="let cidade of listaCidades" [value]="cidade.id">
+              {{cidade.label}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </form>
+  </div>
+
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right" style="margin-top: 10px !important;">
+    <button matTooltip="Gerar Relatório" mat-flat-button color="primary" (click)="gerarRelatorio()"
+      id="btnGerarRelatorio" class="botaoGeraRelatorio">
+      <mat-icon style="margin-top: -1px !important">insert_drive_file</mat-icon> Gerar Relatório
+    </button>
+  </div>
+
+  <mat-progress-bar mode="indeterminate" [hidden]="!loading" style="margin-top:20px;"></mat-progress-bar>
+
+  <app-exportador-relatorios [registros]="formatarParaExportar(registros)" [titulo]="titulo" [colunas]="colunas">
+  </app-exportador-relatorios>
+
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" [hidden]="resultadoEncontrado" style="margin-top:25px;">
+    <p class="alert alert-warning" role="alert" *ngIf="pesquisou">Nenhum registro encontrado!</p>
+  </div>
+
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px !important;"
+    [hidden]="registros.length == 0">
+
+    <table style="text-align:center" mat-table [dataSource]="dataSource" matSort #tbRelatorio id="tbRelatorio" [hidden]="registros.length === 0">
+
+      <ng-container matColumnDef="planoDeMetas">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="planoDeMetas">Plano de Metas</th>
+        <td mat-cell *matCellDef="let element">{{ element.planoDeMetas }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="prestacaoDeContas">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="prestacaoDeContas">Prestação de contas</th>
+        <td mat-cell *matCellDef="let element">{{ element.prestacaoDeContas }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="dataUploadPlano">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="dataUploadPlano">Data upload Plano de Metas</th>
+        <td mat-cell *matCellDef="let element">{{ element.dataHoraUploadPlano | date: "dd/MM/yyyy" }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="horaUploadPlano">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="horaUploadPlano">Hora upload Plano de Metas</th>
+        <td mat-cell *matCellDef="let element">{{ element.dataHoraUploadPlano | date: "HH:mm:ss" }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="dataUploadPrestacao">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="dataUploadPrestacao">Data upload Prestação de Contas</th>
+        <td mat-cell *matCellDef="let element">{{ element.dataHoraUploadPrestacao | date: "dd/MM/yyyy" }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="horaUploadPrestacao">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="horaUploadPrestacao">Hora upload Prestação de Contas</th>
+        <td mat-cell *matCellDef="let element">{{ element.dataHoraUploadPrestacao | date: "HH:mm:ss" }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="estado">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="estado">Província/Estado</th>
+        <td mat-cell *matCellDef="let element">{{ element.estadoSigla ? element.estadoSigla : element.estado }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="cidade">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="cidade">Cidade</th>
+        <td mat-cell *matCellDef="let element">{{ element.cidade }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="mandato">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="mandato">Período do Mandato</th>
+        <td mat-cell *matCellDef="let element">{{ element.mandato }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="nomeUsuario">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="nomeUsuario">Usuário</th>
+        <td mat-cell *matCellDef="let element">{{ element.nomeUsuario }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+
+  <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" style="margin-top: 20px !important;"
+    [hidden]="registros.length == 0">
+    <mat-toolbar style="background-color:white !important;">
+      <mat-toolbar-row>
+        <mat-paginator style="text-align: center !important;" class="float-none" [pageSizeOptions]="[10,25,50,100]"
+          showFirstLastButtons></mat-paginator>
+      </mat-toolbar-row>
+    </mat-toolbar>
+  </div>
+
+</div>

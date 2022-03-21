@@ -1,0 +1,207 @@
+
+<mat-sidenav-container class="example-container">
+  <mat-sidenav #sidenav mode="over" [(opened)]="sidenavOpen" class="menu-sig" style="margin-left: 0px;">
+    <button mat-mini-fab color="accent" (click)="fecharMenuSIG()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <mat-tab-group>
+      <!-- Filtro de Boas Práticas -->
+      <mat-tab label="Municípios com Boas Práticas" *ngIf="ctrlFiltroSelecionado">
+        <ng-template matTabContent>
+          <app-filtro-boa-pratica #filtroBoaPratica (carregarNoMapaEvent)="carregarBoasPraticasNoMapa($event)"
+                                (carregarEstiloNoMapaEvent)="carregarEstiloBoasPraticasNoMapa($event)"
+                                (clearEvent)="removerBoasPraticasDoMapa()" (exportarShapeEvent)="exportarShape('boas praticas')" >
+          </app-filtro-boa-pratica>
+        </ng-template>
+      </mat-tab>
+
+      <!-- Filtro de Variáveis -->
+      <mat-tab label="Variáveis por município" *ngIf="ctrlFiltroSelecionado">
+        <ng-template matTabContent>
+          <app-filtro-variavel #filtroVariavel (carregarNoMapaEvent)="carregarVariaveisNoMapa($event)"
+                            (carregarEstiloNoMapaEvent)="carregarEstiloVariaveisNoMapa($event)"
+                            (clearEvent)="removerVariaveisDoMapa()" (exportarShapeEvent)="exportarShape('variaveis')">
+          </app-filtro-variavel>
+        </ng-template>
+      </mat-tab>
+
+      <!-- Nova Camada -->
+      <mat-tab label="Nova Camada" *ngIf="ctrlMenuSelecionado && !modoEdicao && estaLogado && hasRole('ROLE_CADASTRAR_SHAPEFILE_RASTER')">
+        <ng-template matTabContent>
+          <app-nova-camada #novaCamada (salvarNovaCamadaShapeFileEvent)="salvarNovaCamadaShapeFile($event)">
+          </app-nova-camada>
+        </ng-template>
+      </mat-tab>
+
+      <!-- Catalógo de shapes -->
+      <mat-tab label="Catálogo de Camadas" *ngIf="ctrlMenuSelecionado && !modoEdicao">
+        <ng-template matTabContent>
+          <app-catalogo-shape (carregarNoMapaEvent)="initModoEdicaoShapeParaEditar($event)" (configurarAtributosEvent)="atualizarTabelaAtributos()" ></app-catalogo-shape>
+        </ng-template>
+      </mat-tab>
+
+      <!-- Definir latitude/longitude -->
+      <mat-tab label="Definir coordenadas do mapa" *ngIf="ctrlMenuSelecionado && !modoEdicao">
+        <ng-template matTabContent>
+          <div class="row mt-2" style="padding: 0% 1%">
+            <div class="col-md-3">
+              <mat-form-field class="text-center definir-coordenadas-field">
+                <input matInput type="number" placeholder="Latitude" min="-90" max="90" [(ngModel)]="latitude"
+                #nome="ngModel" name="latitude" />
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-3">
+              <mat-form-field class="text-center definir-coordenadas-field">
+                <input matInput type="number" placeholder="Longitude" min="-180" max="180" [(ngModel)]="longitude"
+                #nome="ngModel" name="longitude" />
+              </mat-form-field>
+            </div>
+            <div class="col-md-3 definir-coordenadas-field" style="text-align: center;">
+              <button mat-flat-button color="primary" [disabled]="latitude == null  || longitude == null || latitude == undefined  || longitude == undefined " (click)="definirCoordernadas()">
+                Definir Coordenadas
+              </button>
+            </div>
+            <div class="col-md-3" style="text-align: center;">
+              <button mat-flat-button color="accent" [disabled]="!marcadorLatLng" (click)="removerMarcadorDaCoordenada()">
+                Remover Marcador
+              </button>
+            </div>
+            <div class="row" style="padding: 1em;">
+              <div class="col-md-12">
+                Esta funcionalidade permite localizar uma coordenada centralizando a tela em um ponto com os valores inseridos acima. Será mostrada na tela um elemento de marcação que não é um objeto exportável, mas apenas um ponto de localização da coordenada digitada. O formato da coordenada deve ser em graus, no padrão graus e decimais do grau, usando vírgula para separar o grau de seus decimais e o sinal negativo para coordenadas nos quadrantes Sul e Oeste, tal como neste exemplo para Brasília-DF: Latitude -15,794220; e Longitude -47,882117.<br>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </mat-tab>
+
+      <!-- Filtro de Indicadores -->
+      <mat-tab label="Indicadores por município" *ngIf="ctrlFiltroSelecionado">
+        <ng-template matTabContent>
+          <app-filtro-indicador #filtroIndicador (carregarNoMapaEvent)="carregarIndicadoresNoMapa($event)"
+                                (carregarEstiloNoMapaEvent)="carregarEstiloIndicadoresNoMapa($event)"
+                                (clearEvent)="removerIndicadoresDoMapa()" (exportarShapeEvent)="exportarShape('indicadores')">
+          </app-filtro-indicador>
+        </ng-template>
+      </mat-tab>
+
+      <!-- Importar pontos -->
+      <mat-tab label="Importar pontos" *ngIf="ctrlMenuSelecionado">
+        <ng-template matTabContent>
+          <app-importar-pontos #importarPontos (carregarNoMapaEvent)="carregarPontosImportadosNoMapa($event)" (removerNoMapaEvent)="removerPontosImportados($event)"></app-importar-pontos>
+        </ng-template>
+      </mat-tab>
+
+
+
+
+        <!-- Mapa temático -->
+        <mat-tab label="Mapa temático" *ngIf="ctrlMenuSelecionado  && !modoEdicao && estaLogado">
+          <ng-template matTabContent>
+            <app-mapa-tematico [shapesSelecionados]="shapesSelecionados" (eventoGerarMapa)="getClassesTematicas($event)"  (eventoRemoverMapa)="removeClassesTematicas($event)"></app-mapa-tematico>
+          </ng-template>
+        </mat-tab>
+
+        <!-- Operações matemáticas -->
+        <mat-tab label="Operações matemáticas" *ngIf="ctrlMenuSelecionado  && !modoEdicao && estaLogado">
+          <ng-template matTabContent>
+            <app-operacoes-matematicas-camada [shapesSelecionados]="shapesSelecionados" [shapesSelecionadosPorSelecaoArea]="shapesSelecionadosPorSelecaoArea" ></app-operacoes-matematicas-camada>
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div style="display: none;">
+      <div class="titlePrint" leaflet-browser-print-content>
+        <div class="row" style="border-color: #ffffff;padding-right: 1em;border-width: 0px;border-style: solid;margin-left: 0px !important;margin-top: -9px !important;font-size: 13px;color: #4F4F4F;float: right;">
+          https://www.cidadessustentaveis.org.br/planejamento-integrado/sig
+        </div>
+        <div class="row" style="border-color: #ffffff;border-width: 0px;border-style: solid;margin-left: -10px !important;margin-top: 10px !important;">
+          <img style="width: 175px;height: 72px;" src="../../../../assets/logos/f-logo__programa-cidades-sustentaveis.jpg">
+        </div>
+        <div class="row" style="border-color: #ffffff;border-width: 0px;border-style: solid;margin-left: 0px !important;">
+          <h3 style="font-weight: bold;font-size: 18px;width: 100%;height: 30px;border-style: solid;border-color: #4F4F4F;
+          border-width: 1px;">{{tituloImpressaoMapa}}</h3>
+        </div>
+      </div>
+      <h3 leaflet-browser-print-content style="font-size: 16px;padding-left: 1em;margin-top: 0px !important;">Arquivos Shapes utilizados: <br/><span style="font-size: 12px;" [innerHTML]="nomesShapesSelecionados"></span></h3>
+      <h3 leaflet-browser-print-content style="width: 100%;padding-left: 1em;padding-top: 5px;font-size: 13px;color: #4F4F4F;width: 100%;text-align: center">Mapa gerado pelo usuário no sistema online aberto de SIG do PCS</h3>
+      <h3 leaflet-browser-print-content style="padding-top: 15px;padding-right: 1em;font-size: 13px;color: #4F4F4F;text-align: right;">{{returnCurrentDate() | date:'dd/MM/yyyy HH:mm'}}</h3>
+      <div [hidden]="!loading" id="loading-esconder" class="loading-indicator" leaflet-browser-print-content>
+        <div class="loader-dots">Gerando imagem, aguarde um momento</div>
+      </div>
+    </div>
+    <div [hidden]="!loading" class="loading-indicator">
+      <mat-progress-spinner class="example-margin" style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+    </div>
+
+    <div class="map">
+      <div leaflet style="height: 84vh;" id="map"
+            leafletDraw
+            [leafletOptions]="options"
+            [leafletDrawOptions]="drawOptions"
+            (leafletMapReady)="onMapReady($event)">
+      </div>
+      <div *ngIf="modoEdicao" class="leaflet-top" style="width: 90%;padding-right: 10%;padding-left: 20%; text-align: center;">
+          <div style="background-color:darkseagreen">
+              <h5 id="mapTitle">Camada <strong>"{{tituloShapeFileEditar}}"</strong> em Modo de edição</h5>
+          </div>
+      </div>
+      <div *ngIf="modoImpressao" class="leaflet-top" style="width: 90%;padding-right: 10%;padding-left: 20%; text-align: center;">
+        <div style="background-color:darkseagreen">
+            <h5 id="mapTitle">Modo de Impressão - Habilitado</h5>
+        </div>
+      </div>
+      <div class="div-zoom">
+        <div class="leaflet-control-zoom leaflet-bar leaflet-control" style="width: 75px;display: flex;">
+          <a class="leaflet-control-zoom-in custom-button-zoom custom-button-zoom-in-img" style="border: 2px solid #b0b0b0 !important;" title="Zoom in" role="button" aria-label="Zoom in" (click)="zoomIn()"></a>
+          <a class="leaflet-control-zoom-out custom-button-zoom custom-button-zoom-out-img" style="margin-left: 5px; border: 2px solid #b0b0b0 !important;" title="Zoom Out" role="button" aria-label="Zoom Out" (click)="zoomOut()"></a>
+        </div>
+      </div>
+      <div class="leaflet-top leaflet-left" 
+        style="margin-left: 10px; top: 16.8em; bottom:100px; pointer-events: all !important; z-index: 999">
+        <app-planilha-atributos
+          [modoImpressao]="modoImpressao"
+          [planilha]="tabelaAtributos"
+          [idsSelecionados]="objetosSelecionados"
+          [atributos]="atributos"
+          (calcular)="criarNovoAtributo($event)"
+          (mesclar)="mesclarPlanilha($event)"
+          (selecionar)="selecionarItemDaPlanilha($event)">
+        </app-planilha-atributos>
+      </div>
+    </div>
+
+
+
+
+    <div  *ngIf="listaIndicadorPreenchidoMapa && false">
+      <h5 class="indicador-nome" >
+
+      </h5>
+      <div class="row">
+        <div style="min-width: 100%">
+          <div class="table-responsive-lg">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">Cidade</th>
+                  <th scope="col">Valor</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of listaIndicadorPreenchidoMapa">
+                  <td> {{item.nomeCidade}} </td>
+                  <td> {{item.valorPreenchido}} </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

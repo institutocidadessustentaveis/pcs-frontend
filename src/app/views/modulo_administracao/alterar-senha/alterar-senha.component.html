@@ -1,0 +1,93 @@
+<div class="contentBody">
+<mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+  <form [formGroup]="alterarSenhaForm">
+    <div class="col-lg-12" >
+      <h2>Alterar Senha</h2>
+      <mat-divider></mat-divider>
+    </div>
+    <br>
+
+    <div class="col-lg-12" style="margin-top: 10px !important;"  >
+      <mat-form-field class="full-width" >
+        <input matInput
+        id="txtSenhaAtual"
+        placeholder="Senha Atual"
+        [type]="hideSenhaAtual ? 'password' : 'text'"
+        required
+        autocomplete="off"
+        name="senhaAtual"
+        formControlName="senhaAtual"
+        type="text" >
+        <mat-icon matSuffix (click)="hideSenhaAtual = !hideSenhaAtual" id="iconHideSenhaAtual">{{hideSenhaAtual ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </mat-form-field>
+    </div>
+
+      <div class="col-lg-12" style="margin-top: 10px !important;" >
+          <mat-form-field class="full-width" >
+            <input matInput
+            id="txtNovaSenha"
+            required
+            placeholder="Nova Senha"
+            #txtNovaSenha
+            [type]="hideNovaSenha ? 'password' : 'text'"
+            pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d][0-9a-zA-Z.!&@$%/()=?+*~#'_:.,;-]{6,10}$"
+            autocomplete="off"
+            name="novaSenha"
+            formControlName="novaSenha"
+            />
+            <mat-icon matSuffix (click)="hideNovaSenha = !hideNovaSenha" id="iconHideNovaSenha">{{hideNovaSenha ? 'visibility_off' : 'visibility'}}</mat-icon>
+            <mat-hint>Deve ter pelo menos 6 caracteres, contendo letra(s) , numero(s) e caracteres especiais</mat-hint>
+            <mat-error *ngIf="!alterarSenhaForm.controls['novaSenha'].valid && alterarSenhaForm.controls['novaSenha'].touched">
+              {{ getErrorNovaSenha() }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+    <div class="col-lg-12" style="margin-top: 10px !important;" >
+      <mat-form-field class="full-width">
+        <input matInput
+        required
+        id="txtConfirmarNovaSenha"
+        placeholder="Confirmação da nova senha"
+        #txtConfirmaSenha
+        [type]="hideConfirmarSenha ? 'password' : 'text'"
+        pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d][0-9a-zA-Z.!&@$%/()=?+*~#'_:.,;-]{6,10}$"
+        autocomplete="off"
+        name="confirmarNovaSenha"
+        formControlName="confirmarNovaSenha"
+        />
+        <mat-icon matSuffix (click)="hideConfirmarSenha = !hideConfirmarSenha" id="iconConfirmarNovaSenha">{{hideConfirmarSenha ? 'visibility_off' : 'visibility'}}</mat-icon>
+        <mat-error *ngIf="!alterarSenhaForm.controls['confirmarNovaSenha'].valid
+        && alterarSenhaForm.controls['confirmarNovaSenha'].touched">
+          {{ getErrorConfirmarSenha() }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <br>
+
+    <div class="col-lg-12 text-right" style="margin-top: 10px !important;">
+      <button
+        mat-flat-button
+        id="btnSalvarSenha"
+        color="primary"
+        class="btnToRight"
+        (click)="cadastrarNovaSenha()"
+        [disabled]="enableSalvar() "
+        matTooltip="Salvar"
+      ><mat-icon >save</mat-icon>
+        Salvar
+      </button>
+      <button
+        id="btnVoltar"
+        mat-flat-button color="accent"
+        class="btnToRight"
+        [routerLink]="['/institucional']"
+        matTooltip="Voltar"
+      ><mat-icon >arrow_back_ios</mat-icon>
+        Voltar
+      </button>
+    </div>
+    <br />
+  </form>
+</mat-card>
+</div>

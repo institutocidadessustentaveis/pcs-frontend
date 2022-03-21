@@ -1,0 +1,37 @@
+
+<!-- Primeira seção -->
+<section class="first-section" *ngIf="pagina?.template01?.tituloPrimeiraSecao">
+  <label style="font-family: Source Sans Pro,Arial Black,Helvetica,Arial,sans-serif;" class="label-titulo">{{pagina?.template01?.tituloPrimeiraSecao}}</label>
+    <div *ngIf="pagina?.template01?.textoPrimeiraSecao" class="two-columns">
+      <p [ngxSummernoteView]="pagina?.template01?.textoPrimeiraSecao"></p>
+      <div class="divBlockquote" *ngIf="pagina?.template01?.blockquotePrimeiraSecao">
+          <blockquote>{{pagina?.template01?.blockquotePrimeiraSecao}}</blockquote>
+      </div>
+    </div>
+</section>
+
+<!-- Segunda seção -->
+<section class="second-section" *ngIf="pagina?.template01?.tituloSegundaSecao">
+    <label style="font-family: Source Sans Pro,Arial Black,Helvetica,Arial,sans-serif;"  class="label-titulo-section2">{{pagina?.template01?.tituloSegundaSecao}}</label>
+    <div *ngIf="pagina?.template01?.txtSegundaSecao" class="three-columns" [ngxSummernoteView]="pagina?.template01?.txtSegundaSecao">
+    </div>
+
+    <div style="margin-top: 50px">
+        <div *ngIf="pagina?.template01?.txtBotao01" class="div-btn-transparent">
+          <button class="btn-transparent" (click)="verificaTipoLink(pagina?.template01?.linkBotao01)" id="btn_historia">{{pagina?.template01?.txtBotao01}}
+          </button>
+        </div>
+        <div *ngIf="pagina?.template01?.txtBotao02" class="div-btn-transparent">
+            <button  class="btn-transparent" (click)="verificaTipoLink(pagina?.template01?.linkBotao02)" id="btn_agenda">{{pagina?.template01?.txtBotao02}}
+              </button>
+        </div>
+        <div *ngIf="pagina?.template01?.txtBotao03" class="div-btn-transparent">
+            <button  class="btn-transparent" (click)="verificaTipoLink(pagina?.template01?.linkBotao03)" id="btn_metas">{{pagina?.template01?.txtBotao03}}
+              </button>
+        </div>
+        <div *ngIf="pagina?.template01?.txtBotao04" class="div-btn-transparent">
+            <button  class="btn-transparent" (click)="verificaTipoLink(pagina?.template01?.linkBotao04)" id="btn_aux">{{pagina?.template01?.txtBotao04}}
+              </button>
+        </div>
+    </div>
+</section>

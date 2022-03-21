@@ -1,0 +1,281 @@
+<section class="home-banner owl-carousel owl-theme" >
+
+  <div id="carouselExampleIndicators" class="carousel slide" ride="false">
+    <div class="carousel-inner">
+
+      <img class="img-carousel" [src]="dadosCidade.fotoCidade ? dadosCidade.fotoCidade : urlImagem()" >
+
+      <div class="row box-desktop" style="position: relative;left: 25%;">
+        <div class="col-md-2">
+          <div class="rich-icon box-overlay">
+            <div class="name">ÁREA</div>
+            <div class="number">{{dadosCidade?.area ? dadosCidade?.area : '-'}}</div>
+            <div class="small">km²</div>
+            <div class="small"></div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="rich-icon box-overlay">
+            <div class="name">POPULAÇÃO</div>
+            <div class="number">{{dadosCidade?.populacao ? dadosCidade?.populacao : '-'}}</div>
+            <div class="small">habitantes</div>
+            <div class="small"></div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="rich-icon box-overlay">
+            <div class="name">PIB PER CAPITA</div>
+            <div class="number">{{dadosCidade?.pibPerCapita ? dadosCidade?.pibPerCapita : '-'}}</div>
+            <div class="small">reais</div>
+            <div class="small"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row box-desktop" style="position: relative;left: 25%;">
+        <div class="col-md-2">
+          <div class="rich-icon box2-overlay" style="padding: 15px !important;">
+            <div class="name"> DENSIDADE DEMOGRÁFICA </div>
+            <div class="name"></div>
+            <div class="number">{{dadosCidade?.densidadeDemografica ? dadosCidade?.densidadeDemografica : '-'}}</div>
+            <div class="small">habitantes por km²</div>
+            <div class="small"></div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="rich-icon box2-overlay" style="padding: 15px !important;">
+            <div class="name" style="line-height: 1.8em;">IDH-M</div>
+            <div class="number">{{dadosCidade?.idhM ? pcsUtil.arredondaDuasCasasDecimais(dadosCidade?.idhM) : '-'}}</div>
+            <div class="small"></div>
+            <div class="small"></div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="rich-icon box2-overlay" style="padding: 15px !important;">
+            <div class="name">POPULAÇÃO OCUPADA</div>
+            <div class="name"></div>
+            <div class="number">{{dadosCidade?.populacaoOcupada ? dadosCidade?.populacaoOcupada + '%' : '-'}}</div>
+            <div class="small"> </div>
+            <div class="small"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="carousel-caption">
+        <h1 class="animated fadeInUp duration-3s delay-2s">{{dadosCidade?.cidade}} - {{dadosCidade?.estado}}</h1>
+
+        <div class="example-element-detail name" *ngIf="jaFoiSignataria(cidades) >= 1" >
+          <span *ngIf="jaFoiSignataria(cidades) >= 2" style="margin-right: 14px">
+            Cidade foi Signatária nos períodos de 
+          </span>
+          <span *ngIf="jaFoiSignataria(cidades) == 1"  style="margin-right: 14px">
+            Cidade foi Signatária no período de 
+          </span>                
+          <span *ngFor="let item of cidades; index as i" style="margin-left: -26px">
+            <span class="example-element-description name" *ngIf="item.signataria == false">
+              <strong>{{item.inicioMandato | date: 'dd/MM/yyyy'}}</strong>
+                até 
+              <strong>{{item.fimMandato | date: 'dd/MM/yyyy'}}</strong>
+              <span *ngIf="jaFoiSignataria(cidades) > i + 1"> e</span>
+            </span>
+          </span>
+        </div>
+        <div class="example-element-detail" *ngFor="let item of cidades">
+          <strong class="example-element-description name" *ngIf="item.signataria == true" style="margin-left: -15px"> 
+            Cidade é Signatária atualmente no período de 
+            <strong>{{item.inicioMandato | date: 'dd/MM/yyyy'}}</strong> 
+              até 
+            <strong>{{item.fimMandato | date: 'dd/MM/yyyy'}}</strong>
+            .
+          </strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-info box-mobile" style="padding-top: 1%;">
+  <div class="row div-dados-cidade">
+    <div class="col-md-12">
+      <div class="row div-indicadores">
+        <div class="col-md-5 div-indicador">
+          <label class="col-md-12">Área</label>
+          <label class="col-md-12">{{dadosCidade?.area ? dadosCidade?.area : '-'}} Km²</label>
+        </div>
+        <div class="col-md-5 div-indicador">
+          <label class="col-md-12">Densidade demográfica</label>
+          <label class="col-md-12">{{dadosCidade?.densidadeDemografica ? dadosCidade?.densidadeDemografica : '-'}} habitantes por km²</label>
+        </div>
+        <div class="col-md-5 div-indicador">
+          <label class="col-md-12">População</label>
+          <label class="col-md-12">{{dadosCidade?.populacao ? dadosCidade?.populacao : '-'}} habitantes</label>
+        </div>
+        <div class="col-md-5 div-indicador">
+          <label class="col-md-12">População ocupada</label>
+          <label class="col-md-12">{{dadosCidade?.populacaoOcupada ? dadosCidade?.populacaoOcupada + ' % ' : '-'}} habitantes</label>
+        </div>
+        <div class="col-md-5 div-indicador">
+          <label class="col-md-12">PIB per capita</label>
+          <label class="col-md-12">{{dadosCidade?.pibPerCapita ? dadosCidade?.pibPerCapita : '-'}} Reais</label>
+        </div>
+        <div class="col-md-5 div-indicador">
+          <label class="col-md-12">IDH-M</label>
+          <label class="col-md-12">{{dadosCidade?.idhM ? dadosCidade?.idhM : '-'}}</label>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="search">
+
+  <div class="row">
+    <div class="btn-mobile col-md-6">
+      <button type="button" class="btn btn-wide btn-hard-borders btn-text-small btn-gray"
+        style="color: white; background-color: #aaa; width: 80%;height: 100%;">
+        <p>ENDEREÇO</p>
+        <p style="text-align: center;">{{dadosCidade?.enderecoDaPrefeitura}}</p>
+      </button>
+    </div>
+
+    <div class="btn-mobile col-md-6">
+      <button type="button" (click)="botaoIrParaSite()" class="btn btn-wide btn-hard-borders btn-text-small btn-gray"
+        style="color: white; background-color: #aaa;width: 80%;height: 100%">
+        <p>SITE</p>
+        <p style="text-align: center;">{{dadosCidade?.site}}</p>
+      </button>
+    </div>
+  </div>
+
+</section>
+
+
+<section class="section-info">
+  <label class="label-titulo-green">SOBRE A CIDADE</label>
+  <div class="two-columns">{{dadosCidade?.textoCidade}}</div>
+  <div style="text-align: center">
+    <button type="button" class="btn-transparent" [routerLink]="['/boaspraticas/cidade', idCidade]"
+      id="btnDetalhesCidade">
+      BOAS PRÁTICAS DA CIDADE
+    </button>
+  </div>
+  <div class="one-column">
+    <div class="col-md-12 map-mobile">
+      <div style="height: 100%;" leaflet [(leafletCenter)]="center" [leafletOptions]="options"
+        [leafletLayers]="layersControl">
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="downloads">
+  <div>
+    <label class="label-titulo-white">FAÇA O DOWNLOAD</label>
+    <div style="text-align: center">
+      <button type="button" class="btn-downloads-transparent" (click)="validacaoDownloadCarta()">CARTA-COMPROMISSO</button>
+      <button type="button" *ngIf="dadosCidade?.idRelatorioContas" class="btn-downloads-transparent" (click)="validacaoDownloadRelatorioContas()">RELATÓRIO DE PRESTAÇÃO DE CONTAS</button>
+      <button type="button" *ngIf="dadosCidade?.idPlanoMetas" class="btn-downloads-transparent" (click)="validacaoDownloadPlanoMetas()">PLANO DE METAS</button>
+    </div>
+  </div>
+</section>
+
+
+<!-- Painel de indicadores -->
+<section class="div-painel-indicadores">
+  <div class="col-md-12" class="tab-mandatos">
+    <div class="row">
+      <div class="col-md-6">
+        <h3>
+          <mat-icon>equalizer</mat-icon>Indicadores separados por eixos
+        </h3>
+      </div>
+      <div class="col-md-6">
+        <button type="button" class="btn-subdivisoes-transparent" (click)="btnIrParaSubdivisoes()">SUBDIVISÕES</button>
+      </div>
+    </div>
+    <mat-tab-group mat-align-tabs="end" dynamicHeight [selectedIndex]="mandatos.length">
+      <mat-tab *ngFor="let mandato of mandatos ;let i = index;" style="z-index: 999999;" [aria-labelledby]="i+'mandatos'"
+        [label]="mandato[2]"  >
+        <div id="accordion">
+          <div class="card marginToComponent" *ngFor="let eixo of mandato[3]; let i = index">
+            <div class="card-header" id="headingOne" style="background-color:#47825e;">
+              <h5 class="mb-0">
+                <button class="btn btn-link" data-toggle="collapse" [attr.data-target]="'#collapseEixo' + mandato[0] + i"
+                  aria-expanded="true" [attr.aria-controls]="'collapseEixo' + mandato[0] + i" style="color: white;"
+                  (click)="selecionarEixo(mandato[2],eixo.id)"
+                  matTooltip="{{eixo?.nome}}">
+                  {{eixo?.nome}}
+                </button>
+              </h5>
+            </div>
+            <div [attr.id]="'collapseEixo' + mandato[0] + i" class="collapse" aria-labelledby="headingOne" data-parent="#accordion" style="overflow : auto">
+                <app-lista-indicadores-eixo  *ngIf="eixo.selecionado" [eixo]="eixo.id" [cidade]="idCidade" [anoInicial]="mandato[0]" [anoFinal]="mandato[1]" [nomeCidade]="dadosCidade.cidade" [siglaEstado]="dadosCidade.uf">
+                </app-lista-indicadores-eixo>
+            </div>
+          </div>
+        </div>
+
+        <div id="accordion" *ngIf="dadosCidade?.possuiIndicadoresCadastrados">
+          <div class="card marginToComponent">
+            <div class="card-header" id="headingOne" style="background-color:#47825e;">
+              <h5 class="mb-0">
+                <button class="btn btn-link" data-toggle="collapse" [attr.data-target]="'#collapseEixoCidade'"
+                  aria-expanded="true" [attr.aria-controls]="'collapseEixoCidade'" style="color: white;" matTooltip="Indicadores da cidade">
+                  Indicadores da cidade
+                </button>
+              </h5>
+            </div>
+            <div [attr.id]="'collapseEixoCidade'" class="collapse" aria-labelledby="headingOne" data-parent="#accordion" style="overflow : auto">
+                <app-lista-indicadores-eixo [cidade]="idCidade" [anoInicial]="mandato[0]" [anoFinal]="mandato[1]" [nomeCidade]="dadosCidade.cidade" [siglaEstado]="dadosCidade.uf">
+                </app-lista-indicadores-eixo>
+            </div>
+          </div>
+        </div>
+
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</section>
+
+
+<section class="call-to-action">
+  <h1 class="text-white">COMPARATIVO ENTRE CIDADES</h1>
+
+  <div class="row">
+    <div class="col-md-12">
+      <label class="label-downloads-transparent">Compare indicadores de cidades diferentes</label>
+      <button type="button" class="btn-downloads-transparent" (click)="botaoComparativoIndicadores()">COMPARAR
+        CIDADES</button>
+    </div>
+  </div>
+</section>
+
+
+<div class="one-column" *ngIf="eventos.length > 0"  >
+  <div *ngIf="eventos.length > 0">
+    <h1>Agenda de Eventos</h1>
+    <app-eventos-calendario [eventos]="eventos" ></app-eventos-calendario>
+  </div>
+</div>
+
+<section class="section-info" *ngIf="formularioList.length > 0">
+  <div class="col-md-12">
+  <label class="label-titulo-blue" style="margin: 2% 0% !important; text-align: center; width: 100%">FORMULÁRIOS DA CIDADE</label>
+  <div style="padding: 0% 3%">
+    <table class="table">
+     <tbody>
+       <a *ngFor="let formulario of formularioList" [href]="abrirFormulario(formulario)" title="Acessar {{formulario.nome}}">
+       <tr>
+          <td>
+            <p><b>{{formulario.nome}}</b></p>
+            <p>{{formulario.descricao}}</p>
+          </td>
+       </tr>
+      </a>
+     </tbody>
+    </table>
+  </div>
+</div>
+</section>

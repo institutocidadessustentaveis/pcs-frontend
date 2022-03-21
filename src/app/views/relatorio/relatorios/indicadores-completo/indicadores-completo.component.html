@@ -1,0 +1,116 @@
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right" style="margin-top: 10px !important;">
+  <button mat-flat-button color="primary" class="float-right" (click)="buscarRelatorio()" matTooltip="Gerar Relatório"
+    id="btnGerarRelatorio" class="botaoGeraRelatorio">
+    <mat-icon style="margin-top: -1px !important">insert_drive_file</mat-icon> Gerar Relatório
+  </button>
+</div>
+
+<mat-progress-bar mode="indeterminate" [hidden]="!loading" style="margin-top:20px;"></mat-progress-bar>
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 10px !important;"
+[hidden]="listaRelatorio.length == 0">
+<button matTooltip="Pdf" mat-flat-button color="primary" (click)="exportPdf()" class="btnToRight"
+  style="cursor: pointer !important;" id="btnPdf">
+  Pdf
+</button>
+<button matTooltip="Xls" mat-flat-button color="primary" (click)="exportXls()" class="btnToRight"
+  style="cursor: pointer !important;" id="btnXls">
+  Xls
+</button>
+<button matTooltip="Doc" mat-flat-button color="primary" (click)="exportDoc()" class="btnToRight"
+  style="cursor: pointer !important;" id="btnDoc">
+  Doc
+</button>
+<button matTooltip="Csv" mat-flat-button color="primary" (click)="exportCsv()" class="btnToRight"
+  style="cursor: pointer !important;" id="btnCsv">
+  Csv
+</button>
+</div>
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px !important;"
+    [hidden]="listaRelatorio.length == 0">
+
+    <table mat-table class="col-lg-12" [dataSource]="dataSource" matSort>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+      <ng-container matColumnDef="codigoIbge">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="codigoIbge">Codigo IBGE</th>
+        <td mat-cell *matCellDef="let relatorio" class='m-card-title' data-label='Codigo Ibge'>
+          <span class="mobile-label">Codigo IBGE:</span>{{ relatorio.codigoIBGE }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="cidade">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="cidade">Cidade</th>
+        <td mat-cell *matCellDef="let relatorio" class='m-card-title' data-label='Cidade'>
+          <span class="mobile-label">Cidade:</span>{{ relatorio.cidade }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="estado">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="estado">Estado</th>
+        <td mat-cell *matCellDef="let relatorio" class='m-card-title' data-label='Estado'>
+          <span class="mobile-label">Estado:</span>{{ relatorio.estado }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="prefeito">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="prefeito">Prefeito</th>
+        <td mat-cell *matCellDef="let relatorio" class='m-card-title' data-label='Prefeito'>
+          <span class="mobile-label">Prefeito:</span>{{ relatorio.prefeito }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="partido">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="partido">Partido</th>
+        <td mat-cell *matCellDef="let relatorio" class='m-card-title' data-label='Partido'>
+          <span class="mobile-label">Partido:</span>{{ relatorio.partido }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="populacao">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="populacao">População</th>
+        <td mat-cell style="text-align: center;" *matCellDef="let relatorio" class='m-card-title' data-label='Populacao'>
+          <span class="mobile-label">População:</span>{{ relatorio.populacao ? formatarPopulacao(relatorio.populacao) : 'N/A' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="porte">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="porte">Porte</th>
+        <td mat-cell style="text-align: center;" *matCellDef="let relatorio" class='m-card-title' data-label='Porte'>
+          <span class="mobile-label">Porte:</span>{{ relatorio.porte ? relatorio.porte : 'N/A'}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="usuarioCadastrado">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="usuarioCadastrado">Usuários Cadastrados</th>
+        <td mat-cell style="text-align: center;" *matCellDef="let relatorio" class='m-card-title' data-label='Usuários Cadastrados'>
+          <span class="mobile-label">Usuários Cadastrados:</span>{{ relatorio.usuarioCadastrado ? 'Sim' : 'Não' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="qtdUsuarioCadastrado">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="qtdUsuarioCadastrado">Qtd. Usuários Cadastrados</th>
+        <td mat-cell style="text-align: center;" *matCellDef="let relatorio" class='m-card-title' data-label='qtdUsuariosCadastrados'>
+          <span class="mobile-label">qtdUsuariosCadastrados:</span>{{ relatorio.qtdUsuarioCadastrado }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="indicadoresMinimos">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="indicadoresMinimos">Indicadores Mínimos</th>
+        <td mat-cell style="text-align: center;" *matCellDef="let relatorio" class='m-card-title' data-label='indicadoresMinimos'>
+          <span class="mobile-label">Indicadores Mínimos:</span>{{ relatorio.indicadoresMinimos ?  relatorio.indicadoresMinimos : 'N/A'}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="qtdIndicadoresPreenchidos">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="qtdIndicadoresPreenchidos">Qtd. Indicadores Preenchidos</th>
+        <td mat-cell style="text-align: center;" *matCellDef="let relatorio" class='m-card-title' data-label='qtdIndicadoresPreenchidos'>
+          <span class="mobile-label">Qtd. Indicadores Preenchidos:</span>{{ relatorio.qtdIndicadoresPreenchidos }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="porcentagemIndicadoresPreenchidos">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="porcentagemIndicadoresPreenchidos">% Indicadores Preenchidos</th>
+        <td mat-cell style="text-align: center;" *matCellDef="let relatorio" class='m-card-title' data-label='porcentagemIndicadoresPreenchidos'>
+          <span class="mobile-label">% Indicadores Preenchidos:</span>{{ relatorio.porcentagemIndicadoresPreenchidos }}</td>
+      </ng-container>
+
+    </table>
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" style="margin-top: 20px !important;"
+    [hidden]="listaRelatorio.length == 0">
+    <mat-paginator  showFirstLastButtons [pageSizeOptions]="[5, 10, 25, 50, 100]" style="text-align: center !important;"
+      class="float-none">
+    </mat-paginator>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+
+<!-- Segunda seção -->
+<section *ngIf="paginaChild" [style.background-color]="paginaChild?.corFundo" class="first-section">
+  <div *ngIf="paginaChild?.titulo" [ngxSummernoteView]="paginaChild?.titulo" class="label-titulo"></div>
+  <div class="row" style="width: 90%; margin-left: 5%; margin-right: 5% !important;" *ngIf="paginaChild?.idImagem">
+    <div class="div-img-first-section" style="margin-left: 0 !important; margin-right: 60px; padding-left: 0; padding-right: 0;width: 30%;">
+      <!-- <img [src]="getImagePath(paginaChild.idImagem)"  class="img-third-section" matTooltip='{{paginaChild.autorImagem}}'> -->
+      
+      <a
+        *ngIf="paginaChild?.idImagem && paginaChild?.imagemLink && verificaLinks(paginaChild?.imagemLink)"
+        (click)="validacaoDownload(paginaChild?.imagemLink)" style="cursor: pointer;">
+            <img [src]="getImagePath(paginaChild.idImagem)" class="img-third-section" matTooltip='{{paginaChild.autorImagem}}'>
+      </a>
+
+      <a
+        *ngIf="paginaChild?.idImagem && paginaChild?.imagemLink && !verificaLinks(paginaChild?.imagemLink)"
+        [href]="paginaChild?.imagemLink" rel="noopener" target="_blank">
+            <img [src]="getImagePath(paginaChild.idImagem)" class="img-third-section" matTooltip='{{paginaChild.autorImagem}}'>
+      </a>
+
+      <a
+        *ngIf="paginaChild?.idImagem && !paginaChild?.imagemLink">
+            <img [src]="getImagePath(paginaChild.idImagem)" class="img-third-section" matTooltip='{{paginaChild.autorImagem}}'>
+      </a>
+
+    </div>
+    <div class="one-column col" style="margin-left: 0 !important; margin-right: 60px; padding-left: 0; padding-right: 0;" [ngxSummernoteView]="paginaChild?.textoPrimeiraColuna"></div>
+    <div class="one-column col" style="margin-right: 0 !important; margin-left: 0 !important; padding-left: 0; padding-right: 0;" [ngxSummernoteView]="paginaChild?.textoSegundaColuna"></div>
+  </div>
+  <div class="row" style="width: 90%; margin-left: 5%; margin-right: 5% !important;" *ngIf="!paginaChild?.idImagem">
+    <div class="one-column col" style="margin-left: 0 !important; margin-right: 60px; padding-left: 0; padding-right: 0;" [ngxSummernoteView]="paginaChild?.textoPrimeiraColuna"></div>
+    <div class="one-column col" style="margin-right: 0 !important; margin-left: 0 !important; padding-left: 0; padding-right: 0;" [ngxSummernoteView]="paginaChild?.textoSegundaColuna"></div>
+  </div>
+</section>
+

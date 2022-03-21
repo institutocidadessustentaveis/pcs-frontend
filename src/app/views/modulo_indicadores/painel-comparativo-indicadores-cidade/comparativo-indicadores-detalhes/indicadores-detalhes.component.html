@@ -1,0 +1,178 @@
+<div class="contentBody" [hidden]="loading">
+  <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+    <!-- <mat-progress-bar [hidden]="!loading" mode="indeterminate"></mat-progress-bar> -->
+    <mat-card-title>Comparativo de Indicadores entre cidades</mat-card-title>
+    <hr />
+    <br />
+
+    <div>
+      <mat-card-title>{{indicadorDaCidade?.indicador}}</mat-card-title>
+    </div>
+
+    <p>
+      <b>Descrição:</b> {{ indicadorDaCidade?.descricao }}
+    </p>
+
+    <p>
+      <b>Fórmula do calculo</b> {{ indicadorDaCidade?.formulaResultado }}
+    </p>
+
+    <p>
+      <b>ODS</b>: {{indicadorDaCidade?.odsNumero}} - {{indicadorDaCidade?.ods}} <a href="institucional/ods/{{indicadorDaCidade.odsId}}" target="_blank" title="Ir para página de ODS"><i class="material-icons">help</i></a>
+    </p>
+
+    <p>
+      <b>Meta ODS</b>: {{indicadorDaCidade?.meta}}
+    </p>
+
+    <p>
+      <b>Fontes:</b>
+      <mat-list-item *ngFor="let fonte of indicadorDaCidade?.fontes">{{'. ' + fonte.nome}}</mat-list-item>
+    </p>
+
+    <hr />
+
+    <div *ngIf="indicadorDaCidade && indicadorDaCidade.serieHistorica?.length !== 0 ">
+      <p>
+        <b>Comparativo de Série Histórica de Cidades</b>:
+      </p>
+    </div>
+    <div>
+      Selecione o período dos dados para comparar
+    </div>
+    <div *ngIf="indicadorDaCidade && indicadorDaCidade.serieHistorica?.length === 0 ">
+      <p>
+        <b>{{ nomeCidade }} ainda não preencheu esse indicador</b>:
+      </p>
+    </div>
+    <br />
+    <div *ngIf="!loading && indicadorDaCidade">
+      <mat-tab-group [hidden]="loading" [selectedIndex]="indicadorDaCidade.serieHistorica.length"
+        (selectedIndexChange)="selected.setValue($event)">
+        <mat-tab [label]="item.mandato" *ngFor="let item of indicadorDaCidade.serieHistorica;let i = index"
+          [aria-labelledby]="item.mandato+'seriehistorica'">
+
+
+          <table mat-table matSort [dataSource]="gerarDataSourceTabela(item)" *ngIf="item.valores !== null">
+            <tr mat-header-row *matHeaderRowDef="item.cabecalho"></tr>
+            <tr mat-row *matRowDef="let row; columns: item.cabecalho"></tr>
+
+            <ng-container [matColumnDef]="coluna" *ngFor="let coluna of item.cabecalho; let i = index">
+              <th mat-header-cell *matHeaderCellDef style="width: 10%;"> {{coluna}} </th>
+              <td mat-cell *matCellDef="let element" class='m-card-title'> <span
+                  class="mobile-label">{{ coluna }}:</span>
+                {{ element[i] != null ?  element[i]  : '-'}}
+              </td>
+
+            </ng-container>
+
+          </table>
+          <label *ngIf="item.valores === null" style="color: red; text-align: center">Não há indicadores para o mandato
+            selecionado!</label>
+
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+
+    <br>
+
+    <div *ngIf="!loading && indicadorDaCidade.numerico">
+      <p>
+        <b>Gráficos</b>:
+      </p>
+      <form [formGroup]="formFiltro">
+      <mat-tab-group dynamicHeight [hidden]="loading">
+        <mat-tab [label]="item.mandato" *ngFor="let item of graficos;let i = index"
+          [aria-labelledby]="item.mandato+'mandatografico'+i">
+          <mat-tab-group dynamicHeight selectedIndex='0' [id]="item.mandato+'id'+i" >
+            <mat-tab label="Gráfico de Linha" id="tablinha" [aria-labelledby]="'grafico_linha'+i">
+              <div style="display: block;">
+                <canvas baseChart height="100" [datasets]="item.dataset" [labels]="item.labels"
+                  [options]="lineChartOptions" [colors]="lineChartColors "
+                  [legend]="lineChartLegend" chartType="line" id="graficoLinha"></canvas>
+              </div>
+            </mat-tab>
+            <mat-tab label="Gráfico de Barras" id="tabBarras" [aria-labelledby]="'grafico_barras'+i">
+              <div style="display: block;">
+                <canvas baseChart height="100et" [labels]="item.labels" [options]="barChartOptions"
+                  [datasets]="item.dataset" [colors]="item?.dataset?.length == 1 ? barChartColors : null"
+                  [legend]="barChartLegend" chartType="bar" id="graficoBarras"></canvas>
+              </div>
+            </mat-tab>
+            <mat-tab label="Treemap" id="tabtreemap" [aria-labelledby]="'treemap'+i" [id]="'treemap'+i">
+              <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                <div class="row">
+                  <ngx-charts-tree-map scheme="picnic" animations="true" [results]="item.treeMap">
+                  </ngx-charts-tree-map>
+                </div>
+              </mat-card>
+            </mat-tab>
+          </mat-tab-group>
+
+        </mat-tab>
+
+        <mat-tab label='Dispersão Animada' aria-labelledby='dispersaoanimada'>
+              <div style="display: block;">
+
+                <!--
+                <canvas baseChart height="100px" *ngIf="barChartData.length != 0"
+                  [options]="barChartOptions"
+                  [datasets]="barChartData"
+                  [colors]=""
+                  legend="false" chartType="bar" id="graficoBarrasDispersao">
+                </canvas>
+
+                <canvas baseChart
+                  [datasets]="bubbleChartData"
+                  [options]="bubbleChartOptions"
+                  [colors]="bubbleChartColors"
+                  [legend]="bubbleChartLegend"
+                  [chartType]="bubbleChartType">
+                </canvas>-->
+                <canvas baseChart height="100px" *ngIf="bubbleChartData.length != 0"
+                  [options]="bubbleChartOptions"
+                  [datasets]="bubbleChartData"
+                  [colors]="bubbleChartColors"
+                  [legend]="bubbleChartLegend"
+                  [chartType]="bubbleChartType"
+                  legend="true" chartType="bar" id="graficoBubbleDispersao">
+                </canvas>
+              </div>
+              <div class="text-center" style="font-size: 1em; color: gray ">
+                <b>{{ anoLabelInterativo }} </b>
+
+              </div>
+
+              <mat-form-field class="col-md-2 col-lg-2">
+                  <mat-label>Selecione uma Variável</mat-label>
+                  <mat-select id="variavel" formControlName="variavel">
+                    <mat-option *ngFor="let itemVariavel of listaVariaveis" [value]="itemVariavel">
+                      {{itemVariavel.nome}}
+                    </mat-option>
+                    <mat-option [value]="null">
+                      Nenhum
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+
+              <button mat-flat-button color="primary" matTooltip="Iniciar" style="cursor: pointer;"
+                id="btnIniciar" (click)="executarDispersaoAnimadaBubble()" >
+                <mat-icon>play_arrow</mat-icon> Iniciar
+              </button>
+        </mat-tab>
+      </mat-tab-group>
+      </form>
+
+    </div>
+    <br />
+
+    <div class="text-right">
+      <button mat-flat-button color="accent" matTooltip="Voltar" style="cursor: pointer;"
+        [routerLink]="['/painelComparativoIndicadoresCidade']" id="btnVoltar" [hidden]="false">
+        <mat-icon>arrow_back_ios</mat-icon> Voltar
+      </button>
+    </div>
+
+  </mat-card>
+</div>

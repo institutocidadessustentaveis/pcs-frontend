@@ -1,0 +1,139 @@
+<br>
+<section *ngFor="let comentario of comentarios" style="display: flex; justify-content: end;">
+  <mat-card class="col-md-11 col-lg-11 col-xs-11 col-sm-11" style="padding: 16px 10px 16px 16px; margin: 15px;">
+    <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12" style="padding: 0px 0px 0px 15px">
+      <div class="comment-info">
+
+        <div class="comment-info-flex">
+          <div *ngIf="nomePerfil.includes('Administrador')"
+          class="flex-item-comment" style="cursor: pointer;" (click)="openModalInfoUser(comentario)">
+              <mat-icon class="align-icon">person</mat-icon> {{comentario.nomeUsuario}}
+          </div>
+          <div *ngIf="!nomePerfil.includes('Administrador')"
+          class="flex-item-comment">
+              <mat-icon class="align-icon">person</mat-icon> {{comentario.nomeUsuario}}
+          </div>
+
+          <ng-template #modalInfoUser>
+            <div style="display: flex; justify-content: end;">
+              <mat-icon style="cursor: pointer;" (click)="closeModal()">close</mat-icon>
+            </div>
+            <div align="center">
+              <h4 style="color: #408559;">Dados usuário</h4>
+            </div>
+            <div>
+              <mat-icon class="align-icon" style="padding-right: 30px">person</mat-icon>
+                <span>Nome: {{usuarioComentario.nome}} 
+                </span>
+            </div>
+            <div>
+              <mat-icon class="align-icon" style="padding-right: 30px;">alternate_email</mat-icon>
+                <span>E-mail: {{usuarioComentario.email}} 
+                </span>
+            </div>
+            <div *ngIf="usuarioComentario.telefone != null">
+              <mat-icon class="align-icon" style="padding-right: 30px;">phone</mat-icon>
+                <span>Telefone: {{usuarioComentario.telefone | mask: '(00) 0000-0000' }} 
+                </span>
+            </div>
+            <div *ngIf="usuarioComentario.celular != null">
+              <mat-icon class="align-icon" style="padding-right: 30px;">stay_current_portrait</mat-icon>
+                <span>Celular: {{usuarioComentario.celular | mask: '(00) 00000-0000' }} 
+                </span>
+            </div>
+            <div *ngIf="usuarioComentario.estado != null">
+              <mat-icon class="align-icon" style="padding-right: 30px;">location_city</mat-icon>
+                <span>Estado: {{usuarioComentario.estado}}
+                </span>
+            </div>
+            <div *ngIf="usuarioComentario.cidade != null">
+              <mat-icon class="align-icon" style="padding-right: 30px;">location_city</mat-icon>
+                <span>Cidade: {{usuarioComentario.cidade}}
+                </span>
+            </div>
+            <div *ngIf="usuarioComentario.perfis != ''">
+              <mat-icon class="align-icon" style="padding-right: 30px;">how_to_reg</mat-icon>
+                <span>Perfis: {{usuarioComentario.perfis}}
+                </span>
+            </div>
+          </ng-template>
+
+          <div class="flex-item-comment" style="cursor: pointer;" (click)="openModalInfo()">
+              <mat-icon  matTooltip="Informações sobre este comentário" class="align-icon">info</mat-icon> Informações
+          </div>
+
+          <!--div class="flex-item-comment">
+              <mat-icon class="align-icon" >access_time</mat-icon> {{comentario.horarioPublicacao}}
+          </div>
+
+          <div class="flex-item-comment">
+            <mat-icon class="align-icon">date_range</mat-icon>{{comentario.dataPublicacao | date: 'mediumDate'}}
+          </div>
+
+          <div class="flex-item-comment" *ngIf="comentario.editado">
+            <mat-icon class="align-icon">edit</mat-icon>Editado em {{comentario.dataEdicao | date: 'mediumDate'}} às {{comentario.horarioEdicao}}
+          </div-->
+
+          <div class="spacer"></div>
+          <button class="flex-end" style="padding: 0; width: 15px !important;  min-width: unset!important;" mat-button [matMenuTriggerFor]="afterMenu"><mat-icon style="width: 15px !important;">more_vert</mat-icon></button>
+          <mat-menu #afterMenu="matMenu" xPosition="after">
+            <button mat-menu-item (click)="onClickEditar(comentario.id)" *ngIf="podeEditar(comentario)" ><mat-icon>edit</mat-icon> Editar</button>
+            <button mat-menu-item (click)="deletar(comentario)" *ngIf="podeExcluir(comentario)"><mat-icon>delete</mat-icon> Excluir</button>
+          </mat-menu>
+        </div>
+      </div>
+      <article style="margin-top: 12px" [ngxSummernoteView]="comentario.comentario">
+      </article>
+
+      <ng-template #modalInfo>
+        <div style="display: flex; justify-content: end;">
+          <mat-icon style="cursor: pointer;" (click)="closeModal()">close</mat-icon>
+        </div>
+        <div>
+          <mat-icon class="align-icon">date_range</mat-icon>
+            <span>Comentado em: {{comentario.dataPublicacao | date: 'mediumDate'}} 
+              ás {{comentario.horarioPublicacao}}
+            </span>
+        </div>
+        <div *ngIf="comentario.editado">
+          <mat-icon class="align-icon">edit</mat-icon>Editado em {{comentario.dataEdicao | date: 'mediumDate'}} às {{comentario.horarioEdicao}}
+        </div>
+      </ng-template>
+
+      <article *ngIf="onModoEditar(comentario.id)">
+        <h5>Editar Comentário</h5>
+        <div class="summmernote" [formGroup]="formComentarioFilhoEditar">
+          <mat-label>Comentário *</mat-label>
+          <div [ngxSummernote]="editorConfig" formControlName="comentario"></div>
+        </div>
+        <div align="end" style="margin-top: 12px;">
+          <button mat-flat-button color="primary" (click)="onEditar(comentario.id)" [disabled]="!formComentarioFilhoEditar.valid">
+            <mat-icon>save</mat-icon> Editar
+          </button>
+          <button mat-stroked-button style="margin-left: 12px;" (click)="onClickEditar(comentario.id)">
+            <mat-icon>cancel</mat-icon> Cancelar
+          </button>
+      </div>
+      </article>
+    </mat-card-content>
+  </mat-card>
+  <br>
+</section>
+<br>
+<section class="col-md-12 col-lg-12 col-xs-12 col-sm-12" style="display: flex; justify-content: end;">
+  <div >
+    <h5>Sua resposta</h5>
+    <div class="summmernote" [formGroup]="formComentarioFilho">
+      <mat-label>Comentário *</mat-label>
+      <div [ngxSummernote]="editorConfig" formControlName="comentarioFilho"></div>
+    </div>
+    <div align="end" style="margin-top: 12px;">
+      <button mat-flat-button color="primary" (click)="salvarComentarioFilho()" [disabled]="!formComentarioFilho.valid">
+        <mat-icon>save</mat-icon> Enviar
+      </button>
+    </div>
+  </div>
+  
+</section>
+
+

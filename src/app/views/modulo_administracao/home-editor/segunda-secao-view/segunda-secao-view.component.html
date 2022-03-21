@@ -1,0 +1,58 @@
+
+<!-- Segunda seção --> 
+
+<section > 
+    <div class="col-md-12" *ngIf="segundaSecao?.tituloPrincipal" style="margin-bottom:3%">
+      <div class="row">
+        <div class="caixa"  [style.background-color]="segundaSecao?.tituloPrincipalCor" ></div>
+        <a class="h1 titulos" style="margin-bottom:0 !important;" [style.border-color]="segundaSecao?.tituloPrincipalCor" 
+        [style.color]="segundaSecao?.tituloPrincipalCor"
+        [href]="segundaSecao?.tituloPrincipalLink" onclick="return false;">{{segundaSecao?.tituloPrincipal}}</a>
+      </div>
+    </div>
+      
+
+    <div class="row" style="width: 100%;margin-bottom: 3%;" *ngIf="segundaSecao?.primeiraImagemSafeUrl">
+      <div class="col underline-on-hover one-column-center one-column-fix"  
+          style="padding-left: 0% !important;padding-right: 0%; margin-left: 15px;" [style.background-color]="this.corTemaAux" >
+        <a class="one-column-center" style="height: 100%;width: 100%;"  [style.background-color]="this.corTemaAux"
+          [href]="segundaSecao.primeiraImagemLink" target="_blank" rel="noopener" onclick="return false;"> 
+            <img [src]="segundaSecao.primeiraImagemSafeUrl" class="img-third-section" >
+        </a>
+      </div>
+      <div class="col-md-6 one-column-center one-column-fix" 
+            style="margin-right: 15px;padding-top:3%; padding-bottom: 3%;" [style.background-color]="this.corTemaAux" >
+        <div class="row" style="padding-left: 15px;">
+          <a class="h5 titulos-no-border underline-on-hover" style="margin-bottom:3% !important;width: 100%;" [style.border-color]="segundaSecao?.primeiroTituloCor" 
+          [style.color]="segundaSecao?.primeiroTituloCor"
+          [href]="segundaSecao?.primeiroTituloLink" onclick="return false;">{{segundaSecao?.primeiroTitulo}}</a>
+          <a class="one-column-texto-small underline-on-hover"  style="color: #231f20;width: 100%;text-align: left;padding-right: 30px;" [style.color]="segundaSecao?.primeiroTextoCor" 
+          [innerHTML]="segundaSecao?.primeiroTexto" [href]="segundaSecao?.primeiroTextoLink" onclick="return false;"></a>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row" style="width: 100%;margin-top:4%; margin-bottom: 4%;" *ngIf="segundaSecao?.segundaImagemSafeUrl">
+
+      <div class="col-md-6 one-column-center one-column-fix" 
+            style="margin-left: 15px;padding-top:3%; padding-bottom: 3%;" [style.background-color]="this.corTemaAux" >
+        <div class="row" style="padding-left: 15px;">
+          <a class="h5 titulos-no-border underline-on-hover" style="margin-bottom:3% !important;width: 100%;" [style.border-color]="segundaSecao?.segundoTituloCor" 
+          [style.color]="segundaSecao?.segundoTituloCor"
+          [href]="segundaSecao?.segundoTituloLink" onclick="return false;">{{segundaSecao?.segundoTitulo}}</a>
+          <a class="one-column-texto-small underline-on-hover"  style="color: #231f20;width: 100%;text-align: left;padding-right: 30px;" [style.color]="segundaSecao?.segundoTextoCor" 
+          [innerHTML]="segundaSecao?.segundoTexto" [href]="segundaSecao?.segundoTextoLink" onclick="return false;"></a>
+        </div>
+      </div>
+      <div class="col underline-on-hover one-column-center one-column-fix" 
+      style="padding-right: 0% !important;padding-left: 0% !important;margin-right: 15px;" [style.background-color]="this.corTemaAux">
+          <a class="one-column-center" style="height: 100%;width: 100%;"  [style.background-color]="this.corTemaAux" 
+            [href]="segundaSecao.segundaImagemLink" target="_blank" rel="noopener" onclick="return false;"> 
+            <img [src]="segundaSecao.segundaImagemSafeUrl" class="img-third-section" >
+          </a>
+      </div>
+    </div>
+
+  
+</section>

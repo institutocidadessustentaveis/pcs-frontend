@@ -1,0 +1,52 @@
+<section class="cards">
+    <div class="row">
+      <div class="col-sm-12 col-md-8" style="margin-top: 3%;margin-bottom: 3%">
+
+
+          <div *ngFor="let secao of todasSecoes">
+
+            <div class="row" style="margin-right: 0px !important">
+              <app-primeira-secao style="margin-bottom: 3%;width: 100%;" [primeiraSecao]="secao" [tituloHome]="home.titulo" [dadosDownloadUser]="dadosDownloadUser" *ngIf="secao?.tipo == 'primeiraSecao'"></app-primeira-secao>
+            </div>
+
+            <div class="row" style="margin-right: 0px !important">
+                <app-segunda-secao style="margin-bottom: 3%;width: 100%;" [segundaSecao]="secao" [tituloHome]="home.titulo" [dadosDownloadUser]="dadosDownloadUser" *ngIf="secao?.tipo == 'segundaSecao'"></app-segunda-secao>
+            </div>
+
+            <div class="row" style="margin-right: 0px !important">
+              <app-terceira-secao style="margin-bottom: 3%;width: 100%;" [terceiraSecao]="secao" [tituloHome]="home.titulo" [dadosDownloadUser]="dadosDownloadUser" *ngIf="secao?.tipo == 'terceiraSecao'"></app-terceira-secao>
+            </div>
+
+            <div class="row" style="margin-right: 0px !important">
+              <app-quarta-secao style="margin-bottom: 3%;width: 100%;" [quartaSecao]="secao" [tituloHome]="home.titulo" [dadosDownloadUser]="dadosDownloadUser" *ngIf="secao?.tipo == 'quartaSecao'"></app-quarta-secao>
+            </div>
+
+            <div class="row" style="margin-right: 0px !important">
+              <app-quinta-secao style="margin-bottom: 3%;width: 100%;" [quintaSecao]="secao" [tituloHome]="home.titulo" [dadosDownloadUser]="dadosDownloadUser" *ngIf="secao?.tipo == 'quintaSecao'"></app-quinta-secao>
+            </div>
+
+            <div class="row" style="margin-right: 0px !important">
+              <app-sexta-secao style="margin-bottom: 3%;width: 100%;" [sextaSecao]="secao" [tituloHome]="home.titulo" [dadosDownloadUser]="dadosDownloadUser" *ngIf="secao?.tipo == 'sextaSecao'"></app-sexta-secao>
+            </div>
+
+            <div class="row" style="margin-right: 0px !important">
+              <app-setima-secao style="margin-bottom: 3%;width: 100%;" [setimaSecao]="secao" [tituloHome]="home.titulo" [dadosDownloadUser]="dadosDownloadUser" *ngIf="secao?.tipo == 'setimaSecao'"></app-setima-secao>
+            </div>
+
+          </div>
+
+
+      </div>
+
+      <div class="col-sm-12 col-md-4" style="margin-top: 3%;">
+
+        <div *ngFor="let secao of this.home?.listaSecaoLateral">
+
+          <app-secao-lateral style="margin-bottom: 3%;width: 100%;" [secaoLateral]="secao" [tituloHome]="home.titulo" [dadosDownloadUser]="dadosDownloadUser"></app-secao-lateral>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>

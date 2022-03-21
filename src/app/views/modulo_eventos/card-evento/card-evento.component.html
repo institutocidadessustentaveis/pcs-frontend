@@ -1,0 +1,18 @@
+<a [href]="gerarLinkNoticia(noticia)" *ngIf="noticia">
+  <img class="publicacao-material-apoio text-center pointer"  [src]="urlbackend+'noticia/imagem/'+noticia.id">
+</a>
+<div *ngIf="noticia">
+  <h2 class="publicacao-material-apoio-titulo pointer" >
+    <a [href]="gerarLinkNoticia(noticia)" class="link-noticia">
+      {{ noticia?.titulo }}
+    </a><br>
+  </h2>
+  <a class="pointer publicacao-material-apoio-texto link-noticia" [href]="gerarLinkNoticia(noticia)">
+    {{noticia?.subtitulo}} 
+  </a>
+  <div class="options">{{noticia?.dataHoraPublicacao |  date:'dd/MM/yyyy'}}</div>
+  <p>
+     <a [href]="gerarLinkNoticia(noticia)" class="options">[Leia Mais]</a>
+  </p>
+</div>
+

@@ -1,0 +1,22 @@
+<div *ngIf="carregando">
+    Carregando...
+  </div>
+<div class="table-responsive"  *ngIf="!carregando" >
+  <table class="table table-striped table-sm">
+    <tr>
+      <th>Variável</th>
+      <th>{{ anoInicial }}</th>
+      <th>{{ anoInicial+1 }}</th>
+      <th>{{ anoInicial+2 }}</th>
+      <th>{{ anoInicial+3 }}</th>
+    </tr>
+    <tr *ngFor="let linha of tabela" >
+        <td> {{ linha[1] }} </td>
+        <td> {{ linha[2] }} </td>
+        <td> {{ linha[3] }} </td>
+        <td> {{ linha[4] }} </td>
+        <td> {{ linha[5] }} </td>
+
+    </tr>
+  </table>
+</div>

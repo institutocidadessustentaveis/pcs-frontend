@@ -1,0 +1,33 @@
+.cursor-hand{
+    cursor: pointer;
+  }
+  
+  .cursor-hand:hover {
+    text-decoration: underline;
+  }
+
+  .radio-group {
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0;
+    align-items: flex-start;
+  }
+  
+  .radio-button {
+    margin: 5px;
+  }
+
+  #radio-group-label {
+    font-weight: 500;
+    font-size: 20px;
+  }
+
+  #LabelDisplayName {
+    font-weight: 500;
+    font-size: 20px;
+  }
+
+  #label-posicao {
+    font-weight: 500;
+    font-size: 20px;
+  }

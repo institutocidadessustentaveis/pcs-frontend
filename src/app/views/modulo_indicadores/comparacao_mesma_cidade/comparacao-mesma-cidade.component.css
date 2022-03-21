@@ -1,0 +1,42 @@
+.marginToComponent{
+    margin-top: 10px !important;
+}
+
+.marginToCard{
+    margin-top: 30px !important;
+}
+
+
+@media (max-width: 600px) {
+    .select-periodo {
+        margin-top: 2%;
+    }
+}
+
+/*AutoComplete*/
+::ng-deep .form-comparar-indicadores .input-container input::placeholder{
+    color: white !important;
+}
+
+::ng-deep .form-comparar-indicadores .autocomplete-container{
+    color: white !important;
+    background-color: transparent !important;
+    width: 400px !important;
+    border: none;
+    box-shadow: none !important;
+    border-bottom: 1px solid white;
+}
+
+::ng-deep .form-comparar-indicadores .ng-touched{
+    color: white !important;
+    background-color: transparent !important;
+    width: 400px !important;
+    border: none;
+}
+
+::ng-deep .form-comparar-indicadores .ng-untouched{
+    color: white !important;
+    background-color: transparent !important;
+    width: 400px !important;
+    border: none;
+}

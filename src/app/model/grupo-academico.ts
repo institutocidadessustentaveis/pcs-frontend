@@ -1,0 +1,55 @@
+import { NumberValueToken } from 'html2canvas/dist/types/css/syntax/tokenizer';
+import { Cidade } from './cidade';
+
+export class GrupoAcademico {
+    id: number;
+    pais: number;
+    tipo: string;
+    numero: string;
+    estado: number;
+    cidade: number;
+    usuario: Number;
+    nomeApl: string;
+    vinculo: string;
+    paisApl: number;
+    endereco: string;
+    latitude: number;
+    estadoApl: number;
+    longitude: number;
+    nomeGrupo: string;
+    nomeEstado: string;
+    nomeCidade: string;
+    continente: string;
+    ods: Array<number>;
+    logradouro: string;
+    complemento: string;
+    eixos:Array<number>;
+    observacoes: string;
+    nomeContato: string;
+    tipoCadastro: string;
+    descricaoApl: string;
+    porteEmpresa: string;
+    tipoFundacao: string;
+    paginaOnline: string;
+    receitaAnual: string;
+    emailContato: string;
+    nomeAcademia: string;
+    linkBaseDados: string;
+    participaApl: boolean;
+    setorEconomico: string;
+    associadaEthos: string;
+    telefoneContato: string;
+    quantidadeAlunos: number;
+    setoresApl: Array<string>;
+    cidadesApl: Array<number>;
+    bibliotecas: Array<number>;
+    emailInstitucional: string;
+    possuiExperiencias: boolean;
+    descricaoInstituicao: string;
+    telefoneInstitucional: string;
+    areasInteresse: Array<number>;
+    quantidadeFuncionarios: string;
+    experienciasDesenvolvidas: string;
+    atuaProjetoSustentabilidade: boolean;
+
+}

@@ -1,0 +1,107 @@
+<div class="contentBody" style="position: relative;">
+  <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+    <section id="secao-formulario">
+      <div [hidden]="!loading" class="loading-indicator">
+        <mat-progress-spinner class="example-margin" style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+      </div>
+      <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <mat-card-title>
+          Criação de discussão no Fórum
+        </mat-card-title>
+      </mat-card-content>
+      <hr />
+      <form [formGroup]="form" class="example-form">
+        <div class="row">
+          <div class="col-lg-12">
+            <mat-form-field>
+              <input matInput formControlName="titulo" placeholder="Titulo *">
+              <mat-error *ngIf="form.controls['titulo'].hasError('required')">
+                Campo Titulo é obrigatório
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-lg-12">
+            <mat-label>Descrição *</mat-label>
+            <div [ngxSummernote]="editorConfig" formControlName="descricao"></div>
+            <mat-error *ngIf="form.controls['descricao'].hasError('required')">
+              Campo Descrição é obrigatório
+            </mat-error>
+          </div>
+
+          <mat-form-field class="col-lg-12">
+            <mat-label>Selecione Temas para essa Discussão</mat-label>
+            <mat-select id="idtemaForum" name="temasForum" formControlName="temasForum" multiple>
+              <mat-option *ngFor="let tema of temasForum" [value]="tema">{{tema.nome}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <div class="col-lg-12 mt-3">
+            <mat-radio-group formControlName="publico" >
+              <mat-radio-button value="true" [checked]="form.controls.publico.value === true" (click)="onSelectPublicoChange(true)">Público</mat-radio-button>
+              <mat-radio-button value="false" class="ml-3" [checked]="form.controls.publico.value === false" (click)="onSelectPublicoChange(false)">Privado</mat-radio-button>
+            </mat-radio-group>
+          </div>
+
+          <div class="col-lg-12">
+            <mat-checkbox formControlName="ativo" type="checkbox">Forúm aberto para discussão</mat-checkbox>
+          </div>
+
+          <div class="col-lg-12 search-form-color mt-3" *ngIf="podeAdicionarPerfil" >
+            <button mat-flat-button color="accent" matTooltip="Adicionar perfis que poderão acessar o fórum" (click)="adicionarPerfil(modalAdicionarPerfil)" [disabled]="form.controls.publico.value">
+              <mat-icon>add</mat-icon>
+              Adicionar Autorização de Acesso
+            </button>
+
+          <ng-template #modalAdicionarPerfil>
+            <mat-form-field class="col-lg-8">
+              <mat-label>Perfil</mat-label>
+              <mat-select [(value)]="discussaoPerfil.perfil" name="perfil" id="perfil">
+                <mat-option [value]="perfil" *ngFor="let perfil of perfis"> {{perfil.nome}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <button mat-flat-button color="accent"class="col-lg-4" (click)="salvarPerfil()" >
+              <mat-icon>add</mat-icon>
+              Adicionar
+            </button>
+          </ng-template>
+          </div>
+
+          <div class="col-lg-12" [hidden]="hiddenTable" >
+            <table mat-table [dataSource]="forumDiscussao.discussaoPerfis" class="mat-elevation-z8 mt-4 mb-4"
+              [hidden]="!(forumDiscussao.discussaoPerfis.length > 0)">
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            
+              <ng-container matColumnDef="perfil">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="prefeitura">Perfil</th>
+                <td mat-cell *matCellDef="let element" class='m-card-title' data-label='Perfil'>
+                  <span class="mobile-label">Perfil: </span> {{element.perfil?.nome}}
+                </td>
+              </ng-container>
+            
+              <ng-container matColumnDef="excluir">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="Excluir">Excluir Autorização</th>
+                <td mat-cell *matCellDef="let element; let i = index">
+                  <button mat-flat-button type="button" name="button" (click)="excluirAutorizacao(i)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+            </table>
+          </div>
+
+          <br>
+
+          <div class="text-right col-lg-12">
+            <button mat-flat-button color="primary" (click)="salvarDiscussao()" [disabled]="validarSalvar()">
+              <mat-icon>save</mat-icon>
+              Salvar Discussão
+            </button>
+          </div>
+        </div>
+      </form>
+    </section>
+  </mat-card>
+</div>

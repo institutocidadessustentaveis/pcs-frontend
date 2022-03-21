@@ -1,0 +1,31 @@
+.marginToTop{
+    margin-top: 30px !important;
+}
+
+.marginToComponent{
+    margin-top: 10px !important;
+}
+
+.bgPanel{
+    background-color:#e9e9e9 !important;
+}
+
+.squareGreen{
+    font-size: x-large; background-color: #39FF33;
+}
+
+.squareYellow{
+    font-size: x-large; background-color: #FFFF00;
+}
+
+.squareOrange{
+    font-size: x-large; background-color: #FFA500;
+}
+
+.squareRed{
+    font-size: x-large; background-color: #FF0000;
+}
+
+.cursorBlock{
+    cursor: default !important;
+}

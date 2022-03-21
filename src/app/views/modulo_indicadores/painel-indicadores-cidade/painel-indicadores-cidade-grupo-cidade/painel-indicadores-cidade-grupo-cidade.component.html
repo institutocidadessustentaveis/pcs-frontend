@@ -1,0 +1,59 @@
+<div class="row">
+  <div class="col-lg-7 col-md-7">
+    <mat-form-field>
+      <mat-label>Selecione um estado participante </mat-label>
+      <mat-select (selectionChange)="tradeEstado($event.value)" [(value)]="estadoSelecionado">
+        <mat-option *ngFor="let item of listaEstado" [value]="item.id">
+          {{item.nome}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div style="border-color:#47825e; border-width:thin; border-style:groove;" [hidden]="listaCidade.length === 0">
+      <div class="container">
+        <br>
+        <mat-form-field>
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtro por cidade participante">
+        </mat-form-field>
+
+        <table mat-table matSort [dataSource]="dataSource">
+
+          <ng-container matColumnDef="cidade">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="nome">Cidade participante </th>
+            <td mat-cell *matCellDef="let element" class="m-card-title" data-label='cidade'>
+              <span class="mobile-label">Cidade:</span> {{element.nome}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Acoes">
+            <th mat-header-cell *matHeaderCellDef colspan="1" class="text-center"></th>
+            <td mat-cell *matCellDef="let element" class="text-center">
+              <button matTooltip="Detalhes da cidade" mat-flat-button color="primary" style="cursor: pointer;"
+                [routerLink]="['/painel-cidade/detalhes', element.id]" id="btnDetalhesCidade">
+                <mat-icon>location_city</mat-icon> Detalhes da cidade
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator style="text-align: center !important;" class="float-none" [pageSizeOptions]="[10,25,50,100]"
+          showFirstLastButtons></mat-paginator>
+      </div>
+    </div>
+
+    <div class="alert alert-warning" [hidden]="exibirMensagemAlerta !== true">Nenhuma cidade participante foi encontrada para o estado selecionado</div>
+  </div>
+  <div class="col-lg-5 col-md-5 text-center">
+    <h2>Mapa do Brasil</h2>
+    <!--<img src="/assets/mapa.png" style="max-width: 100%;">-->
+    <div style="height: 500px;"
+          leaflet
+          [leafletOptions]="options"
+          [leafletLayers]="layersControl">
+    </div>
+  </div>
+</div>
+

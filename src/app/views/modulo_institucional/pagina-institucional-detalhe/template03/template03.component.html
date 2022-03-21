@@ -1,0 +1,66 @@
+<!-- Primeira seção -->
+<section *ngIf="pagina?.template03?.tituloPrimeiraSecao" class="first-section">
+    <label style="font-family: Source Sans Pro,Arial Black,Helvetica,Arial,sans-serif;" class="label-titulo">{{pagina?.template03?.tituloPrimeiraSecao}}</label>
+    <div class="row" style="width: 100%;" *ngIf="pagina.template03.imagemPrimeiraSecao">
+      <div class="col-md-3 div-img-first-section">
+        <img [src]="pagina.template03.imagemPrimeiraSecaoSafeUrl" class="img-third-section">
+      </div>
+      <div class="col-md-8 two-columns-with-image" [innerHTML]="pagina?.template03?.textoPrimeiraSecao"></div>
+    </div>
+    <div class="two-columns" *ngIf="!pagina.template03.imagemPrimeiraSecao" [innerHTML]="pagina?.template03?.textoPrimeiraSecao"></div>
+</section>
+
+<!-- Segunda seção -->
+<section>
+    <div class="col-lg-12">
+      <div class="row div-titulo">
+        <div class="caixa" ></div>
+        <span class="h1 titulos" style="margin-bottom:0 !important;">{{pagina.template03.tituloCatalogo1}}</span>
+      </div>
+    </div>
+
+    <div class="row second-section" *ngIf="todasPublicacoes.length > 0">
+      <app-item-publicacao
+        *ngFor="let item of todasPublicacoes | slice:0:qtdPublicacoes1"
+        [publicacao]="item"  class="col-lg-4"></app-item-publicacao>
+    </div>
+
+    <div class="col-md-12" style="text-align: center;" *ngIf="mostrarVerMais1 && qtdPublicacoes1 < todasPublicacoes.length"  >
+        <button (click)="carregarMais(1)" class="ver-mais">Ver Mais</button>
+    </div>
+
+    <!-- Seção Texto -->
+    <section *ngIf="pagina?.template03?.tituloSecaoTexto" class="mt-5 mb-5">
+      <div class="col-lg-12">
+        <div class="row div-titulo">
+          <div class="caixa" ></div>
+          <span class="h1 titulos" style="margin-bottom:0 !important;">{{pagina.template03.tituloSecaoTexto}}</span>
+        </div>
+      </div>
+      <div class="row secao-texto">
+        <div class="col-md-3"></div>
+        <div [ngxSummernoteView]="pagina?.template03?.secaoTexto" class="col-md-9 col-lg-6 summernote"></div>
+      </div>
+    </section>
+
+    <div class="col-lg-12" *ngIf="pagina.template03.tituloCatalogo2" style="margin-top: 64px;">
+      <div class="row div-titulo">
+        <span class="h1 titulos" style="margin-bottom:0 !important;">{{pagina.template03.tituloCatalogo2}}</span>
+      </div>
+    </div>
+
+    <div class="row second-section" *ngIf="todasPublicacoes2.length > 0">
+      <app-item-publicacao 
+        *ngFor="let item of todasPublicacoes2 | slice:0:qtdPublicacoes2"
+        [publicacao]="item" [pagina]="pagina" class="col-lg-4"></app-item-publicacao>
+    </div>
+
+    <div class="col-md-12" style="text-align: center;" *ngIf="mostrarVerMais2 && qtdPublicacoes2 < todasPublicacoes2.length"  >
+        <button (click)="carregarMais(2)" class="ver-mais">Ver Mais</button>
+    </div>
+
+
+
+</section>
+<br /><br />
+<br /><br />

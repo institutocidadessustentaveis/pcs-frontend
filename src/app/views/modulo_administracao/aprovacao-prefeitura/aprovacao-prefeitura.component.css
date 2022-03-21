@@ -1,0 +1,11 @@
+.alertPCS{
+    color:white !important;
+    background-color: #47825e !important;
+    border-color: #47825e !important;
+    word-wrap: break-word;
+}
+
+mat-expansion-panel {
+    display: inline;
+    width: 100%;
+}

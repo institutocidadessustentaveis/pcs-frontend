@@ -1,0 +1,21 @@
+<div>
+  <h4 class="col-md-12" style="text-align: center;" >Editar Indíce da Seção</h4>
+  <br>
+
+  <form>
+    
+      <mat-form-field class="col-md-12" style="margin-bottom: 1%;"> 
+        <mat-label>Índice geral</mat-label>
+        <input  #indiceSecao="ngModel" pattern="^([1-9][0-9]{0,2}|1000)$" onKeyPress="if(this.value.length==4) return false;" name="indiceSecao" matInput placeholder="Índice geral" [(ngModel)]="secao.indice">
+        <mat-hint [hidden]="!indiceSecao.invalid" style="font-size: 12px;color:red">Digite um valor entre 1 e 1000</mat-hint>
+      </mat-form-field>
+  
+    <br>
+
+    <div class="col-md-12">
+      <button mat-flat-button color="primary" (click)="salvar()" [disabled]="indiceSecao.invalid" >OK</button>
+      <button mat-flat-button color="accent" (click)="cancelar()" style="margin-left: 20px;">Cancelar</button>
+    </div>
+  </form>
+
+</div>

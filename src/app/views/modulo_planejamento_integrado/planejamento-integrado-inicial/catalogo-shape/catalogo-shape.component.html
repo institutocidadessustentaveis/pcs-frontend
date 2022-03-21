@@ -1,0 +1,154 @@
+<div class="col-md-12">
+<div *ngIf="loading" class="loading-indicator">
+  <mat-progress-spinner style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+</div>
+
+<div class="search-form-color col-md-12" style="padding:0.5% 1% 2% 1%; ">
+  <div>
+    <form [formGroup]="formFiltro">
+      <div class="row">
+        <mat-form-field class="col-lg-4">
+          <input matInput name="titulo" id="titulo" autocomplete="off"
+                 formControlName="titulo" placeholder="Título" alt="Título">
+        </mat-form-field>
+
+        <mat-form-field class="col-lg-2">
+          <input matInput name="ano" id="ano" autocomplete="off" type="number"
+                min="1900" step="1" formControlName="ano" placeholder="Ano" alt="Ano">
+        </mat-form-field>
+
+        <mat-form-field class="col-lg-2">
+          <mat-label>Sistema de referência</mat-label>
+          <mat-select name="sistemaDeReferencia" id="sistemaDeReferencia" formControlName="sistemaDeReferencia">
+            <mat-option value="TODOS">TODOS</mat-option>
+            <mat-option value="EPSG:3857">EPSG:3857</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="col-lg-2">
+          <mat-label>Tipo</mat-label>
+          <mat-select name="tipo" id="tipo" formControlName="tipo">
+            <mat-option value="TODOS">TODOS</mat-option>
+            <mat-option value="SHP">SHP</mat-option>
+            <mat-option value="KML">KML</mat-option>
+            <mat-option value="KMZ">KMZ</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="col-lg-2">
+          <mat-label>Nível territorial</mat-label>
+          <mat-select name="nivelTerritorial" id="nivelTerritorial" formControlName="nivelTerritorial">
+            <mat-option value="TODOS">TODOS</mat-option>
+            <mat-option value="Submunicipal">Submunicipal</mat-option>
+            <mat-option value="Municipal">Municipal</mat-option>
+            <mat-option value="Regional">Regional</mat-option>
+            <mat-option value="Estadual">Estadual</mat-option>
+            <mat-option value="Nacional">Nacional</mat-option>
+            <mat-option value="Internacional">Internacional</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-form-field class="col-md-6">
+          <mat-label>Tema da Camada</mat-label>
+          <mat-select id="temaGeoespacial" name="temaGeoespacial" formControlName="temaGeoespacial"
+              matTooltip='Tema predominante do mapa conforme opções da lista.'>
+              <mat-option></mat-option>
+              <mat-option *ngFor="let item of temasGeoespaciais" [value]="item.id">{{item.nome}}</mat-option>
+          </mat-select>
+      </mat-form-field>
+      </div>
+      <div align="center">
+        <button mat-raised-button color="primary" (click)="filtrarShapes()"
+                class="pesquisar-button" type="submit" alt="Filtrar">Filtrar</button>
+        <button mat-raised-button color="accent" (click)="limparFiltro()"
+                type="button" class="pesquisar-button" alt="Limpar filtro">Limpar filtro</button>
+      </div>
+     
+    </form>
+  </div>
+</div>
+
+<div class="row">
+  <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
+    <ng-container matColumnDef="Título">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="titulo">Título</th>
+      <td mat-cell *matCellDef="let item" style="max-width: 15em; overflow-wrap: break-word;"> {{item.titulo}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Ano">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="ano">Ano</th>
+      <td mat-cell *matCellDef="let item"> {{item.ano}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Sistema de referência">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="sistemaDeReferencia">Sistema de referência</th>
+      <td mat-cell *matCellDef="let item" style="max-width: 10em; overflow-wrap: break-word;"> {{item.sistemaDeReferencia}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Tipo">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="tipoArquivo">Tipo</th>
+      <td mat-cell *matCellDef="let item"> {{item.tipoArquivo}} </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="Origem">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="Origem">Origem</th>
+      <td mat-cell *matCellDef="let item"> {{item.origemCadastro}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Download">
+      <th mat-header-cell *matHeaderCellDef> Download </th>
+      <td mat-cell *matCellDef="let item" class='m-card-title' data-label='Download'>
+        <a mat-flat-button color="primary" (click)="validacaoDownloadGeojson(item, 'geojson')"
+           name="button" class="btnTabela"
+           id="btnVisualizarPng" matTooltip="Baixar GeoJSON">
+          <mat-icon svgIcon="json" class="svg-icon"></mat-icon>
+        </a>
+        
+        <a mat-flat-button color="primary" (click)="validacaoDownloadShape(item, 'shp')"
+           name="button" class="btnTabela"
+           id="btnVisualizarShapefile" matTooltip="Baixar Shapefile">
+          <mat-icon svgIcon="shape" class="svg-icon"></mat-icon>
+        </a>
+
+        <app-download-atributos nomeShape= "{{item.titulo}}"idShape="{{item.id}}"></app-download-atributos>
+        <app-mesclar-atributos 
+        idShape="{{item.id}}"
+        idPrefeitura="{{ item.idPrefeitura }}" 
+        (configurarAtributosEvent)= "configurarAtributos()">
+      </app-mesclar-atributos>
+
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Ações">
+      <th mat-header-cell *matHeaderCellDef> Ações </th>
+
+      <td mat-cell *matCellDef="let item" class='m-card-title' data-label='Ações'>
+        <button mat-flat-button color="primary" type="button" name="buttonEditar" (click)="carregarShapeParaEdicao(item.id)"
+                class="btnTabela" matTooltip="Editar" *ngIf="item.idCidade ? idCidade == item.idCidade : 'Administrador' | hasPerfil">
+            <mat-icon> edit </mat-icon>
+        </button>
+        <button mat-flat-button color="warn" type="button" name="button" (click)="excluirShapeFile(item.id)"
+                class="btnTabela" matTooltip="Excluir" *ngIf="hasRole('ROLE_DELETAR_SHAPEFILE_RASTER') && (item.idCidade ? (idCidade == item.idCidade ? true : 'Administrador' | hasPerfil ) : 'Administrador' | hasPerfil )">
+            <mat-icon> delete </mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <div class="alert alert-warning col-md-12" [hidden]="!exibirMensagemAlerta">
+    Nenhum shape encontrado
+  </div>
+
+  <mat-paginator (page)="carregarListaShapesPaginador($event)"
+                  showFirstLastButtons [length]="length" [pageSize]="pageSize"
+                  [pageSizeOptions]="[5, 10, 25]"
+                  style="text-align: center !important;"
+                  class="float-none">
+  </mat-paginator>
+</div>
+</div>

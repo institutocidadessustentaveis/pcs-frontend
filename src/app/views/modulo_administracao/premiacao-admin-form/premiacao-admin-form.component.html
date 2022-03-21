@@ -1,0 +1,78 @@
+<div [hidden]="!loading" class="loading-indicator">
+  <mat-progress-spinner class="example-margin" style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+</div>
+<div class="contentBody" style="position: relative;">
+    <app-breadcrumb style="position: relative;"></app-breadcrumb>
+  <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+    <form [formGroup]="premiacaoAdminForm">
+      <div class="col-lg-12">
+        <h2 *ngIf="nomeBotao === 'Editar'">Alterar Premiação</h2>
+        <h2 *ngIf="nomeBotao === 'Cadastrar'">Criar Premiação</h2>
+        <mat-divider></mat-divider>
+      </div>
+      <br>
+
+      <div class="col-lg-12" style="margin-top: 20px !important;">
+        <app-datepicker formControlName="inicio" id="dtinicio" required="true" placeholder="Escolha a data inicial"
+          class="info-full-width"></app-datepicker>
+      </div>
+
+      <div class="col-lg-12" style="margin-top: 20px !important;">
+        <app-datepicker formControlName="fim" id="dtfim" required="true" placeholder="Escolha a data final"
+          class="info-full-width"></app-datepicker>
+      </div>
+
+      <div class="col-lg-12" style="margin-top: 20px !important;">
+        <mat-form-field class="full-width">
+          <input matInput required placeholder="Descrição" maxlength="150" formControlName="descricao" id="txtDescricao" />
+        </mat-form-field>
+      </div>
+
+
+      <div class="col-lg-12" style="margin-top: 10px !important;">
+        <mat-form-field class="full-width">
+          <mat-label>Status</mat-label>
+          <mat-select required formControlName="status" id="txtStatus">
+              <mat-option *ngFor="let c of listaStatusPremiacao" [value]="c.title">
+                {{c.value}}
+              </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+
+      <div class="col-md-12">
+        <button type="button" mat-raised-button id="btnBanner" (click)="fileBanner.click()"
+          color="primary" matTooltip="Upload do Banner">
+          <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar imagem do Banner
+        </button>
+        <input hidden #fileBanner type="file" id="inpBanner" name="banner" accept="image/jpeg,image/png"
+          (change)="processFile($event)">
+        <mat-error *ngIf="!premiacaoSelecionado.bannerPremiacao" style="margin-bottom: 20px;"> <sub>Escolha ao menos uma imagem do Banner</sub> </mat-error>
+      </div>
+      <br/>
+      <div class="containerPrincipal col-md-12" *ngIf="bannerSelecionado">
+        <img [src]="bannerSelecionado"><br/>
+        <button type="button" mat-raised-button (click)="deletarImagemPrincipal(premiacao)">
+          <mat-icon [ngStyle]="{'color':'red'}">delete</mat-icon>
+        </button>
+      </div>
+      <div class="col-lg-12 text-right" style="margin-top: 10px !important;">
+        <button mat-flat-button id="btnCadastrarEditar" color="primary" class="btnToRight"
+          (click)="salvarPremiacao()" [disabled]="!premiacaoAdminForm.valid"
+          matTooltip="Salvar">
+          <mat-icon>save</mat-icon>
+          Salvar
+        </button>
+        <button id="btnVoltar" mat-flat-button color="accent" class="btnToRight" [routerLink]="['/premiacaoAdmin']" matTooltip="Voltar">
+          <mat-icon>arrow_back_ios</mat-icon>
+          Voltar
+        </button>
+      </div>
+      <br />
+
+
+      <br />
+    </form>
+  </mat-card>
+</div>

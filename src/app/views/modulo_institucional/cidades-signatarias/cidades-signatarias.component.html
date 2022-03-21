@@ -1,0 +1,211 @@
+<section class="home-banner owl-carousel owl-theme">
+  <div id="carouselExampleIndicators" class="carousel slide" ride="false">
+    <div class="carousel-inner">
+      <div>
+        <img class="img-carousel" [src]="urlImagem()">
+        <div class="carousel-caption">
+          <div style="position: absolute;bottom: 0;">
+            <h1 class="animated fadeInUp duration-3s delay-1s">CIDADES SIGNATÁRIAS</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="row" style="position: relative;">
+  <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 resumo">
+    <app-breadcrumb nomePagina='Cidades Signatárias' isStatic = 1 style="color: white;" class="breadcrumb"></app-breadcrumb>
+  </div>
+
+  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 resumo">
+      <h2
+      style="font-family: Open Sans,Helvetica,Arial,sans-serif;"
+      class="half-center">
+      {{ contentUrlFtp }}
+    </h2>
+  </div>
+  <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 resumo"></div>
+</div>
+
+
+<div class="contentBody">
+  <mat-card>
+    <div class="row">
+      <div class="col-lg-12">
+        <div style="height: 500px;" leaflet [leafletOptions]="options"
+          (leafletMapReady)="onMapReady($event)">
+        </div>
+      </div>
+    </div>
+
+    <div class="row mostraLegenda">
+      <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12" style="margin-top: 5px;">
+          <div style="width:26px;height:26px; background-color:#888f88; opacity:0.3;margin-right: 5px; float:left;"></div>
+          <div>nenhuma cidade signatária</div>
+      </div>
+      <div *ngIf="legenda1 != null" class="col-lg-3 col-md-6 col-sm-12 col-xs-12" style="margin-top: 5px;">
+          <div *ngIf="legenda1 != null" style="width:26px;height:26px; background-color:#037000; opacity:0.3;margin-right: 5px; float:left;"></div>
+          <div>{{ legenda1 }}</div>
+      </div>
+      <div *ngIf="legenda2 != null" class="col-lg-3 col-md-6 col-sm-12 col-xs-12" style="margin-top: 5px;">
+          <div *ngIf="legenda2 != null" style="width:26px;height:26px; background-color:#037000; opacity:0.4;margin-right: 5px; float:left;"></div>
+          <div>{{ legenda2 }}</div>
+      </div>
+      <div *ngIf="legenda3 != null" class="col-lg-3 col-md-6 col-sm-12 col-xs-12" style="margin-top: 5px;">
+          <div *ngIf="legenda3 != null" style="width:26px;height:26px; background-color:#037000; opacity:0.5;margin-right: 5px; float:left;"></div>
+          <div>{{ legenda3 }}</div>
+      </div>
+    </div>
+
+    <div class="row mostraLegenda">
+      <div *ngIf="legenda4 != null" class="col-lg-3 col-md-6 col-sm-12 col-xs-12" style="margin-top: 5px;">
+          <div *ngIf="legenda4 != null" style="width:26px;height:26px; background-color:#037000; opacity:0.6;margin-right: 5px; float:left;"></div>
+          <div>{{ legenda4 }}</div>
+      </div>
+      <div *ngIf="legenda5 != null" class="col-lg-3 col-md-6 col-sm-12 col-xs-12" style="margin-top: 5px;">
+          <div *ngIf="legenda5 != null" style="width:26px;height:26px; background-color:#037000; opacity:0.7;margin-right: 5px; float:left;"></div>
+          <div>{{ legenda5 }}</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-4 text-center" style="margin-top: 10px !important;">
+        <a mat-raised-button color="primary" alt="Baixar lista de cidades" href="{{gerarLinkDownloadListaCidades()}}">
+          Baixar lista de cidades <mat-icon aria-hidden="false">cloud_download</mat-icon>
+        </a>
+      </div>
+      <div class="col-lg-4 text-center" style="margin-top: 10px !important;">
+        <button mat-raised-button color="primary" alt="Boas Práticas de Cidades Signatárias" [routerLink]="['/institucional/pagina/cidades-signatarias/boas-praticas-cidades-signatarias']">
+          Boas Práticas de Cidades Signatárias
+        </button>
+      </div>
+      <div class="col-lg-4 text-center" style="margin-top: 10px !important;">
+        <button mat-raised-button color="primary" alt="Histórico com datas das Cidades Signatárias" [routerLink]="['/institucional/pagina/cidades-signatarias/historico']">
+          Histórico de Cidades Signatárias
+        </button>
+      </div>
+    </div>
+
+    <br>
+
+    <mat-card id="destination">
+      <div class="col-lg-12">
+        <h4>Filtro</h4>
+        <mat-divider></mat-divider>
+      </div>
+
+      <br>
+
+      <div>
+        <form [formGroup]="formFiltro">
+          <div class="row">
+            <mat-form-field class="col-lg-3">
+              <mat-label>Estado</mat-label>
+              <mat-select name="estadoSelecionado" id="estadoSelecionado" formControlName="estadoSelecionado">
+                <mat-option value="-1">TODOS</mat-option>
+                <mat-option *ngFor="let estado of listaEstado" [value]="estado.id">
+                  {{estado.nome}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-lg-3">
+              <input matInput name="termoBuscaCidade" id="termoBuscaCidade"
+                     formControlName="termoBuscaCidade" placeholder="Cidade" alt="Cidade">
+            </mat-form-field>
+
+            <mat-form-field class="col-lg-3">
+              <input matInput name="termoBuscaPrefeito" id="termoBuscaPrefeito"
+                     formControlName="termoBuscaPrefeito" placeholder="Prefeito(a)" alt="Prefeito(a)">
+            </mat-form-field>
+
+            <mat-form-field class="col-lg-3">
+              <mat-label>Partido</mat-label>
+              <mat-select name="partidoSelecionado" id="partidoSelecionado" formControlName="partidoSelecionado">
+                <mat-option value="-1">TODOS</mat-option>
+                <mat-option *ngFor="let partido of listaPartidosItemCombo" [value]="partido.id">
+                  {{partido.label}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          
+          <div class="row">
+            <mat-form-field class="col-lg-6">
+              <input matInput name="populacaoMin" id="populacaoMin" 
+                     formControlName="populacaoMin" placeholder="População mínima" alt="População Mínima">
+            </mat-form-field>
+
+            <mat-form-field class="col-lg-6">
+              <input matInput name="populacaoMax" id="populacaoMax" 
+                     formControlName="populacaoMax" placeholder="População máxima" alt="População Máxima">
+            </mat-form-field>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12 text-center">
+              <button mat-stroked-button color="primary" (click)="buscarCidades()" alt="Filtrar">Filtrar</button>
+            </div>  
+          </div>
+
+        </form>
+      </div>
+
+    </mat-card>
+
+    <br>
+
+    <div class="row">
+      <div class="col-lg-12">
+        <table mat-table matSort [dataSource]="dataSource" matSortActive="cidade" matSortDirection="asc">
+
+          <ng-container matColumnDef="estado">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="provinciaEstado">Estado</th>
+            <td mat-cell *matCellDef="let element" class="m-card-title" data-label='estado'>
+              <span class="mobile-label">Estado:</span> {{element.provinciaEstado}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="cidade">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="cidade">Cidade</th>
+            <td mat-cell *matCellDef="let element" class="m-card-title" data-label='cidade'>
+              <span class="mobile-label">Cidade:</span><a style="text-decoration: underline" href="/painel-cidade/detalhes/{{element.idCidade}}" >{{element.cidade}}</a>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="populacao">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="populacao">População</th>
+            <td mat-cell *matCellDef="let element" class="m-card-title" data-label='populacao'>
+              <span class="mobile-label">População:</span><a style="text-decoration:none" >{{element.populacao ? (element.populacao | number) : '' }}</a>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="prefeito">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="candidato">Prefeito(a)</th>
+            <td mat-cell *matCellDef="let element" class="m-card-title" data-label='prefeito'>
+              <span class="mobile-label">Prefeito(a):</span> {{element.candidato}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="partido">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="partido">Partido Político</th>
+            <td mat-cell *matCellDef="let element" class="m-card-title" data-label='partido'>
+              <span class="mobile-label">Partido Político:</span> {{element.partido}}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <div class="alert alert-warning" [hidden]="exibirMensagemAlerta !== true">Nenhuma cidade participante foi
+          encontrada para o estado selecionado</div>
+
+        <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator>
+
+      </div>
+    </div>
+
+  </mat-card>
+</div>

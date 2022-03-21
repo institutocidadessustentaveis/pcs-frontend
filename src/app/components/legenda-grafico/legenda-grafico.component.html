@@ -1,0 +1,8 @@
+<div>
+  <div *ngFor="let item of variavel"
+    style="display:inline; font-size: 12px;">
+    <div class="caixa-label"
+    [ngStyle]="{'background-color':item.backgroundColor}"></div> {{item.label}}
+  </div>
+</div>
+<br>

@@ -1,0 +1,120 @@
+<div class="container-geral">
+  <mat-toolbar style="background: white;" class="crm-navigation-bar">
+    <mat-toolbar-row class="mat-toolbar-row" style="flex-direction: row;height: 100%;
+    box-sizing: border-box; display: flex;padding-left: 0%;align-items: center;">
+      <div class="navigation point-bg" id="divIconeMenu">
+        <button mat-icon-button (click)="openSideNav()" class="btnIconeMenu">
+          <mat-icon id="iconeMenu">menu</mat-icon><span class=" mat-icon-button naoMostraMobile">MENU</span>
+        </button>
+      </div>
+
+      <a href class="naoMostraMobile" routerLink="/">
+        <img style="height: 80px;margin-left: 2%;"
+          src="../../../../../assets/logos/f-logo__programa-cidades-sustentaveis.jpg" alt="Logo do programa cidades sustenáveis">
+      </a>
+
+      <div style="width: 25%;" class="naoMostraDesktop">
+        <a href routerLink="/">
+          <img style="width: 70%; height: 80px;" src="../../../../../assets/logos/PCS_vertical_mobile.jpg" alt="Logo do programa cidades sustenáveis">
+        </a>
+      </div>
+      <div style="width: 25%;" class="naoMostraDesktop">
+        <a href="https://citinova.mctic.gov.br" target="_blank" rel="noopener">
+          <img style="width: 100%;" src="../../../../../assets/logos/CITinova_Logo Secundária_Cor.png" alt="Logo do CITinova">
+        </a>
+      </div>
+
+      <span routerLink="/" class="versaoBeta">
+        <div class="navigation-center versao-beta">
+          <div [style.color]="'grey'">
+            VERSÃO&nbsp;BETA</div>
+        </div>
+      </span>
+
+      <div fxFlex fxLayout fxLayoutAlign="flex-end" class="fundoCentral"
+        style="flex-direction: row; box-sizing: border-box; place-content: stretch flex-end; align-items: stretch; display: flex; flex: 1 1 0%;">
+
+        <ul fxLayout fxLayoutGap="10px" class="navigation-items"
+          style="flex-direction: row; box-sizing: border-box; display: flex;">
+
+
+          <span class="toolbar-title mat-toolbar-text">
+            <div class="navigation">
+              <span class="toolbar-title mat-toolbar-text">
+                <a href="https://citinova.mctic.gov.br" target="_blank" rel="noopener">
+                  <img style="height: 60px;margin-right: 150px;"
+                    src="../../../../../assets/logos/citinova-completa.svg">
+                </a>
+              </span>
+            </div>
+          </span>
+
+          <div class="navigation" style="text-align: center;" id="liAcessar">
+
+            <li fxHide.xs *ngIf="!isAuthenticated()" class="btnAcessar">
+              <button mat-icon-button routerLink="/login" id="btnLogin">
+                <mat-icon routerLink="/login" style="margin-left:15px">account_circle</mat-icon>
+                <span class="mat-icon-button naoMostraMobile">Acessar</span>
+              </button>
+            </li>
+
+            <li fxHide.xs *ngIf="isAuthenticated()">
+              <button class="btnMinhaConta" mat-icon-button [matMenuTriggerFor]="menu" id="btnMinhaConta"><span
+                  class="naoMostraMobile">Minha Conta</span>
+                <mat-icon>assignment_ind</mat-icon>
+                <mat-menu #menu="matMenu" xPosition="before">
+                  <div mat-menu-item disabled>Olá, {{ authService.credencial.nome }}!</div>
+                  <mat-divider></mat-divider>
+                  <button mat-menu-item (click)="visualizarPerfilUsuarioLogado()" id="btnMeusDados">
+                    <mat-icon>person</mat-icon> Meu perfil
+                  </button>
+                  <button mat-menu-item routerLink="/alterarSenha" id="btnAlterarSenha">
+                    <mat-icon>lock</mat-icon> Alterar Senha
+                  </button>
+                  <button mat-menu-item class="naoMostraDesktop" *ngIf=" hasRole('ROLE_VISUALIZAR_ALERTA')" routerLink="/alerta" id="btnAlerta">
+                    <mat-icon [matBadge]="getQuantidade()" matBadgePosition="above after" matBadgeColor="accent">
+                      notifications
+                    </mat-icon> Notificações
+                  </button>
+                  <button mat-menu-item (click)="logout()" id="btnLogout">
+                    <mat-icon>directions_run</mat-icon> Sair
+                  </button>
+
+                </mat-menu>
+              </button>
+            </li>
+
+            <li fxHide.xs *ngIf="isAuthenticated()" class="naoMostraMobile">
+              <button mat-icon-button *ngIf=" hasRole('ROLE_VISUALIZAR_ALERTA')" routerLink="/alerta" id="btnAlerta">
+                <mat-icon [matBadge]="getQuantidade()" matBadgePosition="above after" matBadgeColor="accent">
+                  notifications
+                </mat-icon>
+              </button>
+            </li>
+
+            <li fxHide.xs >
+              <button mat-icon-button routerLink="/buscar" class="btnSearch">
+                <mat-icon>search</mat-icon>
+              </button>
+            </li>
+          </div>
+
+
+        </ul>
+
+      </div>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <mat-sidenav-container fxFlexFill>
+    <mat-sidenav #sidenav>
+      <mat-nav-list>
+        <app-menu-list-item *ngFor="let item of navItems" [item]="item">
+        </app-menu-list-item>
+      </mat-nav-list>
+    </mat-sidenav>
+    <router-outlet></router-outlet>
+    <app-footer></app-footer>
+
+  </mat-sidenav-container>
+</div>

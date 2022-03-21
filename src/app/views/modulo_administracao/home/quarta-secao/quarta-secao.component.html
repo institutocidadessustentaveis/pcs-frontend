@@ -1,0 +1,229 @@
+<!-- Quarta seção -->
+
+<section>
+  <div class="col-md-12" *ngIf="quartaSecao?.tituloPrincipal" style="margin-bottom:3%">
+    <div class="row">
+      <div class="caixa" [style.background-color]="quartaSecao?.tituloPrincipalCor"></div>
+      <a *ngIf="quartaSecao?.tituloPrincipal && quartaSecao?.tituloPrincipalLink && !verificaLinks(quartaSecao?.tituloPrincipalLink)" class="h1 titulos"
+        style="margin-bottom:0 !important;" [style.border-color]="quartaSecao?.tituloPrincipalCor"
+        [style.color]="quartaSecao?.tituloPrincipalCor"
+        [href]="quartaSecao?.tituloPrincipalLink" target="_blank">{{quartaSecao?.tituloPrincipal}}</a>
+      
+      <a *ngIf="quartaSecao?.tituloPrincipal && quartaSecao?.tituloPrincipalLink && verificaLinks(quartaSecao?.tituloPrincipalLink)" class="h1 titulos"
+        style="margin-bottom:0 !important; cursor: pointer;" [style.border-color]="quartaSecao?.tituloPrincipalCor"
+        [style.color]="quartaSecao?.tituloPrincipalCor"
+        (click)="validacaoDownload(quartaSecao?.tituloPrincipalLink)">{{quartaSecao?.tituloPrincipal}}</a>
+
+      <a *ngIf="quartaSecao?.tituloPrincipal && !quartaSecao?.tituloPrincipalLink" class="h1 titulos"
+        style="margin-bottom:0 !important;" [style.border-color]="quartaSecao?.tituloPrincipalCor"
+        [style.color]="quartaSecao?.tituloPrincipalCor">{{quartaSecao?.tituloPrincipal}}</a>
+    </div>
+  </div>
+
+
+  <div class="row" style="width: 100%; margin-bottom: 3%;">
+    <div class="col-md-12 padding-fix">
+      <div class="row" style="padding-left: 15px;padding-right: 15px;">
+
+        <div class="carousel-inner" [matTooltip]="quartaSecao?.primeiraImagemTooltip">
+          <a *ngIf="quartaSecao?.primeiraImagemLink &&  !verificaLinks(quartaSecao?.primeiraImagemLink)" 
+          [href]="quartaSecao?.primeiraImagemLink" target="_blank">
+            <img class="img-carousel" loading="lazy" [src]="quartaSecao?.primeiraImagemSafeUrl"
+              *ngIf="quartaSecao?.primeiraImagemSafeUrl" alt="Event Image">
+            <div class="carousel-caption d-none d-md-block">
+              <div style="display: flex !important;
+              align-items: center !important; height: 320px !important;">
+
+                <div class="row" style="width: 100%;">
+                  <a *ngIf="quartaSecao?.primeiroTitulo && quartaSecao?.primeiroTituloLink && !verificaLinks(quartaSecao?.primeiroTituloLink)"class="h1 titulos-inside-image  underline-on-hover" 
+                    style="line-height: 0.7em !important"
+                    [style.border-color]="quartaSecao?.primeiroTituloCor" 
+                    [style.color]="quartaSecao?.primeiroTituloCor"
+                    style="width: 100%;" 
+                    [href]="quartaSecao?.primeiroTituloLink" target="_blank"
+                    [innerHTML]="quartaSecao?.primeiroTitulo"></a>
+
+                  <a *ngIf="quartaSecao?.primeiroTitulo && quartaSecao?.primeiroTituloLink && verificaLinks(quartaSecao?.primeiroTituloLink)" class="h1 titulos-inside-image  underline-on-hover" 
+                    style="line-height: 0.7em !important; cursor: pointer;"
+                    [style.border-color]="quartaSecao?.primeiroTituloCor" 
+                    [style.color]="quartaSecao?.primeiroTituloCor"
+                    style="width: 100%;" 
+                    (click)="validacaoDownload(quartaSecao?.primeiroTituloLink)"
+                    [innerHTML]="quartaSecao?.primeiroTitulo"></a>
+
+                  <a *ngIf="quartaSecao?.primeiroTitulo && !quartaSecao?.primeiroTituloLink" class="h1 titulos-inside-image  underline-on-hover" 
+                    style="line-height: 0.7em !important"
+                    [style.border-color]="quartaSecao?.primeiroTituloCor" 
+                    [style.color]="quartaSecao?.primeiroTituloCor"
+                    style="width: 100%;" 
+                    [innerHTML]="quartaSecao?.primeiroTitulo"></a>
+
+                  <div class="div-btn-transparent">
+                    <a *ngIf="quartaSecao?.primeiroBotaoTexto && quartaSecao?.primeiroBotaoLink && !verificaLinks(quartaSecao?.primeiroBotaoLink)" [href]="quartaSecao?.primeiroBotaoLink" target="_blank">
+                      <button class="btn-transparent" id="btn_historia"
+                        [style.color]="quartaSecao?.primeiroBotaoTextoCor"
+                        [style.border-color]="quartaSecao?.primeiroBotaoTextoCor">
+                        {{quartaSecao?.primeiroBotaoTexto}}
+                      </button>
+                    </a>
+
+                    <a *ngIf="quartaSecao?.primeiroBotaoTexto && quartaSecao?.primeiroBotaoLink && verificaLinks(quartaSecao?.primeiroBotaoLink)" 
+                    (click)="validacaoDownload(quartaSecao?.primeiroBotaoLink)" style="cursor: pointer;"> 
+                      <button class="btn-transparent" id="btn_historia"
+                        [style.color]="quartaSecao?.primeiroBotaoTextoCor"
+                        [style.border-color]="quartaSecao?.primeiroBotaoTextoCor">
+                        {{quartaSecao?.primeiroBotaoTexto}}
+                      </button>
+                    </a>
+
+                    <a *ngIf="quartaSecao?.primeiroBotaoTexto && !quartaSecao?.primeiroBotaoLink">
+                      <button class="btn-transparent" id="btn_historia"
+                        [style.color]="quartaSecao?.primeiroBotaoTextoCor"
+                        [style.border-color]="quartaSecao?.primeiroBotaoTextoCor">
+                        {{quartaSecao?.primeiroBotaoTexto}}
+                      </button>
+                    </a>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+          </a>
+
+          <a *ngIf="quartaSecao?.primeiraImagemLink && verificaLinks(quartaSecao?.primeiraImagemLink)"  (click)="validacaoDownload(quartaSecao?.primeiraImagemLink)" style="cursor: pointer;">
+            <img class="img-carousel" loading="lazy" [src]="quartaSecao?.primeiraImagemSafeUrl"
+              *ngIf="quartaSecao?.primeiraImagemSafeUrl" alt="Event Image">
+            <div class="carousel-caption d-none d-md-block">
+              <div style="display: flex !important;
+              align-items: center !important; height: 320px !important;">
+
+                <div class="row" style="width: 100%;">
+                  <a *ngIf="quartaSecao?.primeiroTitulo && quartaSecao?.primeiroTituloLink && !verificaLinks(quartaSecao?.primeiroTituloLink)"class="h1 titulos-inside-image  underline-on-hover" 
+                    style="line-height: 0.7em !important"
+                    [style.border-color]="quartaSecao?.primeiroTituloCor" 
+                    [style.color]="quartaSecao?.primeiroTituloCor"
+                    style="width: 100%;" 
+                    [href]="quartaSecao?.primeiroTituloLink" target="_blank"
+                    [innerHTML]="quartaSecao?.primeiroTitulo"></a>
+
+                  <a *ngIf="quartaSecao?.primeiroTitulo && quartaSecao?.primeiroTituloLink && verificaLinks(quartaSecao?.primeiroTituloLink)" class="h1 titulos-inside-image  underline-on-hover" 
+                    style="line-height: 0.7em !important; cursor: pointer;"
+                    [style.border-color]="quartaSecao?.primeiroTituloCor" 
+                    [style.color]="quartaSecao?.primeiroTituloCor"
+                    style="width: 100%;" 
+                    (click)="validacaoDownload(quartaSecao?.primeiroTituloLink)"
+                    [innerHTML]="quartaSecao?.primeiroTitulo"></a>
+
+                  <a *ngIf="quartaSecao?.primeiroTitulo && !quartaSecao?.primeiroTituloLink" class="h1 titulos-inside-image  underline-on-hover" 
+                    style="line-height: 0.7em !important"
+                    [style.border-color]="quartaSecao?.primeiroTituloCor" 
+                    [style.color]="quartaSecao?.primeiroTituloCor"
+                    style="width: 100%;" 
+                    [innerHTML]="quartaSecao?.primeiroTitulo"></a>
+
+                  <div class="div-btn-transparent">
+                    <a *ngIf="quartaSecao?.primeiroBotaoTexto && quartaSecao?.primeiroBotaoLink && !verificaLinks(quartaSecao?.primeiroBotaoLink)" [href]="quartaSecao?.primeiroBotaoLink" target="_blank">
+                      <button class="btn-transparent" id="btn_historia"
+                        [style.color]="quartaSecao?.primeiroBotaoTextoCor"
+                        [style.border-color]="quartaSecao?.primeiroBotaoTextoCor">
+                        {{quartaSecao?.primeiroBotaoTexto}}
+                      </button>
+                    </a>
+
+                    <a *ngIf="quartaSecao?.primeiroBotaoTexto && quartaSecao?.primeiroBotaoLink && verificaLinks(quartaSecao?.primeiroBotaoLink)" 
+                    (click)="validacaoDownload(quartaSecao?.primeiroBotaoLink)" style="cursor: pointer;"> 
+                      <button class="btn-transparent" id="btn_historia"
+                        [style.color]="quartaSecao?.primeiroBotaoTextoCor"
+                        [style.border-color]="quartaSecao?.primeiroBotaoTextoCor">
+                        {{quartaSecao?.primeiroBotaoTexto}}
+                      </button>
+                    </a>
+
+                    <a *ngIf="quartaSecao?.primeiroBotaoTexto && !quartaSecao?.primeiroBotaoLink">
+                      <button class="btn-transparent" id="btn_historia"
+                        [style.color]="quartaSecao?.primeiroBotaoTextoCor"
+                        [style.border-color]="quartaSecao?.primeiroBotaoTextoCor">
+                        {{quartaSecao?.primeiroBotaoTexto}}
+                      </button>
+                    </a>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+          </a>
+
+          <a *ngIf="!quartaSecao?.primeiraImagemLink">
+            <img class="img-carousel" loading="lazy" [src]="quartaSecao?.primeiraImagemSafeUrl"
+              *ngIf="quartaSecao?.primeiraImagemSafeUrl" alt="Event Image">
+            <div class="carousel-caption d-none d-md-block">
+              <div style="display: flex !important;
+              align-items: center !important; height: 320px !important;">
+
+                <div class="row" style="width: 100%;">
+                  <a *ngIf="quartaSecao?.primeiroTitulo && quartaSecao?.primeiroTituloLink && !verificaLinks(quartaSecao?.primeiroTituloLink)"class="h1 titulos-inside-image  underline-on-hover" 
+                    style="line-height: 0.7em !important"
+                    [style.border-color]="quartaSecao?.primeiroTituloCor" 
+                    [style.color]="quartaSecao?.primeiroTituloCor"
+                    style="width: 100%;" 
+                    [href]="quartaSecao?.primeiroTituloLink" target="_blank"
+                    [innerHTML]="quartaSecao?.primeiroTitulo"></a>
+
+                  <a *ngIf="quartaSecao?.primeiroTitulo && quartaSecao?.primeiroTituloLink && verificaLinks(quartaSecao?.primeiroTituloLink)" class="h1 titulos-inside-image  underline-on-hover" 
+                    style="line-height: 0.7em !important; cursor: pointer;"
+                    [style.border-color]="quartaSecao?.primeiroTituloCor" 
+                    [style.color]="quartaSecao?.primeiroTituloCor"
+                    style="width: 100%;" 
+                    (click)="validacaoDownload(quartaSecao?.primeiroTituloLink)"
+                    [innerHTML]="quartaSecao?.primeiroTitulo"></a>
+
+                  <a *ngIf="quartaSecao?.primeiroTitulo && !quartaSecao?.primeiroTituloLink" class="h1 titulos-inside-image  underline-on-hover" 
+                    style="line-height: 0.7em !important"
+                    [style.border-color]="quartaSecao?.primeiroTituloCor" 
+                    [style.color]="quartaSecao?.primeiroTituloCor"
+                    style="width: 100%;" 
+                    [innerHTML]="quartaSecao?.primeiroTitulo"></a>
+
+                  <div class="div-btn-transparent">
+                    <a *ngIf="quartaSecao?.primeiroBotaoTexto && quartaSecao?.primeiroBotaoLink && !verificaLinks(quartaSecao?.primeiroBotaoLink)" [href]="quartaSecao?.primeiroBotaoLink" target="_blank">
+                      <button class="btn-transparent" id="btn_historia"
+                        [style.color]="quartaSecao?.primeiroBotaoTextoCor"
+                        [style.border-color]="quartaSecao?.primeiroBotaoTextoCor">
+                        {{quartaSecao?.primeiroBotaoTexto}}
+                      </button>
+                    </a>
+
+                    <a *ngIf="quartaSecao?.primeiroBotaoTexto && quartaSecao?.primeiroBotaoLink && verificaLinks(quartaSecao?.primeiroBotaoLink)" 
+                    (click)="validacaoDownload(quartaSecao?.primeiroBotaoLink)" style="cursor: pointer;"> 
+                      <button class="btn-transparent" id="btn_historia"
+                        [style.color]="quartaSecao?.primeiroBotaoTextoCor"
+                        [style.border-color]="quartaSecao?.primeiroBotaoTextoCor">
+                        {{quartaSecao?.primeiroBotaoTexto}}
+                      </button>
+                    </a>
+
+                    <a *ngIf="quartaSecao?.primeiroBotaoTexto && !quartaSecao?.primeiroBotaoLink">
+                      <button class="btn-transparent" id="btn_historia"
+                        [style.color]="quartaSecao?.primeiroBotaoTextoCor"
+                        [style.border-color]="quartaSecao?.primeiroBotaoTextoCor">
+                        {{quartaSecao?.primeiroBotaoTexto}}
+                      </button>
+                    </a>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+
+</section>

@@ -1,0 +1,11 @@
+.mapa{
+    height: 500px;
+  }
+
+  .listaCidades {
+    display: flex;
+    justify-content: space-between;
+  }
+  .listaCidades .item {
+    margin-bottom: 6px;
+  }

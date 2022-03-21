@@ -1,0 +1,22 @@
+
+/* Barra de chamadas */
+.head-buttons-bar {
+  //grid  grid-5  grid-no-gap  grid-center  m-b-48
+  // display: grid;
+  // grid: auto / repeat(5, 1fr);
+  
+  > div {
+    background-color: #0391ad;
+    color: #fff;
+    padding: 40px;
+    font-weight: 500;
+    margin-right: 1%;
+
+    &:last-child {
+      background-color: #408559;
+    }
+  }
+}
+/* ...Barra de chamadas */
+
+

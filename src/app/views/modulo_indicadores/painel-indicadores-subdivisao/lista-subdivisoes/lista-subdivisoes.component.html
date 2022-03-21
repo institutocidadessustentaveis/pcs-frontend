@@ -1,0 +1,7 @@
+<div class="subdivisao" >
+  <a [href]="link">
+    {{subdivisao.nome }}
+  </a>
+  <app-lista-subdivisoes *ngFor="let item of subdivisao.filhos" [subdivisao]="item" ></app-lista-subdivisoes>
+  <hr *ngIf="subdivisao.filhos.length > 0" style="border-color: white;">
+</div>

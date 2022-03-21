@@ -1,0 +1,174 @@
+<div class="row">
+  <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+    <form [formGroup]="formulario" class="example-form">
+
+      <div class="col-lg-12">
+        <mat-form-field >
+          <input matInput type="number" placeholder="Ano Inicial" #txtAnoInicio formControlName="anoInicio" id="txtAnoInicio" />
+          <mat-hint align="end">{{ txtAnoInicio.value?.length || 0 }}/4</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-12">
+        <mat-form-field>
+          <input matInput type="number" placeholder="Ano Final" #txtAnoFim formControlName="anoFim" id="txtAnoFim" />
+          <mat-hint align="end">{{ txtAnoFim.value?.length || 0 }}/4</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-12">
+        <mat-form-field>
+          <mat-label>-- Selecione uma prefeitura -- </mat-label>
+          <mat-select formControlName="prefeitura" name="prefeitura" id="prefeitura">
+              <mat-option value="0"></mat-option>
+              <mat-option *ngFor="let prefeitura of listaPrefeitura" [value]="prefeitura">
+              {{ prefeitura.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-12">
+        <mat-form-field>
+          <mat-label>-- Selecione um estado -- </mat-label>
+          <mat-select formControlName="estado" name="estado" id="estado">
+              <mat-option value="0"></mat-option>
+              <mat-option *ngFor="let estado of listaEstados" [value]="estado">
+              {{ estado.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-12">
+        <mat-form-field>
+            <mat-label>-- Selecione um indicador -- </mat-label>
+          <mat-select formControlName="indicador" name="indicador" id="indicador">
+              <mat-option value="0"></mat-option>
+            <mat-option *ngFor="let indicador of listaIndicadores" [value]="indicador.label">
+              {{ indicador.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-12">
+        <mat-form-field>
+            <mat-label>-- Selecione um ODS -- </mat-label>
+          <mat-select formControlName="ods" name="ods">
+            <mat-option value="0"></mat-option>
+            <mat-option *ngFor="let ods of listaOds" [value]="ods.numero">
+              <img class="icone_ods rounded" aria-hidden
+                [src]="domSanitizationService.bypassSecurityTrustUrl('data:image/png;base64, ' + ods.iconeReduzido)"
+                height="40" width="40">
+              {{ ods?.numero + ' - ' + ods.titulo }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-12">
+        <mat-form-field>
+            <mat-label>-- Selecione um eixo -- </mat-label>
+          <mat-select formControlName="eixo" name="eixo">
+            <mat-option value="0"></mat-option>
+            <mat-option *ngFor="let eixo of listaEixos" [value]="eixo.nome">
+              <img class="icone_ods rounded" aria-hidden
+              [src]="domSanitizationService.bypassSecurityTrustUrl('data:image/png;base64, ' + eixo.icone)" height="40"
+              width="40">
+              {{ eixo.nome }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </form>
+  </div>
+
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right" style="margin-top: 10px !important;">
+    <button mat-flat-button color="primary" class="float-right" (click)="searchReport()" matTooltip="Gerar Relatório"
+      id="btnGerarRelatorio" class="botaoGeraRelatorio">
+      <mat-icon style="margin-top: -1px !important">insert_drive_file</mat-icon> Gerar Relatório
+    </button>
+  </div>
+
+  <mat-progress-bar mode="indeterminate" [hidden]="!loading" style="margin-top:20px;"></mat-progress-bar>
+
+  <app-exportador-relatorios [registros]="listaParaExportar" [titulo]="titulo" [colunas]="colunas">
+  </app-exportador-relatorios>
+
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" [hidden]="resultadoEncontrado" style="margin-top:25px;">
+    <p class="alert alert-warning" role="alert" *ngIf="pesquisou">Nenhum registro encontrado!</p>
+  </div>
+
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px !important;"
+    [hidden]="listaDTO.length == 0">
+
+    <table mat-table class="col-lg-12" [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+      <ng-container matColumnDef="Prefeitura">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="prefeitura">Prefeitura</th>
+        <td mat-cell *matCellDef="let dto" class='m-card-title' data-label='Prefeitura'>
+          <span class="mobile-label">Prefeitura:</span>{{ dto.prefeitura }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Estado">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="estado">Estado</th>
+        <td mat-cell *matCellDef="let dto" class='m-card-title' data-label='Estado'>
+          <span class="mobile-label">Estado:</span>{{ dto.estado ? dto.estado : dto.estadoNomecompleto }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Codigo IBGE">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="codigoIBGE">Código IBGE</th>
+        <td mat-cell *matCellDef="let dto" class='m-card-title' data-label='codigoIBGE'>
+          <span class="mobile-label">Codigo IBGE:</span>{{ dto.codigoIBGE }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Indicador">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="indicador">Indicador</th>
+        <td mat-cell *matCellDef="let dto" class='m-card-title' data-label='Indicador'>
+          <span class="mobile-label">Indicador:</span>{{ dto.indicador }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="ODS">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="ods">ODS</th>
+        <td mat-cell *matCellDef="let dto" class='m-card-title' data-label='ODS'>
+          <span class="mobile-label">ODS:</span>{{ dto.ods }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Eixo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="eixo">Eixo</th>
+        <td mat-cell *matCellDef="let dto" class='m-card-title' data-label='Eixo'>
+          <span class="mobile-label">Eixo:</span>{{ dto.eixo }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="anoIndicador">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="anoIndicador">Ano de Referência</th>
+        <td mat-cell *matCellDef="let dto" class='m-card-title' data-label='Data Preenchimento'>
+          <span class="mobile-label">Ano de Referência:</span>{{ dto.anoIndicador }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="dataPreenchimento">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="dataPreenchimento">Data Preenchimento</th>
+        <td mat-cell *matCellDef="let dto" class='m-card-title' data-label='Data Preenchimento'>
+          <span class="mobile-label">Data Preenchimento:</span>{{ dto.dataPreenchimento ? (dto.dataPreenchimento | date:'dd/MM/yyyy') : 'N/A' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="horaPreenchimento">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="horaPreenchimento">Hora Preenchimento</th>
+        <td mat-cell *matCellDef="let dto" class='m-card-title' data-label='Hora Preenchimento'>
+          <span class="mobile-label">Hora Preenchimento:</span>{{ dto.dataPreenchimento ? (dto.dataPreenchimento | date:'HH:mm:ss') : 'N/A' }}</td>
+      </ng-container>
+
+    </table>
+  </div>
+
+  <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" style="margin-top: 20px !important;"
+    [hidden]="listaDTO.length == 0">
+    <mat-paginator (page)="carregarPagina($event)" showFirstLastButtons [length]="length2"
+      [pageSize]="pageSize" [pageSizeOptions]="[3, 10, 25, 50, 100]" style="text-align: center !important;"
+      class="float-none">
+    </mat-paginator>
+  </div>
+</div>

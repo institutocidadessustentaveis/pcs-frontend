@@ -1,0 +1,170 @@
+<div class="search-form-color col-md-12 mt-2" style="padding-bottom: 2%;">
+  
+  <div>
+    <form>
+      <mat-form-field class="col-md-4">
+        <mat-label class="bmd-label-floating">Selecione um eixo PCS</mat-label>
+        <mat-select id="idEixo" [(ngModel)]="filtroCidadesComBoasPraticas.idEixo" name="eixo"
+          (selectionChange)="onChangeEixo()">
+          <mat-option>Selecione um</mat-option>
+          <mat-option *ngFor="let eixo of listaEixos" [value]="eixo.id">{{eixo.label}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-4">
+        <mat-label class="bmd-label-floating">Selecione um ODS</mat-label>
+        <mat-select id="idOds" [(ngModel)]="filtroCidadesComBoasPraticas.idOds" name="ods"
+          (selectionChange)="onChangeODS()">
+          <mat-option>Selecione um</mat-option>
+          <mat-option *ngFor="let ods of listaOds" [value]="ods.id">{{ods.label}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-4">
+        <mat-label class="bmd-label-floating">Selecione uma meta ODS</mat-label>
+        <mat-select id="idMetaOds" [(ngModel)]="filtroCidadesComBoasPraticas.idMetaOds" name="metaOds">
+          <mat-option>Selecione uma</mat-option>
+          <mat-option *ngFor="let metaOds of listaMetaOds" [value]="metaOds.id">{{metaOds.label}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-4">
+        <mat-label class="bmd-label-floating">Indicador</mat-label>
+        <mat-select name="indicador" id="indicador" [(ngModel)]="filtroCidadesComBoasPraticas.idIndicador">
+          <mat-option>Selecione um</mat-option>
+          <mat-option *ngFor="let item of listaIndicadores" [value]="item.id">{{item.nome}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-4">
+        <mat-label class="bmd-label-floating">Selecione um continente</mat-label>
+        <mat-select id="idContinente" [(ngModel)]="filtroCidadesComBoasPraticas.continente" name="continente"
+          (selectionChange)="onChangeContinente()">
+          <mat-option>Selecione um</mat-option>
+          <mat-option *ngFor="let continente of listaContinentes" [value]="continente.label">
+            {{continente.label}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-4">
+        <mat-label class="bmd-label-floating">Selecione um país</mat-label>
+        <mat-select id="idPais" [(ngModel)]="filtroCidadesComBoasPraticas.idPais" name="pais"
+          (selectionChange)="onChangePais()">
+          <mat-option>Selecione um</mat-option>
+          <mat-option *ngFor="let pais of listaPaises" [value]="pais.id">{{pais.label}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-4">
+        <mat-label class="bmd-label-floating">Selecione um estado</mat-label>
+        <mat-select id="idEstado" [(ngModel)]="filtroCidadesComBoasPraticas.idEstado"
+          (selectionChange)="onChangeEstado()" name="estado">
+          <mat-option>Selecione um</mat-option>
+          <mat-option *ngFor="let estado of listaProvinciasEstados" [value]="estado.id">{{estado.label}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-4">
+        <mat-label class="bmd-label-floating">Selecione uma cidade</mat-label>
+        <mat-select id="idCidade" [(ngModel)]="filtroCidadesComBoasPraticas.idCidade" name="cidade">
+          <mat-option>Selecione uma</mat-option>
+          <mat-option *ngFor="let cidade of listaCidades" [value]="cidade.id">{{cidade.label}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-4">
+        <input matInput placeholder="População Min:" value="" id="popuMin"
+          [(ngModel)]="filtroCidadesComBoasPraticas.popuMin" name="popuMin" type="number"
+          onKeyPress="if(this.value.length==20) return false;" />
+      </mat-form-field>
+
+      <mat-form-field class="col-md-4">
+        <input matInput placeholder="População Máx:" value="" id="popuMax"
+          [(ngModel)]="filtroCidadesComBoasPraticas.popuMax" name="popuMax" type="number"
+          onKeyPress="if(this.value.length==20) return false;" />
+      </mat-form-field>
+
+      <mat-form-field class="col-md-12">
+        <mat-label>Exibição no mapa</mat-label>
+        <mat-select name="inputVisualizar" [(ngModel)]="filtroCidadesComBoasPraticas.visualizarComoPontos">
+          <mat-option *ngFor="let opcao of opcoes" [value]="opcao.value">
+            {{opcao.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+
+      <div class="row" style="padding-left: 3%;padding-right: 3%;">
+        <button mat-raised-button class="col-md-5" style="margin-right: 5%;" color="primary" (click)="pesquisarBoasPraticas()" id="btnPesquisar">
+          Carregar no mapa
+        </button>
+      
+        <button mat-raised-button class="col-md-5" color="primary" style="margin-right: 5%;" (click)="exportarShapeBoasPraticas()" id="btnExportar">
+          Exportar shape
+        </button>
+      </div>
+
+      <div class="row" style="padding-left: 3%;padding-right: 3%;padding-top: 1%;">
+        <button mat-raised-button color="accent" class="col-md-5" style="margin-right: 5%;" (click)="clear()" id="btnLimpar">
+          Remover do Mapa
+        </button>
+      
+        <button mat-raised-button color="primary" class="col-md-5" style="margin-right: 5%;" 
+          (click)="openDialogPropriedades()" [disabled]="!exibirEstilo" id="btnEstilo">
+          Alterar estilo
+        </button>
+      </div>
+
+
+    </form>
+
+    <form #formConsulta="ngForm" *ngIf="isAuthenticated()">
+      <mat-form-field class="col-md-4" style="margin-top: 3%;">
+        <input matInput placeholder="Nome da consulta:" value="" id="consultanome" required [disabled]="filtroCidadesComBoasPraticas.idConsulta"
+          [(ngModel)]="filtroCidadesComBoasPraticas.nomeConsulta" name="consultanome"/>
+      </mat-form-field>
+
+        <button mat-raised-button color="primary"  matTooltip="Salvar Consulta" [disabled]="!formConsulta.valid || !(filtroCidadesComBoasPraticas.idConsulta == null)" (click)="salvarConsultaBoasPraticas()"
+         id="btnSalvarConsulta">
+        <mat-icon> save </mat-icon>
+      </button>
+
+      <mat-form-field class="col-md-4">
+        <mat-label class="bmd-label-floating">Selecione uma consulta</mat-label>
+        <mat-select id="idCidade"  name="filtroConsulta" [(ngModel)]="consultaSelecionada" (selectionChange)="onChangeConsultaBoaPratica($event.value)">
+          <mat-option>Selecione uma</mat-option>
+          <mat-option *ngFor="let filtro of listaConsultasBoaPratica" [value]="filtro">{{filtro.nomeConsulta}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-flat-button color="warn" type="button" name="button" (click)="excluirConsultaBoaPratica(filtroCidadesComBoasPraticas.idConsulta)"
+           id="btnExcluir"  *ngIf="filtroCidadesComBoasPraticas.idConsulta"   matTooltip="Excluir consulta" >
+        <mat-icon> delete </mat-icon>
+      </button>
+
+      <button mat-flat-button color="primary"  style="margin-left: 1%;" *ngIf="filtroCidadesComBoasPraticas.idConsulta" (click)="limparFiltroCidadesComBoasPraticas()"
+          id="btnAdd" matTooltip="Novo">Limpar
+      </button>
+    </form>
+  </div>
+
+  <ng-template #modalLoading>
+    <div class="centralizar-loading">
+       <div id="circularG">
+        <div id="circularG_1" class="circularG"></div>
+        <div id="circularG_2" class="circularG"></div>
+        <div id="circularG_3" class="circularG"></div>
+        <div id="circularG_4" class="circularG"></div>
+        <div id="circularG_5" class="circularG"></div>
+        <div id="circularG_6" class="circularG"></div>
+        <div id="circularG_7" class="circularG"></div>
+        <div id="circularG_8" class="circularG"></div>
+      </div> 
+      <div class="mt-2" style="text-align: center">
+        <p><strong>Carregando...</strong></p>
+      </div>
+    </div>
+  </ng-template>
+
+</div>

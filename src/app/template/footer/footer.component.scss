@@ -1,0 +1,30 @@
+// .head-buttons-bar {
+//     display: grid;
+//     grid: auto/repeat(5,1fr);
+//   }
+  
+  @media (max-width: 900px) {
+    .head-buttons-bar {
+      display: inherit;
+    }
+  }
+  
+
+  .head-buttons-bar {
+    //grid  grid-5  grid-no-gap  grid-center  m-b-48
+    // display: grid;
+    // grid: auto / repeat(5, 1fr);
+    
+    > div {
+      background-color: #6E6E6E;
+      color: #fff;
+      padding-top: 20px;
+      padding-left: 20px;
+      padding-right: 20px;
+      padding-bottom: 20px;
+      font-weight: 500;
+    }
+  }
+
+
+  

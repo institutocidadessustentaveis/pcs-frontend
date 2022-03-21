@@ -1,0 +1,17 @@
+@media screen and (min-width: 959px) {
+    .mat-column-resposta {
+        width: 40% !important;
+    }
+    .mat-column-pergunta {
+        width: 40% !important;
+    }
+    table {
+        table-layout: fixed;
+        width: 100%;
+    }
+
+    td{
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+}

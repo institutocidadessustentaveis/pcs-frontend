@@ -1,0 +1,27 @@
+.example-form {
+    min-width: 150px;
+    width: 100%;
+  }
+
+  .full-width {
+    width: 100%;
+  }
+
+  /* Structure */
+  table {
+    width: 100%;
+  }
+
+  .mat-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+
+  .btnToRight{
+    margin-right: 5px !important;
+  }
+
+  .botaoGeraRelatorio{
+    cursor: pointer !important;
+    margin-right: 15px;
+  }

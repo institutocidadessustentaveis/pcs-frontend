@@ -1,0 +1,121 @@
+<div class="contentBody">
+<div class="row">
+
+  <div class="col-md-12">
+    <mat-card>
+      <mat-card-title>Meus dados</mat-card-title>
+      <hr>
+      <mat-card-content>
+        <mat-card-subtitle class="col-md-12">Dados Pessoais</mat-card-subtitle>
+        <form [formGroup]="formulario">
+          <mat-form-field class="col-md-12">
+            <input matInput placeholder="Nome*" id="nome" [attr.disabled]="loading ? '' : null" formControlName="nome">
+          </mat-form-field>
+          <mat-form-field class="col-md-12">
+            <input type="email" matInput placeholder="E-mail*" id="email" [attr.disabled]="loading ? '' : null"
+              formControlName="email" readonly>
+          </mat-form-field>
+          <mat-form-field class="col-md-6">
+            <input type="cel" matInput placeholder="Telefone fixo" id="telefone_fixo" mask="(00) 0000-0000"
+              [attr.disabled]="loading ? '' : null" formControlName="telefone_fixo" minlength="10" maxlength="14">
+          </mat-form-field>
+          <mat-form-field class="col-md-6">
+            <input type="cel" matInput placeholder="Celular*" id="telefone" mask="(00) 00000-0000"
+              [attr.disabled]="loading ? '' : null" formControlName="telefone">
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12">
+            <input type="text" placeholder="Cidade de interesse" matInput formControlName="cidadeInteresse" [matAutocomplete]="auto"
+            id="cidadeInteresse" [attr.disabled]="loading ? '' : null" (optionSelected)="checkCidade()">
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="getLabel.bind(this)">
+              <mat-option *ngFor="let option of filteredOptions | async" [value]="option.id">
+                {{ option.label }}
+              </mat-option>
+            </mat-autocomplete>
+            <mat-error *ngIf="checkCidadeAutoComplete">
+                Digite uma cidade interesse que seja signatária.
+            </mat-error>
+          </mat-form-field>
+
+          <div class="row col-md-12">
+            <mat-form-field class="col-md-11">
+              <mat-select placeholder="Áreas de interesse" [disabled]="loading" id="areasInteresse"
+                formControlName="areasInteresse">
+                <mat-option *ngFor="let dados of listaAreaInteresse" [value]="dados.id">{{dados.nome}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div class="col-md-1" style="text-align: end;">
+              <button id="btnAdicionaAreaInteresse" [disabled]="formulario.controls.areasInteresse.value === '' "
+                type="button" mat-fab color="primary" (click)="adicionarAreaInteresse()">
+                +
+              </button>
+            </div>
+            <mat-list [hidden]="listaAreaInteresseUsuario.length === 0">
+              <h3 mat-subheader>Minhas áreas de Interesses</h3>
+              <mat-list-item *ngFor="let area of listaAreaInteresseUsuario">
+                <mat-icon style="cursor: pointer !important; color: red;" (click)="removeAreaInteresse(area)"
+                  mat-list-icon>delete</mat-icon>
+                <h4 mat-line>{{area.nome}}</h4>
+              </mat-list-item>
+            </mat-list>
+          </div>
+
+          <div style="margin-top: 2%;" [hidden]="!representaOrg">
+            <mat-form-field class="col-md-12">
+              <input matInput placeholder="Nome da Organização*:" id="nomeOrg" formControlName="nomeOrg">
+            </mat-form-field>
+            <mat-form-field class="col-md-12">
+              <input matInput placeholder="Cargo*:" id="cargo" formControlName="cargo">
+            </mat-form-field>
+
+            <div class="row col-md-12">
+              <mat-form-field class="col-md-11">
+                <mat-select placeholder="Áreas de atuação*:" id="areasAtuacao" formControlName="areasAtuacao">
+                  <mat-option *ngFor="let dados of listaAreaAtuacoes" [value]="dados.id">{{dados.nome}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <div class="col-md-1" style="text-align: end;">
+                <button id="btnAdicionaAreaAtuacao" [disabled]="formulario.controls.areasAtuacao.value === '' "
+                  type="button" mat-fab color="primary" (click)="adicionarAreaAtuacao()" matTooltip="Adicionar Área">
+                  +
+                </button>
+              </div>
+            </div>
+
+            <mat-list [hidden]="listaAreaAtuacaoUsuario.length === 0">
+              <h3 mat-subheader>Minhas áreas de Atuações</h3>
+              <mat-list-item *ngFor="let area of listaAreaAtuacaoUsuario">
+                <mat-icon style="cursor: pointer !important; color: red;" (click)="removeAreaAtuacao(area)"
+                  matTooltip="Excluir Área" mat-list-icon>delete</mat-icon>
+                <h4 mat-line>{{area.nome}}</h4>
+              </mat-list-item>
+            </mat-list>
+            <mat-form-field class="col-md-12">
+              <mat-select id="tipoInstituicao" placeholder="Tipo de Instituição*:" formControlName="tipoInstituicao">
+                <mat-option *ngFor="let dados of listaIntituicoes" [value]="dados.nome">{{dados.nome}}
+                  <b>({{dados.tipo}})</b></mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <mat-list class="col-md-3">
+            <h3 mat-subheader>Minhas permissões</h3>
+            <mat-list-item *ngFor="let item of perfisDoUsuario">
+              <h4 mat-line>{{item}}</h4>
+            </mat-list-item>
+          </mat-list>
+
+          <div class="col-md-12" style="text-align: end;margin-top:10px;">
+            <button id="btnSalvarUsuario"
+              [disabled]="!formulario.valid || loading || representaOrg && listaAreaAtuacaoUsuario.length === 0"
+              (click)="salvar()" mat-flat-button color="primary" matTooltip="Salvar">Salvar</button>
+          </div>
+
+        </form>
+      </mat-card-content>
+      <mat-progress-bar [hidden]="!loading" mode="indeterminate"></mat-progress-bar>
+    </mat-card>
+  </div>
+
+</div>
+</div>

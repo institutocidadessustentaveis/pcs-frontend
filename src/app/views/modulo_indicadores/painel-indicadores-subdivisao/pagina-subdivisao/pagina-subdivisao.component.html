@@ -1,0 +1,313 @@
+<section id="filtros" class="filtros">
+
+  <div class="cabecalho">
+    <div class="row">
+      <div id='informacoes' class="col-lg-8 text-center">
+        <div class="col-lg-12 text-center titulo">
+          <h1>{{subdivisao?.tipoSubdivisao?.nome}}: {{subdivisao?.nome}}</h1>
+          <h2 class='text-white' *ngIf="subdivisao.subdivisaoPai">
+            {{subdivisao.subdivisaoPai.tipoSubdivisao.nome}}: {{subdivisao.subdivisaoPai.nome}}
+          </h2>
+          <a [href]="'/painel-subdivisoes/'+siglaUrl+'/'+nomeCidadeUrl" class='text-white'
+            style="font-size: large;">{{subdivisao.nomeCidade}} - {{subdivisao.uf}}</a>
+            <hr style="margin:2em 0px" >
+        </div>
+
+        <div class='col-12 text-white'>
+          Vamos lá,<br>
+          clique no campo abaixo e escolha um Indicador para visualizar e comparar as informações. <br>
+        </div>
+        <div class='col-12 advanced-search__body search-form-color text-white' >
+
+          <form [formGroup]="form">
+
+            <mat-form-field style="margin:2em 0px">
+
+              <mat-label class="bmd-label-floating">Indicador</mat-label>
+              <input class="text-white" type="text" name="indicador" matInput formControlName="indicador"
+                [matAutocomplete]="autoIndicador" id="indicador" [attr.disabled]="subdivisao ? '' : null">
+                <mat-autocomplete #autoIndicador="matAutocomplete"
+                  [displayWith]="getLabelIndicador.bind(this)"
+                  (optionSelected)="buscarIndicador($event.option.value)">
+                  <mat-optgroup  *ngFor="let eixo of eixoOptions | async" [label]="eixo.nome">
+                    <mat-option *ngFor="let indicador of eixo.indicadores" [value]="indicador.id">
+                      {{indicador.nome}}
+                    </mat-option>
+                  </mat-optgroup>
+                </mat-autocomplete>
+
+            </mat-form-field>
+          </form>
+        </div>
+
+      </div>
+      <div id='mapa' class="col-lg-4 text-center">
+        <div class="row">
+          <div class='col-lg-12 text-center' *ngIf="leafletLayers">
+            <br>
+            <br>
+            <div style=" height: 400px ;width: 100%; " leaflet [leafletOptions]="optionsLeaflet"
+              [(leafletZoom)]="mapZoom" [leafletLayersControl]="layersControl"
+              [leafletLayers]="leafletLayers" (leafletMapReady)="onMapReady($event)">
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+<section id="dados-indicador" class='dados-indicador' *ngIf="indicadorSelecionado">
+  <div class="container">
+
+    <div class="row">
+      <div class='col-lg-12'>
+        <h2>
+          {{indicadorSelecionado.nome}}
+        </h2>
+        <span>{{indicadorSelecionado.descricaoIndicador}}</span> <br>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top: 1em;" *ngIf="indicadorSelecionado.formula">
+      <div class='col-lg-12'>
+        <strong>Fórmula</strong>: <br>{{indicadorSelecionado.formula}}
+      </div>
+    </div>
+
+    <div class="row" style="margin-top: 1em;">
+      <div class='col-lg-4' *ngIf="indicadorSelecionado.idEixo">
+        <strong>Eixo</strong>:<br>
+        <img [src]="url+'eixo/imagem/'+indicadorSelecionado.idEixo"
+         style="width: 5em; height: 5em" [matTooltip]="indicadorSelecionado.nomeEixo"><br>
+      </div>
+
+      <div class='col-lg-4' *ngIf="indicadorSelecionado.numeroODS">
+        <strong>ODS</strong>:<br>
+        <img [src]="url+'ods/imagem/'+indicadorSelecionado.numeroODS"
+        style="width: 5em; height: 5em" [matTooltip]="indicadorSelecionado.nomeODS"><br>
+      </div>
+      <div class='col-lg-4' *ngIf="indicadorSelecionado.numeroMeta">
+        <strong>Meta</strong>:<br>
+        <mat-chip-list class="chip" aria-label="Color selection">
+          <mat-chip  selected [color]="'accent'" class="chip" [matTooltip]="indicadorSelecionado.descricaoMeta">
+            <strong>{{indicadorSelecionado.numeroMeta}}</strong>
+          </mat-chip>
+        </mat-chip-list>
+        <br>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top: 1em;" *ngIf="fontes">
+      <div class='col-lg-12'>
+        <strong>Fontes</strong>: <br>
+        <ul>
+          <li *ngFor="let fonte of fontes">
+            {{fonte}}
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top: 1em;" *ngIf="observacoes">
+      <div class='col-lg-12'>
+        <strong>Observações</strong>: <br>
+        <ul>
+          <li *ngFor="let observacao of observacoes">
+            {{observacao}}
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top: 1em;" *ngIf="serieHistorica.cabecalho">
+      <div class='col-lg-12'>
+        <strong>Série Histórica de {{subdivisao.nome}}</strong>: <br>
+        <table class="table table-hover table-striped table-bordered ">
+          <thead>
+            <tr>
+              <th *ngFor="let item of serieHistorica.cabecalho">
+                {{item}}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let linha of serieHistorica.valores">
+              <td *ngFor="let valor of linha">
+                {{valor}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top: 1em;" *ngIf="serieHistorica.cabecalho">
+      <div class='col-lg-12'>
+        <strong>Gráfico de {{subdivisao.nome}} </strong>: <br>
+        <!-- Line Chart -->
+          <canvas baseChart height="100" [datasets]="lineChartData"
+            [labels]="labels" [options]="lineChartOptions" [legend]="false" chartType="line"
+            id="grafico-linha"></canvas>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top: 1em;" *ngIf="fatorDesigualdade">
+      <div class='col-lg-12'>
+        <strong>Fator de Desigualdade de {{subdivisao.nome}}</strong>: <br>
+        <table class="table table-hover table-striped table-bordered ">
+          <thead>
+            <tr>
+              <th >
+                Período
+              </th>
+              <th >
+                Máximo
+              </th>
+              <th>
+                Mínimo
+              </th>
+              <th>
+                Desigualdade (vezes)
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let fator of fatorDesigualdade">
+              <td >
+                {{fator.ano}}
+              </td>
+              <td >
+                {{fator.maximo | number:'':'pt-BR'}} ({{fator.subdivisaoMaximo}})
+              </td>
+              <td >
+                {{fator.minimo | number:'':'pt-BR'}} ({{fator.subdivisaoMinimo}})
+              </td>
+              <td >
+                {{fator.desigualdade | number:'':'pt-BR'}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top: 1em;" *ngIf="indicadoresPreenchidosPorAno">
+      <div class="col-lg-12">
+        <strong>Análise comparativa</strong><br>
+
+        <button mat-flat-button *ngFor="let ano of anos" (click)="buscarIndicadoresPreenchidosNivel(ano)" [color]="ano == anoSelecionado ? 'primary':''" >{{ano}}</button>
+      </div>
+      <div id='mapa' class="col-lg-8 ">
+          <div class='' *ngIf="leafletLayers">
+            <strong>Classificação visual</strong>: <br>
+            <div style=" height: 400px ;width: 100%; " leaflet [leafletOptions]="optionsLeafletAnalise"
+              [(leafletCenter)]="mapCenter"  [leafletLayersControl]="layersControlAnalise"
+              [leafletLayers]="leafletLayersAnalise" (leafletMapReady)="onMapReadyAnalise($event)">
+            </div>
+          </div>
+          <ul class="legenda-mapa">
+            <li style="border-left: 1.5em solid #D7E7FF; padding-left: 0.5em">Alta / Melhor</li>
+            <li style="border-left: 1.5em solid #A5DFF7; padding-left: 0.5em">Acima da média</li>
+            <li style="border-left: 1.5em solid #5A9CE8; padding-left: 0.5em">Média</li>
+            <li style="border-left: 1.5em solid #0041B5; padding-left: 0.5em">Abaixo da média</li>
+            <li style="border-left: 1.5em solid #20007B; padding-left: 0.5em">Baixa / Pior</li>
+            <li style="border-left: 1.5em solid #666f7f; padding-left: 0.5em">Não informado</li>
+          </ul>
+          <br>
+          <strong>Classificação</strong>: <br>
+          <table class="table table-hover table-striped table-bordered ">
+            <thead>
+              <tr>
+                <th colspan=2>
+                </th>
+                <th >
+                  {{subdivisao?.tipoSubdivisao?.nome}}
+                </th>
+                <th>
+                  Valor
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ></tr>
+              <tr >
+                <td [attr.rowspan]="qtdLinhas+1" style="vertical-align: middle; width: 2em;" >
+                  <mat-icon style='color: green;'>arrow_upward</mat-icon>
+                </td>
+              </tr>
+              <tr *ngFor="let ip of tresMelhoresIndicadores">
+                <td [style.background-color]="ip.cor ? ip.cor : '#666f7f'" style="width: 2em;">
+                </td>
+                <td >
+                  {{ip.nomeSubdivisao }}
+                </td>
+                <td >
+                  {{ip.resultado | number:'':'pt-BR'}}
+                </td>
+              </tr>
+              <tr>
+                <td colspan=3>
+                  <strong>Mediana das regiões</strong>
+                </td>
+                <td colspan=1>
+                  <strong *ngIf="mediana">{{mediana | number:'':'pt-BR'}}</strong>
+                </td>
+              </tr>
+              <tr >
+                <td [attr.rowspan]="qtdLinhas+1" style="vertical-align: middle; width: 2em;" >
+                  <mat-icon style='color: red;'>arrow_downward</mat-icon>
+                </td>
+              </tr>
+              <tr *ngFor="let ip of tresPioresIndicadores">
+                <td [style.background-color]="ip.cor ? ip.cor : '#666f7f'">
+
+                </td>
+                <td >
+                  {{ip.nomeSubdivisao }}
+                </td>
+                <td >
+                  {{ip.resultado | number:'':'pt-BR'}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+      </div>
+
+      <div class='col-lg-4'>
+        <strong>Classificação</strong>: <br>
+        <table class="table table-hover table-striped table-bordered ">
+          <thead>
+            <tr>
+              <th style="width: 2em;">
+              </th>
+              <th >
+                {{subdivisao?.tipoSubdivisao?.nome}}
+              </th>
+              <th>
+                Valor
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let ip of indicadoresPreenchidosPorAno">
+              <td [style.background-color]="ip.cor ? ip.cor : '#666f7f'">
+
+              </td>
+              <td >
+                {{ip.nomeSubdivisao }}
+              </td>
+              <td >
+                {{ip.resultado | number:'':'pt-BR'}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+  </div>
+
+</section>

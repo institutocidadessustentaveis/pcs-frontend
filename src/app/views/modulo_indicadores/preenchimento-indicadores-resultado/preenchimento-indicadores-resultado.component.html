@@ -1,0 +1,64 @@
+<div class="contentBody">
+<div class="row">
+  <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+    <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <mat-card-title>Resultado do Indicador</mat-card-title>
+      <mat-divider [hidden]="loading"></mat-divider>
+      <mat-progress-bar mode="indeterminate" [hidden]="!loading"></mat-progress-bar>
+      <form>
+        <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12 marginToCard">
+          <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <mat-card-subtitle>Indicador: {{resultadoIndicadorDTO.nome}}</mat-card-subtitle>
+            <hr>
+            <div class="row" style="margin-top: 10px !important;">
+              <div class="col-md-6 mx-auto" style="text-align: center;">
+                <div class="table-responsive">
+                  <table class="table-borderless">
+                    <tbody>
+                      <tr *ngFor="let itemResultado of resultadoIndicadorDTO.resultadoVariaveis">
+                        <td>{{itemResultado.nome}}</td>
+                        <td>
+                          <mat-icon style="padding: 20px; vertical-align: middle; border-style: solid; border-width:1px; border-color: black;" [ngStyle]="{ 'background-color': itemResultado.cor}" inline=true matTooltip="{{itemResultado.label}}"></mat-icon>
+                        </td>
+                        <td>{{itemResultado.label}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="row marginToCard" [hidden]="exibirResultado" style="text-align: center !important;">
+              <mat-card class="col-md-4 mx-auto">
+                <h2 style="text-align: center;">Aguardando validação</h2>
+                <mat-spinner [diameter]="40" style="margin-left: 46%;"></mat-spinner>
+              </mat-card>
+            </div>
+            <div class="row marginToCard" [hidden]="!exibirResultado">
+              <mat-card class="col-md-4 mx-auto">
+                <h2 style="text-align: center;">{{resultadoIndicadorDTO.label}}</h2>
+                <br />
+                <div class="text-center">
+                  <mat-icon
+                    style="width: 2%; padding:20px;vertical-align: middle; border-style: solid; border-width:1px; border-color: black; " matTooltip="{{resultadoIndicadorDTO.label}}" [ngStyle]="{ 'background-color': resultadoIndicadorDTO.cor}" inline=true>
+                  </mat-icon><br />
+                  <!-- <br />
+                  <span *ngIf="resultadoIndicadorDTO.label !=='Em avaliação por um administrador'" >
+                    {{resultadoIndicadorDTO.resultado}}
+                  </span> -->
+                </div>
+                <br />
+              </mat-card>
+            </div>
+            <div class="row">
+              <div class="col-md-12 text-right">
+                <button mat-raised-button color="primary" [routerLink]="['/indicadores-para-preencher']" routerLinkActive="router-link-active"  matTooltip="Ok">Ok</button>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
+</div>

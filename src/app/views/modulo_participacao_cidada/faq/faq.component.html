@@ -1,0 +1,89 @@
+
+<div class="conteudo" style="position: relative;">
+      <section class="home-banner owl-carousel owl-theme">
+        <div id="carouselExampleIndicators" class="carousel slide" ride="false">
+          <div class="carousel-inner">
+            <div>
+              <img class="img-carousel" loading="lazy"
+                src="https://s2.glbimg.com/YO-DzhslXUrgUZBFOfTUPboBvWk=/780x440/e.glbimg.com/og/ed/f/original/2015/10/02/pierre_guezingar.jpg">
+              <div class="carousel-caption">
+                <div style="position: inherit;bottom: 0;width: 100%;">
+                  <h1 class="animated fadeInUp duration-3s delay-2s">Perguntas Frequentes (FAQ)</h1>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    
+    <section class="secao-filtro">
+      <div class="row search-form-color">
+    
+        <div class="col-lg-1 col-sm-12">
+          <header style="padding-top: 10px;">
+            <h3><span>BUSCA</span></h3>
+          </header>
+        </div>
+    
+        <div class="col-lg-11 itens-filtro col-sm-12">
+          <form [formGroup]="formFiltro" class="example-form">
+            <div class="row">
+              <div class="col-lg-4">
+                <mat-form-field class="search-form-color">
+                  <input matInput formControlName="palavraChave" placeholder="Palavra chave">
+                </mat-form-field>
+              </div>
+              
+              <div class="col-lg-4 btn-group text-center">
+                <button matTooltip="Buscar Eventos" mat-flat-button color="primary" (click)="buscarFaq()"
+                  id="btnBuscarEventos" class="botaoBuscarEventos btn-faq botoes-pesquisa">
+                  <mat-icon style="margin-top: -1px !important">search</mat-icon> Buscar
+                </button>
+                <button matTooltip="Limpar filtro" mat-flat-button color="accent" (click)="limparFiltro()"
+                  id="btnLimparFiltro" class="limpar-filtro botoes-pesquisa">
+                  Limpar Filtro
+                </button>
+                <div class="botoes-pesquisa-p">
+                  <button matTooltip="Buscar Eventos" mat-flat-button color="primary" (click)="buscarFaq()"
+                    id="btnBuscarEventos" class="botaoBuscarEventos btn-faq botoes-pesquisa-p">
+                    <mat-icon style="margin-top: -1px !important">search</mat-icon> Buscar
+                  </button>
+                  <br><br>
+                  <button matTooltip="Limpar filtro" mat-flat-button color="accent" (click)="limparFiltro()"
+                    id="btnLimparFiltro" class="limpar-filtro botoes-pesquisa-p">
+                    Limpar Filtro
+                  </button>    
+                </div>
+              </div>
+            </div>
+    
+          </form>
+        </div>
+    
+    
+      </div>
+    </section>
+
+<div class="container-palavra-chave" *ngIf="palavraPesquisada">
+    <small>Exibindo resultados para: <strong>{{palavraPesquisada}}</strong></small>
+</div>
+
+<div class="container-faq">
+  <h5 class="titulo">
+    FAQ | Confira as perguntas mais frequentes:
+  </h5>
+  <div class="table-responsive">
+
+  </div>
+  <div [hidden]="!loading">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </div> 
+ <div id="faqList">
+  <div class="alert alert-warning" [hidden]="exibirMensagemAlerta !== true">Nenhum pergunta foi encontrada</div>
+      <ng-container *ngFor="let item of idsFaqs; let i = index">
+        <app-card-faq [isExpanded] = "isExpanded" width="100%" [idFaq]="item.idFaq" [index]="i"></app-card-faq>
+      </ng-container>
+    </div>
+</div>
+

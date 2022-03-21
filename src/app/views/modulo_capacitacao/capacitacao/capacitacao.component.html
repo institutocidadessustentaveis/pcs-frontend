@@ -1,0 +1,93 @@
+<div class="conteudo" style="position: relative;">
+  <section class="home-banner owl-carousel owl-theme">
+    <div class="carousel slide" ride="false">
+      <div class="carousel-inner">
+        <div>
+          <img class="img-carousel" loading="lazy" src="../../../../assets/ilustra_modulo de eventos.png"
+          matTooltip='Ilustração: Gil Tokio (Pingado)'>
+          <div class="carousel-caption">
+            <div style="position: inherit;bottom: 0;width: 100%;">
+              <h1>Agenda de capacitações do PCS</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="secao-filtro">
+  <div class="row search-form-color">
+
+    <div class="col-lg-1">
+      <header style="padding-top: 10px;">
+        <h3><span>BUSCA</span></h3>
+      </header>
+    </div>
+
+    <div class="col-lg-11 itens-filtro">
+      <form [formGroup]="form" class="example-form">
+        <div class="row">
+
+          <div class="col-lg-2">
+            <mat-form-field class="search-form-color">
+              <input matInput formControlName="palavraChave" placeholder="Palavra chave">
+            </mat-form-field>
+          </div>
+
+          <div class="col-lg-3">
+            <div class="search-form-color">
+              <app-datepicker formControlName="dataInicial" id="dataInicial" placeholder="Data Inicial">
+              </app-datepicker>
+            </div>
+          </div>
+
+          <div class="col-lg-3">
+            <div class="search-form-color">
+              <app-datepicker formControlName="dataFinal" id="dataFinal" placeholder="Data Final">
+              </app-datepicker>
+            </div>
+          </div>
+          
+          <div class="col-lg-4 btn-group text-center">
+            <button matTooltip="Buscar Eventos" mat-flat-button color="primary" (click)="buscarEventosCapacitacaoFiltrado()"
+              id="btnBuscarEventos" class="botaoBuscarEventos btn-eventos botoes-pesquisa">
+              <mat-icon style="margin-top: -1px !important">search</mat-icon> Buscar Eventos
+            </button>
+            <button matTooltip="Limpar filtro" mat-flat-button color="accent" (click)="limparFiltro()"
+              id="btnLimparFiltro" class="limpar-filtro botoes-pesquisa">
+              Limpar Filtro
+            </button>
+            <div class="botoes-pesquisa-p">
+              <button matTooltip="Buscar Eventos" mat-flat-button color="primary" (click)="buscarEventosCapacitacaoFiltrado()"
+                id="btnBuscarEventos" class="botaoBuscarEventos btn-eventos botoes-pesquisa-p">
+                <mat-icon style="margin-top: -1px !important">search</mat-icon> Buscar Eventos
+              </button>
+              <br><br>
+              <button matTooltip="Limpar filtro" mat-flat-button color="accent" (click)="limparFiltro()"
+                id="btnLimparFiltro" class="limpar-filtro botoes-pesquisa-p">
+                Limpar Filtro
+              </button>
+
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+</section>
+
+<section class="secao" id="calendario">
+  <app-breadcrumb></app-breadcrumb>
+  <div>
+    <app-eventos-calendario [eventos]="eventos"></app-eventos-calendario>
+  </div>
+</section>
+
+<section class="secao-mapa">
+  <h1>Mapa de Eventos de Capacitação</h1>
+  <br>
+  <app-mapa-eventos [eventos]="eventos" [mapaCapacitacao]=true></app-mapa-eventos>
+</section>

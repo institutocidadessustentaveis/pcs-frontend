@@ -1,0 +1,119 @@
+<mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12" style="position: relative;">
+  <app-breadcrumb style="position: relative;"></app-breadcrumb>
+  <form [formGroup]="usuarioForm">
+    <div class="col-lg-12">
+      <h2 *ngIf="usuario.id == null">Usuário</h2>
+      <h2 *ngIf="usuario.id != null && !visualizacao">Usuário</h2>
+      <h2 *ngIf="usuario.id != null && visualizacao">Usuário</h2>
+      <mat-divider></mat-divider>
+    </div>
+    <div class="col-lg-12" style="margin-top: 1em !important;">
+      <mat-form-field class="full-width">
+        <input matInput autocomplete="off" required placeholder="Nome" name="nome" id="nome" #txtArquivo maxlength="100"
+          formControlName="nome" [readonly]="visualizacao" />
+        <mat-hint align="end">{{ txtArquivo.value?.length || 0 }}/100</mat-hint>
+        <mat-error *ngIf="!usuarioForm.controls['nome'].valid && usuarioForm.controls['nome'].touched">
+          {{ getErrorNome() }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="col-lg-12" style="margin-top: 10px;">
+      <mat-form-field class="full-width">
+        <input matInput autocomplete="off" required
+        [mask]="mascara" (change)="defineMascaraTelefone()" (click)="mascara='(00) 0 0000-0000'"
+        placeholder="Telefone" name="telefone"
+          id="telefone" formControlName="telefone" #txtTelefone maxlength="100" [readonly]="visualizacao"/>
+        <mat-hint align="end">{{ txtTelefone.value?.length || 0 }}/100</mat-hint>
+        <mat-error *ngIf="!usuarioForm.controls['telefone'].valid && usuarioForm.controls['telefone'].touched">
+          {{ getErrorTelefone() }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+
+    <div class="col-lg-12" style="margin-top: 10px;">
+      <mat-form-field class="full-width">
+        <input matInput autocomplete="off" required placeholder="E-mail" type="email" name="email" id="email"
+          formControlName="email" #txtEmail maxlength="100" [readonly]="visualizacao" />
+        <mat-hint align="end">{{ txtEmail.value?.length || 0 }}/100</mat-hint>
+        <mat-error *ngIf="!usuarioForm.controls['email'].valid && usuarioForm.controls['email'].touched">
+          {{ getErrorEmail() }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <!--PERFIL-->
+    <div class="col-lg-12" *ngIf="!visualizacao" style="margin-top: 10px;">
+      <mat-form-field class="full-width">
+        <mat-label>Perfil </mat-label>
+        <mat-select [compareWith]="compararPerfil" formControlName="perfil" name="perfil"
+          (selectionChange)="representaGestorPlataforma($event.value)" [disabled]="visualizacao">
+          <mat-option>--- Selecione um perfil ---</mat-option>
+          <mat-option *ngFor="let p of perfisCombo" [value]="p">
+            {{ p.nome }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <!--Vizualização-->
+    <div class="col-lg-12" *ngIf="visualizacao  " style="margin-top: 5px;">
+      <mat-form-field class="full-width">
+        <input matInput required placeholder="Perfil" type="perfilvisualizacao" name="perfilvisualizacao"
+          id="perfilvisualizacao" formControlName="visualizacao" maxlength="100" [readonly]="visualizacao"
+          />
+      </mat-form-field>
+    </div>
+
+
+    <!--Gestor de Desenvolvimento da Plataforma PANEL -->
+    <div style="margin-top: 2%;" [hidden]="!representaGestor" style="margin-top: 10px;">
+      <mat-form-field class="col-md-12">
+        <input matInput placeholder="Nome da Organização" id="nomeOrg"  [readonly]="visualizacao" formControlName="nomeOrg">
+      </mat-form-field>
+      <!--Combo Gestor Plataforma-->
+      <div class="col-lg-12" *ngIf="!tipoInstituicao">
+        <mat-form-field class="full-width">
+          <mat-select id="tipoInstituicao" placeholder="Tipo de Instituição*:" formControlName="tipoInstituicao"
+            id="cbTipoInstituicao">
+            <mat-option *ngFor="let dados of listaIntituicoes" [value]="dados.nome">{{dados.nome}}
+              <b>({{dados.tipo}})</b></mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!--Vizualização Gestor Plataforma-->
+      <div class="col-lg-12" *ngIf="tipoInstituicao" style="margin-top: 5px;">
+        <mat-form-field class="full-width">
+          <input matInput required placeholder="Tipo Instituicao" type="txtTipoInstituicao" name="txtTipoInstituicao"
+            id="txtTipoInstituicao" formControlName="tipoInstituicao" maxlength="100"
+            [readonly]="tipoInstituicao || visualizacao" [value]="usuario.tipoInstituicao" />
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="col-lg-12" *ngIf="usuario.areasInteresse" style="margin-top: 5px;">
+      <p><b>Áreas de Interesse</b></p>
+      <p *ngIf="usuario.areasInteresse.length <= 0">Não há Áreas de Interesse associadas a esse usuário.</p>
+      <p *ngFor="let item of usuario.areasInteresse"> {{ item.nome }} <mat-divider></mat-divider>
+      </p>
+    </div>
+
+    <div class="col-lg-12" style="margin-top: 5px;">
+      <p><b>Cidades de Interesse</b></p>
+      <p *ngIf="!usuario.cidadeInteresse">Não há Cidade de Interesse associada a esse usuário.</p>
+      <p *ngIf="usuario.cidadeInteresse"> {{ usuario.cidadeInteresse }} <mat-divider></mat-divider>
+      </p>
+    </div>
+    <br>
+    <div class="text-right" style="margin-top: 5px;">
+      <button *ngIf="!visualizacao" mat-flat-button color="primary" (click)="cadastrar()" matTooltip="Salvar"
+        [disabled]="!usuarioForm.valid">
+        <mat-icon>save</mat-icon>
+        Salvar
+      </button>
+      <button mat-flat-button color="accent" [routerLink]="['/usuarios']" matTooltip="Voltar">
+        <mat-icon>arrow_back_ios</mat-icon>
+        Voltar
+      </button>
+    </div>
+  </form>
+</mat-card>

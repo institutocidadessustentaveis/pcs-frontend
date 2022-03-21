@@ -1,0 +1,287 @@
+<div class="contentBody" style="position: relative;">
+  <app-breadcrumb style="position: relative;"></app-breadcrumb>
+  <div [hidden]="!desabilitarBotaoSalvar" class="loading-indicator">
+    <mat-progress-spinner class="example-margin" style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+  </div>
+  <mat-card>
+    <div class="col-lg-12">
+      <h2>Boletim Informativo</h2>
+      <mat-divider></mat-divider>
+    </div>
+    <form [formGroup]="formTemplate01">
+      <section style='margin-top: 32px;'>
+        <div class="col-md-12">
+          
+              <mat-label>Titulo do Boletim *</mat-label>
+              <div [ngxSummernote]="editorCleanConfig" formControlName="titulo"></div>
+              <mat-error *ngIf="formTemplate01.controls['titulo'].hasError('required')">Título Obrigatório *</mat-error>
+
+        </div>
+      </section>
+
+      <section>
+        <mat-horizontal-stepper #stepper>
+          <mat-step>
+
+              <ng-template matStepLabel>Primeira Seção</ng-template>
+              <div>
+              <mat-label>Texto de Introdução *</mat-label>
+              <div [ngxSummernote]="editorCleanConfig" formControlName="textoIntroducao"></div>
+              <mat-error *ngIf="formTemplate01.controls['textoIntroducao'].hasError('required')">Texto de introdução Obrigatório *</mat-error>
+
+              <mat-form-field style='margin-top: 12px;'>
+                <input matInput placeholder="Título do primeiro banner *" formControlName="tituloPrimeiroBanner">
+                <mat-error *ngIf="formTemplate01.controls['tituloPrimeiroBanner'].hasError('required')">Título do primeiro banner Obrigatório *</mat-error>
+              </mat-form-field>
+              
+              <image-cropper
+                [imageChangedEvent]="imagemPrimeiroBannerChangedEvent"
+                [maintainAspectRatio]="false" 
+                [aspectRatio]="1 / 1"
+                [resizeToWidth]="0"
+                format="png"
+                (imageCropped)="imageCropped($event, 'imagemPrimeiroBanner')">
+            </image-cropper>
+
+            <div *ngIf="boletimInformativo?.boletimTemplate01?.imagemPrimeiroBanner?.conteudo != null">
+              <div style="width: 100%; margin-top: 14px; margin-bottom: -14px; text-align: center;">
+                <img class="form-group" style=" width: 20%;" [src]="geraImagem(boletimInformativo.boletimTemplate01.imagemPrimeiroBanner.conteudo)" />
+              </div>
+            </div>
+
+              <input hidden #imagemPrimeiroBannerInput type="file" id="imagemPrimeiroBanner" name="imagemPrimeiroBanner"
+              accept="image/jpeg,image/jpg, image/png" (change)="processImage($event, 'imagemPrimeiroBanner')">
+              <button type="button" mat-stroked-button (click)="imagemPrimeiroBannerInput.click()" id="btnimagemPrimeiroBanner"
+                name="imagemPrimeiroBanner" color="primary" style="margin-top: 20px; margin-bottom: 30px; width: 100%; cursor: pointer;"
+                matTooltip="Upload Imagem Para o Primeiro banner">
+                <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar imagem para primeiro banner *
+              </button>
+              <mat-error *ngIf="formTemplate01.controls['imagemPrimeiroBanner'].hasError('required')">Imagem para primeiro banner Obrigatória *</mat-error>
+
+              <mat-label>Texto do primeiro Banner *</mat-label>
+              <div [ngxSummernote]="editorCleanConfig" formControlName="textoPrimeiroBanner"></div>
+              <mat-error *ngIf="formTemplate01.controls['textoPrimeiroBanner'].hasError('required')">Texto do primeiro banner Obrigatório *</mat-error>
+
+              <mat-form-field style='margin-top: 12px;'>
+                <input matInput placeholder="Link do botão *" formControlName="textoBotao01">
+                <mat-error *ngIf="formTemplate01.controls['textoBotao01'].hasError('required')">Link do botão Obrigatório *</mat-error>
+              </mat-form-field>
+              <div>
+                <button mat-raised-button color='accent' matStepperNext>Próximo</button>
+              </div>
+            </div>
+          </mat-step>
+
+          <mat-step>
+
+              <ng-template matStepLabel>Segunda Seção</ng-template>
+              <div>
+                <mat-form-field>
+                  <input matInput placeholder="Título da primeira chamada *" formControlName="tituloChamada01">
+                  <mat-error *ngIf="formTemplate01.controls['tituloChamada01'].hasError('required')">Título da primeira chamada Obrigatório *</mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <input matInput placeholder="Subtítulo da primeira chamada *" formControlName="subtituloChamada01">
+                  <mat-error *ngIf="formTemplate01.controls['subtituloChamada01'].hasError('required')">Subtítulo da primeira chamada Obrigatório *</mat-error>
+                </mat-form-field>
+                
+                <mat-label>Texto da primeira chamada *</mat-label>
+                <div [ngxSummernote]="editorCleanConfig" formControlName="textoChamada01"></div>
+                <mat-error *ngIf="formTemplate01.controls['textoChamada01'].hasError('required')">Texto da primeira chamada Obrigatório *</mat-error>
+
+                <mat-form-field style='margin-top: 12px;'>
+                  <input matInput placeholder="Título da segunda chamada *" formControlName="tituloChamada02">
+                  <mat-error *ngIf="formTemplate01.controls['tituloChamada02'].hasError('required')">Título da segunda chamada Obrigatório *</mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <input matInput placeholder="Subtítulo da segunda chamada *" formControlName="subtituloChamada02">
+                  <mat-error *ngIf="formTemplate01.controls['subtituloChamada02'].hasError('required')">Subtítulo da segunda chamada Obrigatório *</mat-error>
+                </mat-form-field>
+
+                <mat-label>Texto da segunda chamada *</mat-label>
+                <div [ngxSummernote]="editorCleanConfig" formControlName="textoChamada02"></div>
+                <mat-error *ngIf="formTemplate01.controls['textoChamada02'].hasError('required')">Texto da segunda chamada Obrigatório *</mat-error>
+                
+                <button style='margin-top: 12px;' mat-stroked-button color='accent' matStepperPrevious>Voltar</button>
+                <button style='margin-top: 12px;' mat-raised-button color='accent' style="margin-left: 6px;" matStepperNext>Próximo</button>
+              </div>
+
+          </mat-step>
+
+          <mat-step>
+
+              <ng-template matStepLabel>Terceira Seção</ng-template>
+                <image-cropper
+                [imageChangedEvent]="imagemPrincipalChangedEvent"
+                [maintainAspectRatio]="false" 
+                [aspectRatio]="1 / 1"
+                [resizeToWidth]="0"
+                format="png"
+                (imageCropped)="imageCropped($event, 'imagemPrincipal')">
+            </image-cropper>
+
+            <div *ngIf="boletimInformativo?.boletimTemplate01?.imagemPrincipal?.conteudo != null">
+              <div style="width: 100%; margin-top: 14px; margin-bottom: -14px; text-align: center;">
+                <img class="form-group" style=" width: 20%;" [src]="geraImagem(boletimInformativo.boletimTemplate01.imagemPrincipal.conteudo)" />
+              </div>
+            </div>
+
+              <input hidden #imagemPrincipalInput type="file" id="imagemPrincipal" name="imagemPrincipal"
+              accept="image/jpeg,image/jpg, image/png" (change)="processImage($event, 'imagemPrincipal')">
+              <button type="button" mat-stroked-button (click)="imagemPrincipalInput.click()" id="btnimagemPrincipal"
+                name="imagemPrincipal" color="primary" style="margin-top: 20px; margin-bottom: 30px; width: 100%; cursor: pointer;"
+                matTooltip="Upload Imagem principal">
+                <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar imagem principal *
+              </button>
+              <mat-error *ngIf="formTemplate01.controls['imagemPrincipal'].hasError('required')">Imagem principal Obrigatória *</mat-error>
+
+              <mat-form-field>
+                <input matInput placeholder="Título imagem principal *" formControlName="tituloImagemPrincipal">
+                <mat-error *ngIf="formTemplate01.controls['tituloImagemPrincipal'].hasError('required')">Título imagem principal Obrigatório *</mat-error>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput placeholder="Legenda imagem principal *" formControlName="legendaImagemPrincipal">
+                <mat-error *ngIf="formTemplate01.controls['legendaImagemPrincipal'].hasError('required')">Legenda imagem principal Obrigatória *</mat-error>
+              </mat-form-field>
+              <div>
+                <button mat-stroked-button color='accent' matStepperPrevious>Voltar</button>
+                <button mat-raised-button color='accent' style="margin-left: 6px;" matStepperNext>Próximo</button>
+              </div>
+
+          </mat-step>
+
+          <mat-step>
+            <ng-template matStepLabel>Quarta Seção</ng-template>
+
+              <mat-form-field>
+                <input matInput placeholder="Título da terceira chamada *" formControlName="tituloChamada03">
+                <mat-error *ngIf="formTemplate01.controls['tituloChamada03'].hasError('required')">Título da terceira chamada Obrigatório *</mat-error>
+              </mat-form-field>
+
+              <mat-form-field>
+                <input matInput placeholder="Subtítulo da terceira chamada *" formControlName="subtituloChamada03">
+                <mat-error *ngIf="formTemplate01.controls['subtituloChamada03'].hasError('required')">Subtítulo da terceira chamada Obrigatório *</mat-error>
+              </mat-form-field>
+
+              <mat-label>Texto da terceira chamada *</mat-label>
+              <div [ngxSummernote]="editorCleanConfig" formControlName="textoChamada03"></div>
+              <mat-error *ngIf="formTemplate01.controls['textoChamada03'].hasError('required')">Texto da terceira chamada Obrigatório *</mat-error>
+
+              <mat-form-field>
+                <input matInput placeholder="Título da quarta chamada *" formControlName="tituloChamada04">
+                <mat-error *ngIf="formTemplate01.controls['tituloChamada04'].hasError('required')">Título da quarta chamada Obrigatório *</mat-error>
+              </mat-form-field>
+
+              <mat-form-field style='margin-top: 12px;'>
+                <input matInput placeholder="Subtítulo da quarta chamada *" formControlName="subtituloChamada04">
+                <mat-error *ngIf="formTemplate01.controls['subtituloChamada04'].hasError('required')">Subtítulo da quarta chamada Obrigatório *</mat-error>
+              </mat-form-field>
+
+              <mat-label>Texto da quarta chamada *</mat-label>
+              <div [ngxSummernote]="editorCleanConfig" formControlName="textoChamada04"></div>
+              <mat-error *ngIf="formTemplate01.controls['textoChamada04'].hasError('required')">Texto da quarta chamada Obrigatório *</mat-error>
+
+
+            <div>
+              <button style='margin-top: 12px;' mat-stroked-button color='accent' matStepperPrevious>Voltar</button>
+              <button style='margin-top: 12px;' mat-raised-button color='accent' style="margin-left: 6px;" matStepperNext>Próximo</button>
+            </div>
+          </mat-step>
+
+          <mat-step>
+            <ng-template matStepLabel>Quinta Seção</ng-template>
+
+              <mat-form-field>
+                <input matInput placeholder="Título Segundo Banner *" formControlName="tituloSegundoBanner">
+                <mat-error *ngIf="formTemplate01.controls['tituloSegundoBanner'].hasError('required')">Título Segundo Banner Obrigatório *</mat-error>
+              </mat-form-field>
+
+              <image-cropper
+                [imageChangedEvent]="imagemSegundoBannerChangedEvent"
+                [maintainAspectRatio]="false" 
+                [aspectRatio]="1 / 1"
+                [resizeToWidth]="0"
+                format="png"
+                (imageCropped)="imageCropped($event, 'imagemSegundoBanner')">
+              </image-cropper>
+
+              <div *ngIf="boletimInformativo?.boletimTemplate01?.imagemSegundoBanner?.conteudo != null">
+                <div style="width: 100%; margin-top: 14px; margin-bottom: -14px; text-align: center;">
+                  <img class="form-group" style=" width: 20%;" [src]="geraImagem(boletimInformativo.boletimTemplate01.imagemSegundoBanner.conteudo)" />
+                </div>
+              </div>
+
+              <input hidden #imagemSegundoBannerInput type="file" id="imagemSegundoBanner" name="imagemSegundoBanner"
+              accept="image/jpeg,image/jpg, image/png" (change)="processImage($event, 'imagemSegundoBanner')">
+              <button type="button" mat-stroked-button (click)="imagemSegundoBannerInput.click()" id="btnimagemSegundoBanner"
+                name="imagemSegundoBanner" color="primary" style="margin-top: 20px; margin-bottom: 30px; width: 100%; cursor: pointer;"
+                matTooltip="Upload Imagem Para o Segundo banner">
+                <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar imagem para segundo banner *
+              </button>
+              <mat-error *ngIf="formTemplate01.controls['imagemSegundoBanner'].hasError('required')">Imagem para segundo banner Obrigatória *</mat-error>
+
+              <mat-label>Link do segundo banner *</mat-label>
+              <div [ngxSummernote]="editorCleanConfig" formControlName="textoSegundoBanner"></div>
+              <mat-error *ngIf="formTemplate01.controls['textoSegundoBanner'].hasError('required')">Link do segundo banner Obrigatório *</mat-error>
+
+              <mat-form-field style='margin-top: 12px;'>
+                <input matInput placeholder="Link do botão *" formControlName="textoBotao02">
+                <mat-error *ngIf="formTemplate01.controls['textoBotao02'].hasError('required')">Link do botão Obrigatório *</mat-error>
+              </mat-form-field>
+
+              <mat-label>Texto final *</mat-label>
+              <div [ngxSummernote]="editorCleanConfig" formControlName="textoFinal"></div>
+              <mat-error *ngIf="formTemplate01.controls['textoFinal'].hasError('required')">Texto final Obrigatório *</mat-error>
+              
+
+              <div>
+                <button style='margin-top: 12px;' mat-stroked-button color='accent' matStepperPrevious>Voltar</button>
+              </div>
+          </mat-step>
+        </mat-horizontal-stepper>
+      </section>
+      
+    <br>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="alert alert-warning" *ngIf="!mostrarCheckBoxEnviarTeste">
+          Salve para enviar e-mails de teste.
+        </div>
+        <mat-checkbox (change)="trocarValorCheckBox()" [checked]="false" [hidden]='!mostrarCheckBoxEnviarTeste'>Enviar em email de teste</mat-checkbox>
+        <mat-card *ngIf="mostrarEnviarTeste">
+
+            <mat-form-field style='margin-top: 12px;'>
+              <input matInput placeholder="Email Teste" formControlName="emailTeste">
+
+            </mat-form-field>
+            <div class="row">
+              <div class="col-md-12 text-right">
+                <button mat-flat-button color="primary" (click)="enviarEmailTeste()" [disabled]="!EmailTesteIsValido()"><mat-icon>send</mat-icon> Enviar Teste</button>
+              </div>
+            </div>
+
+        </mat-card>
+      </div>
+    </div>
+  </form>
+    <div class="row" style='margin-top: 16px;'>
+      <div class="col-md-6">
+        <button mat-stroked-button style='margin-left: 12px' color="accent" [routerLink]="['/boletim']">
+          Voltar
+        </button>
+      </div>
+      <div class="col-md-6 text-right">
+        <button mat-flat-button color="primary" (click)="salvarEnviarBoletimTemplate01()" [disabled]="validarBoletim() || desabilitarBotaoSalvar">
+          <mat-icon>send</mat-icon> Salvar e Enviar
+        </button>
+        <button mat-flat-button style='margin-left: 12px' color="primary" (click)="salvarBoletimTemplate01()" [disabled]="validarBoletim() || desabilitarBotaoSalvar">
+          <mat-icon>save</mat-icon> Salvar
+        </button>
+      </div>
+
+    </div>
+    
+  </mat-card>
+</div>

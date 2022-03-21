@@ -1,0 +1,16 @@
+.marginToComponent{
+    margin-top: 10px !important;
+}
+
+.marginToCard{
+    margin-top: 30px !important;
+}
+
+.div-label {
+    margin-top: 20px;
+}
+
+.label-title {
+    color: gray;    
+    font-size: 11px;
+}

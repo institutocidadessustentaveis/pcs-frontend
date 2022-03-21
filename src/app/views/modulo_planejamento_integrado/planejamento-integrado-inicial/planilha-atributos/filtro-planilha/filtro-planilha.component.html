@@ -1,0 +1,41 @@
+<button mat-icon-button matTooltip="Buscar Atributos" matTooltipPosition="after"
+  aria-label="Buscar" (click)="cliqueBusca()" >
+  <mat-icon>search</mat-icon>
+</button>
+<div *ngIf="filtrado">
+  <mat-chip-list aria-label="filtro">
+    <mat-chip color="accent" (removed)="limpar()" selected>
+      {{filtro.operacao}} {{filtro.valor}}
+      <mat-icon matChipRemove >cancel</mat-icon>
+    </mat-chip>
+  </mat-chip-list>
+
+</div>
+<div *ngIf="mostrarCampos" class="filtro-atributo" >
+  <form [formGroup]="formBusca">
+    <mat-form-field  >
+      <mat-select id="operacao" placeholder="Operação" formControlName="operacao" name="atributoReferencia">
+        <mat-option [value]="'='"> Igual </mat-option>
+        <mat-option [value]="'!='"> Diferente </mat-option>
+        <mat-option [value]="'<'"> Menor </mat-option>
+        <mat-option [value]="'<='"> Menor ou Igual </mat-option>
+        <mat-option [value]="'>'"> Maior </mat-option>
+        <mat-option [value]="'>='"> Maior ou Igual </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field  >
+      <mat-label>Valor para o filtro</mat-label>
+      <input matInput placeholder="Valor para o filtro" formControlName="valor"  maxlength="100" minlength="3">
+    </mat-form-field>
+    <button mat-flat-button matTooltip="Limpar filtro" class="botao-filtro" color="accent" matTooltipPosition="after"
+      aria-label="Buscar" (click)="limpar()">
+      <mat-icon>remove_circle_outline</mat-icon>
+      Limpar
+    </button>
+    <button mat-flat-button matTooltip="Filtrar valores" class="botao-filtro"  color="primary" matTooltipPosition="after"
+      aria-label="Buscar" (click)="filtrar()">
+      <mat-icon>check_circle_outline</mat-icon>
+      Filtrar
+    </button>
+  </form>
+</div>

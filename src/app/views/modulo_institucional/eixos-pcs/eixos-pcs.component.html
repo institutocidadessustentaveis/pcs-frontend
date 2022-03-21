@@ -1,0 +1,87 @@
+<section class="home-banner owl-carousel owl-theme">
+  <div id="carouselExampleIndicators" class="carousel slide" ride="false">
+    <div class="carousel-inner">
+      <div>
+        <img class="img-carousel" [src]="urlImagem()">
+        <div class="carousel-caption">
+          <div style="position: absolute;bottom: 0;">
+            <h1 class="animated fadeInUp duration-3s delay-1s">EIXOS DO PROGRAMA CIDADES SUSTENTÁVEIS</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background-color: #8a9ea1;">
+  <div class="row" style="position: relative; width: 100%;">
+    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 resumo">
+      <app-breadcrumb nomePagina='Eixos do PCS' isStatic=1 style="color: white;" class="breadcrumb">
+      </app-breadcrumb>
+    </div>
+
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 resumo">
+      <h2 style="font-family: Open Sans,Helvetica,Arial,sans-serif;" class="half-center">
+        Os 12 eixos temáticos do Programa Cidades Sustentáveis foram inspirados nos Compromissos de Aalborg, um pacto
+        político
+        assinado em 2004 por autoridades de mais de 700 cidades para fortalecer as agendas de desenvolvimento
+        sustentável em nível local.
+      </h2>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 resumo"></div>
+  </div>
+</section>
+
+<section class="first-section">
+
+  <label style="font-family: Source Sans Pro,Arial Black,Helvetica,Arial,sans-serif;" class="label-titulo">12 EIXOS E
+    260 INDICADORES</label>
+  <p>Os eixos do Programa Cidades Sustentáveis (PCS) agregam um conjunto de 260 indicadores relacionados às diversas
+    áreas
+    da administração pública e consideram alguns pressupostos fundamentais para a melhoria da qualidade de vida e a
+    redução das desigualdades nas cidades: a participação efetiva da comunidade local na tomada de decisões, a economia
+    urbana preservando os recursos naturais, a equidade social, o correto ordenamento do território, a mobilidade
+    urbana,
+    o clima mundial e a conservação da biodiversidade, entre outros aspectos relevantes.
+
+    <br><br> Depois que a Organização das Nações Unidas (ONU) aprovou a Agenda 2030 e os <a
+      href="https://www.cidadessustentaveis.org.br/institucional/ods">Objetivos de Desenvolvimento
+      Sustentável (ODS)</a>, em 2015, os eixos do PCS foram correlacionados com os 17 ODS e 169 metas estabelecidas pela
+    ONU.
+    Embora de natureza global e aplicáveis em qualquer parte do planeta, os ODS dialogam diretamente com políticas e
+    ações
+    locais. Essa característica permitiu a associação entre os objetivos e metas previstos na Agenda 2030 com os eixos e
+    indicadores do PCS.
+
+    <br><br> Desse modo, o PCS apresenta um caminho viável e possível para a implementação dos ODS nos municípios, uma
+    vez que
+    seus indicadores permitem territorializar os conceitos e princípios da Agenda 2030 de forma objetiva e concreta.
+    Saiba
+    mais sobre o trabalho de correlação dos eixos e indicadores do PCS com os ODS no
+    <a href="https://www.cidadessustentaveis.org.br/assets/pdf/Referencias-para-indicadores-e-metas_PCS-CEBRAP_2019.pdf"
+      target="_blank"> Guia de Referências para Produção de
+      Indicadores e Metas de Sustentabilidade Urbana.</a>
+
+    <br><br> Acesse os eixos do PCS:</p>
+
+
+  <div class="row" style="margin-left: 4%; margin-right: 4%;justify-content:space-between;">
+
+    <mat-card class="card" *ngFor="let item of listaEixos">
+
+      <a href="{{item.link}}">
+        <img mat-card-image loading="lazy" [src]="getImagePath(item.id)" style=" height: 383px;object-fit: cover;">
+      </a>
+
+      <mat-card-content style="text-align: center;">
+        <a href="{{item.link}}" class="card-titulo">
+          <p>
+            {{item.nome | uppercase}}
+          </p>
+        </a>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+
+</section>

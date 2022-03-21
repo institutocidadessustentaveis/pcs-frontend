@@ -1,0 +1,22 @@
+<div class="bread" *ngIf="isStatic && !showEixos">
+  <p class="migalha">Você está em:</p>
+  <p><a class="link" routerLink="/">Início</a> » <a class="link" routerLink="/institucional/pagina/pcs">Institucional</a> » {{nomePagina}}</p>
+</div>
+
+<div class="bread"  *ngIf="isStatic && showEixos">
+    <p  class="migalha">Você está em:</p>
+      <a class="link" routerLink="/">Início</a> » 
+      <a class="link" routerLink="/institucional/pagina/pcs">Institucional</a> » 
+      <a class="link" routerLink="/institucional/pagina/eixos-do-pcs">Eixos do pcs</a> » {{nomePagina}}
+</div>
+
+<div class="bread" *ngIf="!isStatic && !showEixos">
+  <p  class="migalha">Você está em:</p>
+  <ol class="breadcrumb-pcs">
+    <li class="breadcrumb-pcs-item" *ngFor="let item of retornaLista(); let i = index"
+      [class.active]="i===retornaLista().length-1">
+      <a class="link" [routerLink]="item.url" *ngIf="i!==retornaLista().length-1"> {{ item.label }} </a>
+      <span *ngIf="i===retornaLista().length-1">{{ item.label }}</span>
+    </li>
+  </ol>
+</div>

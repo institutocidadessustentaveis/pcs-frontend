@@ -1,0 +1,16 @@
+.form-alerta{
+  margin-bottom: 1em;
+  margin-top: 1em;
+}
+
+.btn-tabela {
+  margin-right: 10px !important;
+  min-width: 1em !important;
+  max-width: 3em !important;
+  padding: 0 9px !important;
+}
+
+.ver-selecionados {
+  cursor: pointer;
+  color: blue;
+}

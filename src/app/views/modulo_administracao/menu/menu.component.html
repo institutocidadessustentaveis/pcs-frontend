@@ -1,0 +1,206 @@
+<div class="contentBody">
+  <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+    <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12 marginToTop">
+      <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <mat-card-title>Menu do sistema</mat-card-title>
+        <hr>
+      </div>
+
+      <div [hidden]="!loading">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </div>
+
+      <br>
+
+
+          <form #menuForm="ngForm">
+
+            <div class="col-lg-12" style="margin-top: 10px !important;">
+              <label id="LabelDisplayName">Nome do Elemento do Menu*:</label>
+              <mat-form-field class="full-width">
+                <input id="idDisplayName" matInput placeholder="Escreva o nome que aparece no Menu" maxlength="150"
+                  [(ngModel)]="navItemSelecionado.displayName" name="displayName" #displayName="ngModel"  required/>
+              </mat-form-field>
+            </div>
+
+            <div class="col-lg-12" style="margin-top: 10px !important;">
+              <mat-checkbox 
+                id="IdCheckUlr_name" 
+                name="checkUlr_name" 
+                (change)="mostrarOpcaoUrl()" 
+                [(ngModel)]="checkboxUrlExterna"
+                >Link
+              </mat-checkbox>
+            </div>
+            
+            <div class="col-lg-12" style="margin-top: 10px !important;" *ngIf="mostrarUrl">
+              <mat-form-field class="full-width">
+                <input id="idUrl_name" matInput placeholder="Url Externa" maxlength="150"
+                  [(ngModel)]="navItemSelecionado.url_name" name="url_name" />
+              </mat-form-field>
+            </div>
+            <br>
+
+            <div class="col-lg-12" style="margin-top: 10px !important;">
+              <label id="radio-group-label">Tipo do componente do Menu*:</label>
+              <mat-radio-group aria-labelledby="radio-group-label" 
+                class="radio-group" [(ngModel)]="navItemSelecionado.tipoItem" [ngModelOptions]="{standalone: true}" 
+                name="tipoItemMenu" #tipoItemMenu="ngModel" id="tipoItemMenu" required>
+                <mat-radio-button class="radio-button" value="ITEM">Item</mat-radio-button>
+                <mat-radio-button class="radio-button" value="SUBITEM">Subitem do Menu</mat-radio-button>              
+                <mat-radio-button class="radio-button" value="ELEMENTO_SUBITEM">Elemento de Subitem</mat-radio-button>
+              </mat-radio-group>
+            </div>
+
+            <form [formGroup]="form">
+              <div class="col-lg-12" *ngIf="navItemSelecionado.tipoItem === 'SUBITEM' ">
+                <mat-card>
+                  <label><strong>Selecionar item:</strong></label>
+                  <div class="col-lg-12" style="margin-top: 10px !important;">
+                    <mat-form-field class="full-width">
+                      <input type="text" name="subitem" placeholder="Item" matInput formControlName="subitem"
+                        [matAutocomplete]="autoItem" id="idItem" [attr.disabled]="loading ? '' : null">
+                        <mat-autocomplete #autoItem="matAutocomplete" [displayWith]="getLabelItem"
+                        (optionSelected)="selectItemPai($event.option.value, tipoNavItem.SUBITEM)">
+                        <mat-option *ngFor="let item of filteredOptionsItem | async" [value]="item">
+                          {{ item.label }}
+                        </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                  </div>
+                </mat-card>
+                
+              </div>
+
+              <div class="col-lg-12" *ngIf="navItemSelecionado.tipoItem === 'ELEMENTO_SUBITEM' ">
+                <mat-card>
+                  <label><strong>Selecionar subitem:</strong></label>
+                  <div class="col-lg-12" style="margin-top: 10px !important;">
+                  <mat-form-field class="full-width">
+                    <input type="text" name="elementoSubitem" placeholder="Subitem" matInput formControlName="elementoSubitem"
+                      [matAutocomplete]="autoSubitem" id="idSubitem" [attr.disabled]="loading ? '' : null">
+                      <mat-autocomplete #autoSubitem="matAutocomplete" [displayWith]="getLabelSubitem"
+                      (optionSelected)="selectItemPai($event.option.value, tipoNavItem.ELEMENTO_SUBITEM)">
+                        <mat-option *ngFor="let item of filteredOptionsSubitem | async" [value]="item">
+                          {{ item.label }}
+                        </mat-option>
+                      </mat-autocomplete>
+                  </mat-form-field>
+                  </div>
+                </mat-card>
+                
+              </div>
+  
+              
+            </form>
+            
+
+            <br>
+
+            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" style="margin-top: 10px !important;">
+                <label id="label-posicao">Posição do componente:</label>
+                <div class="col-lg-2 col-md-2 col-xs-2 col-sm-2" >
+                  <mat-form-field class="full-width">
+                    <input id="idPosicao" type="number" matInput placeholder="Número" max="100"
+                      [(ngModel)]="navItemSelecionado.posicao" name="posicao" />
+                  </mat-form-field>
+                </div>
+            </div>
+
+            <form [formGroup]="form">
+            <div class="col-lg-12" style="margin-top: 10px !important;">
+              <label id="label-posicao">Página:</label>
+              <mat-form-field class="full-width">
+                <input type="text" name="pagina" placeholder="Página" matInput formControlName="pagina"
+                  [matAutocomplete]="autoPagina" id="idPagina" [attr.disabled]="loading ? '' : null">
+                  <mat-autocomplete #autoPagina="matAutocomplete" [displayWith]="getLabelPagina" 
+                  (optionSelected)="selectPagina($event.option.value)">
+                    <mat-option *ngFor="let item of filteredOptions | async" [value]="item">
+                      {{ item.label }}
+                    </mat-option>
+                  </mat-autocomplete>
+              </mat-form-field>
+            </div>
+            </form>
+
+            
+
+            <div class="col-lg-12" style="margin-top: 10px !important;">
+              <label id="LabelDisplayName">Permissão de Acesso:</label>
+              <br>
+              <mat-checkbox id="idNaoLogado" placeholder="NaoLogado" [(ngModel)]="navItemSelecionado.naoLogado" name="naologado" [disabled]="navItemSelecionado.restrito"
+                #naologado="ngModel" >Apenas para usuário sem login</mat-checkbox>
+            </div>
+
+            <div class="col-lg-12" style="margin-top: 10px !important;">
+              <mat-checkbox id="idRestrito" placeholder="Restrito" [(ngModel)]="navItemSelecionado.restrito" name="restrito"  [disabled]="navItemSelecionado.naoLogado" (change)="changeRestrito($event)"
+                #restrito="ngModel" >Apenas para: </mat-checkbox>
+            </div>
+
+            <div class="col-lg-12" style="margin-top: 10px !important;" *ngIf="restrito.value">
+              <mat-form-field class="full-width">
+                <mat-label>Perfil</mat-label>
+                <mat-select id="perfil" name="perfil" [(ngModel)]="navItemSelecionado.idsPerfil"
+                #perfil="ngModel" multiple required>
+                  <mat-option *ngFor="let perfil of navItemCombos.perfis" [value]="perfil.id">{{perfil.label}}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="perfil?.invalid && (perfil.dirty || perfil.touched)">
+                  <div *ngIf="perfil.errors.required">
+                    Pelo menos um Perfil é obrigatório
+                  </div>
+                </mat-error>
+
+              </mat-form-field>
+            </div>
+            <br>
+
+
+
+            <div class="text-right" style="margin-top: 10px !important;">
+              <br />
+
+              <button mat-flat-button color="primary" class="btnToRight" role="button"
+              (click)="novo()" [disabled]="!menuForm.form.valid" matTooltip="Salvar"><mat-icon>add</mat-icon>Novo</button>
+
+              <button mat-flat-button color="warn" class="btnToRight" role="button" *ngIf="navItemSelecionado.id != null"
+                (click)="excluir()" [disabled]="!menuForm.form.valid" matTooltip="Salvar"><mat-icon>delete</mat-icon>Excluir</button>
+
+                <button mat-flat-button color="primary" class="btnToRight" role="button"
+                (click)="salvar()" [disabled]="!menuForm.form.valid" matTooltip="Salvar"><mat-icon>save</mat-icon>Salvar</button>
+
+            </div>
+            <br/>
+          </form>
+
+
+          <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <mat-card-title>Visualização do menu</mat-card-title>
+            <hr>
+          </div>
+
+          <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+            <!-- This is the tree node template for leaf nodes -->
+            <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+              <!-- use a disabled button to provide padding for tree leaf -->
+              <button mat-icon-button disabled></button>
+              <a class="cursor-hand" (click)="carregarMenuItem(node.id)">{{node.name}}</a>
+            </mat-tree-node>
+            <!-- This is the tree node template for expandable nodes -->
+            <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
+              <button mat-icon-button matTreeNodeToggle
+                      [attr.aria-label]="'toggle ' + node.name">
+                <mat-icon class="mat-icon-rtl-mirror">
+                  {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                </mat-icon>
+              </button>
+              <a class="cursor-hand" (click)="carregarMenuItem(node.id)" [style.fontWeight]="'bold'">{{node.name}}</a>
+            </mat-tree-node>
+          </mat-tree>
+
+
+
+
+    </mat-card>
+
+  </div>
+</div>

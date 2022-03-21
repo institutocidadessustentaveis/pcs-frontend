@@ -1,0 +1,20 @@
+.importar-pontos{
+  padding: 0.5em 1em 1em 1em;
+}
+
+#left {
+  text-align: left;
+}
+#right {
+  text-align: right;
+}
+
+@media (max-width: 650px) {
+  #left{ 
+    text-align: center;
+  }
+
+  #right {
+    text-align: center;
+  }
+}

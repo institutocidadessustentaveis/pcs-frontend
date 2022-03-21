@@ -1,0 +1,7 @@
+::ng-deep .mat-tooltip {
+    white-space: pre-line;
+}
+.wrap{
+    max-width: 240px;
+    flex-wrap: wrap;
+}

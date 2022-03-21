@@ -1,0 +1,172 @@
+<section class="home-banner owl-carousel owl-theme">
+
+  <div id="carouselExampleIndicators" class="carousel slide" ride="false">
+    <div class="carousel-inner">
+      <div>
+        <img class="img-carousel" [src]="urlImagem()">
+        <div class="carousel-caption">
+          <div style="position: inherit;bottom: 0;width: 100%;">
+            <h1 class="animated fadeInUp duration-3s delay-1s">{{indicadorDaCidade?.indicador}} - {{indicadorDaCidade.nomeCidade}}</h1>
+            <h4 class="animated fadeInUp duration-3s delay-1s">{{ indicadorDaCidade.descricao }}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="conteudo">
+  <section class="text-cols--centered text-cols--dotted">
+    <app-breadcrumb style="position: relative;"></app-breadcrumb>
+    <div class="row" style="margin-bottom: 1em">
+
+      <div class="col-lg-8 col-md-8" style="margin-top: 30px;">
+        <mat-card-title [routerLink]="['/visualizarindicador', indicadorDaCidade.idIndicador]">Indicador:
+          {{indicadorDaCidade.indicador}}</mat-card-title>
+
+          <a [routerLink]="['/visualizarindicador', indicadorDaCidade.idIndicador]" style="font-size: 15px; color: #408559;">Ir para a página do indicador</a>
+          <br>
+          <a [routerLink]="['/painel-cidade/detalhes', indicadorDaCidade.idCidade]" style="font-size: 15px; color: #408559;">Ir para a página da cidade</a>
+
+
+      </div>
+      <div class="col-lg-4 col-md-4" style="text-align: end;">
+
+        <button mat-icon-button (click)="salvarLogCompartilhamento('FACEBOOK')" class="btnTabela" style="background-color:#3a559f;color:white" shareButton="facebook"
+          [url]="urlatual">
+          <fa name="facebook" size="lg"></fa>
+        </button>
+
+        <button mat-icon-button (click)="salvarLogCompartilhamento('TWITTER')" class="btnTabela" style="background-color:#50abf1;color:white" shareButton="twitter"
+          [url]="urlatual">
+          <fa name="twitter" size="lg"></fa>
+        </button>
+
+        <button mat-icon-button (click)="salvarLogCompartilhamento('LINKEDIN')" class="btnTabela" style="background-color:#0077af;color:white" shareButton="linkedin"
+          [url]="urlatual">
+          <fa name="linkedin" size="lg"></fa>
+        </button>
+
+        <!-- <a href="#" onclick="window.open('https://www.instagram.com/programacidadessustentaveis', '_system', ''); return false;">
+          <button mat-icon-button class="btnTabela"
+          style="background-color:white;color:#6E6E6E;margin-top: 9px !important;">
+          <fa name="instagram" size="xs"></fa>
+        </button>
+        </a> -->
+
+        <button mat-icon-button class="btnTabela" style="background-color:#47825E;color:white" id="btnImprimir" matTooltip="Imprimir" [disabled]="desabilitarImpressao"
+          (click)="imprimir()">
+          <fa name="print" size="lg" [ngClass]="{'fa-disabled' : desabilitarImpressao == true}"></fa>
+        </button>
+
+        <button mat-flat-button color="accent" class="btnTabela" matTooltip="Voltar" style="cursor: pointer;"
+          [routerLink]="['/painel-cidade/detalhes/'+indicadorDaCidade
+                .idCidade]" id="btnVoltar">
+          <mat-icon>arrow_back_ios</mat-icon> Voltar
+        </button>
+      </div>
+    </div>
+
+    <div [hidden]="!loading" class="loading-indicator">
+      <mat-progress-spinner class="example-margin" style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+    </div>
+    <p>
+      <b>Descrição: </b> {{ indicadorDaCidade.descricao }}
+    </p>
+
+    <div class="row col-md-12">
+      <b>Fórmula do calculo: </b> <p [innerHTML]="indicadorDaCidade.formula"></p>
+    </div>
+
+    <p>
+      <b>ODS: </b> {{ indicadorDaCidade.numeroODS }} <span *ngIf="indicadorDaCidade?.odsNumero"> - </span> {{indicadorDaCidade.ods }} <a
+        href="institucional/ods/{{indicadorDaCidade.odsId}}" target="_blank" title="Ir para página de ODS">
+         <mat-icon style="vertical-align: middle;margin-right: 1%;">help
+        </mat-icon></a>
+    </p>
+
+    <p>
+      <b>Meta ODS: </b> {{ indicadorDaCidade.meta }}
+    </p>
+
+    <p>
+      <b>Fontes: </b>
+      <mat-list-item *ngFor="let fonte of indicadorDaCidade.fontes">{{'• ' + fonte}}</mat-list-item>
+    </p>
+
+    <hr />
+
+    <div *ngIf="indicadorDaCidade.serieHistorica?.length !== 0 ">
+      <p>
+        <b>Série Histórica de {{ nomeCidade }}:</b>
+      </p>
+    </div>
+    <div *ngIf="indicadorDaCidade.serieHistorica?.length === 0 ">
+      <p>
+        <b>{{ nomeCidade }} ainda não preencheu esse indicador:</b>
+      </p>
+    </div>
+    <br />
+
+    <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+      <mat-tab-group *ngIf="indicadorDaCidade.idCidade" [selectedIndex]="99"
+        (selectedIndexChange)="selected.setValue($event)">
+        <mat-tab [label]="mandato[2]" *ngFor="let mandato of mandatos">
+          <app-serie-historica-variavel [indicador]="idIndicador" [cidade]="indicadorDaCidade.idCidade"
+            [anoInicial]="mandato[0]" [anoFinal]="mandato[1]">
+          </app-serie-historica-variavel>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card>
+
+    <br />
+
+    <div *ngIf="obsevacaoVariavel == null || obsevacaoVariavel.length  == 0">
+      <b>Observações: </b>
+      <br />
+      <p>• Sem registros</p>
+    </div>
+
+    <div *ngIf="obsevacaoVariavel != null && obsevacaoVariavel.length > 0">
+      <b>Observações: </b>
+      <mat-list-item *ngFor="let obs of obsevacaoVariavel">{{'• Nome da variável: ' + obs.nomeVariavel + ' - ' + ' Ano: ' + obs.ano}} <br /> {{" Observação: " + obs.observacao}} <br /><br /></mat-list-item>
+    </div>
+
+    <br />
+
+    <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+
+      <div style="margin-bottom: 1em" class="col-md-6">
+        <form [formGroup]="formFormula" *ngIf="formulasIndicador?.length > 1" >
+          <mat-form-field>
+            <mat-label class="bmd-label-floating">Fórmula:</mat-label>
+            <mat-select name="formula" id="formula" formControlName="formula" (selectionChange)="filtrarPorFormula($event.value)">
+              <mat-option *ngFor="let item of formulasIndicador; let i=index" [value]="i">{{item}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </form>
+      </div>
+
+      <mat-tab-group [selectedIndex]="99" *ngIf="graficos">
+        <mat-tab *ngFor="let item of graficos.graficos" [label]="item.mandato">
+          <mat-tab-group (selectedTabChange)="tipoDeGraficoSelecionado($event)">
+            <mat-tab label="Gráfico de Linha">
+              <div style="display: block;">
+                <canvas baseChart height="100" [datasets]="item.dataset" [labels]="item.labels"
+                  [options]="lineChartOptions" [legend]="lineChartLegend" chartType="line" id="graficoLinha"></canvas>
+              </div>
+            </mat-tab>
+            <mat-tab label="Gráfico de Barras">
+              <div style="display: block;">
+                <canvas baseChart height="100" [datasets]="item.dataset" [labels]="item.labels"
+                  [options]="barChartOptions" [legend]="barChartLegend" chartType="bar" id="graficoBarras"></canvas>
+              </div>
+            </mat-tab>
+
+          </mat-tab-group>
+        </mat-tab>
+
+      </mat-tab-group>
+    </mat-card>
+  </section>
+</div>

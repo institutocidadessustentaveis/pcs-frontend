@@ -1,0 +1,14 @@
+
+<section [style.background-color]="paginaChild?.corFundo">
+    <div *ngIf="paginaChild?.titulo" [ngxSummernoteView]="paginaChild?.titulo" class="label-titulo"></div>
+
+    <div class="row second-section" *ngIf="todasPublicacoes.length > 0">
+      <app-item-publicacao-dinamica
+      [tituloPagina]="tituloPagina" [dadosDownloadUser]="dadosDownloadUser"
+        *ngFor="let item of todasPublicacoes | slice:0:qtdPublicacoes1"
+        [publicacao]="item"  class="col-lg-4">
+      </app-item-publicacao-dinamica>
+    </div>
+
+</section>
+

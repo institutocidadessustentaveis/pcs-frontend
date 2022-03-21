@@ -1,0 +1,19 @@
+<div class="contentBody">
+<div class="row">
+  <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+    <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <h2>Painel indicadores da cidade</h2>
+      <mat-divider></mat-divider>
+
+      <br>
+      <br>
+      <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12" *ngIf="idGrupo === 0">
+        <app-painel-indicadores-cidade-grupo-cidade></app-painel-indicadores-cidade-grupo-cidade>
+      </mat-card>
+      <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12" *ngIf="idGrupo === 1">
+        <app-painel-indicadores-cidade-grupo-indicadores></app-painel-indicadores-cidade-grupo-indicadores>
+      </mat-card>
+    </mat-card-content>
+  </mat-card>
+</div>
+</div>

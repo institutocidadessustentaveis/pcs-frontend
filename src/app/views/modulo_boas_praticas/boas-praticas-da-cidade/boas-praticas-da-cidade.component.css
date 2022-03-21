@@ -1,0 +1,378 @@
+.home-banner {
+    position: relative;
+    background-color: black;
+    height: 480px;
+  }
+  .carousel-caption {
+    height: 480px;
+    color: #fff;
+    text-align: center;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    margin-bottom: 13px;
+  }
+  .carousel-inner {
+    height: 480px;
+  }
+  .carousel-item {
+    height: 480px;
+  }
+  .carousel-indicators{
+    margin-bottom: 10px;
+  }
+  h1,
+  h4 {
+    font-weight: normal !important;
+  }
+  h4 {
+    font-size: calc(10px + 1.0vw) !important;
+  }
+  .home-banner h1 {
+    font-family: Source Sans Pro;
+    font-weight: 700 !important;
+    font-size: calc(17px + 1.5vw);
+    line-height: 1.25em;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+    text-transform: uppercase;
+  }
+  .img-carousel {
+    background-color: Black !important;
+    height: 480px;
+    width: 100%;
+    object-fit: cover;
+    opacity: 0.5;
+  }
+
+  .search-results{
+    background-color: white;
+    overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+
+  .ng-star-inserted{
+    margin-right:4px;
+  }
+
+  /* cyrillic-ext */
+  @font-face {
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local("Open Sans Regular"), local("OpenSans-Regular"),
+      url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFWJ0bbck.woff2)
+        format("woff2");
+    unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F,
+      U+FE2E-FE2F;
+  }
+  /* cyrillic */
+  @font-face {
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local("Open Sans Regular"), local("OpenSans-Regular"),
+      url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFUZ0bbck.woff2)
+        format("woff2");
+    unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+  }
+  /* greek-ext */
+  @font-face {
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local("Open Sans Regular"), local("OpenSans-Regular"),
+      url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFWZ0bbck.woff2)
+        format("woff2");
+    unicode-range: U+1F00-1FFF;
+  }
+  /* greek */
+  @font-face {
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local("Open Sans Regular"), local("OpenSans-Regular"),
+      url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFVp0bbck.woff2)
+        format("woff2");
+    unicode-range: U+0370-03FF;
+  }
+  /* vietnamese */
+  @font-face {
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local("Open Sans Regular"), local("OpenSans-Regular"),
+      url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFWp0bbck.woff2)
+        format("woff2");
+    unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+  }
+  /* latin-ext */
+  @font-face {
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local("Open Sans Regular"), local("OpenSans-Regular"),
+      url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFW50bbck.woff2)
+        format("woff2");
+    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB,
+      U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  /* latin */
+  @font-face {
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local("Open Sans Regular"), local("OpenSans-Regular"),
+      url(https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFVZ0b.woff2)
+        format("woff2");
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+      U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+      U+FEFF, U+FFFD;
+  }
+  /* cyrillic-ext */
+  @font-face {
+    font-family: "Source Sans Pro";
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+      url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmhduz8A.woff2)
+        format("woff2");
+    unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F,
+      U+FE2E-FE2F;
+  }
+  /* cyrillic */
+  @font-face {
+    font-family: "Source Sans Pro";
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+      url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwkxduz8A.woff2)
+        format("woff2");
+    unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+  }
+  /* greek-ext */
+  @font-face {
+    font-family: "Source Sans Pro";
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+      url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmxduz8A.woff2)
+        format("woff2");
+    unicode-range: U+1F00-1FFF;
+  }
+  /* greek */
+  @font-face {
+    font-family: "Source Sans Pro";
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+      url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwlBduz8A.woff2)
+        format("woff2");
+    unicode-range: U+0370-03FF;
+  }
+  /* vietnamese */
+  @font-face {
+    font-family: "Source Sans Pro";
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+      url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmBduz8A.woff2)
+        format("woff2");
+    unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+  }
+  /* latin-ext */
+  @font-face {
+    font-family: "Source Sans Pro";
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+      url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmRduz8A.woff2)
+        format("woff2");
+    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB,
+      U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  /* latin */
+  @font-face {
+    font-family: "Source Sans Pro";
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
+      url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwlxdu.woff2)
+        format("woff2");
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+      U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+      U+FEFF, U+FFFD;
+  }
+
+  @keyframes b {
+    0% {
+      opacity: 0;
+      transform: translate3d(0, 100%, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translateZ(0);
+    }
+  }
+  .fadeInUp {
+    animation-name: b;
+  }
+
+  .animated {
+    animation-duration: 1s;
+    animation-fill-mode: both;
+  }
+  .animated.delay-1s {
+    animation-delay: 1s;
+  }
+
+  @media (prefers-reduced-motion: reduce), (print) {
+    .animated {
+      animation-duration: 1ms !important;
+      transition-duration: 1ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .carousel-caption{
+      display: block !important;
+    }
+  }
+
+  .news__section > header {
+    background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDIzLjAuMywgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJMYXllcl8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCINCgkgd2lkdGg9IjE1cHgiIGhlaWdodD0iMTVweCIgdmlld0JveD0iMCAwIDE1IDE1IiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCAxNSAxNSIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8Zz4NCgk8Y2lyY2xlIGZpbGw9IiNBN0E1QTYiIGN4PSI3LjUiIGN5PSI3LjUiIHI9IjAuNjI1Ii8+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8L3N2Zz4NCg==");
+    background-size: 15px;
+    background-repeat: repeat;
+    background-attachment: scroll;
+  }
+
+  .news__section {
+    margin-left: 128px;
+    margin-right: 128px;
+    margin-bottom: 3em;
+  }
+  @media (max-width: 1023px) {
+    .news__section {
+      margin-left: 48px;
+      margin-right: 48px;
+    }
+  }
+  .news__section > header {
+    display: block;
+    width: 100%;
+    background-position: center 10px;
+    margin-bottom: 3em;
+    vertical-align: bottom;
+  }
+  .news__section > header h1 {
+    display: inline-block;
+    background-color: #6e6e6e;
+    color: #fff;
+    padding-left: 12px;
+    padding-right: 12px;
+    font-size: 1.125em;
+    line-height: 2.6666666667em;
+    font-weight: 700;
+    min-width: 29%;
+    vertical-align: bottom;
+    text-transform: uppercase;
+  }
+  .news__section--alt-title > header {
+    text-align: center;
+    background: none;
+  }
+  .news__section--alt-title > header h1 {
+    background-color: transparent;
+    color: #333;
+  }
+
+  .news__section .news__grid--3 {
+    grid: auto/1fr;
+    gap: 48px;
+  }
+  .news__section .news__grid--3 .news__grid-inner {
+    display: grid;
+    grid: auto/repeat(3, 1fr);
+    gap: 48px;
+  }
+  @media (max-width: 1023px) {
+    .news__section .news__grid--3 .news__grid-inner {
+      grid-column: auto;
+      grid: auto/repeat(2, 1fr);
+      gap: 48px;
+    }
+  }
+  @media (max-width: 767px) {
+    .news__section .news__grid--3 .news__grid-inner {
+      grid: auto/1fr;
+    }
+  }
+  .news__section .news__grid--3 .breadcrumbs {
+    display: none !important;
+  }
+  .news__section .news__grid--3 .view-more {
+    grid-area: -1/1;
+  }
+  @media (max-width: 1023px) {
+    .news__section .news__grid--3 .view-more {
+      grid-area: auto;
+    }
+  }
+  .news__section .news__grid article {
+    color: #000;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-flow: column nowrap;
+    flex-flow: column nowrap;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -ms-flex-line-pack: start;
+    align-content: flex-start;
+  }
+  .news__section .news__grid article header {
+    -ms-flex-order: 2;
+    order: 2;
+    margin-top: 2.25em;
+    margin-bottom: 2.25em;
+  }
+  .news__section--no-cover .news-grid article header {
+    margin-top: 0.75em;
+  }
+  .news__section .news__grid article header h2 {
+    font-size: 1.25em;
+    line-height: 1.2em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .news__section .news__grid article header h2 a {
+    color: #000;
+    text-decoration: none;
+  }
+  .news__section .news__grid article p {
+    -ms-flex-order: 4;
+    order: 4;
+  }
+
+
+
+
+
+  /*# sourceMappingURL=main.css.map */

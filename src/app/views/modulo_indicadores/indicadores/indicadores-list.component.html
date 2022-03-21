@@ -1,0 +1,187 @@
+<div class="contentBody" style="position: relative;">
+    <app-breadcrumb style="position: relative;"></app-breadcrumb>
+  <mat-card>
+
+    <div class="row">
+
+      <div class="col-md-8 col-lg-9 col-xs-12 col-sm-12">
+        <h2>Cadastro de Indicadores</h2>
+      </div>
+
+      <div class="col-md-4 col-lg-3 col-xs-12 col-sm-12" style="text-align: right;">
+        <button matTooltip="Cadastrar indicador" mat-flat-button color="primary" [routerLink]="['/cadastroindicadores/cadastrar']"
+          style="cursor: pointer !important; margin-bottom: 5px;" id="btnCadastro">
+          <mat-icon>add</mat-icon> Cadastrar indicador
+        </button>
+      </div>
+
+    </div>
+
+    <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+      <mat-divider></mat-divider>
+    </div>
+
+    <br>
+
+    <div [hidden]="!loading">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+
+    <div>
+        <mat-label>Filtro</mat-label>
+    </div>
+
+    <div>
+    <form [formGroup]="formFiltro" class="example-form">
+      <div class="row">
+
+        <mat-form-field class="col-md-2 col-lg-2">
+          <mat-label>Por Eixo</mat-label>
+          <mat-select id="eixo" formControlName="eixo">
+          <mat-option *ngFor="let itemEixo of listaEixo" [value]="itemEixo">
+            {{itemEixo.nome}}
+          </mat-option>
+          <mat-option [value]="null">
+            Nenhum
+          </mat-option>
+        </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="col-md-2 col-lg-2">
+          <mat-label>Por Variável</mat-label>
+          <mat-select id="variavel"formControlName="variavel">
+          <mat-option *ngFor="let itemVariavel of listaVariaveis" [value]="itemVariavel">
+            {{itemVariavel.nome}}
+          </mat-option>
+          <mat-option [value]="null">
+              Nenhum
+            </mat-option>
+        </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="col-md-4 ">
+          <mat-label>ODS</mat-label>
+          <mat-select id="ods" formControlName="ods" formControlName="ods">
+            <mat-option *ngFor="let itemOds of listaODS" [value]="itemOds">
+              {{itemOds.numero}} - {{itemOds.titulo}}
+            </mat-option>
+            <mat-option [value]="null">
+                Nenhum
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="col-md-4">
+          <input matInput placeholder="Nome do Indicador" value="" #txtNomeIndicador id="nomeIndicador"
+            formControlName="nomeIndicador" />
+          <mat-hint align="end">{{ txtNomeIndicador.value?.length || 0 }}/100</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="col-md-2 col-lg-2">
+          <mat-label>Por Cidade</mat-label>
+          <mat-select id="cidade"  formControlName="cidade">
+          <mat-option *ngFor="let itemCidade of listaCidade" [value]="itemCidade">
+            {{itemCidade.label}}
+          </mat-option>
+          <mat-option [value]="null">
+              Nenhum
+            </mat-option>
+        </mat-select>
+        </mat-form-field>
+
+        <!-- <mat-form-field class="col-md-2">
+          <input matInput placeholder="Tipologias" formControlName="tipologias" />
+        </mat-form-field> -->
+
+        <div class="col-md-2 col-lg-2">
+          <mat-form-field>
+            <input matInput placeholder="População De:" value="" id="popDe" formControlName="popDe"
+              type="number" onKeyPress="if(this.value.length==20) return false;" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-2 col-lg-2">
+          <mat-form-field>
+            <input matInput placeholder="População Até:" value="" id="popAte" formControlName="popAte"
+              type="number" onKeyPress="if(this.value.length==20) return false;" />
+          </mat-form-field>
+        </div>
+
+          <mat-form-field class="col-md-4">
+              <input matInput placeholder="Valor do Indicador" value="" #txtValorIndicador id="valorIndicador"
+                formControlName="valorIndicador" />
+              <mat-hint align="end">{{ txtValorIndicador.value?.length || 0 }}/100</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-2">
+            <input matInput placeholder="Modo de entrada" formControlName="modoentrada" />
+          </mat-form-field>
+
+          &nbsp;&nbsp;&nbsp;
+          <app-datepicker formControlName="dataPreenchimento" id="dataPreenchimento" required="false" placeholder="Data Preenchimento"
+            class="info-full-width"></app-datepicker>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <button matTooltip="Filtrar" mat-flat-button color="primary" (click)="filtrar()" style="cursor: pointer !important;" id="btnCadastro">
+            <mat-icon>filter_list</mat-icon> Filtrar
+          </button>
+          &nbsp;&nbsp;
+          <button matTooltip="Filtrar" mat-flat-button color="primary" (click)="limpar()" style="cursor: pointer !important;" id="btnCadastro">
+            <mat-icon>clear_all</mat-icon> Limpar
+          </button>
+
+      </div>
+    </form>
+    </div>
+
+    <br>
+    <br>
+
+    <mat-card-content>
+      <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <mat-card-title>Lista de Indicadores Cadastrados</mat-card-title>
+        <mat-divider></mat-divider>
+      </div>
+      <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
+
+        <ng-container matColumnDef="Indicador">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="nome" style="width: 15%;"> Indicador </th>
+          <td mat-cell *matCellDef="let element" class='m-card-title' data-label='Nome'>
+            <span class="mobile-label">Indicador:</span> {{element.nome}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Descricao">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="descricao" style="width: 35%;"> Descrição </th>
+          <td mat-cell *matCellDef="let element" class='m-card-title' data-label='Descrição'>
+            <span class="mobile-label">Descrição:</span> {{element.descricao}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Origem" >
+          <th mat-header-cell *matHeaderCellDef style="width: 7%;"> Origem </th>
+          <td mat-cell *matCellDef="let element" class='m-card-title' data-label='Origem'>
+            <span class="mobile-label">Origem:</span> {{element.nomePrefeitura}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Acoes" *ngIf="hasRole('ROLE_CADASTRAR_INDICADOR')">
+          <th mat-header-cell *matHeaderCellDef colspan="2" class="text-center" style="min-width: 200px;">Ações</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <button matTooltip="Editar" mat-flat-button color="primary" style="cursor: pointer;"
+              [routerLink]="['/cadastroindicadores/editar', element.id]" id="btnEditar" class="btnTabela" [hidden] = "(element.nomePrefeitura != 'PCS' && isUsuarioPrefeitura != true)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button matTooltip="Excluir" mat-flat-button color="warn" style="cursor: pointer;"
+              (click)="excluir(element)" id="btnExcluir" class="btnTabela" [hidden] = "(element.nomePrefeitura != 'PCS' && isUsuarioPrefeitura != true)">
+              <mat-icon>delete</mat-icon>
+            </button></td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <mat-paginator (page)="carregarPaginaIndicadores($event)" showFirstLastButtons
+                      [pageSizeOptions]="[10, 25, 50, 100]" style="text-align: center !important;"
+                      class="float-none" >
+      </mat-paginator>
+
+    </mat-card-content>
+  </mat-card>
+</div>

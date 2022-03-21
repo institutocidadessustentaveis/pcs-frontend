@@ -1,0 +1,142 @@
+.secao {
+    margin-left: 128px;
+    margin-right: 128px;
+    margin-bottom: 3em;
+    margin-top: 3em;
+    font-weight: 600;
+  }
+  @media (max-width: 1023px) {
+    .secao {
+      margin-left: 48px;
+      margin-right: 48px;
+    }
+  }
+  .label-titulo-white {
+    font-weight: bold;
+    font-size: 30px;
+    margin: 1% 0%;
+    color: white;
+    text-transform: uppercase;
+  }
+  .view-more {
+    place-self: center;
+    font-size: 1.25em;
+    line-height: 2.4em;
+    background-color: transparent;
+    border: 0.05em #6e6e6e solid;
+    padding: 0.55em;
+    width: 25%;
+    min-width: 300px;
+    border-radius: 10px;
+    outline: none;
+    cursor: pointer;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+
+  .secao-filtro{
+    background-color: #8a9ea1;
+    padding-left: 128px;
+    padding-right: 128px;
+    padding-top: 3em;
+    padding-bottom: 3em;
+  }
+  
+  .secao-filtro > header {
+    padding-top: 1.5em;
+    padding-bottom: 1.5em;
+  }
+  .secao-filtro > header h1 {
+    font-size: 1.5em;
+    line-height: 2em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    position: relative;
+  }
+  .secao-filtro > header h1:before {
+    content: "";
+    width: 100%;
+    height: 2px;
+    background-color: #fff;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+  }
+  .secao-filtro > header h1 span {
+    background-color: #8a9ea1;
+    color: #fff;
+    position: relative;
+    z-index: 2;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .search-form-color ::ng-deep .mat-select-value-text {
+    color: white !important;
+  }
+  
+  .search-form-color ::ng-deep .mat-focused .mat-form-field-label {
+    color: white !important;
+  }
+  
+  .search-form-color ::ng-deep .mat-form-field-label {
+    color: white !important;
+  }
+  
+  .search-form-color ::ng-deep.mat-form-field-underline {
+    background-color: white !important;
+  }
+  
+  .search-form-color ::ng-deep.mat-form-field-ripple {
+    background-color: white !important;
+  }
+  
+  .search-form-color ::ng-deep .mat-select-arrow {
+    color: white !important;
+  }
+  
+  .search-form-color ::ng-deep .mat-form-field-empty.mat-form-field-label {
+    color: white !important;
+  }
+  
+  .search-form-color ::ng-deep .mat-datepicker-toggle {
+    color: white !important;
+  }
+  
+  .search-form-color ::ng-deep .mat-datepicker {
+    color: white !important;
+  }
+  
+  .search-form-color ::ng-deep input.mat-input-element {
+    color: white;
+  }
+
+  .btnpesquisar {
+    display: inline-block;
+    font-weight: 400;
+    color: #212529;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0.25rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+      border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    color: #f8f9fa;
+    border-color: #f8f9fa;
+  }

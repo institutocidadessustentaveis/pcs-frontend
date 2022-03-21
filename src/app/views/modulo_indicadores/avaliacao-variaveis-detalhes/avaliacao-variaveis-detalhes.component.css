@@ -1,0 +1,15 @@
+.squareGreen{
+    border-style: solid; border-width:1px; border-color: black; background-color: #39FF33; width: 33px !important; height: 30px !important; max-width: 33px !important; max-height: 30px;
+}
+
+.squareYellow{
+    border-style: solid; border-width:1px; border-color: black; background-color: #FFFF00; width: 33px !important; height: 30px !important; max-width: 33px !important; max-height: 30px;
+}
+
+.squareOrange{
+    border-style: solid; border-width:1px; border-color: black; background-color: #FFA500; width: 33px !important; height: 30px !important; max-width: 33px !important; max-height: 30px;
+}
+
+.squareRed{
+    border-style: solid; border-width:1px; border-color: black; background-color: #FF0000; width: 33px !important; height: 30px !important; max-width: 33px !important; max-height: 30px;
+}

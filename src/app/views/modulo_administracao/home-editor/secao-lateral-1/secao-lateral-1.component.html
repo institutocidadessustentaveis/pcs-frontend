@@ -1,0 +1,37 @@
+<!-- Seção Lateral -->
+
+<section>
+  <div class="row">
+    <div class="col-md-12 row-card-side-bar" style="padding-bottom: 0px !important;" >
+      <div class="h-100" style="cursor: pointer;">
+  
+        <div class="row">
+          <div class="caixa" [style.background-color]="secaoLateral.primeiroTituloPrincipalCor"></div>
+          <a class="h1 titulos" style="margin-bottom:0 !important;"
+            [style.border-color]="secaoLateral.primeiroTituloPrincipalCor"
+            [style.color]="secaoLateral.primeiroTituloPrincipalCor"
+            [href]="secaoLateral.primeiroTituloPrincipalLink" onclick="return false;">{{secaoLateral.primeiroTituloPrincipal}}</a>
+        </div>
+      
+        <div class="card-body" style="padding-bottom: 0% !important;">
+          
+          <a class="one-column-center" style="height: 100%;width: 100%;margin-top: 5%;"  *ngIf="secaoLateral.primeiraImagemSafeUrl"
+          [href]="secaoLateral.primeiraImagemLink" target="_blank" rel="noopener" onclick="return false;"> 
+            <img [src]="secaoLateral.primeiraImagemSafeUrl" class="img-third-section" >
+          </a>
+
+          <div class="row" style="margin-top: 5%;">
+            <a class="h5 titulos-no-border underline-on-hover" style="margin-bottom:3% !important;width: 100%;" [style.border-color]="secaoLateral.primeiroTituloCor" 
+            [style.color]="secaoLateral.primeiroTituloCor"
+            [href]="secaoLateral.primeiroTituloLink" onclick="return false;">{{secaoLateral.primeiroTitulo}}</a>
+            <a class="one-column-texto-small underline-on-hover"  style="color: #231f20;width: 100%;" [style.color]="secaoLateral.primeiroTextoCor" 
+            [innerHTML]="secaoLateral.primeiroTexto" [href]="secaoLateral.primeiroTextoLink" onclick="return false;">
+            </a>
+          </div>
+
+        </div>
+        <hr style="border-top: 1pt solid;" [style.color]="secaoLateral.primeiroTituloPrincipalCor">
+      </div>
+    </div>
+  </div>
+</section>

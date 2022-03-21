@@ -1,0 +1,22 @@
+<div [hidden]="item.disabled" >
+  <a mat-list-item [ngStyle]="{'padding-left': (depth * 12) + 'px'}" style="font-size: 14px; color: #7D7C84" (click)="onItemSelected(item)" 
+    [style.fontWeight]= "checkBold(item)"
+    [style.border-bottom]="item.route || item.url_name ? '' : '1.5px solid #D5D8DC'"
+    [ngClass]="{'active': item.route ? router.isActive(item.route, true) : false, 'expanded': expanded}"
+    class="menu-list-item">
+    <div *ngIf="item?.iconName">
+      <mat-icon class="routeIcon">{{item?.iconName}}</mat-icon>
+    </div>
+    <mat-icon  *ngIf="item?.restrito" style="padding-top: 2px; font-size: 17px;color: green;">edit</mat-icon> {{item.displayName}} 
+    <span fxFlex *ngIf="item.children && item.children.length">
+      <span fxFlex></span>
+      <mat-icon style="margin-left: 5px;margin-top: 5px;" [@indicatorRotate]="expanded ? 'expanded': 'collapsed'">
+        expand_more
+      </mat-icon>
+    </span>
+  </a>
+  <div *ngIf="expanded">
+    <app-menu-list-item *ngFor="let child of item.children" [item]="child" [depth]="depth+1">
+    </app-menu-list-item>
+  </div>
+</div>

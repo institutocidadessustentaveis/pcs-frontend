@@ -1,0 +1,12 @@
+<h4 mat-dialog-title>Dados do Contato - Ponto Focal</h4>
+<div mat-dialog-content>
+  <p><strong>Nome de contato:</strong> {{ cidade?.nomeContato ? cidade?.nomeContato : 'N/A' }} </p>
+  <p><strong>E-mail de contato:</strong> {{ cidade?.emailContato ? cidade?.emailContato : 'N/A' }} </p>
+  <p><strong>Telefone fixo de contato:</strong> {{ cidade?.telFixoContato ? cidade?.telFixoContato : 'N/A' }} </p>
+  <p><strong>Telefone móvel de contato:</strong> {{ cidade?.telMovelContato ? cidade?.telMovelContato : 'N/A'}} </p>
+  <p><strong>Observação:</strong> {{ cidade?.campoObservacao ? cidade?.campoObservacao : 'N/A' }} </p>
+  
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-flat-button color="accent" class="btn-modal" (click)="closeModal()">Sair</button>
+</div>

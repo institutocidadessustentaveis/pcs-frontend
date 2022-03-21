@@ -1,0 +1,54 @@
+mat-form-field {
+  font-size: 1em !important;
+}
+::ng-deep app-datepicker mat-form-field {
+  font-size: 1em !important;
+}
+
+::ng-deep .btn-tabela{
+  width: 40px !important;
+  min-width: 20px !important;
+  padding: 0 5px !important;
+}
+
+::ng-deep .mat-expansion-panel{
+  margin: 1em 0 auto !important;
+}
+ol{
+  list-style-type:none;
+  font-size: 16px;
+}
+
+ul{
+  list-style-type:none;
+  font-size: 16px;
+}
+ol li{
+  margin-bottom: .3em;
+}
+
+ul li{
+  margin-bottom: .2em;
+}
+
+.btn-direita {
+  margin-right: 5px !important;
+}
+.lista-perguntas{
+  padding: 0px;
+}
+.pergunta{
+  margin-top: 1em;
+}
+.borda-baixo{
+  border-bottom: 1px;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-style: solid;
+  border-color: rgba(0,0,0,.1);
+}
+.lista-respostas{
+  padding-top: 1em;
+  padding-left: 1em
+}

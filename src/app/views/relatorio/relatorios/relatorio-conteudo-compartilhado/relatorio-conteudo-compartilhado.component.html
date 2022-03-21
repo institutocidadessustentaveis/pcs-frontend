@@ -1,0 +1,94 @@
+<div class="row">
+  <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+    <form [formGroup]="formulario" class="example-form">
+
+      <div style="margin-top: 20px !important;">
+        <app-datepicker formControlName="dataInicio" placeholder="Escolha a data inicial" ></app-datepicker>
+      </div>
+
+      <div>
+        <app-datepicker formControlName="dataFim" placeholder="Escolha a data final" ></app-datepicker>
+      </div>
+
+      <div class="col-lg-12">
+        <mat-form-field>
+          <mat-label>-- Selecione um usuário -- </mat-label>
+          <mat-select formControlName="usuario" name="usuario" id="usuario">
+            <mat-option value=""></mat-option>
+            <mat-option *ngFor="let usuario of listaUsuario" [value]="usuario">
+              {{ usuario.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-12">
+        <mat-form-field>
+          <mat-label>-- Selecione uma rede social -- </mat-label>
+          <mat-select formControlName="redeSocial" name="redeSocial" id="redeSocial">
+              <mat-option value=""></mat-option>
+              <mat-option value="Facebook">Facebook</mat-option>
+              <mat-option value="Tweeter">Tweeter</mat-option>
+              <mat-option value="LinkedIn">LinkedIn</mat-option>
+              <mat-option value="Instagram">Instagram</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </form>
+  </div>
+
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right" style="margin-top: 10px !important;">
+    <button mat-flat-button color="primary" class="float-right" (click)="searchReport()" matTooltip="Gerar Relatório"
+      id="btnGerarRelatorio" class="botaoGeraRelatorio">
+      <mat-icon style="margin-top: -1px !important">insert_drive_file</mat-icon> Gerar Relatório
+    </button>
+  </div>
+
+  <mat-progress-bar mode="indeterminate" [hidden]="!loading" style="margin-top:20px;"></mat-progress-bar>
+
+  <app-exportador-relatorios [registros]="formatarParaExportar(listaHistorico)" [titulo]="titulo" [colunas]="colunas"></app-exportador-relatorios>
+
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" [hidden]="resultadoEncontrado" style="margin-top:25px;">
+    <p class="alert alert-warning" role="alert" *ngIf="pesquisou">Nenhum registro encontrado!</p>
+  </div>
+
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px !important;"
+    [hidden]="listaHistorico.length == 0">
+
+    <table mat-table [dataSource]="dataSource" matSort [hidden]="listaHistorico.length === 0">
+
+      <ng-container matColumnDef="Data">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="dataHora"> Data </th>
+        <td mat-cell *matCellDef="let element" class='m-card-title' data-label='Data/Hora'>
+          <span class="mobile-label">Data/Hora:</span>{{element.dataHora | date: "dd/MM/yyyy HH:mm:ss"}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Usuário">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="nomeUsuario"> Usuário </th>
+        <td mat-cell *matCellDef="let element" class='m-card-title' data-label='Usuário'>
+          <span class="mobile-label">Usuário:</span>{{element.nomeUsuario}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Rede Social">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="redeSocial"> Rede Social </th>
+        <td mat-cell *matCellDef="let element" class='m-card-title' data-label='Usuário'>
+          <span class="mobile-label">Rede Social:</span>{{element.redeSocial}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Conteúdo Compartilhado">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="conteudoCompartilhado">Conteúdo Compartilhado</th>
+        <td mat-cell *matCellDef="let element" class='m-card-title' data-label='Conteúdo Compartilhado'>
+          <span class="mobile-label">Conteúdo:</span>{{element.conteudoCompartilhado}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+
+  <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" style="margin-top: 20px !important;"
+    [hidden]="listaHistorico.length == 0">
+    <mat-paginator style="text-align: center !important;" class="float-none" [pageSizeOptions]="[10,25,50,100]"
+      showFirstLastButtons></mat-paginator>
+  </div>
+</div>

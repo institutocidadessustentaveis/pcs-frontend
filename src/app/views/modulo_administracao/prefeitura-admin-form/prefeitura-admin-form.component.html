@@ -1,0 +1,113 @@
+<div class="contentBody" style="position: relative;">
+  <app-breadcrumb style="position: relative;"></app-breadcrumb>
+  <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+    <form [formGroup]="prefeituraAdminForm">
+      <div class="col-lg-12">
+        <h2>Editar Prefeitura</h2>
+        <mat-divider></mat-divider>
+      </div>
+
+      <div [hidden]="!loading">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </div>
+
+      <br>
+
+      <div class="col-lg-12" style="margin-top: 20px !important;">
+        <mat-form-field class="full-width">
+          <input matInput required placeholder="Nome do(a) prefeito(a)" maxlength="150"
+            formControlName="nomePrefeito" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-12" style="margin-top: 20px !important;">
+        <mat-form-field class="full-width">
+          <input matInput required placeholder="E-mail" maxlength="150" formControlName="email" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-12" style="margin-top: 10px;">
+        <mat-form-field class="full-width">
+          <input matInput autocomplete="off" required [mask]="mascara" (change)="defineMascaraTelefone()"
+            (click)="mascara='(00) 0 0000-0000'" placeholder="Telefone" name="telefone" id="telefone"
+            formControlName="telefone" #txtTelefone maxlength="100" [readonly]="visualizacao" />
+          <mat-hint align="end">{{ txtTelefone.value?.length || 0 }}/100</mat-hint>
+          <mat-error
+            *ngIf="!prefeituraAdminForm.controls['telefone'].valid && prefeituraAdminForm.controls['telefone'].touched">
+            {{ getErrorTelefone() }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-12" style="margin-top: 20px !important;">
+        <app-datepicker formControlName="inicioMandato" id="inicioMandato" required placeholder="Início do mandato"
+          class="info-full-width">
+        </app-datepicker>
+      </div>
+
+      <div class="col-lg-12" style="margin-top: 20px !important;">
+        <app-datepicker formControlName="fimMandato" id="fimMandato" required placeholder="Fim do mandato"
+          class="info-full-width">
+        </app-datepicker>
+      </div>
+
+      <div class="col-lg-12" style="margin-top: 20px !important;">
+        <mat-form-field class="full-width">
+          <mat-label>País</mat-label>
+          <mat-select [(value)]="paisSelecionado" disabled="true">
+            <mat-option *ngFor="let pais of listaPaises" [value]="pais.id">
+              {{pais.nome}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-12" style="margin-top: 20px !important;">
+        <mat-form-field class="full-width">
+          <mat-label>Estado</mat-label>
+          <mat-select [(value)]="estadoSelecionado" (selectionChange)="buscarCidades($event)">
+            <mat-option *ngFor="let estado of listaEstado" [value]="estado.id">
+              {{estado.nome}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-12" style="margin-top: 20px !important;">
+        <mat-form-field class="full-width">
+          <mat-label>Cidade</mat-label>
+          <mat-select [(value)]="cidadeSelecionada">
+            <mat-option *ngFor="let cidade of listaCidades" [value]="cidade.id">
+              {{cidade.label}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-12" style="margin-top: 20px !important;">
+        <mat-form-field class="full-width">
+          <mat-label>Partido</mat-label>
+          <mat-select [(value)]="partidoSelecionado">
+            <mat-option *ngFor="let partido of listaPartidos" [value]="partido.id">
+              {{partido.siglaPartido}} - {{partido.nome}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </form>
+
+    <br>
+
+    <div class="text-right" style="margin-bottom: 3em">
+      <button mat-flat-button color="accent" [routerLink]="['/prefeitura']" matTooltip="Voltar">
+        <mat-icon>arrow_back_ios</mat-icon>
+        Voltar
+      </button>
+
+      <button mat-flat-button color="primary" matTooltip="Salvar" (click)="salvarPrefeitura()">
+        <mat-icon>save</mat-icon>
+        Salvar
+      </button>
+    </div>
+  </mat-card>
+</div>

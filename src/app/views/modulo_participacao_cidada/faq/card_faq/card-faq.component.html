@@ -1,0 +1,14 @@
+<table width="100%" class="table table-sm">
+<tr width="100%"  [attr.aria-expanded]="isExpanded" *ngIf="faq" data-toggle="collapse" [attr.data-target]="'#accordion' + faq.id" aria-expanded="true" class="clickable collapse show" style="cursor: pointer;" [ngClass]="setClassCSS()">
+    <td class="titulo" (click)="adicionarDrop(faq.id)" style="color: #408559">
+        {{faq.pergunta}}
+        <mat-icon class="drop" *ngIf="onDrop(faq.id)" style="float: right;">keyboard_arrow_up</mat-icon>
+        <mat-icon class="drop" *ngIf="onDrop(faq.id) == false" style="float: right;">keyboard_arrow_down</mat-icon>
+    </td>
+  </tr>
+  <tr *ngIf="faq" [attr.colspan]="10">
+    <td [attr.colspan]="10" [attr.id]="'accordion' + faq.id" class="collapse" [ngClass]="{'show' : isExpanded == true}">
+      <div [innerHTML]="faq.resposta"></div>
+    </td>
+  </tr>
+</table> 

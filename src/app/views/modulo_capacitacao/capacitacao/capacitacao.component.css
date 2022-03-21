@@ -1,0 +1,387 @@
+.one-column {
+    margin-left: 19%;
+    margin-right: 19%;
+    margin-top: 2%;
+    padding-bottom: 2%;
+}
+
+.secao {
+  margin-left: 128px;
+  margin-right: 128px;
+  margin-bottom: 3em;
+  margin-top: 3em;
+  font-weight: 600;
+}
+
+.secao-mapa{
+    background-color: #8a9ea1 ;
+    padding-bottom: 2em;
+    padding-top: 2.4em;
+    font-weight: 600;
+  }
+  .secao-mapa h1{
+    margin-left: 128px;
+    color: white;
+  }
+
+  @media (max-width: 1023px) {
+    .secao-mapa h1{
+      margin-left: 48px;
+      color: white;
+    }
+  }
+  
+  .search-form-color ::ng-deep .mat-select-value-text {
+    color: white !important;
+  }
+  
+  .search-form-color ::ng-deep .mat-focused .mat-form-field-label {
+    color: white !important;
+  }
+  
+  .search-form-color ::ng-deep .mat-form-field-label {
+    color: white !important;
+  }
+  
+  .search-form-color ::ng-deep.mat-form-field-underline {
+    background-color: white !important;
+  }
+  
+  .search-form-color ::ng-deep.mat-form-field-ripple {
+    background-color: white !important;
+  }
+  
+  .search-form-color ::ng-deep .mat-form-field-empty.mat-form-field-label {
+    color: white !important;
+  }
+  
+  .search-form-color ::ng-deep .mat-datepicker-toggle {
+    color: white !important;
+  }
+  
+  .search-form-color ::ng-deep .mat-datepicker {
+    color: white !important;
+  }
+  
+  
+.pontos-light{
+    background: url("../../../../assets/boas-praticas-inicial/pontos-light.png");
+  }
+
+.view-more {
+    place-self:center;
+    margin-top: -64px;
+    margin-bottom: 30px;
+}
+.center{
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+}
+a {
+    color: #ff9800;
+    text-decoration: none;
+}
+h2 {
+    margin-top: 8px;
+}
+
+.disabled {
+  pointer-events: none;
+}
+
+
+.center{
+  display: flex;
+  justify-content: center;
+}
+
+.teaser--dotted{
+    background-size: 15px;
+    background-repeat: repeat;
+    background-attachment: scroll;
+  }
+
+  .teaser {
+    padding: 3em 128px;
+    margin-top: 3em;
+    margin-bottom: 3em;
+    cursor: default;
+  }
+  @media (max-width: 1023px) {
+    .teaser {
+      padding-left: 48px;
+      padding-right: 48px;
+    }
+  }
+  .teaser--inverted {
+    background-color: #333;
+    color: #fff;
+  }
+  .teaser--inverted :not(.no-rewrite) {
+    color: #fff !important;
+  }
+  .teaser--blue {
+    background-color: #15506c;
+  }
+  .teaser--blue :not(.no-rewrite) {
+    color: #fff !important;
+  }
+  .teaser--highlight {
+    background-color: #554f20;
+  }
+  .teaser--highlight :not(.no-rewrite) {
+    color: #fff !important;
+  }
+  .teaser--highlight-grayscale {
+    background-color: #b3b3b3;
+  }
+  .teaser--highlight-grayscale :not(.no-rewrite) {
+    color: #fff !important;
+  }
+  .teaser--highlight-dark-grayscale {
+    background-color: #6e6e6e;
+  }
+  .teaser--highlight-dark-grayscale :not(.no-rewrite) {
+    color: #fff !important;
+  }
+  .teaser--grayscale :not(.no-rewrite) {
+    color: #6e6e6e !important;
+  }
+  .teaser--desaturate {
+    background-color: #8a9ea1;
+  }
+  .teaser--desaturate :not(.no-rewrite) {
+    color: #fff !important;
+  }
+  .teaser--attention {
+    background-color: #408559;
+  }
+  .teaser--attention :not(.no-rewrite) {
+    color: #fff !important;
+  }
+  .teaser--small-container {
+    padding-left: 20rem !important;
+    padding-right: 20rem !important;
+  }
+  @media (min-width: 1024px) and (max-width: 1279px) {
+    .teaser--small-container {
+      padding-left: 10rem !important;
+      padding-right: 10rem !important;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .teaser--small-container {
+      padding-left: 128px !important;
+      padding-right: 128px !important;
+    }
+  }
+  @media (max-width: 767px) {
+    .teaser--small-container {
+      padding-left: 48px !important;
+      padding-right: 48px !important;
+    }
+  }
+  .teaser .breadcrumbs {
+    position: absolute;
+    left: 128px;
+    width: calc(25% - 176px);
+  }
+  @media (max-width: 1439px) {
+    .teaser .breadcrumbs {
+      left: 48px;
+      width: calc(25% - 48px);
+    }
+  }
+  @media (max-width: 1023px) {
+    .teaser .breadcrumbs {
+      position: static;
+      left: auto;
+      width: 100%;
+    }
+  }
+  .teaser header h1 {
+    font-size: 2.25em;
+    line-height: 1.3333333333em;
+    margin-bottom: 0.6666666667em;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  .teaser header h2 {
+    font-size: 1.5em;
+    line-height: 1.5em;
+    margin-bottom: 1em;
+    font-weight: 700;
+    text-align: center;
+  }
+  .teaser header:last-child h1,
+  .teaser header:last-child h2 {
+    margin-bottom: 0 !important;
+  }
+  .teaser header:last-child h2 {
+    padding-top: 1em;
+    padding-bottom: 1em;
+  }
+  .teaser > p {
+    font-size: 1.125em;
+    line-height: 1.3333333333em;
+    margin-bottom: 1.3333333333em;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    min-width: 600px;
+    text-align: center;
+  }
+  @media (max-width: 767px) {
+    .teaser > p {
+      min-width: auto;
+      width: 100%;
+    }
+  }
+
+  .pontos-background {
+    background: url("../../../../assets/boas-praticas-inicial/pontos-light.png");
+  }
+
+  .home-banner h1 {
+    font-weight: 700 !important;
+    font-size: calc(17px + 1.5vw);
+    line-height: 1.25em;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+    text-transform: uppercase;
+  }
+
+  .secao-filtro{
+    background-color: #8a9ea1;
+    margin-bottom: 1em;
+    padding-top: 3em;
+    padding-bottom: 3em;
+  }
+  
+  .secao-filtro > h1 span {
+    color: #fff;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .secao-filtro header {
+    color: #fff;
+    padding-left: 30px;
+  }
+  
+  .secao-filtro > header h1 {
+    font-size: 2em;
+    line-height: 2em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #fff;
+    text-align: left;
+    position: relative;
+  }
+
+  .search-form-color ::ng-deep .mat-select-value-text {
+    color: white !important;
+  }
+
+  .search-form-color ::ng-deep .mat-focused .mat-form-field-label {
+    color: white !important;
+  }
+
+  .search-form-color ::ng-deep .mat-form-field-label {
+    color: white !important;
+  }
+
+  .search-form-color ::ng-deep.mat-form-field-underline {
+    background-color: white !important;
+  }
+
+  .search-form-color ::ng-deep.mat-form-field-ripple {
+    background-color: white !important;
+  }
+
+  .search-form-color ::ng-deep .mat-select-arrow {
+    color: white !important;
+  }
+
+  .search-form-color ::ng-deep .mat-form-field-empty.mat-form-field-label {
+    color: white !important;
+  }
+
+  .search-form-color ::ng-deep .mat-datepicker-toggle {
+    color: white !important;
+  }
+
+  .search-form-color ::ng-deep .mat-datepicker {
+    color: white !important;
+  }
+
+  .search-form-color ::ng-deep input.mat-input-element {
+    color: white;
+  }
+
+  .itens-filtro div{
+    padding-left: 25px;
+    padding-right: 20px;
+  }
+
+  .btn-eventos {
+    margin-right: 10px;
+    height: 36px;
+    width: 160px;
+    min-width: 150px;
+  }
+
+  @media(min-width: 1098px) {
+    .botoes-pesquisa {
+      display: inline;
+    }
+    .botoes-pesquisa-p {
+      display: none;
+    }
+  }
+
+  @media(min-width: 992px) and (max-width: 1097px) {
+    .botoes-pesquisa {
+      display: none;
+    }
+    .botoes-pesquisa-p {
+      display: inline;
+      width: 100%;
+    }
+  }
+
+
+@media(max-width: 991px) and (min-width: 380px){
+  .botoes-pesquisa {
+    display: inline;
+  }
+  .botoes-pesquisa-p {
+    display: none;
+  }
+  .btn-group {
+    text-align: right !important;
+    display: initial;
+  }
+}
+
+@media(max-width: 379px) {
+  .botoes-pesquisa {
+    display: none;
+  }
+  .botoes-pesquisa-p {
+    display: inline;
+    width: 100%;
+  }
+}
+
+  .limpar-filtro {
+    color: #fff;
+    height: 36px;
+    min-width: 150px;
+  }
+
+  

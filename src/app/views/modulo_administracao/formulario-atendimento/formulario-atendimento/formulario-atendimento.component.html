@@ -1,0 +1,45 @@
+<div class="contentBody" style="position: relative;">
+  <mat-card> 
+    <mat-card-title>Formulário de Atendimento</mat-card-title>
+    <mat-card-subtitle>Cadastre aqui sua solicitação de atendimento para os gestores da plataforma.</mat-card-subtitle>
+    <mat-card-content>
+      <form [formGroup]="form">
+
+        <mat-form-field>
+          <input name="nomeContato" matInput placeholder="Nome *" formControlName="nomeContato" type="text">
+          <mat-error *ngIf="form.controls['nomeContato'].hasError('required')">
+            Nome obrigatório
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input name="emailContato" matInput placeholder="E-mail *" formControlName="emailContato" type="email">
+          <mat-error *ngIf="form.controls['emailContato'].hasError('required')">
+            E-mail obrigatório
+          </mat-error>
+          <mat-error *ngIf="form.controls['emailContato'].hasError('email') || form.controls['emailContato'].hasError('pattern')">
+            Digite um e-mail válido
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input name="telContato" matInput placeholder="Telefone" formControlName="telContato" type="tel">
+        </mat-form-field>
+
+        <mat-form-field>
+          <textarea matInput placeholder="Solicitação *" rows="10" formControlName="solicitacao"
+            name="solicitacao"></textarea>
+            <mat-error *ngIf="form.controls['solicitacao'].hasError('required')">
+              Solicitação obrigatória
+            </mat-error>
+        </mat-form-field>  
+      </form>
+    </mat-card-content>
+    <mat-card-actions>
+      <div align="right">
+        <button mat-flat-button color="primary" [disabled]="!form.valid"
+        (click)="salvar()">Enviar</button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+</div>

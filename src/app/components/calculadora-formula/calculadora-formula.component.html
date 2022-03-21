@@ -1,0 +1,227 @@
+<div class="row">
+  <form [formGroup]="form" style="width: 100%;">
+    <mat-form-field appearance="outline">
+      <mat-label>
+        Insira ou digite a fórmula e Clique em Validar
+      </mat-label>
+      <textarea matInput (change)="addEvent($event)" value="" #txtResultado id="txtFormula" class="form-control"
+        formControlName="formula" readonly></textarea>
+      <mat-hint align="start" *ngIf="form.controls['formula'].valid && validado">
+        <span style="color: #47825e;"><b>Fórmula válida</b></span>
+      </mat-hint>
+      <mat-error *ngIf="form.controls['formula'].hasError('required')">A fórmula é obrigatória</mat-error>
+      <mat-error *ngIf="!form.controls['formula'].valid && validado">A fórmula não é valida.</mat-error>
+    </mat-form-field>
+  </form>
+</div>
+
+
+
+
+
+<!--Layout Calculadora-->
+<div class="row ">
+  <div class="col-lg-9 col-xl-9 col-sm-12 col-md-12">
+    <mat-form-field class="botaoTexto" appearance="outline">
+      <mat-select mat-stroked-button placeholder="Inserir uma variável à fórmula..." id="cbVariaveis" #cbVariaveis
+        (selectionChange)="inserirVariavel()">
+        <mat-option *ngFor="let variavel of variaveis" [value]="variavel">{{variavel.nome}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-card style="margin-top: 20px !important;">
+      <mat-card-title>Legenda das variáveis</mat-card-title>
+      <hr>
+      <div class="row">
+        <div class="col-lg-4 col-md-4 col-xl-4 col-sm-4" *ngFor="let variavel of variaveis;">
+          <mat-list>
+            <mat-list-item> <span><b>var{{variavel.id}}</b> - {{variavel.nome}}</span> </mat-list-item>
+          </mat-list>
+        </div>
+      </div>
+    </mat-card>
+    <mat-card style="margin-top: 20px !important;">
+        <h5 style="color: red; text-align: right;">Valide a fórmula clicando em validar após sua confecção</h5>
+    </mat-card>
+  </div>
+
+  <div class="col-lg-3 col-xl-3 col-sm-12 col-md-12">
+    <table class="calculator col-lg-3 col-xl-3 col-sm-12 col-md-12">
+      <tr>
+        <td class="calc_td_btn">
+          <button class="botaoNumero" mat-flat-button
+                  color="primary" matTooltip="Concatenação" id="btnConcat" [disabled]="desativarConcat()"
+                  (click)="inserirValor('concat(')" style="font-size: 0.5em !important;">CONCAT</button>
+        </td>
+        <td class="calc_td_btn">
+          <button class="botaoNumero" mat-flat-button color="primary"
+                  matTooltip="Separador para Concatenação" id="btnPontoVirgula" [disabled]="desativarConcat()"
+                  (click)="inserirValor(';')">;</button>
+        </td>
+        <td class="calc_td_btn">
+          <button class="botaoNumero" mat-flat-button color="primary"
+                  matTooltip="Limpar fórmula" id="btnLimpar" (click)="limpar()">C</button>
+        </td>
+        <td class="calc_td_btn">
+          <button class="botaoNumero" mat-flat-button color="primary"
+                  matTooltip="Voltar" id="btnVoltar" (click)="voltar()">
+                  <mat-icon>backspace</mat-icon>
+          </button>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="calc_td_btn">
+          <button class="botaoNumero" mat-flat-button
+                  color="accent" matTooltip="Sete" id="btnSete" (click)="inserirValor('7')">7</button>
+        </td>
+        <td class="calc_td_btn">
+          <button class="botaoNumero" mat-flat-button color="accent"
+                  matTooltip="Oito" id="btnOito" (click)="inserirValor('8')">8</button>
+        </td>
+        <td class="calc_td_btn">
+          <button class="botaoNumero" mat-flat-button color="accent"
+                  matTooltip="Nove" id="btnNove" (click)="inserirValor('9')">9</button>
+        </td>
+        <td class="calc_td_btn">
+          <button class="botaoNumero" mat-flat-button color="primary"
+                  matTooltip="Divisão" id="btnDivisao" (click)="inserirValor('/')">/</button>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="calc_td_btn">
+          <button class="botaoNumero" mat-flat-button
+                  color="accent" matTooltip="Quatro" id="btnQuatro" (click)="inserirValor('4')">4</button>
+        </td>
+        <td class="calc_td_btn">
+          <button class="botaoNumero" mat-flat-button color="accent"
+                  matTooltip="Cinco" id="btnCinco" (click)="inserirValor('5')">5</button>
+        </td>
+        <td class="calc_td_btn">
+          <button class="botaoNumero" mat-flat-button color="accent"
+                  matTooltip="Seis" id="btnSeis" (click)="inserirValor('6')">6</button>
+        </td>
+        <td class="calc_td_btn">
+          <button class="botaoNumero" mat-flat-button color="primary"
+                  matTooltip="Multiplicação" id="btnMultiplicacao" (click)="inserirValor('*')">x</button>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="calc_td_btn">
+          <button class="botaoNumero" mat-flat-button
+                  color="accent" matTooltip="Um" id="btnUm" (click)="inserirValor('1')">1</button>
+        </td>
+        <td class="calc_td_btn">
+          <button class="botaoNumero" mat-flat-button color="accent"
+                  matTooltip="Dois" id="btnDois" (click)="inserirValor('2')">2</button>
+        </td>
+        <td class="calc_td_btn">
+          <button class="botaoNumero" mat-flat-button color="accent"
+                  matTooltip="Três" id="btnTres" (click)="inserirValor('3')">3</button>
+        </td>
+        <td class="calc_td_btn">
+          <button class="botaoNumero" mat-flat-button color="primary"
+                  matTooltip="Subtração" id="btnSubtracao" (click)="inserirValor('-')">&#8211;</button>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="calc_td_btn">
+          <button class="botaoNumero" mat-stroked-button
+                  color="primary" matTooltip="Abre Parênteses" id="btnAbreParenteses" (click)="inserirValor('(')">(</button>
+        </td>
+        <td class="calc_td_btn">
+          <button class="botaoNumero" mat-flat-button color="accent"
+                  matTooltip="Zero" id="btnZero" (click)="inserirValor('0')">0</button>
+        </td>
+        <td class="calc_td_btn">
+          <button class="botaoNumero" mat-stroked-button color="primary"
+                  matTooltip="Fecha Parênteses" id="btnFechaParenteses" (click)="inserirValor(')')">)</button>
+        </td>
+        <td class="calc_td_btn">
+          <button class="botaoNumero" mat-flat-button color="primary"
+                  matTooltip="Adição" id="btnAdicao" (click)="inserirValor('+')">+</button>
+        </td>
+      </tr>
+
+      <tr>
+        <td colspan="3">
+          <button class="col-xl-12 col-lg-12 col-md-12 col-sm-12 botaoTexto" mat-flat-button
+                  color="primary" matTooltip="Validar fórmula" id="btnValidar" (click)="validar()"
+                  style="max-width: 97% !important;">Validar</button>
+        </td>
+
+        <td>
+          <button class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 botaoNumero" mat-flat-button color="primary"
+                  matTooltip="Vígula" id="btnVirgula" (click)="inserirValor(',')">,</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+
+<div class="botoes" [hidden]="true">
+  <div class="row justify-content-sm-center row justify-content-center">
+    <button class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 ml-xl-auto ml-lg-auto ml-md-auto botaoTexto"
+      mat-flat-button color="primary" matTooltip="Concatenação" id="btnConcat" [disabled]="desativarConcat()"
+      (click)="inserirValor('concat(')">concat</button>
+    <button class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 botaoNumero" mat-flat-button color="primary"
+      matTooltip="Separador para Concatenação" id="btnPontoVirgula" [disabled]="desativarConcat()"
+      (click)="inserirValor(';')">;</button>
+    <button class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 botaoNumero" mat-flat-button color="primary"
+      matTooltip="Limpar fórmula" id="btnLimpar" (click)="limpar()">C</button>
+    <button class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 botaoNumero" mat-flat-button color="primary"
+      matTooltip="Voltar" id="btnVoltar" (click)="voltar()">
+      <mat-icon>backspace</mat-icon>
+    </button>
+  </div>
+  <div class="row justify-content-sm-center row justify-content-center">
+    <button class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 ml-lg-auto ml-md-auto botaoNumero" mat-flat-button
+      color="accent" matTooltip="Sete" id="btnSete" (click)="inserirValor('7')">7</button>
+    <button class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 botaoNumero" mat-flat-button color="accent"
+      matTooltip="Oito" id="btnOito" (click)="inserirValor('8')">8</button>
+    <button class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 botaoNumero" mat-flat-button color="accent"
+      matTooltip="Nove" id="btnNove" (click)="inserirValor('9')">9</button>
+    <button class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 botaoNumero" mat-flat-button color="primary"
+      matTooltip="Divisão" id="btnDivisao" (click)="inserirValor('/')">/</button>
+  </div>
+  <div class="row justify-content-sm-center row justify-content-center">
+    <button class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 ml-lg-auto ml-md-auto botaoNumero" mat-flat-button
+      color="accent" matTooltip="Quatro" id="btnQuatro" (click)="inserirValor('4')">4</button>
+    <button class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 botaoNumero" mat-flat-button color="accent"
+      matTooltip="Cinco" id="btnCinco" (click)="inserirValor('5')">5</button>
+    <button class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 botaoNumero" mat-flat-button color="accent"
+      matTooltip="Seis" id="btnSeis" (click)="inserirValor('6')">6</button>
+    <button class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 botaoNumero" mat-flat-button color="primary"
+      matTooltip="Multiplicação" id="btnMultiplicacao" (click)="inserirValor('*')">x</button>
+  </div>
+  <div class="row justify-content-sm-center row justify-content-center">
+    <button class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 ml-lg-auto ml-md-auto botaoNumero" mat-flat-button
+      color="accent" matTooltip="Um" id="btnUm" (click)="inserirValor('1')">1</button>
+    <button class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 botaoNumero" mat-flat-button color="accent"
+      matTooltip="Dois" id="btnDois" (click)="inserirValor('2')">2</button>
+    <button class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 botaoNumero" mat-flat-button color="accent"
+      matTooltip="Três" id="btnTres" (click)="inserirValor('3')">3</button>
+    <button class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 botaoNumero" mat-flat-button color="primary"
+      matTooltip="Subtração" id="btnSubtracao" (click)="inserirValor('-')">&#8211;</button>
+  </div>
+  <div class="row justify-content-sm-center row justify-content-center">
+    <button class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 ml-lg-auto ml-md-auto botaoNumero" mat-stroked-button
+      color="primary" matTooltip="Abre Parênteses" id="btnAbreParenteses" (click)="inserirValor('(')">(</button>
+    <button class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 botaoNumero" mat-flat-button color="accent"
+      matTooltip="Zero" id="btnZero" (click)="inserirValor('0')">0</button>
+    <button class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 botaoNumero" mat-stroked-button color="primary"
+      matTooltip="Fecha Parênteses" id="btnFechaParenteses" (click)="inserirValor(')')">)</button>
+    <button class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 botaoNumero" mat-flat-button color="primary"
+      matTooltip="Adição" id="btnAdicao" (click)="inserirValor('+')">+</button>
+  </div>
+  <div class="row justify-content-sm-center row justify-content-center">
+    <button class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-6 ml-lg-auto ml-md-auto botaoTexto" mat-flat-button
+      color="primary" matTooltip="Validar fórmula" id="btnValidar" (click)="validar()">Validar</button>
+    <button class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 botaoNumero" mat-flat-button color="primary"
+      matTooltip="Vígula" id="btnVirgula" (click)="inserirValor(',')">,</button>
+  </div>
+</div>

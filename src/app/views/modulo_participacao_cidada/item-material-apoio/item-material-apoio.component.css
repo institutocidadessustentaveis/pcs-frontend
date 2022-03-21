@@ -1,0 +1,37 @@
+a:hover{
+    text-decoration: underline;
+    text-decoration-color: black;
+}
+.publicacao-material-apoio{
+  background-size: cover;
+  background-position: center;
+  height: 383px;
+  border-radius: 3px;
+}
+.publicacao-material-apoio-titulo{
+  font-size: 1.25em;
+  line-height: 1.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 2%;
+  margin-top: 4%;
+  color:black;
+}
+.publicacao-material-apoio-texto{
+  color:#408559;
+}
+
+.publicacao-material-apoio-titulo:hover{
+  text-decoration: underline;
+  text-decoration-color: black;
+}
+.publicacao-material-apoio-texto:hover{
+  text-decoration: underline;
+  text-decoration-color: black;
+}
+
+.pointer{
+  cursor: pointer;
+}
+

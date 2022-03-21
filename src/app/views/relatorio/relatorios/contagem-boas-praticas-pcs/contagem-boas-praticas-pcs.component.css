@@ -1,0 +1,59 @@
+.example-form {
+    min-width: 150px;
+    width: 100%;
+  }
+
+  .full-width {
+    width: 100%;
+  }
+
+  /* Structure */
+  table {
+    width: 100%;
+  }
+
+  .mat-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+
+  .btnToRight{
+    margin-right: 5px !important;
+  }
+
+  .botaoGeraRelatorio{
+    cursor: pointer !important;
+    margin-right: 15px;
+  }
+
+  table {
+    width: 100%;
+  }
+  
+  tr.example-detail-row {
+    height: 0;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):hover {
+    background: whitesmoke;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+  }
+  
+  .example-element-row td {
+    border-bottom-width: 0;
+  }
+  
+  .example-element-detail {
+    overflow: hidden;
+    display: flex;
+  }
+  
+  .example-element-detail .row{
+    margin: 15px 15px 15px 15px;
+  }
+  
+  
+

@@ -1,0 +1,232 @@
+<div [hidden]="!loading" class="loading-indicator">
+  <mat-progress-spinner class="example-margin" style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+</div>
+<div class="contentBody" style="position: relative;">
+  <app-breadcrumb style="position: relative;"></app-breadcrumb>
+  <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+    <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <mat-card-title>
+        Emitir Certificados
+      </mat-card-title>
+    </mat-card-content>
+    <hr>
+    <h5>Emitir certificado individual</h5>
+    <form #emissorCertificadoForm="ngForm">
+
+      <mat-form-field class="col-md-4">
+        <mat-label>Template</mat-label>
+        <mat-select [disabled]="emitindoCertificados" id="templates" name="templates" [(ngModel)]="certificadoCapacitacao.certificado"
+          (selectionChange)="changeTemplate($event.value)" required>
+          <mat-option *ngFor="let template of templates" [value]="template" [matTooltip]="template.titulo">
+            {{template.titulo}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+      <mat-form-field class="col-md-4">
+        <input matInput placeholder="Nome do Usuário" [disabled]="certificadoCapacitacao.certificado == null || emitindoCertificados" name="nome" [(ngModel)]="certificadoCapacitacao.nomeUsuario"
+          maxlength="70" (ngModelChange)="changeDados(null)" #inputNome id="inputNome" required>
+        <mat-hint align="end">{{ inputNome.value?.length || 0 }}/70</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-4">
+        <mat-label>Data Emissão</mat-label>
+        <input matInput type="date" [(ngModel)]="certificadoCapacitacao.data" [disabled]="certificadoCapacitacao.certificado == null || emitindoCertificados" name="data"
+          (ngModelChange)="changeDados(null)" required>
+      </mat-form-field>
+    </form>
+    <br>
+    <div class="col-md-12" align="center">
+      <button mat-flat-button color="primary" (click)="validacaoEmissaoCerficado(null, true)" matTooltip="Emitir e Baixar Certificado"
+        [disabled]="!emissorCertificadoForm.form.valid || emitindoCertificados">
+        <mat-icon>save</mat-icon> Emitir e Baixar Certificado
+      </button>
+    </div>
+    <br>
+    <hr>
+    <br>
+
+    <h5>Emitir certificado por perfil de usuário</h5>
+    <form #emissorCertificadoPorPerfilForm="ngForm">
+      <div class="row">
+    
+        <mat-form-field class="col-md-4">
+          <mat-label>Perfil</mat-label>
+          <mat-select name="perfil" id="perfil" [(ngModel)]="idPerfil"
+            (ngModelChange)="buscarUsuariosPorIdPerfil(idPerfil)">
+            <mat-option *ngFor="let item of perfisCombo" [value]="item.id">{{item.label}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+  
+        <mat-form-field class="col-md-4">
+          <mat-label>Template</mat-label>
+          <mat-select [disabled]="emitindoCertificados" id="templates" name="templates"
+            [(ngModel)]="certificadoCapacitacaoPorPerfil.certificado" (selectionChange)="changeTemplate($event.value)" required>
+            <mat-option *ngFor="let template of templates" [value]="template" [matTooltip]="template.titulo">
+              {{template.titulo}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+    
+        <mat-form-field class="col-md-4">
+          <mat-label>Data Emissão</mat-label>
+          <input matInput type="date" [(ngModel)]="certificadoCapacitacaoPorPerfil.data"
+            [disabled]="certificadoCapacitacaoPorPerfil.certificado == null || emitindoCertificados" name="data"
+            (ngModelChange)="changeDados(null)" required>
+        </mat-form-field>
+
+      </div>
+    </form>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px !important;" [hidden]="!pesquisou">
+
+      <table mat-table [dataSource]="dataSource" matSort>
+
+        <ng-container matColumnDef="nome">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="nome">Nome</th>
+          <td mat-cell *matCellDef="let element" class='m-card-title' data-label='Nome'>
+            <span class="mobile-label">Nome:</span>
+            {{ element.nome }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="email">E-mail</th>
+          <td mat-cell *matCellDef="let element" class='m-card-title' data-label='Email'>
+            <span class="mobile-label">Email:</span>
+            {{ element.email }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="acao">
+          <th mat-header-cell *matHeaderCellDef> Selecionar Usuários </th>
+          <td mat-cell *matCellDef="let item" class='m-card-title' data-label='Ação'>
+         <mat-checkbox [disabled]="certificadoCapacitacaoPorPerfil.certificado == null || certificadoCapacitacaoPorPerfil.data == null" 
+         [checked]="false" (change)="onUserSelection($event.checked, item.nome, item.email)"></mat-checkbox>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" style="margin-top: 20px !important;"  [hidden]="!pesquisou">
+      <mat-paginator style="text-align: center !important;" class="float-none" [pageSizeOptions]="[10,25,50,100]"
+        showFirstLastButtons>
+      </mat-paginator>
+    </div>
+    <br>
+    <div class="col-md-12" align="center">
+      <button mat-flat-button color="primary" (click)="gerarCertificadoPorPerfil()" matTooltip="Emitir e Baixar Certificado" [disabled]="!emissorCertificadoPorPerfilForm.form.valid || this.listUser.length == 0">
+        <mat-icon>send</mat-icon> Emitir e Enviar Certificados
+      </button>
+     
+      <div *ngIf="loadingCertificadoPorPerfil" style="margin-top: 24px">
+        <mat-progress-spinner class="example-margin" style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+        <div align="center">{{labelCarregamentoTabela}}</div> 
+      </div>
+    </div>
+    <br>
+    <hr/>
+    <h5>Emitir certificado por arquivo de Excel</h5>
+    <div class="col-md-12" style="margin-top: 16px">
+      <h5 align="center">
+        Importação de arquivos Excel
+      </h5>
+      <div align="center">
+        * Formato de arquivo: .xlsx
+        <br>
+        * Padrão de colunas: TEMPLATE | USUÁRIO | DATA | EMAIL
+      </div>
+    </div>
+    
+    <div class="col-md-12" align="center" *ngIf="nomeArquivo != null">
+      <br>
+      <mat-card>
+        <input matInput [(ngModel)]="nomeArquivo" [disabled]="true">
+        <mat-hint>Arquivo Utilizado</mat-hint>
+      </mat-card>
+      <br>
+    </div>
+    <div class="col-md-12" style="margin-top: 16px">
+        <div align="center">
+          <button   mat-flat-button color="primary" (click)="file.click()">
+            <mat-icon>cloud_upload</mat-icon> Emitir e Enviar Certificados</button>
+        </div>
+        <input accept=".xls, .xlsx" type="file" (change)="onFileChange($event)" multiple="false" style="visibility: hidden;" #file />
+    </div>
+    <div [hidden]="!loadingCertificadoPorTabela" style="margin-top: 24px">
+      <mat-progress-spinner  class="example-margin" [value]='carregamentoTabela' style="margin:0 auto;" mode="determinate"></mat-progress-spinner>
+      <div align="center">{{labelCarregamentoTabela}}</div> 
+    </div>
+
+  </mat-card>
+</div>
+
+<div class="contentBody" style="position: relative;" *ngIf="certificadoCapacitacao.certificado">
+  <mat-card style=" margin: 0 auto; width:855px;"
+    *ngIf="!templateEscolhido?.orientacaoPaisagem">
+    <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <mat-card-title>
+        Pré-visualização
+      </mat-card-title>
+    </mat-card-content>
+
+    <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <div style="width:793px; height:1122px; padding:20px; border: 10px; background-size: cover;"
+        [style.background-image]="safeUrlBackground" id="retrato">
+        <div class="col-md-12" style="width:750px; height:1085px; padding:20px; border: 5px">
+          <div style="height:100%;">
+            <span>
+              <div [ngxSummernoteView]="certificadoCapacitacao.nomeUsuario ? texto1 : templateEscolhido?.texto1"
+                class="animated bounceInLeft duration-3s delay-2s text-column" style="line-break: initial;">
+              </div>
+            </span>
+            <span>
+              <div [ngxSummernoteView]="certificadoCapacitacao.nomeUsuario ? texto2 : templateEscolhido?.texto2"
+                class="animated bounceInLeft duration-3s delay-2s text-column"  style="line-break: initial;">
+              </div>
+            </span>
+            <span>
+              <div [ngxSummernoteView]="certificadoCapacitacao.nomeUsuario ? texto3 : templateEscolhido?.texto3"
+                class="animated bounceInLeft duration-3s delay-2s text-column"  style="line-break: initial;">
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card  style=" margin: 0 auto; width: fit-content;"
+    *ngIf="templateEscolhido?.orientacaoPaisagem">
+    <mat-card-content>
+      <mat-card-title>
+        Pré-visualização
+      </mat-card-title>
+    </mat-card-content>
+
+    <mat-card-content >
+      <div style="width:1122px; height:793px; padding:20px; border: 10px; background-size: cover;"
+        [style.background-image]="safeUrlBackground" id="paisagem">
+        <div class="col-md-12" style="width:1085px; height:750px; padding:20px; border: 5px">
+          <div style="height:100%;">
+            <span>
+              <div [ngxSummernoteView]="certificadoCapacitacao?.nomeUsuario ? texto1 : templateEscolhido?.texto1"
+                class="animated bounceInLeft duration-3s delay-2s text-column">
+              </div>
+            </span>
+            <span>
+              <div [ngxSummernoteView]="certificadoCapacitacao?.nomeUsuario ? texto2 : templateEscolhido?.texto2"
+                class="animated bounceInLeft duration-3s delay-2s text-column">
+              </div>
+            </span>
+            <span>
+              <div [ngxSummernoteView]="certificadoCapacitacao?.nomeUsuario ? texto3 : templateEscolhido?.texto3"
+                class="animated bounceInLeft duration-3s delay-2s text-column">
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+<br>
+

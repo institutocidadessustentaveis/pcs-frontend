@@ -1,0 +1,121 @@
+<div class="contentBody" style="position: relative;">
+  <app-breadcrumb></app-breadcrumb>
+  <mat-card>
+
+    <div class="row">
+      <div class="col-md-8 col-lg-9 col-xs-12 col-sm-12">
+        <h2>Administração de Tipos de Subdivisões</h2>
+      </div>
+    </div>
+
+    <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+      <mat-divider></mat-divider>
+    </div>
+
+    <br>
+    <br>
+
+    <mat-card *ngIf="canCadastrar || canEditar">    
+      <div class="row">
+        <div class="col-md-8 col-lg-9 col-xs-12 col-sm-12">
+          <h5>Cadastro de Tipo de Subdivisão</h5>
+        </div>
+      </div>
+    
+      <div class="row mt-5">
+        <div class="col-12" style="text-align: right;">
+          <form [formGroup]="formTipoSubdivisao">
+    
+            <mat-form-field class="col-md-4">
+              <input matInput placeholder="Nome" formControlName="nome" id="inputNome">
+            </mat-form-field>
+
+            <mat-form-field class="col-md-4">
+              <mat-label>Tipo Pai</mat-label>
+              <mat-select id="tipoPai" name="tipoPai" formControlName="tipoPai" (selectionChange)="onChangeTipoSubdivisao($event.value)">
+                <mat-option value="" *ngIf="tiposSubdivisoesPai.length == 0"></mat-option>
+                <mat-option *ngFor="let tipoPai of tiposSubdivisoesPai" [value]="tipoPai.id">{{tipoPai.nome}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+    
+            <mat-form-field class="col-md-4">
+              <input matInput placeholder="Nível" formControlName="nivel" #inputAutor id="inputNivel" type="number">
+            </mat-form-field>           
+    
+          </form>
+        </div>
+    
+        <div class="col-12" align="end">
+          <button mat-flat-button color="primary" (click)="salvarTipoSubdivisao()" matTooltip="Salvar Tipo de Subdivisão" style="margin-right: 1%;">
+            <mat-icon>save</mat-icon> Salvar
+          </button>          
+          <button matTooltip="Limpar filtro" mat-flat-button color="accent" (click)="limparFormulario()" id="btnLimparFiltro" style="margin-right: 1%;">
+            Limpar
+          </button>
+        </div>
+      </div>
+    </mat-card>
+
+    <br>
+    <br>
+
+    <mat-card>
+      <div class="row">
+        <div class="col-md-8 col-lg-9 col-xs-12 col-sm-12">
+          <h5>Lista de Tipos de Subdivisões Cadastradas</h5>
+        </div>
+      </div>
+
+      <div class="row mt-5">
+    
+      <table mat-table [dataSource]="dataSource" matSort>
+        <!-- Nome Column -->
+        <ng-container matColumnDef="nome">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="nome">Nome</th>
+          <td mat-cell *matCellDef="let item">{{item.nome}}</td>
+        </ng-container>
+    
+        <!-- Nivel Column -->
+        <ng-container matColumnDef="nivel">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="nivel">Nivel</th>
+          <td mat-cell *matCellDef="let item">{{item.nivel}}</td>
+        </ng-container>
+    
+        <!-- Tipo Pai Column -->
+        <ng-container matColumnDef="tipoPai">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="tipoPai">Tipo Pai</th>
+          <td mat-cell *matCellDef="let item">{{exibirNomeTipoPai(item.tipoPai)}}</td>
+        </ng-container>
+    
+        <!-- Ações Column -->
+        <ng-container matColumnDef="acoes">
+          <th mat-header-cell *matHeaderCellDef> Ações </th>
+          <td mat-cell *matCellDef="let item" class='m-card-title' data-label='Ações'>
+    
+            <button mat-flat-button color="primary" type="button" name="button" class="btnTabela" id="btnEditar"
+              matTooltip="Editar" (click)="editar(item)" *ngIf="canEditar">
+              <mat-icon> edit </mat-icon>
+            </button>
+    
+            <button mat-flat-button color="warn" type="button" name="button" class="btnTabela" id="btnExcluir"
+              matTooltip="Excluir" (click)="excluir(item.id)" *ngIf="canExcluir && maiorNivel == item.nivel">
+              <mat-icon> delete </mat-icon>
+            </button>
+
+            <button mat-raised-button color="basic" type="button" name="button" class="btnTabela" id="btnExcluir"
+            matTooltip="Adicionar Subdivisão Relacionada" (click)="adicionarSubdivisaoRelacionada(item)" *ngIf="canCadastrar && maiorNivel == item.nivel">
+            <mat-icon> add </mat-icon>
+          </button>            
+    
+          </td>
+        </ng-container>
+    
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+    </mat-card>
+
+
+  </mat-card>
+</div>

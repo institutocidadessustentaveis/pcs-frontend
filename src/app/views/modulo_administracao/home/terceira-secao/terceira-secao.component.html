@@ -1,0 +1,327 @@
+<!-- Terceira seção -->
+
+<section>
+  <div class="col-md-12" *ngIf="terceiraSecao?.tituloPrincipal" style="margin-bottom:3%">
+    <div class="row">
+      <div class="caixa" [style.background-color]="terceiraSecao?.tituloPrincipalCor"></div>
+      <a *ngIf="terceiraSecao?.tituloPrincipal && terceiraSecao?.tituloPrincipalLink && !verificaLinks(terceiraSecao?.tituloPrincipalLink)" class="h1 titulos" style="margin-bottom:0 !important;"
+        [style.border-color]="terceiraSecao?.tituloPrincipalCor"
+        [style.color]="terceiraSecao?.tituloPrincipalCor"
+        [href]="terceiraSecao?.tituloPrincipalLink" target="_blank">{{terceiraSecao?.tituloPrincipal}}</a>
+    
+      <a *ngIf="terceiraSecao?.tituloPrincipal && terceiraSecao?.tituloPrincipalLink && verificaLinks(terceiraSecao?.tituloPrincipalLink)" class="h1 titulos" style="margin-bottom:0 !important; cursor: pointer;" 
+        [style.border-color]="terceiraSecao?.tituloPrincipalCor"
+        [style.color]="terceiraSecao?.tituloPrincipalCor"
+        (click)="validacaoDownload(terceiraSecao?.tituloPrincipalLink)">{{terceiraSecao?.tituloPrincipal}}</a>
+
+      <a *ngIf="terceiraSecao?.tituloPrincipal && !terceiraSecao?.tituloPrincipalLink" class="h1 titulos" style="margin-bottom:0 !important;"
+        [style.border-color]="terceiraSecao?.tituloPrincipalCor"
+        [style.color]="terceiraSecao?.tituloPrincipalCor">{{terceiraSecao?.tituloPrincipal}}</a>
+    </div>
+  </div>
+
+
+  <div class="row" style="width: 100%;margin-bottom: 3%;">
+    <div class="col-md-6">
+      <div class="row imagem-fix-b1">
+
+        <div class="carousel-inner" >
+            <a *ngIf="terceiraSecao.primeiraImagemSafeUrl && terceiraSecao?.primeiraImagemLink && !verificaLinks(terceiraSecao?.primeiraImagemLink)"
+              [href]="terceiraSecao?.primeiraImagemLink" target="_blank">
+              <img class="img-carousel" [matTooltip]="terceiraSecao?.primeiraImagemTooltip" loading="lazy"
+                [src]="terceiraSecao.primeiraImagemSafeUrl" alt="Event Image">
+              <div class="centered">
+                <div class="row">
+                  <a *ngIf="terceiraSecao?.primeiroTitulo && terceiraSecao?.primeiroTituloLink && !verificaLinks(terceiraSecao?.primeiroTituloLink)" 
+                    class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="terceiraSecao?.primeiroTituloCor" 
+                    [style.color]="terceiraSecao?.primeiroTituloCor"
+                    style="width: 100%;text-align: center;" 
+                    [href]="terceiraSecao?.primeiroTituloLink"
+                    [innerHTML]="terceiraSecao?.primeiroTitulo" target="_blank"></a>
+
+                  <a *ngIf="terceiraSecao?.primeiroTitulo && terceiraSecao?.primeiroTituloLink && verificaLinks(terceiraSecao?.primeiroTituloLink)" 
+                    class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="terceiraSecao?.primeiroTituloCor" 
+                    [style.color]="terceiraSecao?.primeiroTituloCor"
+                    style="width: 100%;text-align: center; cursor: pointer;" 
+                    (click)="validacaoDownload(terceiraSecao?.primeiroTituloLink)"
+                    [innerHTML]="terceiraSecao?.primeiroTitulo"></a>
+
+                  <a *ngIf="terceiraSecao?.primeiroTitulo && !terceiraSecao?.primeiroTituloLink" 
+                    class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="terceiraSecao?.primeiroTituloCor" 
+                    [style.color]="terceiraSecao?.primeiroTituloCor"
+                    style="width: 100%;text-align: center;"
+                    [innerHTML]="terceiraSecao?.primeiroTitulo"></a>
+
+          
+
+                  <a *ngIf="terceiraSecao?.primeiroTexto && terceiraSecao?.primeiroTextoLink && !verificaLinks(terceiraSecao?.primeiroTextoLink)" 
+                    class="subtitulos-inside-image underline-on-hover"
+                    style="color: #231f20; text-align:center !important" 
+                    [style.color]="terceiraSecao?.primeiroTextoCor"
+                    [innerHTML]="terceiraSecao?.primeiroTexto" 
+                    [href]="terceiraSecao?.primeiroTextoLink" target="_blank"></a>
+          
+                  <a *ngIf="terceiraSecao?.primeiroTexto && terceiraSecao?.primeiroTextoLink && verificaLinks(terceiraSecao?.primeiroTextoLink)" 
+                    class="subtitulos-inside-image underline-on-hover"
+                    style="color: #231f20; text-align:center !important; cursor: pointer;" 
+                    [style.color]="terceiraSecao?.primeiroTextoCor"
+                    [innerHTML]="terceiraSecao?.primeiroTexto" 
+                    (click)="validacaoDownload(terceiraSecao?.primeiroTextoLink)"></a>
+
+                  <a *ngIf="terceiraSecao?.primeiroTexto && !terceiraSecao?.primeiroTextoLink" 
+                    class="subtitulos-inside-image underline-on-hover"
+                    style="color: #231f20; text-align:center !important;" 
+                    [style.color]="terceiraSecao?.primeiroTextoCor"
+                    [innerHTML]="terceiraSecao?.primeiroTexto"></a>
+                </div>
+              </div>
+            </a>
+          
+            <a *ngIf="terceiraSecao.primeiraImagemSafeUrl && terceiraSecao?.primeiraImagemLink && verificaLinks(terceiraSecao?.primeiraImagemLink)"
+              (click)="validacaoDownload(terceiraSecao?.primeiraImagemLink)" style="cursor: pointer;">
+              <img class="img-carousel" [matTooltip]="terceiraSecao?.primeiraImagemTooltip" loading="lazy"
+                [src]="terceiraSecao.primeiraImagemSafeUrl" alt="Event Image">
+                <div class="centered">
+                  <div class="row">
+                    <a *ngIf="terceiraSecao?.primeiroTitulo && terceiraSecao?.primeiroTituloLink && !verificaLinks(terceiraSecao?.primeiroTituloLink)" class="h5 titulos-inside-image  underline-on-hover" 
+                      [style.border-color]="terceiraSecao?.primeiroTituloCor"
+                      [style.color]="terceiraSecao?.primeiroTituloCor" 
+                      style="width: 100%;text-align: center;"
+                      [href]="terceiraSecao?.primeiroTituloLink" 
+                      [innerHTML]="terceiraSecao?.primeiroTitulo" target="_blank"></a>
+
+                    <a *ngIf="terceiraSecao?.primeiroTitulo && terceiraSecao?.primeiroTituloLink && verificaLinks(terceiraSecao?.primeiroTituloLink)" class="h5 titulos-inside-image  underline-on-hover" 
+                      [style.border-color]="terceiraSecao?.primeiroTituloCor"
+                      [style.color]="terceiraSecao?.primeiroTituloCor" 
+                      style="width: 100%;text-align: center; cursor: pointer; "
+                      (click)="validacaoDownload(terceiraSecao?.primeiroTituloLink)"
+                      [innerHTML]="terceiraSecao?.primeiroTitulo"></a>
+
+                    <a *ngIf="terceiraSecao?.primeiroTitulo && !terceiraSecao?.primeiroTituloLink" class="h5 titulos-inside-image  underline-on-hover" 
+                      [style.border-color]="terceiraSecao?.primeiroTituloCor"
+                      [style.color]="terceiraSecao?.primeiroTituloCor" 
+                      style="width: 100%;text-align: center;"
+                      [innerHTML]="terceiraSecao?.primeiroTitulo"></a>
+
+
+          
+                    <a *ngIf="terceiraSecao?.primeiroTextoLink && terceiraSecao?.primeiroTextoLink && !verificaLinks(terceiraSecao?.primeiroTextoLink)" class="subtitulos-inside-image underline-on-hover" 
+                      style="color: #231f20; text-align:center !important"
+                      [style.color]="terceiraSecao?.primeiroTextoCor" 
+                      [innerHTML]="terceiraSecao?.primeiroTexto"
+                      [href]="terceiraSecao?.primeiroTextoLink" target="_blank"></a>
+         
+                    <a *ngIf="terceiraSecao?.primeiroTextoLink && terceiraSecao?.primeiroTextoLink && verificaLinks(terceiraSecao?.primeiroTextoLink)" class="subtitulos-inside-image underline-on-hover" 
+                      style="color: #231f20; text-align:center !important; cursor: pointer;"
+                      [style.color]="terceiraSecao?.primeiroTextoCor" 
+                      [innerHTML]="terceiraSecao?.primeiroTexto"
+                      (click)="validacaoDownload(terceiraSecao?.primeiroTextoLink)"></a>
+
+                    <a *ngIf="terceiraSecao?.primeiroTextoLink && !terceiraSecao?.primeiroTextoLink" class="subtitulos-inside-image underline-on-hover" 
+                      style="color: #231f20; text-align:center !important;"
+                      [style.color]="terceiraSecao?.primeiroTextoCor" 
+                      [innerHTML]="terceiraSecao?.primeiroTexto"></a>
+                </div>
+              </div>
+            </a>
+
+            <a *ngIf="terceiraSecao.primeiraImagemSafeUrl && !terceiraSecao?.primeiraImagemLink">
+              <img class="img-carousel" [matTooltip]="terceiraSecao?.primeiraImagemTooltip" loading="lazy"
+                [src]="terceiraSecao.primeiraImagemSafeUrl" alt="Event Image">
+              <div class="centered">
+                <div class="row">
+                  <a *ngIf="terceiraSecao?.primeiroTitulo && terceiraSecao?.primeiroTituloLink && !verificaLinks(terceiraSecao?.primeiroTituloLink)" 
+                    class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="terceiraSecao?.primeiroTituloCor" 
+                    [style.color]="terceiraSecao?.primeiroTituloCor"
+                    style="width: 100%;text-align: center;" 
+                    [href]="terceiraSecao?.primeiroTituloLink" target="_blank"
+                    [innerHTML]="terceiraSecao?.primeiroTitulo"></a>
+
+                  <a *ngIf="terceiraSecao?.primeiroTitulo && terceiraSecao?.primeiroTituloLink && verificaLinks(terceiraSecao?.primeiroTituloLink)" 
+                    class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="terceiraSecao?.primeiroTituloCor" 
+                    [style.color]="terceiraSecao?.primeiroTituloCor"
+                    style="width: 100%;text-align: center; cursor: pointer;" 
+                    (click)="validacaoDownload(terceiraSecao?.primeiroTituloLink)"
+                    [innerHTML]="terceiraSecao?.primeiroTitulo"></a>
+
+                  <a *ngIf="terceiraSecao?.primeiroTitulo && !terceiraSecao?.primeiroTituloLink" 
+                    class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="terceiraSecao?.primeiroTituloCor" 
+                    [style.color]="terceiraSecao?.primeiroTituloCor"
+                    style="width: 100%;text-align: center;"
+                    [innerHTML]="terceiraSecao?.primeiroTitulo"></a>
+
+          
+
+                  <a *ngIf="terceiraSecao?.primeiroTexto && terceiraSecao?.primeiroTextoLink && !verificaLinks(terceiraSecao?.primeiroTextoLink)" 
+                    class="subtitulos-inside-image underline-on-hover"
+                    style="color: #231f20; text-align:center !important" 
+                    [style.color]="terceiraSecao?.primeiroTextoCor"
+                    [innerHTML]="terceiraSecao?.primeiroTexto" target="_blank"
+                    [href]="terceiraSecao?.primeiroTextoLink"></a>
+          
+                  <a *ngIf="terceiraSecao?.primeiroTexto && terceiraSecao?.primeiroTextoLink && verificaLinks(terceiraSecao?.primeiroTextoLink)" 
+                    class="subtitulos-inside-image underline-on-hover"
+                    style="color: #231f20; text-align:center !important; cursor: pointer;" 
+                    [style.color]="terceiraSecao?.primeiroTextoCor"
+                    [innerHTML]="terceiraSecao?.primeiroTexto" 
+                    (click)="validacaoDownload(terceiraSecao?.primeiroTextoLink)"></a>
+
+                  <a *ngIf="terceiraSecao?.primeiroTexto && !terceiraSecao?.primeiroTextoLink" 
+                    class="subtitulos-inside-image underline-on-hover"
+                    style="color: #231f20; text-align:center !important;" 
+                    [style.color]="terceiraSecao?.primeiroTextoCor"
+                    [innerHTML]="terceiraSecao?.primeiroTexto"></a>
+                </div>
+              </div>
+            </a>
+        </div>
+
+      </div>
+    </div>
+    <div class="col-md-6 padding-fix" style="padding-right: 15px;">
+      <div class="row imagem-fix-b2">
+
+        <div class="carousel-inner" >
+          <a [href]="terceiraSecao?.segundaImagemLink" target="_blank" *ngIf="terceiraSecao.segundaImagemSafeUrl && terceiraSecao?.segundaImagemLink && !verificaLinks(terceiraSecao?.segundaImagemLink)">
+            <img class="img-carousel" [matTooltip]="terceiraSecao?.segundaImagemTooltip" loading="lazy" [src]="terceiraSecao.segundaImagemSafeUrl" alt="Event Image">
+            <div class="centered">
+              <div class="row">
+                  <a *ngIf="terceiraSecao?.segundoTitulo && terceiraSecao?.segundoTituloLink && !verificaLinks(terceiraSecao?.segundoTituloLink)" class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="terceiraSecao?.segundoTituloCor"
+                    [style.color]="terceiraSecao?.segundoTituloCor" style="width: 100%;text-align: center !important;"
+                    [href]="terceiraSecao?.segundoTituloLink" target="_blank"
+                    [innerHTML]="terceiraSecao?.segundoTitulo"></a>
+
+                  <a *ngIf="terceiraSecao?.segundoTitulo && terceiraSecao?.segundoTituloLink && verificaLinks(terceiraSecao?.segundoTituloLink)" class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="terceiraSecao?.segundoTituloCor"
+                    [style.color]="terceiraSecao?.segundoTituloCor" style="width: 100%;text-align: center !important; cursor: pointer;"
+                    (click)="validacaoDownload(terceiraSecao?.segundoTituloLink)"
+                    [innerHTML]="terceiraSecao?.segundoTitulo"></a>
+
+                  <a *ngIf="terceiraSecao?.segundoTitulo && !terceiraSecao?.segundoTituloLink" class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="terceiraSecao?.segundoTituloCor"
+                    [style.color]="terceiraSecao?.segundoTituloCor" style="width: 100%;text-align: center !important;"
+                    [innerHTML]="terceiraSecao?.segundoTitulo"></a>
+
+
+
+                  <a *ngIf="terceiraSecao?.segundoTexto && terceiraSecao?.segundoTextoLink && !verificaLinks(terceiraSecao?.segundoTextoLink)" class="subtitulos-inside-image  underline-on-hover" 
+                    style="color: #231f20; text-align:center"
+                    [style.color]="terceiraSecao?.segundoTextoCor" 
+                    [innerHTML]="terceiraSecao?.segundoTexto"
+                    [href]="terceiraSecao?.segundoTextoLink" target="_blank"></a>
+
+                  <a *ngIf="terceiraSecao?.segundoTexto && terceiraSecao?.segundoTextoLink && verificaLinks(terceiraSecao?.segundoTextoLink)" class="subtitulos-inside-image  underline-on-hover" 
+                    style="color: #231f20; text-align:center; cursor: pointer"
+                    [style.color]="terceiraSecao?.segundoTextoCor" 
+                    (click)="validacaoDownload(terceiraSecao?.segundoTextoLink)"
+                    [innerHTML]="terceiraSecao?.segundoTexto"></a>
+
+                  <a *ngIf="terceiraSecao?.segundoTexto && !terceiraSecao?.segundoTextoLink " class="subtitulos-inside-image  underline-on-hover" 
+                    style="color: #231f20; text-align:center;"
+                    [style.color]="terceiraSecao?.segundoTextoCor" 
+                    [innerHTML]="terceiraSecao?.segundoTexto"></a> 
+              </div>
+            </div>
+          </a>
+
+          <a (click)="validacaoDownload(terceiraSecao?.segundaImagemLink)" style="cursor: pointer"
+          *ngIf="terceiraSecao.segundaImagemSafeUrl && terceiraSecao?.segundaImagemLink && verificaLinks(terceiraSecao?.segundaImagemLink)">
+            <img class="img-carousel" [matTooltip]="terceiraSecao?.segundaImagemTooltip" loading="lazy" [src]="terceiraSecao.segundaImagemSafeUrl" alt="Event Image">
+            <div class="centered">
+              <div class="row">
+                  <a *ngIf="terceiraSecao?.segundoTitulo && terceiraSecao?.segundoTituloLink && !verificaLinks(terceiraSecao?.segundoTituloLink)" class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="terceiraSecao?.segundoTituloCor"
+                    [style.color]="terceiraSecao?.segundoTituloCor" style="width: 100%;text-align: center !important;"
+                    [href]="terceiraSecao?.segundoTituloLink" target="_blank"
+                    [innerHTML]="terceiraSecao?.segundoTitulo"></a>
+
+                  <a *ngIf="terceiraSecao?.segundoTitulo && terceiraSecao?.segundoTituloLink && verificaLinks(terceiraSecao?.segundoTituloLink)" class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="terceiraSecao?.segundoTituloCor"
+                    [style.color]="terceiraSecao?.segundoTituloCor" style="width: 100%;text-align: center !important; cursor: pointer;"
+                    (click)="validacaoDownload(terceiraSecao?.segundoTituloLink)"
+                    [innerHTML]="terceiraSecao?.segundoTitulo"></a>
+
+                  <a *ngIf="terceiraSecao?.segundoTitulo && !terceiraSecao?.segundoTituloLink" class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="terceiraSecao?.segundoTituloCor"
+                    [style.color]="terceiraSecao?.segundoTituloCor" style="width: 100%;text-align: center !important;"
+                    [innerHTML]="terceiraSecao?.segundoTitulo"></a>
+
+
+
+                  <a *ngIf="terceiraSecao?.segundoTexto && terceiraSecao?.segundoTextoLink && !verificaLinks(terceiraSecao?.segundoTextoLink)" class="subtitulos-inside-image  underline-on-hover" 
+                    style="color: #231f20; text-align:center"
+                    [style.color]="terceiraSecao?.segundoTextoCor" 
+                    [innerHTML]="terceiraSecao?.segundoTexto"
+                    [href]="terceiraSecao?.segundoTextoLink" target="_blank"></a>
+
+                  <a *ngIf="terceiraSecao?.segundoTexto && terceiraSecao?.segundoTextoLink && verificaLinks(terceiraSecao?.segundoTextoLink)" class="subtitulos-inside-image  underline-on-hover" 
+                    style="color: #231f20; text-align:center; cursor: pointer;"
+                    [style.color]="terceiraSecao?.segundoTextoCor" 
+                    [innerHTML]="terceiraSecao?.segundoTexto"
+                    (click)="validacaoDownload(terceiraSecao?.segundoTextoLink)"></a>
+
+                  <a *ngIf="terceiraSecao?.segundoTexto && !terceiraSecao?.segundoTextoLink" class="subtitulos-inside-image  underline-on-hover" 
+                    style="color: #231f20; text-align:center;"
+                    [style.color]="terceiraSecao?.segundoTextoCor" 
+                    [innerHTML]="terceiraSecao?.segundoTexto"></a>
+              </div>
+            </div>
+          </a>
+
+          <a *ngIf="terceiraSecao.segundaImagemSafeUrl && !terceiraSecao?.segundaImagemLink">
+            <img class="img-carousel" [matTooltip]="terceiraSecao?.segundaImagemTooltip" loading="lazy" [src]="terceiraSecao.segundaImagemSafeUrl" alt="Event Image">
+            <div class="centered">
+              <div class="row">
+                  <a *ngIf="terceiraSecao?.segundoTitulo && terceiraSecao?.segundoTituloLink && !verificaLinks(terceiraSecao?.segundoTituloLink)" class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="terceiraSecao?.segundoTituloCor"
+                    [style.color]="terceiraSecao?.segundoTituloCor" style="width: 100%;text-align: center !important;"
+                    [href]="terceiraSecao?.segundoTituloLink" target="_blank"
+                    [innerHTML]="terceiraSecao?.segundoTitulo"></a>
+
+                  <a *ngIf="terceiraSecao?.segundoTitulo && terceiraSecao?.segundoTituloLink && verificaLinks(terceiraSecao?.segundoTituloLink)" class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="terceiraSecao?.segundoTituloCor"
+                    [style.color]="terceiraSecao?.segundoTituloCor" style="width: 100%;text-align: center !important; cursor: pointer;"
+                    (click)="validacaoDownload(terceiraSecao?.segundoTituloLink)"
+                    [innerHTML]="terceiraSecao?.segundoTitulo"></a>
+
+                  <a *ngIf="terceiraSecao?.segundoTitulo && !terceiraSecao?.segundoTituloLink" class="h5 titulos-inside-image  underline-on-hover"
+                    [style.border-color]="terceiraSecao?.segundoTituloCor"
+                    [style.color]="terceiraSecao?.segundoTituloCor" style="width: 100%;text-align: center !important;"
+                    [innerHTML]="terceiraSecao?.segundoTitulo"></a>
+
+
+
+                  <a *ngIf="terceiraSecao?.segundoTexto && terceiraSecao?.segundoTextoLink && !verificaLinks(terceiraSecao?.segundoTextoLink)" class="subtitulos-inside-image  underline-on-hover" 
+                    style="color: #231f20; text-align:center"
+                    [style.color]="terceiraSecao?.segundoTextoCor" 
+                    [innerHTML]="terceiraSecao?.segundoTexto"
+                    [href]="terceiraSecao?.segundoTextoLink" target="_blank"></a>
+
+                  <a *ngIf="terceiraSecao?.segundoTexto && terceiraSecao?.segundoTextoLink && verificaLinks(terceiraSecao?.segundoTextoLink)" class="subtitulos-inside-image  underline-on-hover" 
+                    style="color: #231f20; text-align:center; cursor: pointer;"
+                    [style.color]="terceiraSecao?.segundoTextoCor" 
+                    (click)="validacaoDownload(terceiraSecao?.segundoTextoLink)"
+                    [innerHTML]="terceiraSecao?.segundoTexto"></a>
+
+                  <a *ngIf="terceiraSecao?.segundoTexto && !terceiraSecao?.segundoTextoLink " class="subtitulos-inside-image  underline-on-hover" 
+                    style="color: #231f20; text-align:center;"
+                    [style.color]="terceiraSecao?.segundoTextoCor" 
+                    [innerHTML]="terceiraSecao?.segundoTexto"></a> 
+              </div>
+            </div>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+</section>

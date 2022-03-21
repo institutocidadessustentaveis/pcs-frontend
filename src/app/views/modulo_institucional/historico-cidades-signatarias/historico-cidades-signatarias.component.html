@@ -1,0 +1,67 @@
+<div [hidden]="!loading" class="loading-indicator">
+  <mat-progress-spinner class="example-margin" style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+</div>
+<div class="contentBody" style="position: relative;">
+  <mat-card>    
+    <div class="col-md-8 col-lg-9 col-xs-12 col-sm-12">
+        <h2>Histórico de Cidades Signatárias</h2>
+    </div>
+    <hr>
+    <table mat-table [dataSource]="dataSource" multiTemplateDataRows>
+      <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
+        <th mat-header-cell *matHeaderCellDef>
+        <span *ngIf="column == 'cidade'">Cidade</span>  
+
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="column == 'cidade' && element[0] != undefined">{{element[0].nomeCidade}} - {{ element[0].estadoSigla }}</span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element; let i = index" [attr.colspan]="columnsToDisplay.length">
+          <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'"
+            *ngIf="jaFoiSignataria(element) >= 1" >
+            <a [href]="gerarLinkCidade(element[0])" target="_blank">
+              <span *ngIf="jaFoiSignataria(element) >= 2" style="margin-right: 14px">
+                Cidade foi Signatária nos períodos de 
+              </span>
+              <span *ngIf="jaFoiSignataria(element) == 1"  style="margin-right: 14px">
+                Cidade foi Signatária no período de 
+              </span>                
+              <span *ngFor="let item of element; index as i" style="margin-left: -26px">
+                <span class="example-element-description" *ngIf="item.signataria == false">
+                  <strong style="color: #356146;">{{item.inicioMandato | date: 'dd/MM/yyyy'}}</strong>
+                    até 
+                  <strong style="color: #356146;">{{item.fimMandato | date: 'dd/MM/yyyy'}}</strong>
+                  <span *ngIf="jaFoiSignataria(element) > i + 1"> e</span>
+                </span>
+              </span>
+            </a>
+          </div>
+          <div class="example-element-detail" *ngFor="let item of element"
+            [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+            <a [href]="gerarLinkCidade(element[0])" target="_blank">
+              <strong class="example-element-description" *ngIf="item.signataria == true" style="margin-left: -15px"> 
+                Cidade é Signatária atualmente no período de 
+                <strong style="color: #356146;">{{item.inicioMandato | date: 'dd/MM/yyyy'}}</strong> 
+                  até 
+                <strong style="color: #356146;">{{item.fimMandato | date: 'dd/MM/yyyy'}}</strong>
+                .
+              </strong>
+            </a>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
+        class="example-element-row"
+        [class.example-expanded-row]="expandedElement === element"
+        (click)="expandedElement = expandedElement === element ? null : element">
+      </tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+    </table>
+    <mat-paginator style="text-align: center !important;" class="float-none" [pageSizeOptions]="[10,25,50,100]"></mat-paginator>
+  </mat-card>
+</div>
+    

@@ -1,0 +1,441 @@
+<app-indicadores-inicial-header></app-indicadores-inicial-header>
+<div class="conteudo" style="position: relative;">
+  <section class="advanced-search">
+    <app-breadcrumb2></app-breadcrumb2>
+    <header>
+      <h1><span>FAÇA UMA BUSCA</span></h1>
+    </header>
+    <div class="row">
+      <div class="col-lg-4">
+        <form [formGroup]="form">
+          <div class="row search-form-color">
+            <div class='col-12 search-form-color '>
+              <mat-form-field>
+                <mat-label class="bmd-label-floating">Estado</mat-label>
+                <input type="text" name="estado" placeholder="estado" matInput formControlName="estado"
+                  [matAutocomplete]="auto" id="estado" [attr.disabled]="loading ? '' : null" (keyup)="inputEstadoVazio()">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="getLabel.bind(this)"
+                  (optionSelected)='filtrarCidadesPorEstado($event.option.value)'>
+                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                    {{ option.nome }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+
+            <div class='col-12'>
+              <mat-form-field>
+                <mat-label class="bmd-label-floating">Cidade</mat-label>
+                <input type="text" name="cidade" placeholder="cidade" matInput formControlName="cidade"
+                  [matAutocomplete]="autoCidade" id="cidade" [attr.disabled]="loading ? '' : null">
+                <mat-autocomplete #autoCidade="matAutocomplete" [displayWith]="getLabelCidade.bind(this)">
+                  <mat-option *ngFor="let item of filteredOptionsCidade | async" [value]="item">
+                    {{ item.label }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+
+            <div class='col-6'>
+              <mat-form-field>
+                <mat-label class="bmd-label-floating">População Min</mat-label>
+                <input matInput name="populacaoMin" id="populacaoMin" type="number" formControlName="populacaoMin">
+              </mat-form-field>
+            </div>
+
+            <div class='col-6'>
+              <mat-form-field>
+                <mat-label class="bmd-label-floating">População Max</mat-label>
+                <input matInput name="populacaoMax" id="populacaoMax" type="number" formControlName="populacaoMax">
+              </mat-form-field>
+            </div>
+
+            <div class='col-12'>
+              <mat-form-field>
+                <mat-label class="bmd-label-floating">Eixo PCS</mat-label>
+                <mat-select name="eixo" id="eixo" formControlName="eixo">
+                  <mat-option value="">Nenhum</mat-option>
+                  <mat-option *ngFor="let item of listaEixos" [value]="item.id">{{item.nome}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class='col-12'>
+              <mat-form-field style="padding-left: 0px; max-width: 90%">
+                <mat-label class="bmd-label-floating">ODS</mat-label>
+                <mat-select name="ods" id="ods" formControlName="ods">
+                  <mat-option value="">Nenhum</mat-option>
+                  <mat-option *ngFor="let item of listaODS" [value]="item.id">{{item.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <span>
+                <a style="color:white;" href="institucional/ods/{{this.form.controls.ods.value}}"
+                  title="Ir para página de ODS" target="_blank">
+                  <mat-icon class="material-icons">help</mat-icon>
+                </a>
+              </span>
+            </div>
+
+            <div class='col-12'>
+            <mat-form-field>
+                <mat-label class="bmd-label-floating">Indicador</mat-label>
+                <input type="text" name="indicador" placeholder="indicador" matInput formControlName="indicador"
+                  [matAutocomplete]="autoIndicador" id="indicador" [attr.disabled]="loading ? '' : null">
+                <mat-autocomplete #autoIndicador="matAutocomplete" [displayWith]="getLabelIndicador.bind(this)">
+                  <mat-option *ngFor="let item of filteredOptionsIndicador | async" [value]="item.id" [matTooltip]="item.nome">
+                    {{ item.nome }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-5 col-lg-5">
+              <button (click)="filtrar()" class="btn btn-block btn-hollow btn-white" [disabled]="loading">FILTRAR</button>
+            </div>
+            <div class="col-md-2 col-lg-2"></div>
+            <div class="col-md-5 col-lg-5">
+              <button matTooltip="Limpar" class="btn btn-block btn-hollow btn-white" (click)="limparFiltro()"
+                id="btnLimpar">LIMPAR</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-lg-8">
+        <div class="mapa">
+          <div style="height: 500px; width: 100%"  leaflet [leafletOptions]="options"
+            (leafletMapReady)="onMapReady($event)" >
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="destination"></div>
+
+  <section class="resultados" [hidden]="resultadoEncontrado">
+    <!-- Resultado não encontrado -->
+    <p *ngIf="filtrado">Não foram encontrados resultados com as opções selecionadas</p>
+  </section>
+
+  <section class="resultados" [hidden]="!resultadoEncontrado">
+    <div class="indicador-nome" *ngIf="listaMandatosPreenchidos && (nomeIndicadorSelecionado || form.controls.cidade.value)" [hidden]="loading">
+        <h5 *ngIf="form.controls.cidade.value">
+          Cidade: {{form.controls.cidade.value.label}}
+          <a [routerLink]="['/painel-cidade/detalhes', form.controls.cidade.value.id]" class="align-middle">
+            <mat-icon>open_in_new</mat-icon>
+          </a>
+        </h5>
+        <h5 *ngIf="nomeIndicadorSelecionado">
+          Indicador: {{nomeIndicadorSelecionado}}
+          <a [routerLink]="indicadorSelecionadoObj?.id | geradorUrlIndicador" class="align-middle">
+            <mat-icon>open_in_new</mat-icon>
+          </a>
+        </h5>
+        <div class="row" *ngIf="formulaIndicadorSelecionado">
+          <h5>Fórmula: </h5>
+          <h5 [innerHTML]="formulaIndicadorSelecionado"></h5>
+        </div>
+        <h5 *ngIf="descricaoIndicadorSelecionado">Descrição: {{descricaoIndicadorSelecionado}}</h5>
+        <h5 *ngIf="odsAux">ODS: {{odsAux}} </h5>
+        <h5 *ngIf="!odsAux && nomeIndicadorSelecionado">ODS: Não Vinculado</h5>
+        <h5 *ngIf="metaOdsAux" >Meta ODS: {{metaOdsAux}} </h5>
+        <h5 *ngIf="!metaOdsAux && nomeIndicadorSelecionado" >Meta ODS: Não Vinculada </h5>
+    </div>
+    <!-- Botão tabela -->
+    <div class="row secao-botoes">
+      <div class="col-lg-4">
+        <button class="btn btn-big btn-hollow btn-grey btn-block" (click)="visualizarTabela()">Tabela</button>
+      </div>
+      <div class="col-lg-4">
+        <button class="btn btn-big btn-hollow btn-grey btn-block" (click)="visualizarMapa()"
+          *ngIf="exibirBotaoMapa">Mapa</button>
+      </div>
+      <div class="col-lg-4">
+        <button class="btn btn-big btn-hollow btn-grey btn-block" (click)="visualizarGrafico()"
+          *ngIf="mostrarBotaoGrafico">Gráfico</button>
+      </div>
+    </div>
+
+    <!-- Mandatos -->
+    <div style="margin-bottom: 1em" class="col-md-12" *ngIf="listaMandatosPreenchidos">
+      <button class="btn btn-lg  btn-light btn-border " *ngFor="let item of listaMandatosPreenchidos"
+        (click)="selecionarMandato(item.mandato)"> <b>{{item.mandato}}</b> </button>
+    </div>
+
+    <form [formGroup]="formAnoMandato" [hidden]="!exibirMapa">
+      <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12">
+        <mat-form-field>
+          <mat-label class="bmd-label-floating">Selecione um período</mat-label>
+          <mat-select name="anoMandato" id="anoMandato" formControlName="anoMandato"
+            (selectionChange)="escolherAnoMandato()">
+            <mat-option [value]="mandatoSelecionado.anoInicial">{{mandatoSelecionado.anoInicial}}</mat-option>
+            <mat-option [value]="mandatoSelecionado.anoInicial +1">{{mandatoSelecionado.anoInicial+1}}</mat-option>
+            <mat-option [value]="mandatoSelecionado.anoInicial +2">{{mandatoSelecionado.anoInicial+2}}</mat-option>
+            <mat-option [value]="mandatoSelecionado.anoInicial +3">{{mandatoSelecionado.anoInicial+3}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </form>
+
+    <section [hidden]="!exibirTabela">
+      <!-- Tabela de cidades -->
+      <div class="row" *ngIf="exibirTabelaCidades">
+        <div style="min-width: 100%">
+          <div [hidden]="!loading">
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+          </div>
+          <div class="table-responsive-lg" [hidden]="loading">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">Cidade</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of resultadoCidades">
+                  <td> <a [routerLink]="['/painel-cidade/detalhes', item.id]"> {{item.nomeCidade}} </a> </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabela de indicadores (sem mandato) -->
+      <div class="row" *ngIf="exibirTabelaIndicadoresSemMandatos">
+        <div style="min-width: 100%">
+          <div [hidden]="!loading">
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+          </div>
+          <div class="table-responsive-lg" [hidden]="loading">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">Indicadores</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of resultadoIndicadores">
+                  <td> <a [routerLink]="['/visualizarindicador/', item.id]"> {{item.label}} </a> </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabela de cidades com valor do indicador -->
+      <div class="row" *ngIf="exibirTabelaCidadesIndicadores">
+        <div style="min-width: 100%">
+          <div [hidden]="!loading">
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+          </div>
+          <div class="table-responsive-lg" [hidden]="loading">
+            <table class="table table-striped" *ngIf="mandatoSelecionado?.valores?.length > 0">
+              <thead>
+                <tr>
+                  <th scope="col">Cidade</th>
+                  <th scope="col" *ngFor="let j of [0,1,2,3]"> {{ mandatoSelecionado.anoInicial+j }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of mandatoSelecionado.valores">
+                  <td> <a [href]="gerarURLDetalheIndicador(form.controls.indicador.value, item[8], item[0])">
+                      {{ item[0] +'-'+ item[8] }} </a>
+                  </td>
+                  <td>{{ item[1] ? (item[1] =='Preenchido' || item[1].includes('[') || item[1].includes(' - ') ? '' : item[1] )  : '-' }} <mat-icon
+                      *ngIf="item[1]=='Preenchido'">check</mat-icon>
+                      <mat-icon [matTooltip]="item[1]"  *ngIf="item[1] && item[1].includes('[')">check</mat-icon>
+                      <mat-icon [matTooltip]="item[1]"  *ngIf="item[1] && item[1].includes(' - ')">check</mat-icon>
+                  </td>
+                  <td>{{ item[2] ? (item[2] =='Preenchido' || item[2].includes('[') || item[2].includes(' - ') ? '' : item[2] )  : '-' }} <mat-icon
+                      *ngIf="item[2]=='Preenchido'">check</mat-icon>
+                      <mat-icon [matTooltip]="item[2]"  *ngIf="item[2] && item[2].includes('[')">check</mat-icon>
+                      <mat-icon [matTooltip]="item[2]"  *ngIf="item[2] && item[2].includes(' - ')">check</mat-icon>
+                  </td>
+                  <td>{{ item[3] ? (item[3] =='Preenchido' || item[3].includes('[') || item[3].includes(' - ') ? '' : item[3] )  : '-' }} <mat-icon
+                      *ngIf="item[3]=='Preenchido'">check</mat-icon>
+                      <mat-icon [matTooltip]="item[3]"  *ngIf="item[3] && item[3].includes('[')">check</mat-icon>
+                      <mat-icon [matTooltip]="item[3]"  *ngIf="item[3] && item[3].includes(' - ')">check</mat-icon>
+                  </td>
+                  <td>{{ item[4] ? (item[4] =='Preenchido' || item[4].includes('[') || item[4].includes(' - ') ? '' : item[4] )  : '-' }} <mat-icon
+                      *ngIf="item[4]=='Preenchido'">check</mat-icon>
+                      <mat-icon [matTooltip]="item[4]"  *ngIf="item[4] && item[4].includes('[')">check</mat-icon>
+                      <mat-icon [matTooltip]="item[4]"  *ngIf="item[4] && item[4].includes(' - ')">check</mat-icon>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabela de indicadores da cidade -->
+      <div class="row" *ngIf="exibirTabelaIndicadores">
+        <div style="min-width: 100%">
+          <div [hidden]="!loading">
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+          </div>
+          <div class="table-responsive-lg" [hidden]="loading">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">Indicadores</th>
+                  <th scope="col" *ngFor="let j of [0,1,2,3]"> {{ mandatoSelecionado.anoInicial+j }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of mandatoSelecionado.valores">
+                  <td> <a [href]="gerarURLDetalheIndicador( item[7], item[8], item[0])"> {{ item[6]  }} </a> </td>
+                  <td>{{ item[1] ? (item[1] =='Preenchido' || item[1].includes('[') || item[1].includes(' - ') ? '' : item[1] )  : '-' }} <mat-icon
+                      *ngIf="item[1]=='Preenchido'">check</mat-icon>
+                      <mat-icon [matTooltip]="item[1]"  *ngIf="item[1] && item[1].includes('[')">check</mat-icon>
+                      <mat-icon [matTooltip]="item[1]"  *ngIf="item[1] && item[1].includes(' - ')">check</mat-icon>
+                  </td>
+                  <td>{{ item[2] ? (item[2] =='Preenchido' || item[2].includes('[') || item[2].includes(' - ') ? '' : item[2] )  : '-' }} <mat-icon
+                    *ngIf="item[1]=='Preenchido'">check</mat-icon>
+                    <mat-icon [matTooltip]="item[2]"  *ngIf="item[2] && item[2].includes('[')">check</mat-icon>
+                    <mat-icon [matTooltip]="item[2]"  *ngIf="item[2] && item[2].includes(' - ')">check</mat-icon>
+                  </td>
+                  <td>{{ item[3] ? (item[3] =='Preenchido' || item[3].includes('[') || item[3].includes(' - ') ? '' : item[3] )  : '-' }} <mat-icon
+                    *ngIf="item[3]=='Preenchido'">check</mat-icon>
+                    <mat-icon [matTooltip]="item[3]"  *ngIf="item[3] && item[3].includes('[')">check</mat-icon>
+                    <mat-icon [matTooltip]="item[3]"  *ngIf="item[3] && item[3].includes(' - ')">check</mat-icon>
+                  </td>
+                  <td>{{ item[4] ? (item[4] =='Preenchido' || item[4].includes('[') || item[4].includes(' - ') ? '' : item[4] )  : '-' }} <mat-icon
+                    *ngIf="item[1]=='Preenchido'">check</mat-icon>
+                    <mat-icon [matTooltip]="item[4]"  *ngIf="item[4] && item[4].includes('[')">check</mat-icon>
+                    <mat-icon [matTooltip]="item[4]"  *ngIf="item[4] && item[4].includes(' - ')">check</mat-icon>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mapa -->
+    <section [hidden]="!exibirMapa">
+      <div class="row">
+        <div class="mapa_resultado" [style.height.px]="exibirMapa ? 750: 0">
+          <div [style.opacity]="exibirMapa ? 1 : 0" [style.width]="exibirMapa ? '' : 0"
+            style=" height: 700px ;width: 100%" leaflet [leafletOptions]="optionsResultado"
+            [leafletLayers]="layersControlResultado" (leafletMapReady)="onMapResultadoReady($event)">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gráficos -->
+    <section *ngIf="exibirGraficos">
+      <div class="row">
+        <div style="margin-bottom: 1em" class="col-md-12">
+          <button class="btn btn-light btn-border " (click)="selecionarGraficoLinha()"> Ver Gráfico de Linhas</button>
+          <button class="btn btn-light btn-border " (click)="selecionarGraficoBarra()"> Ver Gráfico de Barras</button>
+          <button *ngIf="mostrarBotaoTreemap" class="btn btn-light btn-border " (click)="selecionarGraficoTreemap()">
+            Ver Gráfico Treemap</button>
+          <button class="btn btn-light btn-border " (click)="selecionarDispersaoAnimada()"> Dispersão Animada</button>
+        </div>
+
+        <div style="margin-bottom: 1em" class="col-md-6">
+          <form [formGroup]="formFormula" *ngIf="formulaIndicadorSelecionadoTreeMap?.length > 1">
+            <mat-form-field>
+              <mat-label class="bmd-label-floating">Fórmula:</mat-label>
+              <mat-select name="formula" id="formula" formControlName="formula"
+                (selectionChange)="filtrarPorFormula($event.value)">
+                <mat-option *ngFor="let item of formulaIndicadorSelecionadoTreeMap; let i=index" [value]="i">{{item}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </form>
+        </div>
+
+
+        <!-- Line Chart -->
+        <div class="col-md-12" style="width: 100%" *ngIf="exibirGraficoLinha">
+          <app-legenda-grafico [variavel]="mandatoSelecionadoGrafico.dataset"></app-legenda-grafico>
+          <canvas baseChart height="100" [datasets]="mandatoSelecionadoGrafico.dataset"
+            [labels]="mandatoSelecionadoGrafico.labels" [options]="lineChartOptions" [legend]="false" chartType="line"
+            id="graficoLinha"></canvas>
+        </div>
+        <!-- Bar Chart -->
+        <div class="col-md-12" style="width: 100%" *ngIf="exibirGraficoBarra">
+          <app-legenda-grafico [variavel]="mandatoSelecionadoGrafico.dataset"></app-legenda-grafico>
+          <canvas baseChart height="100et" [labels]="mandatoSelecionadoGrafico.labels" [options]="barChartOptions"
+            [datasets]="mandatoSelecionadoGrafico.dataset" [legend]="false" chartType="bar" id="graficoBarras"></canvas>
+        </div>
+        <div class="col-md-12" style="width: 100%" *ngIf="exibirGraficoTreemap">
+          <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12"
+            *ngFor="let treeMap of mandatoSelecionadoGrafico.treeMap">
+            <div style="text-align: center">{{ treeMap.ano }}</div>
+            <div class="row" id="divTreeMap">
+              <ngx-charts-tree-map *ngIf="treeMap.valores.length > 0" scheme="picnic" animations="true"
+                [results]="treeMap.valores">
+              </ngx-charts-tree-map>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12" style="width: 100%" *ngIf="exibirGraficoDispersao">
+          <div>
+            <div *ngFor="let item of itensLegendaDispersao" style="display:inline; font-size: 12px;">
+              <div class="caixa-label" [ngStyle]="{'background-color':item.backgroundColor}"></div> {{item.label}}
+            </div>
+          </div>
+          <br /><br />
+          <div style="display: block;">
+            <canvas baseChart height="100px" *ngIf="bubbleChartData.length != 0" [options]="bubbleChartOptions"
+              [datasets]="bubbleChartData" [chartType]="bubbleChartType" [legend]="false" chartType="bar"
+              id="graficoBubbleDispersao">
+            </canvas>
+          </div>
+          <div class="text-center" style="font-size: 1em; color: gray ">
+            <b>{{ anoLabelInterativo }} </b>
+
+          </div>
+          <form [formGroup]="formDispersao">
+
+            <mat-radio-group aria-label="Escolha um item para comparar com o indicador escolhido" class="radio"
+              formControlName="compararComIndicador">
+              <mat-radio-button [value]="true" class="radio-item">Comparar com um Indicador</mat-radio-button>
+              <mat-radio-button [value]="false">Comparar com uma Variável</mat-radio-button>
+            </mat-radio-group>
+
+            <mat-form-field class="col-md-12 col-lg-12" *ngIf="formDispersao.controls['compararComIndicador'].value">
+              <mat-label>Selecione um Indicador</mat-label>
+              <mat-select id="indicadorDispersao" formControlName="indicador">
+                <mat-option *ngFor="let itemVariavel of listaIndicadoresDispersao" [value]="itemVariavel">
+                  {{itemVariavel.nome }}
+                </mat-option>
+                <mat-option [value]="null">
+                  Nenhum
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-12 col-lg-12" *ngIf="!formDispersao.controls.compararComIndicador.value">
+              <mat-label>Selecione uma Variável</mat-label>
+              <mat-select id="variavel" formControlName="variavel">
+                <mat-option *ngFor="let itemVariavel of listaVariaveis" [value]="itemVariavel">
+                  {{itemVariavel.nome }}
+                </mat-option>
+                <mat-option [value]="null">
+                  Nenhum
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </form>
+
+
+          <button mat-flat-button color="primary" matTooltip="Iniciar" style="cursor: pointer;" id="btnIniciar"
+            (click)="executarDispersaoAnimadaBubble()">
+            <mat-icon>play_arrow</mat-icon> Iniciar
+          </button>
+        </div>
+      </div>
+    </section>
+  </section>
+
+<app-indicadores-inicial-secoes [dadosDownloadUser]="dadosDownload"></app-indicadores-inicial-secoes>
+
+</div>

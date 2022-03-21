@@ -1,0 +1,48 @@
+
+<div class="contentBody" style="position: relative;">
+  <app-breadcrumb style="position: relative;"></app-breadcrumb>
+  <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+    <form #perfilForm="ngForm">
+      <div class="col-lg-12">
+        <h2 *ngIf="perfil.id == null">Criar Perfil</h2>
+        <h2 *ngIf="perfil.id != null">Alterar Perfil</h2>
+        <mat-divider></mat-divider>
+      </div>
+
+      <div class="col-lg-12" style="margin-top: 2em !important;">
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Nome do Perfil*" name="nome" id="nome" #txtNome maxlength="100"
+            [(ngModel)]="perfil.nome" #nome="ngModel" />
+          <mat-hint align="end">{{ txtNome.value?.length || 0 }}/100</mat-hint>
+        </mat-form-field>
+
+        <mat-checkbox name="gestaoPublica" [(ngModel)]="perfil.gestaoPublica" [checked]="false">Perfil de Gestão Pública</mat-checkbox>
+
+        <div class="row" style="margin-top: 10px !important;">
+          <div class="col-lg-11 col-md-11 col-xs-11 col-xl-11 col-sm-11">
+            <p><b>Funcionalidades Habilitadas</b></p>
+          </div>
+        </div>
+        <mat-selection-list>
+          <mat-list-option (click)="selectAll(checked)" [selected]="checked" style="font-weight: bold;">Marcar todas opções</mat-list-option>
+          <mat-list-option *ngFor="let permissao of perfil.permissoes" [value]="permissao"
+            (click)="setarHabilitada(permissao.funcionalidade)" [selected]="permissao.habilitada"
+            [disabled]="perfil.id == 1 && (permissao.funcionalidade.nome =='Editar Perfil' || permissao.funcionalidade.nome =='Visualizar Perfil' || permissao.funcionalidade.nome === 'Cadastrar Plano de Metas') ">
+            {{ permissao.funcionalidade.nome }}
+          </mat-list-option>
+        </mat-selection-list>
+        <br>
+        <div class="text-right" style="margin-bottom: 3em">
+          <button mat-flat-button color="accent" [routerLink]="['/perfis']" matTooltip="Voltar">
+            <mat-icon>arrow_back_ios</mat-icon>
+            Voltar
+          </button>
+          <button mat-flat-button color="primary" (click)="salvarPerfil()" [disabled]="nome.invalid" matTooltip="Salvar">
+            <mat-icon>save</mat-icon>
+            Salvar
+          </button>
+        </div>
+      </div>
+    </form>
+  </mat-card>
+</div>

@@ -1,0 +1,162 @@
+<div [hidden]="!loading" class="loading-indicator">
+  <mat-progress-spinner class="example-margin" style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+</div>
+<div class="contentBody" style="position: relative;">
+    <app-breadcrumb style="position: relative;"></app-breadcrumb>
+  <mat-card>
+    <div class="row">
+
+      <div class="col-md-8 col-lg-9 col-xs-12 col-sm-12">
+        <h2>Cadastro de Usuários</h2>
+      </div>
+
+      <div class="col-md-4 col-lg-3 col-xs-12 col-sm-12" style="text-align: right;">
+        <button mat-flat-button color="primary" *ngIf="hasRole('ROLE_USUARIOS')" [routerLink]="['/usuarios/cadastrar']"
+          class="btnCadastrar" matTooltip="Cadastrar" style="cursor: pointer !important; margin-bottom: 5px;">
+          <mat-icon>add</mat-icon> Cadastrar Usuário
+        </button>
+      </div>
+
+    </div>
+
+    <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+      <mat-divider></mat-divider>
+    </div>
+
+    <br>
+
+    <mat-card id="destination">
+      <div class="col-lg-12">
+          <h4>Filtro</h4>
+          <mat-divider></mat-divider>
+      </div>
+      <br>
+      <form [formGroup]="formFiltro">
+          <div class="row">
+            <div class="col-lg-3">
+              <mat-form-field>
+                <input matInput formControlName="nome" placeholder="Nome">
+              </mat-form-field>
+            </div>
+
+            <mat-form-field class="col-lg-3">
+              <input type="text" placeholder="Cidade" matInput formControlName="cidade"
+                [matAutocomplete]="auto" id="cidade">
+              <mat-autocomplete #auto="matAutocomplete" [displayWith]="getTextoExibicaoCidade" (optionSelected)="setCidadeSelecionada($event.option.value)">
+                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                  {{ option.label }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <div class="col-lg-3">
+              <mat-form-field>
+                <mat-label>Perfil</mat-label>
+                <mat-select name="perfil" id="perfil" formControlName="perfil">
+                  <mat-option *ngFor="let item of perfisCombo" [value]="item.id">{{item.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="col-lg-3">
+              <mat-form-field>
+                <input matInput formControlName="organizacao" placeholder="Instituição">
+              </mat-form-field>
+            </div>
+
+            <div class="col-lg-12 col-md-12 col-sm-12" style="text-align: end;">
+                <button mat-flat-button color="primary" (click)="filtrarUsuarios()" alt="Filtrar">Filtrar</button>
+                <button mat-stroked-button color="primary" style="margin-left: 3px" (click)="limparFiltro()" alt="Limpar Filtro">Limpar</button>
+            </div>
+          </div>
+      </form>
+  </mat-card>
+
+    <div class="col-lg-12" style="margin-top: 20px !important;">
+      <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <mat-card-title>Lista de Usuários Cadastrados</mat-card-title>
+        <mat-divider></mat-divider>
+      </div>
+      <div [hidden]="usuarios.length == 0">
+        <table mat-table class="col-lg-12" [dataSource]="dataSource" matSort>
+
+          <ng-container matColumnDef="Nome">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="nome">Nome</th>
+            <td mat-cell *matCellDef="let usuario" class='m-card-title' data-label='Nome'>
+              <span class="mobile-label">Nome:</span>
+              <span>{{ usuario.nome }}</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Perfis">
+            <th mat-header-cell *matHeaderCellDef>Perfis</th>
+            <td mat-cell *matCellDef="let usuario" class='m-card-title' data-label='Nome Perfil'>
+              <span class="mobile-label">Perfis:</span> {{ usuario.nomePerfil }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="E-mail">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="email">E-mail</th>
+            <td mat-cell *matCellDef="let usuario" class='m-card-title' data-label='Email'>
+              <span class="mobile-label">E-mail:</span>{{ usuario.email }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="Telefone">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="telefone">Telefone</th>
+            <td mat-cell *matCellDef="let usuario" class='m-card-title' data-label='Nome'>
+              <span class="mobile-label">Telefone:</span>{{ mask(usuario.telefone, usuario.telefone.length >= 11 ? '(##) # ####-####' : '(##) ####-####') }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="Município">
+            <th mat-header-cell *matHeaderCellDef >Município</th>
+            <td mat-cell *matCellDef="let usuario" class='m-card-title' data-label='Município'>
+              <span class="mobile-label">Município:</span> {{ usuario.cidade }} {{ usuario.cidade ? '-': 'N/A'}} {{usuario.uf}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Instituição">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="organizacao">Instituição</th>
+            <td mat-cell *matCellDef="let usuario" class='m-card-title' data-label='Instituição'>
+              <span class="mobile-label">Instituição:</span> {{ usuario.organizacao !== null &&  usuario.organizacao !== undefined ? usuario.organizacao: 'N/A'}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Ações">
+            <th mat-header-cell *matHeaderCellDef style="min-width: 200px;">Ações</th>
+            <td mat-cell *matCellDef="let usuario" style="min-width: 200px;">
+              <span *ngIf="hasRole('ROLE_USUARIOS')">
+                <button mat-flat-button color="primary" [routerLink]="['/usuarios/visualizar', usuario.id]"
+                  class="btnTabela" (click)="editar(usuario)" matTooltip="Visualizar">
+                  <mat-icon>search</mat-icon>
+                </button>
+                  <button mat-flat-button color="warn" (click)="deletarUsuario(usuario)" class="btnTabela"
+                    matTooltip="Excluir">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                  <button mat-flat-button [color]="escolheCorCadeado(usuario)" (click)="editarBloqueioForum(usuario)" class="btnTabela"
+                    [matTooltip]="toolTipAcessoForum(usuario)">
+                    <mat-icon *ngIf="usuario.bloqueadoForum === true">lock</mat-icon>
+                    <mat-icon *ngIf="usuario.bloqueadoForum === false">lock_open</mat-icon>
+                  </button>
+              </span>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+        </table>
+
+      </div>
+      <div *ngIf="warningResultado == true">
+        <div class="alert alert-warning">
+          Nenhum resultado encontrado.
+        </div>
+      </div>
+      <mat-paginator style="text-align: center !important;" class="float-none" [pageSizeOptions]="[10,25,50,100]"
+      showFirstLastButtons></mat-paginator>
+
+    </div>
+    <div class="exportar">
+      <button mat-button mat-flat-button color='primary' (click)='validacaoDownloadListaUsuarioXls()' > <mat-icon>file_download</mat-icon> Exportar Tabela</button>
+    </div>
+  </mat-card>
+</div>

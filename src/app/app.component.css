@@ -1,0 +1,5 @@
+::ng-deep .summernote ::ng-deep img {
+    vertical-align: middle;
+    /* padding-right: 15px;
+    padding-left: 15px; */
+  }

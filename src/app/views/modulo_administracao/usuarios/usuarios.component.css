@@ -1,0 +1,15 @@
+.green-circle:before {
+    content: ' \25CF';
+    font-size: 32px;
+    color: #28a745;
+}
+
+.red-circle:before {
+    content: ' \25CF';
+    font-size: 32px;
+    color: #dc3545;
+}
+.exportar {
+    display: flex;
+    justify-content: center;
+  }

@@ -1,0 +1,170 @@
+<div class="contentBody" style="position: relative;">
+  <div *ngIf="loading" class="loading-indicator">
+    <mat-progress-spinner style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+  </div>
+  <app-breadcrumb style="position: relative;"></app-breadcrumb>
+  <mat-card>
+
+    <div class="row">
+
+      <div class="col-md-8 col-lg-9 col-xs-12 col-sm-12">
+        <h2>Cadastro de Shapefile</h2>
+      </div>
+
+      <div class="col-md-4 col-lg-3 col-xs-12 col-sm-12" style="text-align: right;">
+        <button mat-flat-button color="primary" [routerLink]="['/planejamento-integrado/cadastro-shapefile/cadastrar']"
+          class="btnCadastrar" id="btnCadastrar" matTooltip="Cadastrar"
+          style="cursor: pointer !important; margin-bottom: 5px;" *ngIf="hasRole('ROLE_CADASTRAR_SHAPEFILE_RASTER')">
+          <mat-icon>add</mat-icon>Cadastrar Shapefile
+        </button>
+      </div>
+
+    </div>
+
+    <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+      <mat-divider></mat-divider>
+    </div>
+
+    <br>
+    <br>
+
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <mat-card-title>Lista de Shapefiles Cadastrados</mat-card-title>
+      <mat-divider></mat-divider>
+    </div>
+    <br>
+
+    <form [formGroup]="formFiltro">
+      <div class="row">
+        <mat-form-field class="col-md-12">
+          <input matInput placeholder="Filtro" formControlName="filtro">
+        </mat-form-field>
+
+        <mat-form-field class="col-md-6">
+          <mat-select placeholder="Filtrar origem por" formControlName="origem">
+            <mat-option value="Todos" selected>PCS e Prefeitura</mat-option>
+            <mat-option value="PCS">PCS</mat-option>
+            <mat-option value="Prefeitura">Prefeitura</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="col-md-6">
+          <mat-label>Tema da Camada</mat-label>
+          <mat-select id="temaGeoespacial" name="temaGeoespacial" formControlName="temaGeoespacial"
+              matTooltip='Tema predominante do mapa conforme opções da lista.'>
+              <mat-option></mat-option>
+              <mat-option *ngFor="let item of temasGeoespaciais" [value]="item.id">{{item.nome}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="col-md-4">
+          <mat-label>País</mat-label>
+          <mat-select id="inputPais" name="pais" formControlName="idPais" matTooltip='País'>
+            <mat-option [value]=""></mat-option>
+            <mat-option *ngFor="let item of paisesCombo" [value]="item.id">{{item.label}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="col-md-4">
+          <mat-label>Estado</mat-label>
+          <mat-select id="estados" name="estados" multiple matTooltip='Estado'
+            formControlName="idsEstados">
+            <mat-option *ngFor="let item of estadosCombo" [value]="item.id">{{item.label}}</mat-option>
+          </mat-select>
+      </mat-form-field>
+
+
+      <mat-form-field class="col-md-4">
+          <mat-label>Cidade</mat-label>
+          <mat-select id="cidades" name="cidades" multiple matTooltip='Cidade'
+            formControlName="idsCidades">
+            <mat-option *ngFor="let item of cidadesCombo" [value]="item.id">{{item.label}}</mat-option>
+          </mat-select>
+      </mat-form-field>
+    
+        <div class="col-md-12">
+          <button mat-flat-button color="primary" type="submit" name="button" class="btnTabela" id="btnFiltrar"
+            matTooltip="Filtrar" (click)="filtrar()">
+            <mat-icon> search </mat-icon>
+            Buscar Shapefiles
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
+
+      <!-- Tipo Column -->
+      <ng-container matColumnDef="dataHoraCadastro">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="dataHoraCadastro">Data</th>
+        <td mat-cell *matCellDef="let item">{{ item.dataHoraCadastro | date: "dd/MM/yyyy" }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="titulo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="titulo">Título</th>
+        <td mat-cell *matCellDef="let item"> {{item.titulo === '$shape_zoneamento$'? 'Shape de zoneamento' : item.titulo}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="exibirAuto">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="exibirAuto">Exibir Automaticamente</th>
+        <td mat-cell *matCellDef="let item"> {{ item.exibirAuto ? 'Sim' : 'Não' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="origemCadastro">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="origemCadastro">Origem</th>
+        <td mat-cell *matCellDef="let item"> {{item.origemCadastro}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="dataHoraAlteracao">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="dataHoraAlteracao">Última edição</th>
+        <td mat-cell *matCellDef="let item">{{ item.dataHoraAlteracao | date: "dd/MM/yyyy" }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="publicar">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="publicar">Publicado</th>
+        <td mat-cell *matCellDef="let item"> {{item.publicar?'Sim':'Não'}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="acoes">
+        <th mat-header-cell *matHeaderCellDef> Ações </th>
+        <td mat-cell *matCellDef="let item" class='m-card-title' data-label='Ações'>
+
+
+
+          <button mat-flat-button color="primary" type="button" name="button"
+          (click)="irParaEditar(item.id)" *ngIf="idCidade == item.idCidade"
+            class="btnTabela" id="btnEditar" matTooltip="Editar">
+            <mat-icon> edit </mat-icon>
+          </button>
+
+          <button mat-flat-button color="primary" type="button" name="button" [routerLink]="['/planejamento-integrado/cadastro-shapefile/detalhes', item.id]"
+            class="btnTabela" id="btnVisualizar" matTooltip="Visualizar">
+            <mat-icon> search </mat-icon>
+          </button>
+
+          <button mat-flat-button color="primary" type="button" name="button" (click)="publicar(item)"
+            class="btnTabela" id="btnPublicar" matTooltip="{{item.publicar ? 'Não Publicar' : 'Publicar'}}" *ngIf="hasRole('ROLE_CADASTRAR_SHAPEFILE_RASTER')">
+            <mat-icon> {{item.publicar ? 'visibility' : 'visibility_off'}} </mat-icon>
+          </button>
+
+          <button mat-flat-button color="warn" type="button" name="button" (click)="excluirShapeFile(item.id)"
+            class="btnTabela" id="btnExcluir" matTooltip="Excluir" *ngIf="hasRole('ROLE_DELETAR_SHAPEFILE_RASTER')">
+            <mat-icon> delete </mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <div class="alert alert-warning" [hidden]="exibirMensagemAlerta !== true">Nenhum shapefile foi encontrado</div>
+    
+    <mat-paginator (page)="carregarListaShapesPaginador($event)"
+                  showFirstLastButtons [length]="length" [pageSize]="pageSize"
+                  [pageSizeOptions]="[5, 10, 25]"
+                  style="text-align: center !important;"
+                  class="float-none">
+  </mat-paginator>
+
+  </mat-card>
+</div>

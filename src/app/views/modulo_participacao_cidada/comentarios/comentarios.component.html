@@ -1,0 +1,108 @@
+<div class="conteudo" style="position: relative;">
+  <section class="home-banner owl-carousel owl-theme">
+    <div class="carousel slide" ride="false">
+      <div class="carousel-inner">
+        <div>
+          <img class="img-carousel" loading="lazy" src="https://pcs.iacit.com.br:8443/noticia/imagem/3058">
+          <div class="carousel-caption">
+            <div style="position: inherit;bottom: 0;width: 100%;">
+              <h1>COMENTÁRIOS</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+  <section class="secao-filtro">
+    <div class="row search-form-color">
+  
+      <div class="col-lg-1">
+        <header style="padding-top: 10px;">
+          <h3><span>BUSCA</span></h3>
+        </header>
+      </div>
+  
+      <div class="col-lg-11 itens-filtro">
+        <form [formGroup]="formFiltro" class="example-form">
+          <div class="row">
+            <div class="col-lg-6 search-form-color">
+              <mat-form-field>
+                <input matInput formControlName="palavraChave" placeholder="Palavra chave">
+              </mat-form-field>
+            </div>
+
+            <div class="col-lg-6">
+              <mat-form-field class="search-form-color">
+                <mat-label>Cidade</mat-label>
+                <mat-select id="idCidade" name="idCidade" formControlName="idCidade">
+                  <mat-option *ngFor="let item of cidadesComboCompleta" [value]="item.id">{{item.nome}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+  
+            <div class="col-lg-6 search-form-color">
+              <app-datepicker class="data" formControlName="dataInicial" placeholder="Escolha a data inicial"></app-datepicker>
+            </div>
+    
+            <div class="col-lg-6 search-form-color">
+              <app-datepicker class="data" formControlName="dataFinal" placeholder="Escolha a data final"></app-datepicker>
+            </div> 
+          
+
+            <div class="col-lg-12 btn-group text-center">
+              <button matTooltip="Buscar Eventos" mat-flat-button color="primary" (click)="buscarComentariosFiltrados()"
+                id="btnBuscarEventos" class="botaoBuscarEventos btn-comentario botoes-pesquisa">
+                <mat-icon style="margin-top: -1px !important">search</mat-icon> Buscar Comentários
+              </button>
+              <button matTooltip="Limpar filtro" mat-flat-button color="accent" (click)="limparFiltro()"
+                id="btnLimparFiltro" class="limpar-filtro botoes-pesquisa">
+                Limpar Filtro
+              </button>
+            </div>
+
+          </div>        
+        </form>
+      </div> 
+    </div>
+  </section>
+
+  <div class="contentBody " style="position: relative;">
+    <section>
+      <div class="comentario-wrapper">
+        <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12 border-left" *ngFor="let comentario of comentarios">
+          <h3>{{comentario?.titulo}}</h3>
+          <br>
+          <span style="font-style: italic; font-size: 12px; color: #50926a;">Enviado por  </span><span class="nome-usuario">{{comentario?.nomeUsuario}}</span>
+          <br>
+          <div *ngIf="comentario.nomePrefeitura">
+            <span class="data-horario">Prefeitura: {{comentario.nomePrefeitura}}</span>
+            <br>
+          </div>
+          <span class="data-horario">{{comentario?.nomeCidade}} {{comentario?.dataPublicacao | date: 'dd/MM/yyyy'}} -
+            {{comentario?.horarioPublicacao}}</span>
+          <hr>
+          <div [ngxSummernoteView]="comentario?.comentario"></div>
+          <br>
+          <mat-card-actions>
+            <div *ngIf="!(!comentario.id || !comentario.telefone)">
+              <button mat-flat-button color="primary" (click)="onAdicionarMostrarContato(comentario.id)">Contato</button>
+            </div>
+          </mat-card-actions>
+  
+          <article *ngIf="onMostrarContato(comentario.id)">
+            <mat-form-field *ngIf="comentario.email">
+              <input matInput disabled placeholder="Email" value="{{comentario.email}}">
+            </mat-form-field>
+  
+            <mat-form-field *ngIf="comentario.telefone">
+              <input matInput disabled placeholder="Telefone" value="{{comentario.telefone}}">
+            </mat-form-field>
+          </article>
+  
+        </mat-card>
+      </div>
+    </section>
+  
+  </div>

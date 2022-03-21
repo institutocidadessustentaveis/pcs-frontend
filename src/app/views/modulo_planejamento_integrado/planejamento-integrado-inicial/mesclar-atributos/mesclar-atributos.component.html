@@ -1,0 +1,9 @@
+<button mat-flat-button color="primary" *ngIf="habilitarBotao"
+  name="mesclarAtributos" class="btnTabela" (click)="botaoMesclar()"
+  id="btnMesclarAtributos" matTooltip="Mesclar Atributos">
+  <mat-icon svgIcon="table-merge" class="svg-icon"></mat-icon>
+</button>
+
+<div [hidden]="!loading" class="loading-indicator">
+  <mat-progress-spinner class="example-margin" style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+</div>

@@ -1,0 +1,30 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  outline: none;
+  width: 100%;
+  
+  .mat-list-item.active {
+    // background-color: mat-color($app-primary, 50);
+  }
+  &:hover,
+  &:focus {
+  .mat-list-item:not(.expanded) {
+      // background-color: mat-color($app-primary, 100) !important;
+    }
+  }
+  }
+  
+  .mat-list-item {
+  padding: 0px 0;
+  border-bottom: 1px solid #D5D8DC;
+  display: flex;
+  width: auto;
+  
+  .routeIcon {
+    margin-right: 20px;
+  }
+  }
+  ::ng-deep .mat-list-base .mat-list-item {
+    text-transform: uppercase;
+  }

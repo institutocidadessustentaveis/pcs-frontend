@@ -1,0 +1,138 @@
+section {
+    word-wrap:break-word;
+}
+.first-section{
+    background: url("../../../../../assets/boas-praticas-inicial/pontos-light.png");
+    padding-bottom: 2%;
+}
+
+.div-img-first-section{
+    margin-left: 5%;
+}
+
+.div-img-third-section{
+    margin-left: 3%;
+    width: 38%;
+}
+
+.img-third-section{
+    width: 100%;
+    /* height: 100%; */
+}
+
+.label-titulo {
+    padding: 2% 5% 1% 5%;
+}
+
+.two-columns {
+    text-align: justify;
+    margin-left: 5%;
+    margin-right: 5%;
+    column-count: 2;
+    column-gap: 60px;
+}
+
+.two-columns-with-image {
+    text-align: justify;
+    column-count: 2;
+    column-gap: 60px;
+}
+
+.second-section{
+    padding-bottom: 2%;
+    margin-left: 3%;
+    margin-right: 3%;
+    }
+
+.label-titulo-second-section {
+    font-weight: bold;
+    font-size: 30px;
+
+    margin: 2% 0% 1% 5%;
+    color: #408559;
+    text-transform: uppercase;
+}
+
+.titulo-publicacao {
+    font-weight: bold;
+    font-size: 20px;
+    color: #408559;
+    text-transform: uppercase;
+}
+
+.ver-mais {
+    place-self: center;
+    font-size: 1.25em;
+    line-height: 2.4em;
+    background-color: transparent;
+    border: 0.05em #6e6e6e solid;
+    padding: 0.55em;
+    width: 25%;
+    min-width: 300px;
+    border-radius: 10px;
+    outline: none;
+    cursor: pointer;
+  }
+
+/* .classeTeste:hover {
+    background-color: #f5f5f5;
+} */
+
+@media (max-width: 600px) {
+    .two-columns-with-image {
+        column-count: 1;
+        margin-left: 5%;
+    }
+
+    .two-columns{
+        column-count: 1;
+    }
+
+    .div-img-third-section{
+        width: 100%;
+    }
+}
+app-item-publicacao{
+  margin-bottom: 1em;
+}
+
+.label-titulo-catalogo {
+  margin-top: 2em;
+  margin-bottom: 0em;
+}
+
+.espacamento-entre-item {
+    padding-right: 2%;
+    padding-left: 2%;
+    padding-bottom: 4%;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #408559;
+}
+
+hr {
+    background-color: #408559;
+    margin-bottom: 2em;
+    margin-left: 6em;
+    margin-right: 6em;
+}
+.div-titulo{
+  padding-top: 2%;
+  margin: 0% 3% 0% 3%;
+  margin-bottom: 2em;
+}
+.titulos{
+  font-size: 28px;
+  padding: 0 12px;
+  display: inline-block;
+  font-weight: 700;
+  color: #408559;
+  min-width: calc(100% - 70px);
+  text-transform: uppercase;
+}
+
+.secao-texto{
+	margin-left: 6%;
+    margin-right: 6%;
+    max-width: 90%;
+}

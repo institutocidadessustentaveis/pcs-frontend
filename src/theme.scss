@@ -1,0 +1,82 @@
+@import '../node_modules/@angular/material/theming';
+
+@include mat-core();
+
+$custom-primary: (
+  50:   #8abf9e,
+  100:  #79b691,
+  200:  #69ad83,
+  300:  #59a376,
+  400:  #50926a,
+  500:  #47825E,
+  600:  #3e7152,
+  700:  #356146,
+  800:  #2c513a,
+  900:  #23402e,
+  A100: #9ac8ac,
+  A200: #abd1ba,
+  A400: #bbdac7,
+  A700: #1a3022,
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $dark-primary-text,
+    400: $dark-primary-text,
+    500: $light-primary-text,
+    600: $light-primary-text,
+    700: $light-primary-text,
+    800: $light-primary-text,
+    900: $light-primary-text,
+    A100: $dark-primary-text,
+    A200: $dark-primary-text,
+    A400: $dark-primary-text,
+    A700: $dark-primary-text,
+  )
+);
+
+$custom-accent: (
+  50: #fff3e0,
+  100: #ffe0b2,
+  200: #ffcc80,
+  300: #ffb74d,
+  400: #ffa726,
+  500: #ff9800,
+  600: #fb8c00,
+  700: #f57c00,
+  800: #ef6c00,
+  900: #e65100,
+  A100: #ffd180,
+  A200: #ffab40,
+  A400: #ff9100,
+  A700: #ff6d00,
+  contrast: (
+    50: $light-primary-text,
+    100: $light-primary-text,
+    200: $light-primary-text,
+    300: $light-primary-text,
+    400: $light-primary-text,
+    500: $light-primary-text,
+    600: $light-primary-text,
+    700: $light-primary-text,
+    800: $light-primary-text,
+    900: $light-primary-text,
+    A100: $dark-primary-text,
+    A200: $dark-primary-text,
+    A400: $dark-primary-text,
+    A700: black,
+  )
+);
+
+$custom-theme-primary: mat-palette($custom-primary);
+$custom-theme-accent: mat-palette($custom-accent);
+$custom-theme-warn: mat-palette($mat-deep-orange);
+
+$custom-theme: mat-light-theme($custom-theme-primary, $custom-theme-accent, $custom-theme-warn);
+
+@include angular-material-theme($custom-theme);
+
+.mat-subheader {
+  background-color: mat-color($custom-primary,500);
+  color:white !important;
+}

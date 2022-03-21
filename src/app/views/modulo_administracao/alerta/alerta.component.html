@@ -1,0 +1,74 @@
+<div class="contentBody">
+<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+    <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12 marginToTop">
+      <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <mat-card-title>Lista de Alertas</mat-card-title>
+        <mat-divider></mat-divider>
+      </div>
+      <br />
+      <div [hidden]="!loading">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </div>
+      <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+          <mat-accordion >
+              <mat-expansion-panel  hideToggle *ngFor="let item of novosAlertas" (click)="visualizar(item)">
+                <mat-expansion-panel-header>
+                  <mat-panel-title  >
+
+                      <mat-chip-list aria-label="Status" [hidden]="item.visualizado" >
+                          <mat-chip color="accent" selected style="margin-right: 10px;">Novo</mat-chip>
+                      </mat-chip-list>
+                      <mat-chip-list aria-label="Status" [hidden]="!item.visualizado" >
+                          <mat-chip color="primary" selected style="margin-right: 10px;">Visualizado</mat-chip>
+                      </mat-chip-list>
+
+                    <strong > {{ item.tipo }}</strong>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div>
+                  <strong>Mensagem: </strong>
+                  <div [hidden]="item.tipo != 'Proposta para município'" [ngxSummernoteView]="item.mensagem"></div>
+                  <div [hidden]="item.tipo == 'Proposta para município'" >{{ item.mensagem }}</div>
+                  <br />
+                  <strong>Data: </strong>{{ item.data | date: 'dd/MM/yyyy' }} <br />
+                    <div [hidden]="!item.link" >
+                      <button mat-flat-button [routerLink]="item.link" color="primary" matTooltip="Verificar">
+                        <mat-icon>launch</mat-icon> Verificar
+                      </button>
+                    </div>
+                </div>
+              </mat-expansion-panel>
+          </mat-accordion>
+          <mat-accordion >
+              <mat-expansion-panel  hideToggle *ngFor="let item of alertasAntigos" >
+                <mat-expansion-panel-header>
+                  <mat-panel-title  >
+
+                      <mat-chip-list aria-label="Status" [hidden]="item.visualizado" >
+                          <mat-chip color="accent" selected style="margin-right: 10px;">Novo</mat-chip>
+                      </mat-chip-list>
+                      <mat-chip-list aria-label="Status" [hidden]="!item.visualizado" >
+                          <mat-chip color="primary" selected style="margin-right: 10px;">Visualizado</mat-chip>
+                      </mat-chip-list>
+
+                    <strong > {{ item.tipo }}</strong>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div>
+                    <strong>Mensagem: </strong>
+                    <div [hidden]="item.tipo != 'Proposta para município'" [ngxSummernoteView]="item.mensagem"></div>
+                    <div [hidden]="item.tipo == 'Proposta para município'" >{{ item.mensagem }}</div>
+                    <br />
+                    <strong>Data: </strong>{{ item.data | date: 'dd/MM/yyyy HH:mm' }} <br />
+                    <div [hidden]="!item.link" >
+                      <button mat-flat-button [routerLink]="item.link" color="primary" matTooltip="Verificar">
+                        <mat-icon>launch</mat-icon> Verificar
+                      </button>
+                    </div>
+                </div>
+              </mat-expansion-panel>
+          </mat-accordion>
+      </mat-card-content>
+    </mat-card>
+</div>
+</div>

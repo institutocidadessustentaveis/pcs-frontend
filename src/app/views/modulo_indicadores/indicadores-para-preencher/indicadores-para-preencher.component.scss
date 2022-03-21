@@ -1,0 +1,48 @@
+.marginToComponent{
+    margin-top: 10px !important;
+}
+
+.marginToCard{
+    margin-top: 30px !important;
+}
+
+#btnLimpar {
+    height: 40px !important;
+}
+
+.subdivisao-escolhida{
+  background-color: #47825e;
+  padding: 1rem 1.25rem;
+  color: white;
+  border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
+  /* position: -webkit-sticky;
+  position: sticky;
+  bottom: 0;
+  z-index: 99999; */
+}
+
+.subdivisao-escolhida-bottom{
+  background-color: #47825e;
+  color: white;
+  padding: 0.1em 1em;
+  border-radius: calc(.25rem - 1px) calc(.25rem - 1px) calc(.25rem - 1px) calc(.25rem - 1px) ;
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 0;
+  z-index: 99999;
+}
+
+.informacao-valores{background-color: #47825e;
+  color: white;
+  padding: 0.1em 1em;
+  border-radius: calc(.25rem - 1px) calc(.25rem - 1px) calc(.25rem - 1px) calc(.25rem - 1px) ;
+
+}
+
+@media screen and (max-width: 960px) {
+  .mat-list-item{
+    height: 4em;
+  }
+
+}
+

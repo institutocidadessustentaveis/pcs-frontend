@@ -1,0 +1,47 @@
+
+:host::ng-deep blockquote {
+    border-right: 5px solid #47825e;
+    padding-right: 15px;
+    width: 380px;
+}
+  ::ng-deep .marker-cluster-large {
+    background-color: rgba(192, 64, 64, 0.6) !important;
+  }
+  
+  ::ng-deep .marker-cluster-large div {
+    background-color: rgba(224, 32, 32, 0.6) !important;
+  }
+  
+  
+  ::ng-deep .marker-cluster {
+    background-clip: padding-box;
+    border-radius: 20px;
+    width: 35px !important;
+    height: 35px !important;
+  }
+  
+  ::ng-deep .marker-cluster div {
+    width: 25px !important;
+    height: 25px !important;
+    margin-left: 5px;
+    margin-top: 5px;
+    color: white;
+  
+    text-align: center;
+    border-radius: 15px;
+    font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
+  }
+  
+  ::ng-deep .marker-cluster span {
+    line-height: 25px;
+  }
+
+.box-center {
+  margin-left: 25%;
+  margin-right: 25%;
+}
+
+.conteudo {
+    margin-top: 3em;
+    margin-bottom: 3em;
+}

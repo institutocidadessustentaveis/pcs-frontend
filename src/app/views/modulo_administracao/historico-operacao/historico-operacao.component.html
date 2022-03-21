@@ -1,0 +1,102 @@
+<div class="contentBody" style="position: relative;">
+    <app-breadcrumb style="position: relative;"></app-breadcrumb>
+  <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12 marginToTop">
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <h2>Histórico de operação</h2>
+      <mat-divider></mat-divider>
+    </div>
+
+    <div [hidden]="!loading">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+
+    <br>
+
+    <div class="row">
+        <div class="col-lg-12">
+          <h6>Filtro</h6>
+        </div>
+    </div>
+
+  <form [formGroup]="formFiltro">
+    <div class="row">
+      <div class="col-lg-3">
+        <mat-form-field>
+            <mat-label id="usuario-label">Usuário</mat-label>
+            <input matInput formControlName="termoBuscaUsuario" [(ngModel)]="termoBuscaUsuario"  placeholder="Usuário" alt="Usuário" aria-labelledby="usuario-label">
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-2">
+          <app-datepicker formControlName="dataInicio" id="dataInicio" required="false" placeholder="Data inicial"
+            class="info-full-width"></app-datepicker>
+      </div>
+
+      <div class="col-lg-2">
+          <app-datepicker formControlName="dataFim" id="dataFim" required="false" placeholder="Data final"
+          class="info-full-width"></app-datepicker>
+      </div>
+
+      <div class="col-lg-2">
+          <mat-form-field>
+              <mat-label>Módulo</mat-label>
+              <mat-select [(value)]="moduloSelecionado" formControlName="moduloSelecionado">
+                  <mat-option value="">- TODOS -</mat-option>
+                  <mat-option *ngFor="let modulo of listaModulos" [value]="modulo.nome">
+                      {{modulo.descricao}}
+                  </mat-option>
+              </mat-select>
+          </mat-form-field>
+      </div>
+
+      <div>
+          <button mat-stroked-button color="primary" (click)="filtrarRegistros($event)" alt="Filtrar">Filtrar</button>
+      </div>
+      <div class="col-lg-1">
+          <button mat-stroked-button color="primary" (click)="limpar()">Limpar</button>
+      </div>
+    </div>
+    <button matTooltip="Xls" mat-flat-button color="primary" (click)="exportXls()" class="btnToRight"
+      style="cursor: pointer !important;" id="btnXls">
+      Exportar para Excel
+    </button>
+  </form>
+
+    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
+
+      <ng-container matColumnDef="Data">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="data" style="width: 10%;"> Data </th>
+        <td mat-cell *matCellDef="let registro" class='m-card-title' data-label='Data'>
+          {{registro.data.format("DD/MM/YYYY HH:mm:ss")}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Usuario">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="usuario" style="width: 10%;"> Usuário </th>
+        <td mat-cell *matCellDef="let registro" class='m-card-title' data-label='Usuário'>{{registro.usuario}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="TipoAcao">
+        <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Tipo de ação </th>
+        <td mat-cell *matCellDef="let registro" class='m-card-title' data-label='Tipo de ação'>{{registro.tipoAcao}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Modulo">
+        <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Módulo </th>
+        <td mat-cell *matCellDef="let registro" class='m-card-title' data-label='Módulo'>{{registro.modulo != undefined ? registro.modulo.descricao : "N/A"}}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <div class="alert alert-warning" [hidden]="exibirMensagemAlerta !== true">Nenhum registro do histórico de operação encontrado</div>
+
+    <div [hidden]="loading && resultados.length === 0">
+      <mat-paginator style="text-align: center !important;" class="float-none"
+                    (page)="carregarPaginaHistorico($event)"
+                    [pageSizeOptions]="[10,25,50,100]" showFirstLastButtons>
+      </mat-paginator>
+    </div>
+  </mat-card>
+</div>

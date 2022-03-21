@@ -1,0 +1,30 @@
+<div cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+  <h4 class="col-md-12">Criar novo atributo e inserir seus valores </h4>
+  <br>
+  <form class="example-form">
+    <div class="row col-md-12" *ngFor="let item of data.atributosParaEditar; let i = index">
+      <mat-form-field class="col-md-5">
+        <mat-label>Atributo</mat-label>
+        <input name="{{'inptAtributo'+i}}" matInput placeholder="Atributo" [(ngModel)]="item.atributo" maxlength="10">
+      </mat-form-field>
+
+      <mat-form-field class="col-md-4">
+        <mat-label>Valor</mat-label>
+        <input name="{{'inptValor'+i}}" matInput placeholder="Valor" [(ngModel)]="item.valor" [type]="setTypeInputPerAttributeType(item.atributo)">
+      </mat-form-field>
+
+        <mat-icon class="col-md-1" (click)="removerAtributo(i)" *ngIf="data.atributosParaEditar.length > 1 " style="cursor: pointer; color: red;">delete</mat-icon>
+
+        <mat-icon class="col-md-1" (click)="adicionarAtributo()" *ngIf="(i+1) == data.atributosParaEditar.length" style="cursor: pointer; color: green;">add</mat-icon>
+    </div>
+
+    <br>
+
+    <div class="col-md-12">
+      <button mat-flat-button color="primary" *ngIf="data.idShapeParaEditar" (click)="salvarAtributosDoShape()" >Salvar</button>
+      <button mat-flat-button color="primary" *ngIf="!data.idShapeParaEditar" (click)="salvarAtributosDoShape()" >Adicionar atributos no shape</button>
+      <button mat-flat-button color="accent" (click)="cancelar()" style="margin-left: 20px;">Cancelar</button>
+    </div>
+  </form>
+
+</div>

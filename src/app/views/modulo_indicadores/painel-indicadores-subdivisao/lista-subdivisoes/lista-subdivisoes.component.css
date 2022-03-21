@@ -1,0 +1,19 @@
+.subdivisao{
+  width: 100%;
+  background-color:#8a9ea1 ;
+  color:white;
+  padding-top: .5em;
+  padding-left: 1em;
+  text-align: left;
+  font-size: large;
+}
+
+a{
+  color: white;
+}
+a:hover{
+  color: white;
+}
+a:visited{
+  color: white;
+}

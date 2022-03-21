@@ -1,0 +1,167 @@
+
+/* Deafult */
+.half-center {
+    width: 50%;
+    text-align: center !important;
+    margin-left: auto;
+    margin-right: auto;
+    color: white;
+    font-size: 3vh;
+  }
+
+.resumo {
+    background-color: #8a9ea1;
+    padding-top: 2%;
+    padding-bottom: 2%;
+}
+/* ...Deafult */
+
+/* Template 02 */
+.first-section, .third-section {
+    /* background: url("../../../../../assets/boas-praticas-inicial/pontos-light.png");
+    padding-bottom: 2%; */
+}
+
+.second-section {
+    background-color: #554f20;
+    color: white;
+    padding-bottom: 2%;
+}
+
+.fourth-section {
+    background-color:#1c3f22; 
+    color: white;
+    padding-bottom: 2%;
+}
+
+.label-titulo {
+    font-weight: bold;
+    font-size: 30px;
+    /* margin: 2% 5% 1% 5%; */
+    color: #231f20;
+    text-transform: uppercase;
+}
+
+.titulos {
+    font-size: 1.5em;
+    line-height: 1.3em;
+    display: inline-block;
+    font-weight: 700;
+    color: #124f6b;
+    text-transform: uppercase;
+}
+
+.label-titulo-white {
+    font-weight: bold;
+    font-size: 30px;
+    margin: 2% 5% 1% 5%;
+    color: white;
+    text-transform: uppercase;
+}
+
+.two-columns {
+    text-align: justify;
+    margin-left: 5%;
+    margin-right: 5%;
+    column-count: 2;
+    column-gap: 60px;
+}
+
+.two-columns-with-image {
+    text-align: justify;
+    column-count: 2;
+    column-gap: 60px;
+}
+
+.div-img-first-section{
+    margin-left: 5%;
+}
+
+.three-columns {
+    text-align: justify;
+    margin-left: 5%;
+    margin-right: 5%;
+    column-count: 3;
+    column-gap: 60px;
+}
+
+.btn-transparent {
+    margin-top: 1%;
+    background: transparent;
+    border: 1px gray solid;
+    border-radius: 12px;
+    color: white;
+    width: 500px;
+    height: 70px;
+}
+
+.div-img-third-section{
+    margin-left: 3%;
+    width: 38%;
+}
+
+.img-third-section{
+    width: 100%;
+    /* height: 100%; */
+}
+/* ...Template 02 */
+
+
+@media (max-width: 600px) {
+    .two-columns-with-image {
+        column-count: 1;
+        margin-left: 5%;
+    }
+
+    .two-columns{
+        column-count: 1;
+    }
+
+    .three-columns {
+        column-count: 1;
+    }
+
+    .div-img-third-section{
+        width: 100%;
+    }
+
+    .btn-transparent {
+        width: 200px;
+    }
+}
+
+
+hr {
+	border: 0;
+    border-top: 1px solid #094CFA;
+    margin-top: 0px !important;
+}
+
+.underline-on-hover:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.one-column {
+    display: flex;
+    align-items: center;
+    font-family: Open Sans;
+    text-overflow: ellipsis;
+    line-height: 25px;    
+    min-height: 100px;  
+}
+
+.one-column-center {
+    display: flex;
+    align-items: center;
+    line-height:1.2;
+}
+
+.one-column-with-image {
+    text-align: justify;
+    margin-left: 5%;
+}
+
+::ng-deep .mat-expansion-panel-content {
+    font: caption;
+}

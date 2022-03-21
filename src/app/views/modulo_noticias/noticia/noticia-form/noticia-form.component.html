@@ -1,0 +1,230 @@
+<div class="contentBody" style="position: relative;">
+  <app-breadcrumb style="position: relative;"></app-breadcrumb>
+  <mat-card [hidden]="exibirPreVisualizacao">
+    <div class="col-lg-12">
+      <h2>Cadastrar Notícia</h2>
+      <mat-divider></mat-divider>
+      <br />
+      <form [formGroup]="form">
+        <strong>
+          <mat-label class="labelpcs">Usuário criador: </mat-label>
+        </strong>{{noticia.usuario}}
+        <br />
+        <br />
+        <div>
+          <mat-checkbox formControlName="publicada">Publicar</mat-checkbox>
+          <br>
+          <mat-checkbox formControlName="noticiaEvento">Noticia de Evento</mat-checkbox><mat-icon style="cursor: pointer;" class="help" matTooltip="Esta notícia aparecerá na página principal de eventos">help</mat-icon>
+        </div>
+        <div style="margin-top: 20px !important;">
+          <mat-form-field class="full-width">
+            <input matInput required placeholder="Título" maxlength="150" formControlName="titulo" id="titulo"
+              #titulo />
+            <mat-hint align="end">{{ titulo.value?.length || 0 }}/150</mat-hint>
+            <mat-error *ngIf="form.controls['titulo'].hasError('required')">Informe um Título</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div style="margin-top: 20px !important;">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Subtítulo" maxlength="300" formControlName="subtitulo" id="subtitulo"
+              #subtitulo />
+            <mat-hint align="end">{{ subtitulo.value?.length || 0 }}/300</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <div style="margin-top: 20px !important;">
+          <mat-form-field class="full-width">
+            <input matInput required placeholder="Autor" maxlength="150" formControlName="autor" id="autor" />
+            <mat-error *ngIf="form.controls['autor'].hasError('required')">Autor</mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Image cropper -->
+        <mat-label class="labelpcs">Imagem da Notícia</mat-label><br />
+        <div *ngIf="noticia?.imagemPrincipal" style="width: 100%;">
+          <img class="form-group" style=" width: 20%;" [src]="geraImagem()" />
+        </div>
+
+        <input hidden #imagemInputPrincipal type="file" id="imagemPrincipal" name="imagemPrincipal"
+          accept="image/jpeg,image/png" (change)="fileChangeEvent($event)">
+        <button type="button" mat-raised-button (click)="imagemInputPrincipal.click()" id="btnIcone" name="icone"
+          color="primary" style="margin-top: 20px; cursor: pointer;" matTooltip="Upload Imagem Principal">
+          <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar imagem principal *
+        </button>
+        <mat-error *ngIf="form.controls['imagemPrincipal'].hasError('required')"><sub>Escolha uma imagem</sub>
+        </mat-error>
+
+        <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="false" [aspectRatio]="1 / 1"
+          [resizeToWidth]="0" format="png" (imageCropped)="imageCropped($event)"></image-cropper>
+
+        <mat-checkbox formControlName="possuiFiltro">Adicionar filtro verde na imagem</mat-checkbox>
+
+        <!-- ./Image cropper -->
+
+       
+        <br>
+        
+        <div style="margin-top: 20px;" class="summernote" [hidden]="exibirConfigStyleonPaste">
+          <mat-label class="labelpcs">Corpo da notícia (texto)</mat-label>
+          <div [ngxSummernote]="editorConfig1"  formControlName="corpoTexto" id="corpoTexto"></div>
+          <mat-error *ngIf="form.controls['corpoTexto'].hasError('required')"><sub>Adicione um texto</sub></mat-error>
+        </div>
+
+        <div style="margin-top: 20px;" class="summernote" [hidden]="!exibirConfigStyleonPaste" >
+          <mat-label class="labelpcs">Corpo da notícia (texto)</mat-label>
+          <div [ngxSummernote]="editorConfig2"  formControlName="corpoTexto" id="corpoTexto"></div>
+          <mat-error *ngIf="form.controls['corpoTexto'].hasError('required')"><sub>Adicione um texto</sub></mat-error>
+        </div>
+
+        <mat-checkbox [checked]="false" formControlName="habilitaEstilo"  
+        id="habilitaEstilo" (change)="setStyleOnPasteSummernote($event.checked)" 
+        name="habilitaEstilo">Habilitar estilos no editor de texto</mat-checkbox>
+        
+        <br>
+        <br>
+
+        <div style="margin-top: 20px !important;">
+          <mat-form-field class="full-width">
+            <mat-chip-list #inputTagPalavrasChave aria-label="TAG selection">
+              <mat-chip *ngFor="let item of tagPalavrasChave" [selectable]="true" [removable]="true"
+                (removed)="removerTagPalavrasChave(item)">
+                {{item}}
+                <mat-icon matChipRemove>cancel</mat-icon>
+              </mat-chip>
+              <input placeholder="TAG / Palavras-Chave" [matChipInputFor]="inputTagPalavrasChave"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+                (matChipInputTokenEnd)="addTagPalavrasChave($event)">
+            </mat-chip-list>
+          </mat-form-field>
+        </div>
+
+        <div style="margin-top: 20px !important;" *ngIf="tagPalavrasChave.includes('evento')">
+          <mat-checkbox formControlName="exibirEventoTelaInicial">Exibir na tela inicial</mat-checkbox>
+        </div>
+
+        <mat-form-field style="margin-top: 20px !important;">
+          <mat-label>Selecione Eixos para essa Notícia</mat-label>
+          <mat-select id="idEixo" name="eixos" formControlName="eixos" multiple
+            (selectionChange)="selecionarEixo($event.value)">
+            <mat-option *ngFor="let eixo of eixos" [value]="eixo">{{eixo.nome}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field style="margin-top: 20px !important;" class="col-md-11 marginToComponent">
+          <mat-label>Selecione ODS para essa Notícia</mat-label>
+          <mat-select id="ods" name="ods" formControlName="odss" multiple>
+            <mat-option *ngFor="let ods of odss" [value]="ods">{{ ods?.numero + ' - ' + ods.titulo}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <a href="institucional/ods" target="_blank" title="Ir para página de ODS"><i class="material-icons">help</i></a>
+
+        <mat-form-field style="margin-top: 20px !important;">
+          <mat-label>Selecione Áreas de Interesse para essa Notícia</mat-label>
+          <mat-select id="areasDeInteresse" name="areasDeInteresse" formControlName="areasDeInteresse" multiple>
+            <mat-option *ngFor="let area of areasInteresse" [value]="area">{{area.nome}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div style="margin-top: 20px !important;">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Links relacionados" [matChipInputFor]="chipList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+              (matChipInputTokenEnd)="add($event)" />
+          </mat-form-field>
+
+          <mat-chip-list #chipList aria-label="Links">
+            <mat-chip *ngFor="let link of linksRelacionados" [selectable]="true" [removable]="true"
+              (removed)="remove(link)">
+              {{link}}
+              <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+          </mat-chip-list>
+          <input hidden formControlName="linksRelacionados">
+        </div>
+        <br />
+
+        <mat-label class="labelpcs">Data de criação:</mat-label><br />
+        {{noticia.dataHoraCriacao | date: 'dd/MM/yyyy HH:mm'}}<br />
+
+        <mat-label class="labelpcs">Data de Publicação:</mat-label><br />
+        {{noticia.dataHoraPublicacao | date: 'dd/MM/yyyy HH:mm'}} <br />
+
+        <div *ngIf="noticia.noticiaHistorico?.length > 0" style="margin-top: 2%;"><strong>Histórico de
+            Alterações</strong></div>
+
+
+
+        <table *ngIf="noticia.noticiaHistorico?.length > 0" style="margin-bottom: 4%;" class="col-md-12" mat-table
+          [dataSource]="dataSource" #tbHistorico id="tbHistorico">
+          <ng-container matColumnDef="Usuário">
+            <th mat-header-cell *matHeaderCellDef>Usuário</th>
+            <td mat-cell *matCellDef="let item"> {{item.usuario.nome}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Data/Hora Alteração">
+            <th mat-header-cell *matHeaderCellDef>Data da Alteração</th>
+            <td mat-cell *matCellDef="let item"> {{item.dataHora | date: 'dd/MM/yyyy HH:mm'}} </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-right">
+          <button mat-flat-button color="primary" matTooltip="Visualizar a notícia"
+            style="cursor: pointer; margin-right: 5px !important;" id="btnPreVisualizacao"
+            (click)="prepararPreVisualizacao()" [disabled]="!form.valid">
+            <mat-icon>search</mat-icon> Pré-visualização
+          </button>
+
+          <button mat-flat-button color="primary" matTooltip="Salvar" [disabled]="desabilitarBotaoSalvar"
+            style="cursor: pointer; margin-right: 5px !important;" id="btnSalvar" (click)="salvar()">
+            <mat-icon>save</mat-icon> Salvar
+          </button>
+          <button mat-flat-button color="accent" matTooltip="Voltar" style="cursor: pointer;"
+            [routerLink]="['/cadastro-noticia']" id="btnVoltar">
+            <mat-icon>arrow_back_ios</mat-icon> Voltar
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </mat-card>
+
+  <mat-card>
+    <div [hidden]="!exibirPreVisualizacao">
+
+      <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-right">
+        <button mat-flat-button color="primary" matTooltip="Salvar" [disabled]="desabilitarBotaoSalvar"
+          style="cursor: pointer; margin-right: 5px !important;" id="btnSalvar" (click)="salvar()">
+          <mat-icon>save</mat-icon> Salvar
+        </button>
+        <button mat-flat-button color="accent" matTooltip="Voltar para criação/edição da notícia"
+          style="cursor: pointer;" (click)="prepararPreVisualizacao()" id="btnVoltarParaEdicao">
+          <mat-icon>arrow_back_ios</mat-icon> Voltar
+        </button>
+      </div>
+      <br>
+
+      <app-pre-visualizacao-noticia [noticia]="noticia" #preVisualizacaoNoticia id="preVisualizacaoNoticia"
+        name="preVisualizacaoNoticia"></app-pre-visualizacao-noticia>
+    </div>
+  </mat-card>
+ <ng-template #modalLoading>
+    <div class="centralizar-loading">
+       <div id="circularG">
+        <div id="circularG_1" class="circularG"></div>
+        <div id="circularG_2" class="circularG"></div>
+        <div id="circularG_3" class="circularG"></div>
+        <div id="circularG_4" class="circularG"></div>
+        <div id="circularG_5" class="circularG"></div>
+        <div id="circularG_6" class="circularG"></div>
+        <div id="circularG_7" class="circularG"></div>
+        <div id="circularG_8" class="circularG"></div>
+      </div>
+      <div class="mt-2" style="text-align: center">
+        <strong>Carregando...</strong>
+      </div>
+    </div>
+  </ng-template>
+</div>

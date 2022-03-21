@@ -1,0 +1,55 @@
+<mat-card class="card-publicacao">
+  <div *ngIf="!publicacao" class="botao-publicacao text-center">
+    <button mat-stroked-button (click)="escolherPublicacao()" matTooltip="Cadastrar nova Publicação">
+      Cadastrar nova Publicação
+    </button>
+  </div>
+
+  <div *ngIf="publicacao && publicacao.imagem" class="publicacao-livre" 
+    [matTooltip]="publicacao.tooltipTexto" 
+    [style.background-image]="publicacao.id && publicacao.imagem ? (!publicacao.editado ? 'url('+urlbackend+'institucionalDinamico/publicacao/imagem/'+publicacao.id +')' : 'url(data:image/png;base64,'+publicacao.imagem +')') : 'url(data:image/png;base64,'+publicacao.imagem +')'">
+  </div>
+  <div  *ngIf="publicacao && publicacao.titulo">
+    <a *ngIf="publicacao.link" [href]="publicacao.link" target="_blank">
+      <h2 class="publicacao-material-apoio-titulo pointer" [matTooltip]="publicacao.tooltipTitulo"
+        [ngxSummernoteView]="publicacao.titulo">
+        <br>
+      </h2>
+    </a>
+
+    <a *ngIf="!publicacao.link" style="pointer-events: none;">
+      <h2 class="publicacao-material-apoio-titulo pointer" [matTooltip]="publicacao.tooltipTitulo"
+        [ngxSummernoteView]="publicacao.titulo">
+        <br>
+      </h2>
+    </a>
+
+    <a *ngIf="publicacao.link" [href]="publicacao.link" target="_blank">
+      <p class="publicacao-material-apoio-texto pointer" 
+        [ngxSummernoteView]="publicacao.texto">
+      </p>
+    </a>
+
+    <a *ngIf="!publicacao.link" style="pointer-events: none;"> 
+      <p class="publicacao-material-apoio-texto pointer" 
+        [ngxSummernoteView]="publicacao.texto">
+      </p>
+    </a>
+  </div>
+  <div *ngIf="publicacao" class="text-center">
+    <br>
+    <span style="float: left;">Índice: {{publicacao.ordemExibicao}}</span>
+    <button mat-stroked-button color="accent" (click)="paraEsquerda(publicacao)" matTooltip="Mover para esquerda" class="btnTabela">
+      <mat-icon>keyboard_arrow_left</mat-icon>
+    </button>
+    <button mat-stroked-button  color="primary" (click)="escolherPublicacao()" matTooltip="Editar" class="btnTabela">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button mat-stroked-button color="warn" (click)="excluirPublicacao()" matTooltip="Excluir" class="btnTabela">
+      <mat-icon>delete</mat-icon>
+    </button>
+    <button mat-stroked-button color="accent" (click)="paraDireita(publicacao)" matTooltip="Mover para direita" class="btnTabela">
+      <mat-icon>keyboard_arrow_right</mat-icon>
+    </button>
+  </div>
+</mat-card>

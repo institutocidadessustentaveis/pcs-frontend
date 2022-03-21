@@ -1,0 +1,552 @@
+<div style="background-color: white;" class="bmd-layout-container bmd-drawer-f-l bmd-drawer-overlay ">
+  <main class="bmd-layout-content" *ngIf="biblioteca">
+
+    <div id="carousel" class="conteudo"  *ngIf="!permitirBuscaAvancada" style="position: relative;">
+      <section class="home-banner owl-carousel owl-theme">
+        <div id="carouselExampleIndicators" class="carousel slide" ride="false">
+          <div class="carousel-inner">
+            <div>
+              <img class="img-carousel" loading="lazy"
+              [src]="urlAPI+'biblioteca/imagemHome'">
+              <div class="area-pesquisa">
+                <div class="nome-da-pagina">
+                  <a [routerLink]="['/inicial/biblioteca']">
+                    <h1>
+                      BIBLIOTECA
+                    </h1>
+                  </a>
+                </div>
+
+                <div class="campo-pesquisa">
+                  <form [formGroup]="formFiltro" (submit)="buscarBibliotecas(true)" >
+
+                    <button class="botao-pesquisa" type="submit">
+                      <mat-icon class="mobile">search</mat-icon>
+                      <span class="desktop">BUSCA</span>
+                    </button>
+                    <input formControlName="palavraChave" placeholder="Digite aqui a palavra desejada" class="input-pesquisa">
+                  </form>
+                </div>
+
+                <div class="filtros-avancados">
+                  <button class="botao-busca-avancada" (click)="mostrarBuscaAvancada()">
+                    BUSCA AVANÇADA
+                  </button>
+                </div>
+
+              </div>
+
+              <div class="carousel-caption">
+                <div style="position: inherit;bottom: 0;width: 100%;">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="contentBody"  *ngIf="!permitirBuscaAvancada && biblioteca">
+        <app-breadcrumb style="position: relative;" [nomePagina]="biblioteca.tituloPublicacao"></app-breadcrumb>
+    </div>
+
+    <section id="secao-filtro" class="secao-filtro" *ngIf="permitirBuscaAvancada">
+      <header>
+        <h1><span style="font-weight: 700 !important;color: white;">FAÇA UMA BUSCA NA BIBLIOTECA</span></h1>
+      </header>
+      <div class="row search-form-color">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 search-form-color">
+          <form [formGroup]="formFiltro"  (submit)="buscarBibliotecas()"  class="example-form">
+
+            <div class="col-lg-12 search-form-color">
+              <mat-form-field>
+                <input matInput formControlName="palavraChave" placeholder="Palavra chave">
+              </mat-form-field>
+            </div>
+            <div class="row">
+
+            </div>
+            <mat-form-field class="col-lg-4 search-form-color">
+              <mat-label>Áreas de Interesse</mat-label>
+              <mat-select id="inputAreaInteresse" name="areaInteresse" formControlName="idAreaInteresse" [(value)]="filtroBiblioteca.idAreaInteresse">
+                <!-- <mat-option [value]=""></mat-option> -->
+                <mat-option *ngFor="let item of areasInteresseCombo" value="{{item.id}}">{{item.nome}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-4 search-form-color">
+              <mat-label>Módulo</mat-label>
+              <mat-select id="modulo" name="modulo" formControlName="modulo" multiple>
+                  <mat-option [value]='modulo' *ngFor="let modulo of modulos" >{{modulo}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-lg-4 search-form-color">
+              <mat-label>Eixo</mat-label>
+              <mat-select id="idEixo" name="idEixo" formControlName="idEixo" (openedChange)="onEixoChange($event)">
+                <mat-option [value]=""></mat-option>
+                <mat-option *ngFor="let item of eixosCombo" value="{{item.id}}">{{item.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-lg-4 search-form-color">
+              <mat-label>Indicador</mat-label>
+              <mat-select id="idIndicador" name="idIndicador" formControlName="idIndicador">
+                <mat-option [value]=""></mat-option>
+                <mat-option *ngFor="let item of indicadoresCombo" value="{{item.id}}" [matTooltip]="item.label">{{item.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-lg-4 search-form-color">
+              <mat-label>ODS</mat-label>
+              <mat-select id="idOds" name="idOds" formControlName="idOds" (openedChange)="onOdsChange($event)">
+                <mat-option [value]=""></mat-option>
+                <mat-option *ngFor="let item of odsCombo" value="{{item.id}}">{{item.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-lg-4 search-form-color">
+              <mat-label>Meta ODS</mat-label>
+              <mat-select id="idMetasOds" name="idMetasOds" formControlName="idMetasOds">
+                <mat-option [value]=""></mat-option>
+                <mat-option *ngFor="let item of metasOdsCombo" value="{{item.id}}" [matTooltip]="item.label">{{item.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-4 search-form-color">
+              <mat-label>País da publicação</mat-label>
+              <mat-select id="idPais" name="idPais" formControlName="idPais" (selectionChange)="onPaisChange($event)">
+                <mat-option [value]=""></mat-option>
+                <mat-option *ngFor="let item of paisesCombo" value="{{item.id}}">{{item.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-4 search-form-color">
+              <mat-label>Estado da publicação</mat-label>
+              <mat-select id="idProvinciaEstado" name="idProvinciaEstado" formControlName="idProvinciaEstado" (selectionChange)="onEstadoChange($event)">
+                <mat-option [value]=""></mat-option>
+                <mat-option *ngFor="let item of provinciaEstadoCombo" value="{{item.id}}">{{item.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-4 search-form-color">
+              <mat-label>Cidade da publicação</mat-label>
+              <mat-select id="idCidade" name="idCidade" formControlName="idCidade">
+                <mat-option [value]=""></mat-option>
+                <mat-option *ngFor="let item of cidadesCombo" value="{{item.id}}">{{item.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <div class="col-lg-12 text-right botoes-pesquisa" style="margin-top: 10px !important;">
+              <button matTooltip="Buscar Bibliotecas" mat-flat-button color="primary" id="btnBuscarBibliotecas" style="margin-right: 10px"
+                class="btnpesquisar btn-filtro-buscar" type="submit">
+                <mat-icon style="margin-top: -1px !important">search</mat-icon> Buscar
+              </button>
+
+              <button matTooltip="Fechar Busca Avançada" mat-flat-button color="accent" class="btnpesquisar btn-filtro-fechar"
+                (click)="fecharBuscaAvancada()">
+                <mat-icon style="margin-top: -1px !important">close</mat-icon> Fechar
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <div id="bibliotecas">
+      <div [hidden]="!loading" class="loading-indicator">
+        <mat-progress-spinner class="example-margin" style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+      </div>
+      <section class="secao">
+        <div class="row">
+          <div class="col-lg-8">
+              <div class=' row'>
+                <div class='col-lg-4'>
+                  <img *ngIf="biblioteca.imagemCapa" style="margin-right: 1em;height: 300px;width: 100%; object-fit: cover;" [src]="url+'biblioteca/imagem/'+biblioteca.id"  [matTooltip]="biblioteca.subtitulo">
+                  <img *ngIf="!biblioteca.imagemCapa"  style="margin-right: 1em;height: 300px;width: 100%; object-fit: cover;" class="publicacao-material-apoio text-center pointer" [src]="urlImagem()">
+                  <div class="text-center" *ngIf="biblioteca.possuiArquivos">
+                    <a  (click)="validacaoDownloadBiblioteca()" [download]="biblioteca?.tituloPublicacao" >
+                      <button class="botao-download">
+                        BAIXAR
+                      </button>
+                    </a>
+                  </div>
+                  <div class="compartilhar" style="margin-top: 10px;">
+
+                    <div  class="text-center">
+                      <button mat-icon-button (click)="salvarLogCompartilhamento('FACEBOOK')" class="btnTabela" style="background-color:#3a559f;color:white; margin-left: 10px;" shareButton="facebook"
+                        [url]="urlatual">
+                        <fa name="facebook" size="lg"></fa>
+                      </button>
+
+                      <button mat-icon-button (click)="salvarLogCompartilhamento('TWITTER')" class="btnTabela" style="background-color:#50abf1;color:white" shareButton="twitter"
+                        [url]="urlatual">
+                        <fa name="twitter" size="lg"></fa>
+                      </button>
+
+                      <button mat-icon-button (click)="salvarLogCompartilhamento('LINKEDIN')" class="btnTabela" style="background-color:#0077af;color:white" shareButton="linkedin"
+                        [url]="urlatual">
+                        <fa name="linkedin" size="lg"></fa>
+                      </button>
+
+                    </div>
+                  </div>
+                </div>
+                <div class='col-lg-8'>
+
+                    <h2 class="publicacao-material-apoio-titulo">{{biblioteca.tituloPublicacao}}</h2>
+                    <h2 class="publicacao-material-apoio-titulo subtitulo">{{biblioteca.subtitulo}}</h2>
+                    <mat-tab-group dynamicHeight>
+                      <mat-tab label="Detalhes">
+                        <br>
+                        <div class="row">
+                          <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+                            <mat-icon style="vertical-align: middle;margin-right: 1%;">assignment_ind
+                            </mat-icon>
+                          </div>
+                          <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+                            <strong>Autor<br></strong>{{ biblioteca.autor }}
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row" *ngIf="biblioteca.tipoAutor.length > 0">
+                          <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+                            <mat-icon style="vertical-align: middle;margin-right: 1%;">business
+                            </mat-icon>
+                          </div>
+                          <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+                            <strong>Tipo de Autor<br></strong>{{ biblioteca.tipoAutor }}
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row" *ngIf="biblioteca.dataPublicacao">
+                          <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+                            <mat-icon style="vertical-align: middle;margin-right: 1%;">calendar_today
+                            </mat-icon>
+                          </div>
+                          <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+                            <strong>Data de Publicação<br></strong>{{biblioteca.dataPublicacao | date:'yyyy'}}
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row" *ngIf="biblioteca.areasInteresse && biblioteca.areasInteresse.length > 0">
+                          <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+                            <mat-icon style="vertical-align: middle;margin-right: 1%;">article
+                            </mat-icon>
+                          </div>
+                          <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+                            <strong>Temas <br></strong>
+                            <span *ngFor="let tema of biblioteca.areasInteresse" >
+                              {{tema.nome + '; '}}
+                            </span>
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row" *ngIf="biblioteca.tipoMaterial">
+                          <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+                            <mat-icon style="vertical-align: middle;margin-right: 1%;">attach_file
+                            </mat-icon>
+                          </div>
+                          <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+                            <strong>Tipo de Arquivo<br></strong>{{biblioteca.tipoMaterial}}
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row" *ngIf="biblioteca.tipoMaterial">
+                          <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+                            <mat-icon style="vertical-align: middle;margin-right: 1%;">public
+                            </mat-icon>
+                          </div>
+                          <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+                            <strong>Idioma<br></strong>{{biblioteca.idioma}}
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row" *ngIf="biblioteca.tipoMaterial">
+                          <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+                            <mat-icon style="vertical-align: middle;margin-right: 1%;">business_center
+                            </mat-icon>
+                          </div>
+                          <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+                            <strong>Instituição<br></strong>{{biblioteca.instituicao}}
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row" *ngIf="biblioteca.grupoAcademico">
+                          <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+                            <mat-icon style="vertical-align: middle;margin-right: 1%;">school
+                            </mat-icon>
+                          </div>
+                          <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+                            <strong>Grupo Acadêmico<br></strong>{{biblioteca.grupoAcademico}}
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row" *ngIf="biblioteca.publicoAlvo.length > 0">
+                          <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+                            <mat-icon style="vertical-align: middle;margin-right: 1%;">people
+                            </mat-icon>
+                          </div>
+                          <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+                            <strong>Público Alvo<br></strong>
+                            <span *ngFor="let item of biblioteca.publicoAlvo" >
+                              {{item + '; '}}
+                            </span>
+                          </div>
+                        </div>
+                        <br> 
+                        <div class="row" *ngIf="biblioteca.modulo.length > 0">
+                          <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+                            <mat-icon style="vertical-align: middle;margin-right: 1%;">view_module
+                            </mat-icon>
+                          </div>
+                          <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+                            <strong>Módulo<br></strong>
+                            <span *ngFor="let item of biblioteca.modulo">
+                              {{item + '; '}}
+                            </span>
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row" *ngIf="biblioteca.eixos && biblioteca.eixos.length > 0">
+                          <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+                            <mat-icon style="vertical-align: middle;margin-right: 1%;">location_city
+                            </mat-icon>
+                          </div>
+                          <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+                            <strong>Eixos PCS relacionados<br></strong>
+                          </div>
+                        </div>
+                        <div class="row" *ngIf="biblioteca.eixos && biblioteca.eixos.length > 0">
+                          <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+                          </div>
+                          <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10" >
+                            <a *ngFor="let eixo of biblioteca.eixos" [href]="eixo.link" target="_blank">
+                              <img style="margin-right: 1em;" width="80" height="80" [src]="url+'eixo/imagem/'+eixo.id"  [matTooltip]="eixo.nome">
+                            </a><br>
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row" *ngIf="biblioteca.ods && biblioteca.ods.length > 0">
+                          <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+                            <mat-icon style="vertical-align: middle;margin-right: 1%;">language
+                            </mat-icon>
+                          </div>
+                          <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+                            <strong>ODS<br></strong>
+                          </div>
+                        </div>
+                        <div class="row" *ngIf="biblioteca.ods && biblioteca.ods.length > 0">
+                          <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+                          </div>
+                          <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10" >
+                            <div class="col-md-12-content">
+                              <section style="margin-top: 2%;">
+                                <div class="news__grid--3">
+                                  <div class="news__grid-inner">
+                                    <div class="square">
+                                      <div class="content">
+                                        <a *ngFor="let o of biblioteca.ods" [routerLink]="['/institucional/ods/',o.id]">
+                                          <img style="margin-right: 1em;"  width="80" height="80" [src]="url+'ods/imagem/'+o.id"  [matTooltip]="o.titulo">
+                                        </a><br>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </section>
+                            </div>
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row" *ngIf="biblioteca.meta.length > 0">
+                          <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+                            <mat-icon style="vertical-align: middle;margin-right: 1%;">
+                            </mat-icon>
+                          </div>
+                          <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+                            <strong>Metas ODS<br></strong>
+                            <table>
+                              <tr *ngFor="let meta of biblioteca.meta">
+                                <td class='item-table'>
+                                  <b>{{meta.numero}} - </b>{{meta.descricao}}
+                                </td>
+                              </tr>
+                            </table>
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row" *ngIf="biblioteca.areasInteresse.length > 0">
+                          <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+                            <mat-icon style="vertical-align: middle;margin-right: 1%;">pie_chart
+                            </mat-icon>
+                          </div>
+                          <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+                            <strong>Áreas de Interesse<br></strong>
+                            <span *ngFor="let item of biblioteca.areasInteresse">
+                              {{item.nome + '; '}}
+                            </span>
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row" *ngIf="biblioteca.indicadores.length > 0">
+                          <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+                            <mat-icon style="vertical-align: middle;margin-right: 1%;">poll
+                            </mat-icon>
+                          </div>
+                          <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+                            <strong>Indicadores<br></strong>
+                            <span *ngFor="let item of biblioteca.indicadores" >
+                              {{item.nome + '; '}}
+                            </span>
+                          </div>
+                        </div>
+                        <br>
+                        
+                      </mat-tab>
+                      <mat-tab label="Localização" *ngIf="biblioteca.paisNome || biblioteca.estadoNome || biblioteca.cidadeNome">
+                        <br>
+                        <div class="row" *ngIf="biblioteca.grupoAcademico">
+                          <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+                            <mat-icon style="vertical-align: middle;margin-right: 1%;">location_on
+                            </mat-icon>
+                          </div>
+                          <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+                            <strong>Local<br></strong>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+                          </div>
+                          <div *ngIf="biblioteca.paisNome" class="col-lg-10 col-xl-10 col-sm-10 col-md-10" >
+                           <strong>País:</strong> {{biblioteca.paisNome}}
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+                          </div>
+                          <div *ngIf="biblioteca.estadoNome" class="col-lg-10 col-xl-10 col-sm-10 col-md-10" >
+                           <strong>Estado:</strong> {{biblioteca.estadoNome}}
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+                          </div>
+                          <div *ngIf="biblioteca.cidadeNome" class="col-lg-10 col-xl-10 col-sm-10 col-md-10" >
+                           <strong>Cidade:</strong> {{biblioteca.cidadeNome}}
+                          </div>
+                        </div>
+ 
+                      </mat-tab>
+                      <mat-tab label="Descrição" *ngIf="biblioteca.descricao">
+                        <br>
+                        <div class="row">
+                          <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+                            <mat-icon style="vertical-align: middle;margin-right: 1%;">description
+                            </mat-icon>
+                          </div>
+                          <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+                            <strong>Descrição<br></strong>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-1 col-xl-1 col-sm-1 col-md-1">
+                          </div>
+                          <div class="col-lg-10 col-xl-10 col-sm-10 col-md-10">
+                            <a [innerHTML]="biblioteca.descricao"></a>
+                          </div>
+                        </div> 
+                      </mat-tab>
+                    </mat-tab-group>
+
+                    <section *ngIf="!galeriaDeVideosVazio" style="margin-bottom: 14px; margin-top: 14px;">
+                      <span class="item">Galeria de vídeos <br><br></span>
+                      <div  [hidden]="galeriaDeVideosVazio">
+                        <div>
+                          <div id="carousel-pcs-videos" class="carousel slide">
+                            <ol class="carousel-indicators">
+                              <li data-target="#carouselExampleIndicators" *ngFor="let x of galeriaDeVideos;let i = index"
+                                [attr.data-slide-to]="i" ngClass="i == 0 ? 'active' : ''"></li>
+                            </ol>
+                            <div class="carousel-inner">
+                              <div *ngFor="let item of galeriaDeVideos; let k = index"
+                                [ngClass]="k == 0 ? 'carousel-item active' : 'carousel-item'">
+                                <div>
+                                  <iframe class="embed-responsive-item" [src]="item.safeUrl" allowfullscreen
+                                    style="height: 400px; width:100%;"></iframe>
+                                </div>
+                              </div>
+                            </div>
+                            <a *ngIf="galeriaDeVideos.length > 1" class="carousel-control-prev" href="#carousel-pcs-videos" role="button" data-slide="prev"
+                              style="margin-bottom: 10%; margin-top: 10%;">
+                              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                              <span class="sr-only">Previous</span>
+                            </a>
+                            <a *ngIf="galeriaDeVideos.length > 1" class="carousel-control-next" href="#carousel-pcs-videos" role="button" data-slide="next"
+                              style="margin-bottom: 10%; margin-top: 10%;">
+                              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                              <span class="sr-only">Next</span>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+                    <section [hidden]="galeriaDeAudios.length == 0">
+                      <p class="item">Galeria de Aúdios</p>
+                      <div *ngFor="let audio of galeriaDeAudios" >
+                        <audio controls [src]="audio.safeUrl" style="width: 100%"></audio>
+                      </div>
+                    </section>
+
+                </div>
+
+              </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="row">
+              <div class="col-md-12 row-card-side-bar" style="padding-bottom: 0px !important;" >
+                <div class="h-100" style="cursor: pointer;">
+
+                  <div class="row">
+                    <div class="caixa" style="background-color: rgb(106, 177, 135);"></div>
+                    <a class="h1 titulos" onclick="return false;">ARQUIVOS RECENTES</a>
+                  </div>
+
+                  <div class="card-body" style="padding-bottom:7% !important; background-color: rgba(106, 177, 135, 0.1); margin-top: 20px;">
+                    <div class="row"*ngFor="let item of ultimasPublicacoes">
+                      <div  class=" verticalLine" style="margin-top: 5%;" >
+                        <div style="padding: 0px 15px">
+                          <a [routerLink]="['/biblioteca/detalhe/',item.id]" class="titulos-no-border underline-on-hover" style="margin-bottom:3% !important;width: 100%;border-color: #408559; color: #408559"
+                            onclick="return false;">{{item.tituloPublicacao}}</a> <br>
+                          <span [routerLink]="['/biblioteca/detalhe/',item.id]" class="titulos-no-border underline-on-hover" style="margin-bottom:3% !important;width: 100%; color: rgb(98, 97, 104);"  [innerHTML]="item.autor">
+                          </span>
+                        </div>
+                      </div>
+                      <hr style="border-top: 1pt solid; width: 85%; color: rgb(106, 177, 135);">
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div style="margin-top: 24px" [hidden]="esconderMapa">
+            <mat-card>
+              <div class="row">
+                <div class="col-lg-12">
+                  <div leaflet style="height: 86vh; width: 100%;" id="map"
+                  [leafletOptions]="options"
+                  (leafletMapReady)="onMapReady($event)">
+                  </div>
+                </div>
+              </div>
+            </mat-card>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    </div>
+

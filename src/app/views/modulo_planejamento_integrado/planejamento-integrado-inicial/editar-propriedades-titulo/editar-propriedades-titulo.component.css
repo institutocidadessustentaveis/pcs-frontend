@@ -1,0 +1,4 @@
+.edicao-titulo{
+  overflow-y: scroll;
+  max-height: 30rem;
+}

@@ -1,0 +1,161 @@
+  .nome-usuario {
+    font-size: 12px;
+    font-weight: bold;
+    color: #50926a;
+  }
+
+  .data-horario {
+      font-size: 12px;
+      color: #50926a;
+  }
+
+  .pontos-light{
+    background: url("../../../../assets/boas-praticas-inicial/pontos-light.png");
+  }
+
+  .mat-card{
+      margin-bottom: 30px;
+    }
+
+  button{
+      margin-bottom: 8px;
+  }
+
+  .conteudo {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .home-banner h1 {
+    font-weight: 700 !important;
+    font-size: calc(17px + 1.5vw);
+    line-height: 1.25em;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+    text-transform: uppercase;
+  }
+
+  .home-banner h4 {
+    font-size: calc(10px + 1.0vw) !important;
+  }
+
+  .secao-filtro{
+    background-color: #8a9ea1;
+    margin-bottom: 1em;
+    padding-top: 3em;
+    padding-bottom: 3em;
+  }
+
+  .secao-filtro > h1 span {
+    color: #fff;
+    position: relative;
+    z-index: 2;
+  }
+
+  .secao-filtro header {
+    color: #fff;
+    padding-left: 30px;
+  }
+
+  .secao-filtro > header h1 {
+    font-size: 2em;
+    line-height: 2em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #fff;
+    text-align: left;
+    position: relative;
+  }
+
+  .search-form-color ::ng-deep .mat-select-value-text {
+    color: white !important;
+  }
+
+  .search-form-color ::ng-deep .mat-focused .mat-form-field-label {
+    color: white !important;
+  }
+
+  .search-form-color ::ng-deep .mat-form-field-label {
+    color: white !important;
+  }
+
+  .search-form-color ::ng-deep.mat-form-field-underline {
+    background-color: white !important;
+  }
+
+  .search-form-color ::ng-deep.mat-form-field-ripple {
+    background-color: white !important;
+  }
+
+  .search-form-color ::ng-deep .mat-select-arrow {
+    color: white !important;
+  }
+
+  .search-form-color ::ng-deep .mat-form-field-empty.mat-form-field-label {
+    color: white !important;
+  }
+
+  .search-form-color ::ng-deep .mat-datepicker-toggle {
+    color: white !important;
+  }
+
+  .search-form-color ::ng-deep .mat-datepicker {
+    color: white !important;
+  }
+
+  .search-form-color ::ng-deep input.mat-input-element {
+    color: white;
+  }
+
+  .itens-filtro div{
+    padding-left: 25px;
+    padding-right: 20px;
+  }
+
+  .btn-comentario {
+    margin-right: 10px;
+    height: 36px;
+    min-width: 175px;
+  }
+
+  .btn-group {
+    text-align: right !important;
+    display: initial;
+  }
+
+  @media(min-width: 1098px) {
+    .botoes-pesquisa {
+      display: inline;
+    }
+    .botoes-pesquisa-p {
+      display: none;
+    }
+
+    .btn-group {
+      text-align: right !important;
+      display: initial;
+    }
+  }
+
+
+@media(max-width: 991px) and (min-width: 380px){
+  .botoes-pesquisa {
+    display: inline;
+  }
+  .botoes-pesquisa-p {
+    display: none;
+  }
+  .btn-group {
+    text-align: right !important;
+    display: initial;
+  }
+}
+
+@media(max-width: 379px) {
+  .btn-group {
+    display: inline-grid;
+  }
+
+  .btn-comentario {
+    margin-right: initial;
+  }
+}

@@ -1,0 +1,122 @@
+<div class="contentBody" style="position: relative;">
+  <app-breadcrumb></app-breadcrumb>
+  <mat-card>
+  
+    <div class="row">
+    
+      <div class="col-md-8 col-lg-9 col-xs-12 col-sm-12">
+        <h2>Administração de Instituição</h2>
+      </div>
+    
+      <div class="col-md-4 col-lg-3 col-xs-12 col-sm-12" style="text-align: right;">
+        <button mat-flat-button color="primary" [routerLink]="['cadastrar']" class="btnCadastrar"
+          id="btnCadastrar" matTooltip="Cadastrar" style="cursor: pointer !important; margin-bottom: 5px;">
+          <mat-icon>add</mat-icon>Cadastrar Instituição
+        </button><br>
+        <button  mat-flat-button color="primary" (click)="arquivo.click()" matTooltip="Importar valores das variáveis" style="margin-bottom: 5px;">
+          <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>
+          Importar Instituições
+        </button>
+        <input hidden #arquivo type="file"
+          id="arquivo"
+          name="arquivo"
+          (change)="enviarArquivo($event)"
+          accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+         <br />
+      </div>
+    
+    </div>
+    
+    <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+      <mat-divider></mat-divider>
+    </div>
+    
+    <br>
+    <br>
+    
+    <mat-expansion-panel hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon  style="margin-right: 4px">filter_list</mat-icon><b>FILTRO</b>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-form-field class="col-md-12">
+        <input matInput placeholder="Nome da Instituição" id="nome" (keyup)="filtrar($event.target.value)">
+      </mat-form-field>
+    </mat-expansion-panel>
+
+    <div *ngIf="!mostrarAvisoListaVazia">
+      <table mat-table [dataSource]="dataSource" matSort>
+     
+        <ng-container matColumnDef="nomeGrupo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="nomeGrupo">Nome da Instituição </th>
+          <td mat-cell *matCellDef="let item">{{item.nomeGrupo}}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="tipo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="tipo">Tipo de Instituição </th>
+          <td mat-cell *matCellDef="let item">{{item.tipo}}<div *ngIf="item.tipo == null">-</div></td>
+        </ng-container>
+  
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="nomeEstado">Estado</th>
+          <td mat-cell *matCellDef="let item">{{item.nomeEstado}}<div *ngIf="item.nomeEstado == ''">-</div></td>
+        </ng-container>
+  
+        <ng-container matColumnDef="cidade">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="nomeCidade">Cidade</th>
+          <td mat-cell *matCellDef="let item">{{item.nomeCidade}}<div *ngIf="item.nomeCidade == ''">-</div></td>
+        </ng-container>
+      
+        <ng-container matColumnDef="acoes">
+          <th mat-header-cell *matHeaderCellDef> Ações </th>
+          <td mat-cell *matCellDef="let item" class='m-card-title' data-label='Ações'>
+      
+            <button mat-flat-button color="primary" type="button" name="button"
+              [routerLink]="['editar', item.id]" class="btnTabela" id="btnEditar" matTooltip="Editar" >
+              <mat-icon> edit </mat-icon>
+            </button>
+  
+            <button mat-flat-button color="primary" type="button" name="button" [routerLink]="['detalhes', item.id]"
+              class="btnTabela" id="btnVisualizar" matTooltip="Visualizar">
+              <mat-icon> search </mat-icon>
+             </button>
+      
+            <button mat-flat-button color="warn" type="button" name="button"
+              class="btnTabela" id="btnExcluir" matTooltip="Excluir" (click)="excluirGrupoAcademico(item.id)">
+              <mat-icon> delete </mat-icon>
+            </button>
+      
+          </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        
+      </table>
+    </div>
+    <mat-paginator style="text-align: center !important;" class="float-none" [pageSizeOptions]="[10,25,50,100]"
+    showFirstLastButtons></mat-paginator>
+    <div class="alert alert-warning" *ngIf="mostrarAvisoListaVazia">
+      Você ainda não cadastrou itens de instituições.
+    </div>
+  </mat-card>
+  <ng-template #modalLoading>
+    <div class="centralizar-loading">
+       <div id="circularG">
+        <div id="circularG_1" class="circularG"></div>
+        <div id="circularG_2" class="circularG"></div>
+        <div id="circularG_3" class="circularG"></div>
+        <div id="circularG_4" class="circularG"></div>
+        <div id="circularG_5" class="circularG"></div>
+        <div id="circularG_6" class="circularG"></div>
+        <div id="circularG_7" class="circularG"></div>
+        <div id="circularG_8" class="circularG"></div>
+      </div> 
+      <div class="mt-2" style="text-align: center">
+        <p>Por favor aguarde, isso pode demorar alguns minutos.</p>
+      </div>
+    </div>
+  </ng-template>
+</div>
+  

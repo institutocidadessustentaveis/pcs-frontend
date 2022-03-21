@@ -1,0 +1,164 @@
+<!-- Sexta seção -->
+
+<section>
+  <div class="col-md-12" *ngIf="sextaSecao?.tituloPrincipal" style="margin-bottom:3%">
+    <div class="row">
+      <div class="caixa" [style.background-color]="sextaSecao?.tituloPrincipalCor"></div>
+      <a *ngIf="sextaSecao?.tituloPrincipal && sextaSecao?.tituloPrincipalLink && !verificaLinks(sextaSecao?.tituloPrincipalLink)" class="h1 titulos" style="margin-bottom:0 !important;"
+        [style.border-color]="sextaSecao?.tituloPrincipalCor"
+        [style.color]="sextaSecao?.tituloPrincipalCor"
+        [href]="sextaSecao?.tituloPrincipalLink" target="_blank">{{sextaSecao?.tituloPrincipal}}</a>
+
+      <a *ngIf="sextaSecao?.tituloPrincipal && sextaSecao?.tituloPrincipalLink && verificaLinks(sextaSecao?.tituloPrincipalLink)" class="h1 titulos" style="margin-bottom:0 !important; cursor: pointer;"
+        [style.border-color]="sextaSecao?.tituloPrincipalCor"
+        [style.color]="sextaSecao?.tituloPrincipalCor" 
+        (click)="validacaoDownload(sextaSecao?.tituloPrincipalLink)">{{sextaSecao?.tituloPrincipal}}</a>
+
+      <a *ngIf="sextaSecao?.tituloPrincipal && !sextaSecao?.tituloPrincipalLink" class="h1 titulos" style="margin-bottom:0 !important;"
+        [style.border-color]="sextaSecao?.tituloPrincipalCor"
+        [style.color]="sextaSecao?.tituloPrincipalCor">{{sextaSecao?.tituloPrincipal}}</a>
+    </div>
+  </div>
+
+  <div class="row" style="margin-right: 30px;margin-left: 0px;">
+    <div class="col-md-6 one-column-center" >
+         
+      <div class="row">
+        <div class="carousel-inner" style="padding-right: 4%;padding-left: 6%;">
+
+          <a class="one-column-center" style="height: 100%;width: 100%;margin-top: 1%;"
+            *ngIf="sextaSecao?.primeiraImagemSafeUrl && sextaSecao?.primeiraImagemLink && !verificaLinks(sextaSecao?.primeiraImagemLink)" 
+            [href]="sextaSecao?.primeiraImagemLink"
+            target="_blank" rel="noopener">
+            <img [src]="sextaSecao?.primeiraImagemSafeUrl" class="img-third-section"
+            [matTooltip]="sextaSecao?.primeiraImagemTooltip">
+          </a>
+
+          <a class="one-column-center" style="height: 100%;width: 100%;margin-top: 1%; cursor: pointer;"
+            *ngIf="sextaSecao?.primeiraImagemSafeUrl && sextaSecao?.primeiraImagemLink && verificaLinks(sextaSecao?.primeiraImagemLink)" 
+            (click)="validacaoDownload(sextaSecao?.primeiraImagemLink)"
+             rel="noopener">
+            <img [src]="sextaSecao?.primeiraImagemSafeUrl" class="img-third-section"
+            [matTooltip]="sextaSecao?.primeiraImagemTooltip">
+          </a>
+
+          <a class="one-column-center" style="height: 100%;width: 100%;margin-top: 1%;"
+            *ngIf="sextaSecao?.primeiraImagemSafeUrl && !sextaSecao?.primeiraImagemLink">
+            <img [src]="sextaSecao?.primeiraImagemSafeUrl" class="img-third-section"
+            [matTooltip]="sextaSecao?.primeiraImagemTooltip">
+          </a>
+
+
+          <div class="row" style="margin-top: 5%; margin-bottom: 3%;">
+            <a *ngIf="sextaSecao?.primeiroTitulo && sextaSecao?.primeiroTituloLink && !verificaLinks(sextaSecao?.primeiroTituloLink)" class="h5 titulos-no-border underline-on-hover" style="margin-bottom:3% !important;width: 100%;"
+              [style.border-color]="sextaSecao?.primeiroTituloCor"
+              [style.color]="sextaSecao?.primeiroTituloCor"
+              [href]="sextaSecao?.primeiroTituloLink" target="_blank">{{sextaSecao?.primeiroTitulo}}</a>
+
+            <a *ngIf="sextaSecao?.primeiroTitulo && sextaSecao?.primeiroTituloLink && verificaLinks(sextaSecao?.primeiroTituloLink)" class="h5 titulos-no-border underline-on-hover" style="margin-bottom:3% !important;width: 100%; cursor: pointer;"
+              [style.border-color]="sextaSecao?.primeiroTituloCor"
+              [style.color]="sextaSecao?.primeiroTituloCor"
+              (click)="validacaoDownload(sextaSecao?.primeiroTituloLink)">{{sextaSecao?.primeiroTitulo}}</a>
+
+            <a *ngIf="sextaSecao?.primeiroTitulo && !sextaSecao?.primeiroTituloLink" class="h5 titulos-no-border underline-on-hover" style="margin-bottom:3% !important;width: 100%;"
+              [style.border-color]="sextaSecao?.primeiroTituloCor"
+              [style.color]="sextaSecao?.primeiroTituloCor">{{sextaSecao?.primeiroTitulo}}</a>
+
+
+
+            <a *ngIf="sextaSecao?.primeiroTexto && sextaSecao?.primeiroTextoLink && !verificaLinks(sextaSecao?.primeiroTextoLink)" class="one-column-texto-small underline-on-hover" style="color: #231f20;width: 100%;"
+              [style.color]="sextaSecao?.primeiroTextoCor" [innerHTML]="sextaSecao?.primeiroTexto"
+              [href]="sextaSecao?.primeiroTextoLink" target="_blank">
+            </a>
+
+            <a *ngIf="sextaSecao?.primeiroTexto && sextaSecao?.primeiroTextoLink && verificaLinks(sextaSecao?.primeiroTextoLink)" class="one-column-texto-small underline-on-hover" style="color: #231f20;width: 100%; cursor: pointer;"
+              [style.color]="sextaSecao?.primeiroTextoCor" [innerHTML]="sextaSecao?.primeiroTexto"
+              (click)="validacaoDownload(sextaSecao?.primeiroTextoLink)">
+
+            <a *ngIf="sextaSecao?.primeiroTexto && !sextaSecao?.primeiroTextoLink" class="one-column-texto-small underline-on-hover" style="color: #231f20;width: 100%;"
+              [style.color]="sextaSecao?.primeiroTextoCor" [innerHTML]="sextaSecao?.primeiroTexto">
+            </a>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 one-column-center" >
+      <div class="row fix-row">
+        <div class="carousel-inner"  style="padding-left: 4%;padding-right: 6%">
+
+          <a class="one-column-center" style="height: 100%;width: 100%;margin-top: 1%;"
+            *ngIf="sextaSecao?.segundaImagemSafeUrl && sextaSecao?.segundaImagemLink && !verificaLinks(sextaSecao?.segundaImagemLink)" 
+            [href]="sextaSecao?.segundaImagemLink"
+            target="_blank" rel="noopener">
+            <img [src]="sextaSecao?.segundaImagemSafeUrl" class="img-third-section"
+            [matTooltip]="sextaSecao?.segundaImagemTooltip">
+          </a>
+
+          <a class="one-column-center" style="height: 100%;width: 100%;margin-top: 1%; cursor: pointer;"
+            *ngIf="sextaSecao?.segundaImagemSafeUrl && sextaSecao?.segundaImagemLink && verificaLinks(sextaSecao?.segundaImagemLink)"
+            (click)="validacaoDownload(sextaSecao?.segundaImagemLink)"
+            target="_blank" rel="noopener">
+            <img [src]="sextaSecao?.segundaImagemSafeUrl" class="img-third-section"
+            [matTooltip]="sextaSecao?.segundaImagemTooltip">
+          </a>
+
+          <a class="one-column-center" style="height: 100%;width: 100%;margin-top: 1%;"
+            *ngIf="sextaSecao?.segundaImagemSafeUrl && !sextaSecao?.segundaImagemLink">
+            <img [src]="sextaSecao?.segundaImagemSafeUrl" class="img-third-section"
+            [matTooltip]="sextaSecao?.segundaImagemTooltip">
+          </a>
+
+
+          <div class="row" style="margin-top: 5%; margin-bottom: 3%;">
+            <a *ngIf="sextaSecao?.segundoTitulo && sextaSecao?.segundoTituloLink && !verificaLinks(sextaSecao?.segundoTituloLink)" class="h5 titulos-no-border underline-on-hover" style="margin-bottom:3% !important;width: 100%;"
+              [style.border-color]="sextaSecao?.segundoTituloCor"
+              [style.color]="sextaSecao?.segundoTituloCor"
+              [href]="sextaSecao?.segundoTituloLink" target="_blank">{{sextaSecao?.segundoTitulo}}</a>
+              
+            <a *ngIf="sextaSecao?.segundoTitulo && sextaSecao?.segundoTituloLink && verificaLinks(sextaSecao?.segundoTituloLink)" class="h5 titulos-no-border underline-on-hover" style="margin-bottom:3% !important;width: 100%; cursor: pointer;"
+              [style.border-color]="sextaSecao?.segundoTituloCor"
+              [style.color]="sextaSecao?.segundoTituloCor"
+              (click)="validacaoDownload(sextaSecao?.segundoTituloLink)">{{sextaSecao?.segundoTitulo}}</a>
+
+            <a *ngIf="sextaSecao?.segundoTitulo && !sextaSecao?.segundoTituloLink" class="h5 titulos-no-border underline-on-hover" style="margin-bottom:3% !important;width: 100%;"
+              [style.border-color]="sextaSecao?.segundoTituloCor"
+              [style.color]="sextaSecao?.segundoTituloCor">{{sextaSecao?.segundoTitulo}}</a>
+
+
+
+            <a *ngIf="sextaSecao?.segundoTexto && sextaSecao?.segundoTextoLink && !verificaLinks(sextaSecao?.segundoTextoLink)" class="one-column-texto-small underline-on-hover" style="color: #231f20;width: 100%;"
+              [style.color]="sextaSecao?.segundoTextoCor" [innerHTML]="sextaSecao?.segundoTexto"
+              [href]="sextaSecao?.segundoTextoLink" target="_blank">
+            </a>
+
+            <a *ngIf="sextaSecao?.segundoTexto && sextaSecao?.segundoTextoLink && verificaLinks(sextaSecao?.segundoTextoLink)" class="one-column-texto-small underline-on-hover" style="color: #231f20;width: 100%; cursor: pointer;"
+              [style.color]="sextaSecao?.segundoTextoCor" [innerHTML]="sextaSecao?.segundoTexto"
+              (click)="validacaoDownload(sextaSecao?.segundoTextoLink)">
+            
+            <a *ngIf="sextaSecao?.segundoTexto && !sextaSecao?.segundoTextoLink" class="one-column-texto-small underline-on-hover" style="color: #231f20;width: 100%;"
+              [style.color]="sextaSecao?.segundoTextoCor" [innerHTML]="sextaSecao?.segundoTexto">
+            </a>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top:3%;margin-right: 30px;margin-left: 0px;">
+    <div class="col-md-6 one-column-center" >
+      <div class="row" style="">
+        <hr class="lineHorizontal" style="border-top: 1pt solid; margin-right: 15px;width: 100%;" [style.color]="sextaSecao?.tituloPrincipalCor">
+      </div>
+    </div>
+
+    <div class="col-md-6 one-column-center" >
+      <div class="row" style="padding-left: 15px;">
+        <hr class="lineHorizontal" style="border-top: 1pt solid;width: 100%;" [style.color]="sextaSecao?.tituloPrincipalCor">
+      </div>
+    </div>
+  </div>
+
+</section>

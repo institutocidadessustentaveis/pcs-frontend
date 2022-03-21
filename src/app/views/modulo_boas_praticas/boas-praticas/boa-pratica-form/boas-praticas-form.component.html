@@ -1,0 +1,483 @@
+<div class="contentBody" style="position: relative;">
+    <app-breadcrumb style="position: relative;"></app-breadcrumb>
+<mat-card>
+    <mat-card-title></mat-card-title>
+    <br />
+    <div [hidden]="!loading" class="loading-indicator">
+        <mat-progress-spinner class="example-margin" style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+    </div>
+
+    <mat-horizontal-stepper linear #stepper (selectionChange)="prepararPreVisualizacao($event.selectedIndex)">
+        <!-- Informações gerais -->
+        <mat-step [stepControl]="firstFormGroup" [editable]="true">
+            <form [formGroup]="firstFormGroup">
+                <ng-template matStepLabel>Informações gerais</ng-template>
+
+                <mat-form-field class="col-md-12">
+                    <input matInput placeholder="Nome da instituição" formControlName="nomeInstituicao" maxlength="100"
+                        #inputNomeInstituicao id="inputNomeInstituicao">
+                    <mat-hint align="end">{{ inputNomeInstituicao.value?.length || 0 }}/100</mat-hint>
+                </mat-form-field>
+
+                <mat-form-field class="col-md-4">
+                    <mat-label>-- Selecione um país --</mat-label>
+                    <mat-select id="idPais" name="pais" (selectionChange)="paisSelecionado($event.value)"
+                        formControlName="pais" [disabled]="modoPrefeitura" required>
+                        <mat-option *ngFor="let pais of listaPaisesCombo" [value]="pais">{{pais.nome}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="firstFormGroup.controls['pais'].hasError('required')">
+                        Campo país é obrigatório
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="col-md-4">
+                    <input type="text" placeholder="Província/Estado" aria-label="Província/Estado" matInput
+                    formControlName="estado" [matAutocomplete]="auto" matTooltip="Selecione um país para carregar as opções de Província/Estado" required>
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="getTextoExibicaoProvinciaEstado" (optionSelected)="estadoSelecionado($event.option.value)">
+                        <mat-option *ngFor="let option of listaProvinciaEstadoFiltrada | async" [value]="option">
+                            {{option.nome}}
+                        </mat-option>
+                    </mat-autocomplete>
+                    <mat-error *ngIf="firstFormGroup.controls['estado'].hasError('required')">
+                        Campo estado é obrigatório
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="col-md-4">
+                    <mat-label>-- Selecione um município --</mat-label>
+                    <mat-select id="idMunicipio" name="municipio" formControlName="municipio"
+                        [disabled]="modoPrefeitura" required>
+                        <mat-option *ngFor="let municipio of listaCidadeCombo " [value]="municipio">{{ municipio.label }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="firstFormGroup.controls['municipio'].hasError('required')">
+                        Campo município é obrigatório
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="col-md-8">
+                    <input matInput placeholder="Endereço" formControlName="endereco" maxlength="250" #inputEndereco
+                        id="inputEndereco">
+                    <mat-hint align="end">{{ inputEndereco.value?.length || 0 }}/250</mat-hint>
+                </mat-form-field>
+
+                <mat-form-field class="col-md-4">
+                    <input matInput placeholder="Site" formControlName="site" maxlength="80" #inputSite id="inputSite">
+                    <mat-hint align="end">{{ inputSite.value?.length || 0 }}/80</mat-hint>
+                </mat-form-field>
+
+                <mat-form-field class="col-md-6">
+                    <input matInput placeholder="Contato" formControlName="contato" maxlength="1000" #inputContato
+                        id="inputContato">
+                    <mat-hint align="end">{{ inputContato.value?.length || 0 }}/1000</mat-hint>
+                </mat-form-field>
+
+                <mat-form-field class="col-md-6">
+                    <input matInput placeholder="E-mail" formControlName="email" [errorStateMatcher]="matcher"
+                        maxlength="100" #inputEmail id="inputEmail">
+                    <mat-hint align="end">{{ inputEmail.value?.length || 0 }}/100</mat-hint>
+                    <mat-error
+                        *ngIf="firstFormGroup.controls['email'].hasError('email') && !firstFormGroup.controls['email'].hasError('required')">
+                        Por favor insira um e-mail válido
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="col-md-6">
+                    <input type="cel" matInput placeholder="Telefone" mask="(00) 0000-0000" formControlName="telefone"
+                        maxlength="14" #inputTelefone id="inputTelefone">
+                    <mat-hint align="end">{{ inputTelefone.value?.length || 0 }}/14</mat-hint>
+                </mat-form-field>
+
+                <mat-form-field class="col-md-6">
+                    <input type="cel" matInput placeholder="Celular" mask="(00) 00000-0000" formControlName="celular"
+                        maxlength="15" #inputCelular id="inputCelular">
+                    <mat-hint align="end">{{ inputCelular.value?.length || 0 }}/15</mat-hint>
+                </mat-form-field>
+
+                <mat-form-field class="col-md-6">
+                    <input type="date" formControlName="dtInicio" matInput placeholder="Data de início da boa prática">
+                </mat-form-field>
+                <mat-form-field class="col-md-6">
+                    <input type="date" formControlName="dataPublicacao" matInput placeholder="Data de publicação da boa prática">
+                </mat-form-field>
+
+                <mat-checkbox class="col-md-12" formControlName="paginaInicial" *ngIf="!modoPrefeitura">Exibir o conteúdo na página inicial</mat-checkbox>
+
+                <!-- Image cropper -->
+                <br>
+                <input hidden #imagemInputPrincipal type="file" id="imagemPrincipal" name="imagemPrincipal"
+                    accept="image/jpeg,image/png" (change)="fileChangeEvent($event)">
+                <button type="button" mat-raised-button (click)="imagemInputPrincipal.click()" id="btnIcone" name="icone"
+                    color="primary" style="margin-top: 20px; cursor: pointer;" matTooltip="Upload Imagem Principal">
+                    <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar imagem principal *
+                </button>
+                <mat-error *ngIf="!imagemPrincipal" style="margin-bottom: 20px;"> <sub>Escolha ao menos uma imagem principal</sub>
+                </mat-error>
+
+                <div>
+                    <image-cropper style="max-height: 500px;"
+                    [imageChangedEvent]="imageChangedEvent"
+                    [maintainAspectRatio]="false" 
+                    [aspectRatio]="1 / 1"
+                    [resizeToWidth]="0" format="png" 
+                    (imageCropped)="imageCropped($event)"
+                    ></image-cropper>
+                </div>
+
+                <div class="containerGaleria" *ngIf="imagemPrincipal">
+                    <img [src]="imagemPrincipal.safeUrl" style="width:100%">
+                    <button type="button" mat-raised-button style="width:100%;" (click)="deletarImagemPrincipal(imagemPrincipal)" *ngIf="imagemPrincipal"><mat-icon class="btn-remover">delete</mat-icon></button>
+                </div>
+
+                <mat-form-field class="col-md-6">
+                    <input matInput placeholder="Autor imagem principal" formControlName="autorImagemPrincipal" maxlength="100" #inputAutorImagemPrincipal
+                        id="inputAutorImagemPrincipal">
+                    <mat-hint align="end">{{ inputAutorImagemPrincipal.value?.length || 0 }}/100</mat-hint>
+                </mat-form-field>
+
+                <div>
+                    <mat-checkbox formControlName="possuiFiltro">Adicionar filtro verde na imagem</mat-checkbox>
+                </div>
+                <!-- ./Image cropper -->
+
+                <div class="col-md-12">
+                    <input hidden #imagemInputGaleria type="file" id="imagemGaleria" name="imagemGaleria"
+                        accept="image/jpeg,image/jpg, image/png" (change)="processImage($event, 'galeria')">
+                    <button type="button" mat-raised-button (click)="imagemInputGaleria.click()" id="btnImagemGaleria"
+                        name="imagemGaleria" color="primary"
+                        style="margin-bottom: 20px; margin-top: 20px; cursor: pointer;"
+                        matTooltip="Upload Imagem Para Galeria">
+                        <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar imagem para galeria
+                    </button>
+
+                    <div class="row">
+                        <div class="containerGaleria col-md-2" *ngFor="let item of imagensGaleria">
+                            <img [src]="item.safeUrl" style="width:100%">
+                            <button type="button" mat-raised-button style="width:100%;" (click)="deletarImagemDaGaleria(item)"><mat-icon class="btn-remover">delete</mat-icon></button>
+                            <mat-form-field>
+                                <input type="text" #autor matInput (blur)="onEnter(autor.value, item)" value='{{item.nomeAutor}}' placeholder="Autoria da imagem">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <mat-form-field style="width: 20%">
+                        <input matInput placeholder="Link do vídeo" formControlName="urlVideo" id="videoAdicionado">
+                    </mat-form-field>
+                    <button type="button" mat-raised-button id="btnImagemGaleriaVideo" name="urlGaleriaVideo" color="primary"
+                        style="margin-left:20px; margin-bottom: 20px; margin-top: 20px; cursor: pointer;" (click)="adicionarVideo()">Adicionar
+                        vídeo</button>
+
+                    <div class="row">
+                        <div class="containerGaleria col-md-2" *ngFor="let item of galeriaDeVideos">
+                            <iframe frameborder="0" [src]="item.safeUrl" class="note-video-clip" style="width:100%;"></iframe>
+                            <button type="button" mat-raised-button style="width:100%;" (click)="deletarVideoDaGaleria(item)">
+                                <mat-icon class="btn-remover">delete</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+                <div>
+                    <button mat-raised-button matStepperNext style="float:right">Próximo</button>
+                </div>
+            </form>
+        </mat-step>
+        <!-- ./Informações gerais -->
+
+        <!-- Identificação da Boa Prática -->
+        <mat-step [stepControl]="secondFormGroup" [editable]="true">
+            <form [formGroup]="secondFormGroup">
+                <ng-template matStepLabel>Identificação da Boa Prática</ng-template>
+
+                <mat-form-field class="col-md-12">
+                    <input matInput placeholder="Título" formControlName="titulo" maxlength="250" #inputTitulo
+                        id="inputTitulo" matTooltip="Título da Boa Prática">
+                    <mat-hint align="end">{{ inputTitulo.value?.length || 0 }}/250</mat-hint>
+                </mat-form-field>
+
+                <mat-form-field class="col-md-12">
+                    <input matInput placeholder="Subtítulo/Linha fina" formControlName="subtitulo" maxlength="500" #inputSubtitulo
+                        id="inputSubtitulo" matTooltip="Subtítulo da Boa Prática a ser inserido sob o título">
+                    <mat-hint align="end">{{ inputSubtitulo.value?.length || 0 }}/500</mat-hint>
+                </mat-form-field>
+
+                <div class="col-md-12 summernote" style="margin-top: 20px;">
+                    <mat-label class="labelTextEditor" matTooltip="Apresentação da ideia central e intenção do projeto">Objetivo geral</mat-label>
+                    <div [ngxSummernote]="editorConfig" formControlName="objetivoGeral"></div>
+                </div>
+
+                <div class="col-md-12 summernote" style="margin-top: 30px;">
+                    <mat-label class="labelTextEditor" matTooltip="Exposição detalhada dos resultados esperados com o projeto e etapas para alcançar o objetivo geral">Objetivos específicos</mat-label>
+                    <div [ngxSummernote]="editorConfig" formControlName="objetivoEspecifico"></div>
+                </div>
+
+                <div class="col-md-12 summernote" style="margin-top: 30px;">
+                    <mat-label class="labelTextEditor" matTooltip="Apresentação dos principais avanços e benefícios que a Boa Prática trouxe à gestão municipal, destacando os ganhos para a sociedade em geral">Principais resultados</mat-label>
+                    <div [ngxSummernote]="editorConfig" formControlName="principaisResultados"></div>
+                </div>
+
+                <hr>
+                <div>
+                    <button mat-raised-button matStepperPrevious>Voltar</button>
+                    <button mat-raised-button matStepperNext style="float:right">Próximo</button>
+                </div>
+            </form>
+        </mat-step>
+        <!-- ./Identificação da Boa Prática -->
+
+        <!-- Metodologia da Boa Prática -->
+        <mat-step [stepControl]="thirdFormGroup" [editable]="true">
+            <form [formGroup]="thirdFormGroup">
+                <ng-template matStepLabel>Metodologia da Boa Prática</ng-template>
+
+                <div class="col-md-12 summernote" style="margin-top: 30px;margin-bottom: 30px;">
+                    <mat-label class="labelTextEditor" matTooltip="Dificuldades, adequações necessárias e lições aprendidas ao longo do desenvolvimento e implementação do projeto">Aprendizado fundamental</mat-label>
+                    <div [ngxSummernote]="editorConfig" formControlName="aprendizadoFundamental"></div>
+                </div>
+
+                <div class="col-md-12 summernote" style="margin-top: 30px;margin-bottom: 30px;">
+                    <mat-label class="labelTextEditor"
+                        matTooltip="Aponte a existência de parcerias internas ou externas (instituições públicas, privadas, organizações da sociedade civil, órgãos da administração) que colaboram com a prática inscrita. Descreva o papel de cada envolvido para o sucesso da Boa Prática">
+                        Parceiros envolvidos</mat-label>
+                    <div [ngxSummernote]="editorConfig" formControlName="parceirosEnvolvidos"></div>
+                </div>
+
+                <div class="col-md-12 summernote" style="margin-top: 30px;margin-bottom: 30px;">
+                    <mat-label class="labelTextEditor"
+                        matTooltip="Perfil e dados quantitativos sobre o público atendido pela Boa Prática">
+                        Público atingido</mat-label>
+                    <div [ngxSummernote]="editorConfig" formControlName="publicoAtingido"></div>
+                </div>
+
+                <hr>
+                <div>
+                    <button mat-raised-button matStepperPrevious>Voltar</button>
+                    <button mat-raised-button matStepperNext style="float:right">Próximo</button>
+                </div>
+            </form>
+            
+        </mat-step>
+        <!-- ./Metodologia da Boa Prática -->
+
+        <!-- Critérios de avaliação -->
+        <mat-step [stepControl]="fourthFormGroup" [editable]="true">
+            <form [formGroup]="fourthFormGroup">
+                <ng-template matStepLabel>Critérios de avaliação</ng-template>
+
+                <div class="col-md-12 summernote" style="margin-top: 30px;">
+                    <mat-label class="labelTextEditor" matTooltip="Elencar os avanços alcançados com a Boa Prática a partir de resultados mensuráveis">Resultados quantitativos</mat-label>
+                    <div [ngxSummernote]="editorConfig" formControlName="resultadosQuantitativos"></div>
+                </div>
+
+                <br>
+                <div class="col-md-12 summernote" style="margin-top: 30px;">
+                    <mat-label class="labelTextEditor" matTooltip="Elencar os avanços alcançados com a Boa Prática a partir de resultados evidenciáveis na comunidade">Resultados qualitativos</mat-label>
+                    <div [ngxSummernote]="editorConfig" formControlName="resultadosQualitativos"></div>
+                </div>
+
+                <br>
+                <div class="col-md-12 summernote" style="margin-top: 30px;">
+                    <mat-label class="labelTextEditor" matTooltip="Explicação breve sobre como a Boa Prática contempla a sustentabilidade em cada um dos seguintes eixos: Ambiental, Econômico, Social, Cultural, Político">Parâmetros contemplados (ambiental, econômico, social, cultural e político)</mat-label>
+                    <div [ngxSummernote]="editorConfig" formControlName="parametrosContemplados"></div>
+                </div>
+
+                <br>
+                <div class="col-md-12 summernote" style="margin-top: 30px;">
+                    <mat-label class="labelTextEditor" matTooltip="Aponte as fontes de dados, referências e documentos utilizados para medir os avanços resultantes da Boa Prática">Fontes de Referência</mat-label>
+                    <div [ngxSummernote]="editorConfig" formControlName="fontesReferencia"></div>
+                </div>
+
+                <hr>
+                <div>
+                    <button mat-raised-button matStepperPrevious>Voltar</button>
+                    <button mat-raised-button matStepperNext style="float:right">Próximo</button>
+                </div>
+            </form>
+        </mat-step>
+        <!-- ./Critérios de avaliação -->
+
+        <!-- Relação com eixos e ODS -->
+        <mat-step [stepControl]="fifthFormGroup" [editable]="true">
+            <form [formGroup]="fifthFormGroup">
+                <ng-template matStepLabel>Relação com eixos e ODS</ng-template>
+
+                <mat-form-field class="col-md-12"  matTooltip="Assinalar o Eixo temático do Programa Cidades Sustentáveis em que a Boa Prática se enquadra">
+                    <mat-label>-- Selecione um Eixo --</mat-label>
+                    <mat-select id="idEixo" name="eixo" formControlName="eixo"
+                        (selectionChange)="eixoSelecionado($event.value)" required>
+                        <mat-option *ngFor="let eixo of listaEixosCombo" [value]="eixo">{{eixo.nome}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="fifthFormGroup.controls['eixo'].hasError('required')">
+                        Campo eixo é obrigatório
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="col-md-11" style="max-width: 98% !important;" matTooltip="Apontar os Objetivos de Desenvolvimento Sustentável (ODS) contemplados pela Boa Prática">
+                    <mat-label>ODS atendidos </mat-label>
+                    <mat-select id="ods" formControlName="ods" (selectionChange)="odsSelecionado($event.value)" multiple
+                        required>
+                        <mat-option *ngFor="let ods of listaOdsCombo" [value]="ods">{{ ods?.numero + ' - ' + ods.titulo}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="fifthFormGroup.controls['ods'].hasError('required')">
+                        Pelo menos um ODS é obrigatório
+                    </mat-error>
+                </mat-form-field>
+
+                <a href="institucional/ods" title="Ir para página de ODS" target="_blank"><i class="material-icons">help</i></a>
+
+                <mat-form-field class="col-md-12" matTooltip="Apontar as Metas ODS atendidas pela Boa Prática">
+                    <mat-label>Metas ODS</mat-label>
+                    <mat-select id="metasOds" formControlName="metasOds"
+                        (selectionChange)="metasSelecionadas($event.value)" multiple>
+                        <mat-option *ngFor="let meta of listaMetasCombo" [value]="meta" [matTooltip]="meta.descricao">
+                            {{meta?.numero + ' - ' + meta.descricao}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="col-lg-12" [ngClass]="{'col-md-12': modoPrefeitura, 'col-md-6': !modoPrefeitura}" matTooltip="Apontar os indicadores do Programa Cidades Sustentáveis atendidos pela Boa Prática">
+                    <mat-label>Indicadores</mat-label>
+                    <input type="text" name="indicadores" placeholder="Indicadores" matInput formControlName="indicadores"
+                      [matAutocomplete]="autoIndicador" id="indicadores" [attr.disabled]="loading ? '' : null">
+                    <mat-autocomplete 
+                        #autoIndicador="matAutocomplete" 
+                        [displayWith]="getLabelIndicador.bind(this)"
+                        (optionSelected)="indicadoresSelecionados($event.option.value)">
+                      <mat-option *ngFor="let item of filteredOptionsIndicador | async" [value]="item">
+                        {{ item.nome }}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+
+
+                <div class="col-lg-12" [hidden]="this.listaIndicadoresSelecionados.length === 0">
+                    <table mat-table [dataSource]="dataSourceIndicadores">
+                      <ng-container matColumnDef="nomeIndicador">
+                        <th mat-header-cell *matHeaderCellDef>Indicador</th>
+                        <td mat-cell *matCellDef="let indicador"> {{indicador.nome}} </td>
+                      </ng-container>
+            
+                      <ng-container matColumnDef="remover">
+                        <th mat-header-cell *matHeaderCellDef>Remover</th>
+                        <td mat-cell *matCellDef="let indicador">
+                          <button mat-flat-button color="warn" name="btnDeletar" (click)='deletarIndicador(indicador)'
+                            class="btnTabela" matTooltip="Excluir">
+                            <mat-icon>delete</mat-icon>
+                          </button>
+                        </td>
+                      </ng-container>
+            
+                      <tr mat-header-row *matHeaderRowDef="displayedColumnsIndicadores"></tr>
+                      <tr mat-row *matRowDef="let row; columns: displayedColumnsIndicadores;"></tr>
+                    </table>
+                </div>
+
+                <mat-form-field class="col-lg-12" matTooltip="Apontar as soluções pela Boa Prática" [hidden]="modoPrefeitura">
+                    <mat-label>Soluções</mat-label>
+                    <input type="text" name="solucoes" placeholder="Soluções" matInput formControlName="solucoes"
+                      [matAutocomplete]="autoSolucao" id="solucoes" [attr.disabled]="loading ? '' : null">
+                    <mat-autocomplete 
+                        #autoSolucao="matAutocomplete" 
+                        [displayWith]="getLabelSolucao.bind(this)"
+                        (optionSelected)="solucoesSelecionadas($event.option.value)">
+                      <mat-option *ngFor="let item of filteredOptionsSolucao | async" [value]="item">
+                        {{ item?.nome }}
+                      </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+
+                <div class="col-lg-12" [hidden]="this.listaSolucoesSelecionados.length === 0" [hidden]="modoPrefeitura">
+                    <table mat-table [dataSource]="dataSourceSolucoes">
+                      <ng-container matColumnDef="nomeSolucao">
+                        <th mat-header-cell *matHeaderCellDef>Solução</th>
+                        <td mat-cell *matCellDef="let solucao"> {{solucao.nome}} </td>
+                      </ng-container>
+            
+                      <ng-container matColumnDef="remover">
+                        <th mat-header-cell *matHeaderCellDef>Remover</th>
+                        <td mat-cell *matCellDef="let solucao">
+                          <button mat-flat-button color="warn" name="btnDeletar" (click)='deletarSolucoes(solucao)'
+                            class="btnTabela" matTooltip="Excluir">
+                            <mat-icon>delete</mat-icon>
+                          </button>
+                        </td>
+                      </ng-container>
+            
+                      <tr mat-header-row *matHeaderRowDef="displayedColumnsSolucoes"></tr>
+                      <tr mat-row *matRowDef="let row; columns: displayedColumnsSolucoes;"></tr>
+                    </table>
+                </div>            
+                <hr>
+                <div>
+                    <button mat-raised-button matStepperPrevious>Voltar</button>
+                    <button mat-raised-button matStepperNext style="float:right">Próximo</button>
+                </div>
+            </form>
+        </mat-step>
+        <!-- ./Relação com eixos e ODS -->
+
+        <!-- Informações complementares -->
+        <mat-step [stepControl]="sixthFormGroup" [editable]="true">
+            <form [formGroup]="sixthFormGroup">
+                <ng-template matStepLabel>Contato</ng-template>
+
+                <div class="col-md-12 summernote" style="margin-top: 30px;margin-bottom: 30px;">
+                    <mat-label class="labelTextEditor" matTooltip="Contato">Contato</mat-label>
+                    <div [ngxSummernote]="editorConfig" formControlName="informacoesComplementares"></div>
+                </div>
+
+                <hr>
+                <div>
+                    <button mat-raised-button matStepperPrevious>Voltar</button>
+                    <button mat-raised-button matStepperNext style="float:right" (click)="prepararPreVisualizacao(6)">Próximo</button>
+                </div>
+            </form>
+        </mat-step>
+        <!-- ./Informações complementares -->
+
+        <!-- Pré-visualização -->
+        <mat-step [editable]="true">
+        
+            <ng-template matStepLabel>Pré-visualização</ng-template>
+
+            <app-pre-visualizacao *ngIf="modoEdicao == true" [boaPratica]="boaPratica" [modoEdicao]="modoEdicao" #componentePreview id="componentePreview" name="componentePreview"></app-pre-visualizacao>
+            <app-pre-visualizacao *ngIf="modoEdicao == false" [boaPratica]="boaPratica" [modoEdicao]="modoEdicao" #componentePreview id="componentePreview" name="componentePreview"></app-pre-visualizacao>
+
+            <hr>
+            <div>
+                <button mat-raised-button matStepperPrevious>Voltar</button>
+                <button mat-flat-button [hidden]="modoEdicao" [disabled]="desabilitarBotaoSalvar" color="primary" (click)="finalizar()" style="float:right">
+                    <mat-icon>save</mat-icon> Salvar e finalizar
+                </button>
+                <button mat-flat-button [hidden]="!modoEdicao" [disabled]="desabilitarBotaoSalvar" color="primary" (click)="editar()" style="float:right">
+                    <mat-icon>save</mat-icon> Salvar
+                </button>
+            </div>
+        
+        </mat-step>
+        <!-- ./Pré-visualização -->
+    </mat-horizontal-stepper>
+    
+</mat-card>
+
+<ng-template #modalLoading>
+    <div class="centralizar-loading">
+       <div id="circularG">
+        <div id="circularG_1" class="circularG"></div>
+        <div id="circularG_2" class="circularG"></div>
+        <div id="circularG_3" class="circularG"></div>
+        <div id="circularG_4" class="circularG"></div>
+        <div id="circularG_5" class="circularG"></div>
+        <div id="circularG_6" class="circularG"></div>
+        <div id="circularG_7" class="circularG"></div>
+        <div id="circularG_8" class="circularG"></div>
+      </div> 
+      <div class="mt-2" style="text-align: center">
+        <strong>Carregando...</strong>
+      </div>
+    </div>
+  </ng-template>
+</div>

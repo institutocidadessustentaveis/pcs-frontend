@@ -1,0 +1,162 @@
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+    <div [formGroup]="formRelatorio" class="example-form">
+
+      <div style="margin-top: 20px !important;">
+        <app-datepicker formControlName="dataInicio" placeholder="Escolha a data inicial"></app-datepicker>
+      </div>
+
+      <div>
+        <app-datepicker formControlName="dataFim" placeholder="Escolha a data final"></app-datepicker>
+      </div>
+
+      <div class="col-lg-12">
+        <mat-form-field>
+          <mat-label class="bmd-label-floating">Indicador *</mat-label>
+          <input type="text" name="indicador" placeholder="Indicador" matInput formControlName="indicador"
+            [matAutocomplete]="autoIndicador" id="indicador" [attr.disabled]="loading ? '' : null">
+          <mat-autocomplete #autoIndicador="matAutocomplete" [displayWith]="getLabelIndicador.bind(this)">
+            <mat-option *ngFor="let item of filteredOptionsIndicador | async" [value]="item.nome">
+              {{ item.nome }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+    
+      <div class="col-lg-12">
+        <mat-form-field>
+          <mat-label>-- Selecione um estado/província -- </mat-label>
+          <mat-select formControlName="estado" name="estado" id="estado"
+            (selectionChange)="estadoSelecionado($event.value)">
+            <mat-option value=""></mat-option>
+            <mat-option *ngFor="let estado of listaEstado" [value]="estado">
+              {{ estado.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-12">
+        <mat-form-field>
+          <mat-label>-- Selecione uma cidade -- </mat-label>
+          <mat-select formControlName="cidade" name="cidade" id="cidade">
+            <mat-option value=""></mat-option>
+            <mat-option *ngFor="let cidade of listaCidade" [value]="cidade">
+              {{ cidade.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!--div class="col-lg-12">
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Quantidade de visualizações" value="" #txtQtdeVisualizacao
+            formControlName="qtdeVisualizacao" id="txtQtdeVisualizacao" type="number" />
+          <mat-hint align="end">{{ txtQtdeVisualizacao.value?.length || 0 }}/10</mat-hint>
+        </mat-form-field>
+      </div-->
+
+      <!--div class="col-lg-12">
+        <mat-form-field>
+          <input matInput placeholder="Quantidade de vezes que o indicador foi exportado" value=""
+            #txtQtdeIndicadorExportacao formControlName="qtdeIndicadorExportacao" id="txtQtdeIndicadorExportacao"
+            type="number" />
+          <mat-hint align="end">{{ txtQtdeIndicadorExportacao.value?.length || 0 }}/10</mat-hint>
+        </mat-form-field>
+      </div>
+    </div-->
+  </div>
+
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right" style="margin-top: 10px !important;">
+    <button matTooltip="Gerar Relatório" mat-flat-button color="primary" class="float-right" (click)="searchReport()"
+      id="btnGerarRelatorio" class="botaoGeraRelatorio" [disabled]="!formRelatorio.valid">
+      <mat-icon style="margin-top: -1px !important">insert_drive_file</mat-icon> Gerar Relatório
+    </button>
+  </div>
+
+  <mat-progress-bar mode="indeterminate" [hidden]="!loading" style="margin-top:20px;"></mat-progress-bar>
+
+  <app-exportador-relatorios [registros]="formatarParaExportar(tabela)" [titulo]="titulo" [colunas]="colunas">
+  </app-exportador-relatorios>
+
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" [hidden]="resultadoEncontrado" style="margin-top:25px;">
+    <p class="alert alert-warning" role="alert" *ngIf="pesquisou">Nenhum registro encontrado!</p>
+  </div>
+
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px !important;"
+    [hidden]="tabela.length == 0">
+  
+    <div class="container-indicador">
+          <div class="col-md-12" align="center">
+            <h4>{{indicadorEscolhido}}</h4>
+          </div>
+          <div class="col-md-12" align="center">
+            <p>Quantidade de visualizações: {{qtdVisualizacao}}</p>
+          </div>
+          <div class="col-md-12" align="center">
+            <p>Quantidade de exportações: {{qtdExportacao}}</p>
+          </div>
+    </div>
+    
+    <table mat-table [dataSource]="dataSource" matSort #tbRelatorio id="tbRelatorio">
+
+      <ng-container matColumnDef="cidade">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="cidade">Cidade</th>
+        <td mat-cell *matCellDef="let element" class='m-card-title' data-label='cidade'>
+          <span class="mobile-label">Cidade:</span>{{ element.cidade ? element.cidade : 'N/A'}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="estado">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="estado">Estado</th>
+        <td mat-cell *matCellDef="let element" class='m-card-title' data-label='Estado'>
+          <span class="mobile-label">Estado:</span>{{ element.estado ? element.estado : 'N/A'}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="usuario">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="usuario">Usuário</th>
+        <td mat-cell *matCellDef="let element" class='m-card-title' data-label='usuario'>
+          <span class="mobile-label">Estado:</span>{{ element.usuario ?  element.usuario : 'N/A' }}</td>
+      </ng-container>
+
+      <!--ng-container matColumnDef="qtdeVisualizacao">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="qtdeVisualizacao">Quantidade de visualizações</th>
+        <td mat-cell *matCellDef="let element" class='m-card-title' data-label='Indicador'>
+          <span class="mobile-label">Qtd Viz:</span>{{ element.qtdeVisualizacao }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="qtdeIndicadorExportacao">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="qtdeIndicadorExportacao">Quantidade de vezes que o
+          indicador foi exportado</th>
+        <td mat-cell *matCellDef="let element" class='m-card-title' data-label='Indicador'>
+          <span class="mobile-label">Qtd Exp:</span>{{ element.qtdeIndicadorExportacao }}</td>
+      </ng-container-->
+
+      <ng-container matColumnDef="data">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="data">Data</th>
+        <td mat-cell *matCellDef="let element" class='m-card-title' data-label='Data'>
+          <span class="mobile-label">Data:</span>{{ element.data | date:'dd/MM/yyyy' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="hora">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="hora">Hora</th>
+        <td mat-cell *matCellDef="let element" class='m-card-title' data-label='hora'>
+          <span class="mobile-label">Hora:</span>{{ element.data | date:'HH:mm:ss' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="acao">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="acao">Ação</th>
+        <td mat-cell *matCellDef="let element" class='m-card-title' data-label='hora'>
+          <span class="mobile-label">Ação:</span>{{ element.acao }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+
+  <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" style="margin-top: 20px !important;"
+    [hidden]="tabela.length == 0">
+    <mat-paginator style="text-align: center !important;" class="float-none" [pageSizeOptions]="[10,25,50,100]"
+      showFirstLastButtons></mat-paginator>
+  </div>
+</div>

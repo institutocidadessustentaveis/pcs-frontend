@@ -1,0 +1,156 @@
+
+/* Deafult */
+.half-center {
+    width: 50%;
+    text-align: center !important;
+    margin-left: auto;
+    margin-right: auto;
+    color: white;
+    font-size: 3vh;
+  }
+
+.resumo {
+    background-color: #8a9ea1;
+    padding-top: 2%;
+    padding-bottom: 2%;
+}
+/* ...Deafult */
+
+/* Template 02 */
+.first-section, .third-section {
+    padding-bottom: 2%;
+}
+
+.second-section {
+    color: white;
+    padding-bottom: 2%;
+}
+
+.fourth-section {
+    background-color:#1c3f22; 
+    color: white;
+    padding-bottom: 2%;
+}
+
+.label-titulo {
+    padding: 2% 5% 1% 5%;
+}
+
+.label-titulo-white {
+    font-weight: bold;
+    font-size: 30px;
+    margin: 2% 5% 1% 5%;
+    color: white;
+    text-transform: uppercase;
+}
+
+.one-column {
+    text-align: justify;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+}
+
+.one-column-with-image {
+    text-align: justify;
+    margin-left: 5%;
+}
+
+.two-columns {
+    text-align: justify;
+    margin-left: 5%;
+    margin-right: 5%;
+    column-count: 2;
+    column-gap: 60px;
+}
+
+.two-columns-with-image {
+    text-align: justify;
+    column-count: 2;
+    column-gap: 60px;
+}
+
+.div-img-first-section{
+    margin-left: 5%;
+}
+
+.three-columns {
+    text-align: justify;
+    margin-left: 5%;
+    margin-right: 5%;
+    column-count: 3;
+    column-gap: 60px;
+}
+
+.btn-transparent {
+    margin-top: 1%;
+    background: transparent;
+    border: 1px gray solid;
+    border-radius: 12px;
+    color: white;
+    width: 500px;
+    height: 70px;
+}
+
+.div-img-third-section{
+    margin-left: 3%;
+    width: 38%;
+}
+
+.img-third-section{
+    width: 100%;
+    /* height: 100%; */
+}
+/* ...Template 02 */
+
+
+@media (max-width: 600px) {
+    .two-columns-with-image {
+        column-count: 1;
+        margin-left: 5%;
+    }
+
+    .two-columns{
+        column-count: 1;
+    }
+
+    .three-columns {
+        column-count: 1;
+    }
+
+    .div-img-third-section{
+        width: 100%;
+    }
+
+    .btn-transparent {
+        width: 200px;
+    }
+}
+
+:host::ng-deep blockquote {
+    border-right: 5px solid #47825e;
+    padding-right: 15px;
+    width: 380px;
+  }
+  
+  blockquote {
+    background: #3a855a;
+    border-left: 10px solid white;
+    margin: 1.5em 10px;
+    padding: 0.5em 10px;
+    quotes: "\201C""\201D""\2018""\2019";
+    color: white;
+    font-size: 20px;
+  }
+  
+  blockquote p {
+    display: inline;
+  }
+  
+  .divBlockquote{
+      padding: 1px 15px 1px 15px;
+      margin-top: 20px;
+      background-color: #3a855a;
+      break-inside: avoid;
+      page-break-inside: avoid;
+  
+  }

@@ -1,0 +1,113 @@
+<div class="conteudo" style="position: relative;">
+  <section class="home-banner owl-carousel owl-theme">
+    <div class="carousel slide" ride="false">
+      <div class="carousel-inner">
+        <div>
+          <img class="img-carousel" loading="lazy" [src]="urlImagem()"
+          matTooltip='Foto: Matheus Britto / Prefeitura Municipal do Jaboatão dos Guararapes'>
+          <div class="carousel-caption">
+            <div style="position: inherit;bottom: 0;width: 100%;">
+              <h1>EVENTOS RELACIONADOS À PARTICIPAÇÃO CIDADÃ</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<section class="secao-filtro">
+  <div class="row search-form-color">
+
+    <div class="col-lg-1">
+      <header style="padding-top: 10px;">
+        <h3><span>BUSCA</span></h3>
+      </header>
+    </div>
+
+    <div class="col-lg-11 itens-filtro">
+      <form [formGroup]="form" class="example-form">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="search-form-color">
+              <app-datepicker formControlName="dataInicial" id="dataInicial" placeholder="Data Inicial">
+              </app-datepicker>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="search-form-color">
+              <app-datepicker formControlName="dataFinal" id="dataFinal" placeholder="Data Final">
+              </app-datepicker>
+            </div>
+          </div>
+          
+          <div class="col-lg-4 btn-group text-center">
+            <button matTooltip="Buscar Eventos" mat-flat-button color="primary" (click)="buscarEventosParticipacaoCidadaFiltrado()"
+              id="btnBuscarEventos" class="botaoBuscarEventos btn-eventos botoes-pesquisa">
+              <mat-icon style="margin-top: -1px !important">search</mat-icon> Buscar Eventos
+            </button>
+            <button matTooltip="Limpar filtro" mat-flat-button color="accent" (click)="limparFiltro()"
+              id="btnLimparFiltro" class="limpar-filtro botoes-pesquisa">
+              Limpar Filtro
+            </button>
+            <div class="botoes-pesquisa-p">
+              <button matTooltip="Buscar Eventos" mat-flat-button color="primary" (click)="buscarEventosParticipacaoCidadaFiltrado()"
+                id="btnBuscarEventos" class="botaoBuscarEventos btn-eventos botoes-pesquisa-p">
+                <mat-icon style="margin-top: -1px !important">search</mat-icon> Buscar Eventos
+              </button>
+              <br><br>
+              <button matTooltip="Limpar filtro" mat-flat-button color="accent" (click)="limparFiltro()"
+                id="btnLimparFiltro" class="limpar-filtro botoes-pesquisa-p">
+                Limpar Filtro
+              </button>
+
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+</section>
+
+
+<section class="secao" id="calendario">
+  <div>
+    <h2>Agenda de Eventos</h2>
+    <app-eventos-calendario [eventos]="eventos"></app-eventos-calendario>
+  </div>
+</section>
+
+<section class="secao-mapa">
+  <h1>Mapa de Eventos</h1>
+  <br>
+  <app-mapa-eventos [eventos]="eventos"></app-mapa-eventos>
+</section>
+
+<div>
+<section style="margin-top: 32px;">
+  <div class="center">
+    <h2>Envie uma proposta para prefeituras</h2>
+  </div>
+</section>
+<section>
+  <form [formGroup]="formSolicitacao" class="contentBody center">
+        <mat-form-field class="col-md-6">
+          <input pattern="[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)" matInput placeholder="link da proposta" formControlName="temas" maxlength="200" #inputTema id="inputTema">
+          <mat-hint align="end">{{ inputTema.value?.length || 0 }}/200</mat-hint>
+          <mat-error *ngIf="formSolicitacao.controls['temas'].hasError('required')">
+            Campo obrigatório
+          </mat-error>
+        </mat-form-field>
+
+  </form>
+  <div style="display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;-webkit-justify-content: center;justify-content: center;">
+  <button class="view-more" mat-stroked-button color="accent" (click)="onSolicitar()" matTooltip="Enviar Proposta">
+   <a [ngClass]="{disabled: !isValid}">Enviar</a> 
+  </button>
+  </div>
+</section>
+</div>
+
+

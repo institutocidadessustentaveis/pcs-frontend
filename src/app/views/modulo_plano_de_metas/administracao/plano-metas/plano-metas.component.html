@@ -1,0 +1,187 @@
+<div class="contentBody">
+<div class="row">
+  <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+    <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <mat-card-title>Plano de Metas</mat-card-title>
+      <hr>
+      <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+        <div class="row">
+          <form [formGroup]="form" class="col-md-12">
+            <mat-form-field class="col-md-12 col-lg-12">
+              <input matInput placeholder="Apresentação do Plano de Metas" id="apresentacao"
+                formControlName="apresentacao" type="text" />
+            </mat-form-field>
+            <div class="col-md-12">
+              <mat-label>Descrição *</mat-label>
+              <div [ngxSummernote]="editorConfig" formControlName="descricao"></div>
+            </div>
+            <div class="col-md-12 col-lg-12" style="margin-top:20px;">
+              <button type="button" mat-raised-button id="btnArquivoMultimidia" (click)="inputArquivoMultimidia.click()"
+                color="primary" matTooltip="Upload de arquivo multimídia">
+                <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar arquivo
+              </button>
+              <input hidden #inputArquivoMultimidia type="file" id="inputArquivoMultimidia" name="arquivoPlanoDeMetas"
+                accept=".pdf,.docx,.doc,.xlsx,.xls,image/jpeg,image/png" (change)="processFile($event)">
+                <br>
+                <mat-label *ngIf="nomeArquivoMaterialPublicacao">{{nomeArquivoMaterialPublicacao}}</mat-label>
+              </div>
+          </form>
+        </div>
+        <br>
+        <div class="row">
+          <label class="col-md-4"><b>Cidade:</b> {{objetoPlanoMeta.nomeCidade}}</label><br>
+          <label class="col-md-4"><b>Prefeito:</b> {{objetoPlanoMeta.nomePrefeito}} </label><br>
+          <label class="col-md-4"><b>Período do mandato:</b> {{objetoPlanoMeta.inicioMandato | date: 'dd/MM/yyyy'}}
+            <b>até</b> {{objetoPlanoMeta.fimMandato | date: 'dd/MM/yyyy'}}</label><br>
+        </div>
+        <div class="row">
+          <div class="col-md-9 col-lg-9">
+            <mat-form-field>
+              <mat-label>Status do Plano de metas:</mat-label>
+              <mat-select (selectionChange)="tradeStatus($event.value)" [(value)]="statusSelecionado">
+                <mat-option *ngFor="let item of listaStatus" [value]="item.value">
+                  {{ item.viewValue }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3 col-lg-3">
+            <button matTooltip="Adicionar novo indicador" mat-flat-button color="primary" style="cursor: pointer;"
+              id="btnAddItemSim" (click)="openDialogModalPlanoMeta(innerWidth)">
+              + Adicionar novo indicador
+            </button>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-right" [hidden]="!populacaoPreenchida">
+            <b style="color: red;">*</b> Você deve preencher no mínimo <b>{{totalPopulacao}}</b> indicadores para que o plano de metas seja
+            válido
+          </div>
+          <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <div class="table-responsive">
+              <table class="table table-striped table-sm">
+                <colgroup>
+                  <col width="90%">
+                  <col width="10%">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th>Indicador</th>
+                    <th>Detalhes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let item of listaPlanoMetaIndicador">
+                    <tr class="clickable">
+                      <td>{{item.nomeIndicador}}</td>
+                      <td>
+                        <button mat-flat-button color="primary" name="button" class="btnTabela"
+                          [attr.id]="'btnVisualizar' + item.idIndicador"
+                          [attr.data-target]="'#accordion' + item.idIndicador" [attr.data-toggle]="'collapse'"
+                          matTooltip="Visualizar">
+                          <mat-icon> search </mat-icon>
+                        </button>
+                        <button mat-flat-button color="warn" name="button" class="btnTabela"
+                          [attr.id]="'btnExcluir' + item.idIndicador" matTooltip="Excluir" (click)="excluir(item)">
+                          <mat-icon> delete </mat-icon>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr [attr.colspan]="8">
+                      <td [attr.colspan]="8" [attr.id]="'accordion' + item.idIndicador" class="collapse">
+                        <div class="row">
+                          <div class="col-lg-12 col-md-12">
+                            <h2>Detalhes do Indicador - {{item.nomeIndicador}}</h2>
+                            <hr>
+                          </div>
+                          <div class="col-lg-4 col-md-4">
+                            <label><b>Descrição do indicador:</b> {{item.descricaoIndicador}}</label><br>
+                            <label><b>ODS:</b> {{item.ods ? item.ods : '---' }}</label><br>
+                            <label><b>Meta ODS:</b> {{item.metaOds ? item.metaOds : '---'}}</label><br>
+                            <label><b>Orçamento previsto:</b>
+                              {{item.orcamentoPrevisto ? (item.orcamentoPrevisto | currency:'BRL':true:'1.2-2'): '---'}}</label><br>
+                            <label><b>Orçamento executado:</b>
+                              {{item.orcamentoExecutado ? (item.orcamentoExecutado | currency:'BRL':true:'1.2-2') : '---'}}</label><br>
+                            <label><b>Meta final até o fim do mandato:</b> {{item.metaFinal ? (item.metaFinal | number:'':'pt-BR') : '---'}}</label><br>
+                            <label><b>Último valor preenchido:</b> {{item.ultimoValorIndicadorApresentacao ? item.ultimoValorIndicadorApresentacao : '---'}}</label><br>
+                            <label><b>Status do último valor preenchido:</b></label>
+                            <mat-icon
+                            [ngStyle]="{'vertical-align': 'middle','border-style': 'solid', 'border-width':'1px', 'border-color':'black' ,'background-color': item.corUltimoValor, 'margin-right': '5px', 'margin-left': '5px'} ">
+                            </mat-icon>
+                            <label>{{item.statusUltimoValor}}</label>
+                            <br>
+                          </div>
+                          <div class="col-lg-8 col-md-8">
+                            <app-plano-metas-detalhes [idPlanoMeta]="objetoPlanoMeta.id"
+                              [listaPlanoMetaIndicador]="item" [objetoPlanoMetaAno]="objetoPlanoMetaAno">
+                            </app-plano-metas-detalhes>
+                            <br>
+                            <div class="table-responsive">
+                              <table class="table table-striped table-sm">
+                                <thead>
+                                  <tr style="text-align: center;">
+                                    <th>Ano</th>
+                                    <th>Valor preenchido</th>
+                                    <th>Variação em relação ao ano anterior (%)</th>
+                                    <th>Meta anual</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr style="text-align: center;">
+                                    <td>{{objetoPlanoMetaAno.primeiroAnoMandato}}</td>
+                                    <td>{{item.valorPreenchidoPrimeiroAnoApresentacao ? item.valorPreenchidoPrimeiroAnoApresentacao : '---' }}
+                                    </td>
+                                    <td>{{item.variacaoPrimeiroAno ? (item.variacaoPrimeiroAno | number:'':'pt-BR')  : '---'}}</td>
+                                    <td>{{item.metaAnualPrimeiroAno ? (item.metaAnualPrimeiroAno | number:'':'pt-BR') : '---'}}</td>
+                                  </tr>
+                                  <tr style="text-align: center;">
+                                    <td>{{objetoPlanoMetaAno.segundoAnoMandato}}</td>
+                                    <td>{{item.valorPreenchidoSegundoAnoApresentacao ? item.valorPreenchidoSegundoAnoApresentacao : '---'}}</td>
+                                    <td>{{item.variacaoSegundoAno ? ( item.variacaoSegundoAno | number:'':'pt-BR') : '---'}}</td>
+                                    <td>{{item.metaAnualSegundoAno ? ( item.metaAnualSegundoAno| number:'':'pt-BR') : '---'}}</td>
+                                  </tr>
+                                  <tr style="text-align: center;">
+                                    <td>{{objetoPlanoMetaAno.terceiroAnoMandato }}</td>
+                                    <td>{{item.valorPreenchidoTerceiroAnoApresentacao ? item.valorPreenchidoTerceiroAnoApresentacao : '---'}}</td>
+                                    <td>{{item.variacaoTerceiroAno ? ( item.variacaoTerceiroAno | number:'':'pt-BR') : '---'}}</td>
+                                    <td>{{item.metaAnualTerceiroAno ? ( item.metaAnualTerceiroAno | number:'':'pt-BR') : '---'}}</td>
+                                  </tr>
+                                  <tr style="text-align: center;">
+                                    <td>{{objetoPlanoMetaAno.quartoAnoMandato}}
+                                    </td>
+                                    <td>{{item.valorPreenchidoQuartoAnoApresentacao ? item.valorPreenchidoQuartoAnoApresentacao : '---'}}</td>
+                                    <td>{{item.variacaoQuartoAno ? ( item.variacaoQuartoAno | number:'':'pt-BR') : '---'}}</td>
+                                    <td>{{item.metaAnualQuartoAno ? ( item.metaAnualQuartoAno | number:'':'pt-BR') : '---'}}</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+      <br>
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 text-right">
+          <button mat-flat-button color="primary" matTooltip="Salvar"
+            style="cursor: pointer; margin-top: 10px !important; margin-right: 5px;" id="btnSalvar" (click)="salvar()">
+            <mat-icon>save</mat-icon> Salvar plano de meta
+          </button>
+          <button mat-flat-button color="accent" matTooltip="Voltar" style="cursor: pointer;"
+          [routerLink]="['/planoMetas']" id="btnVoltar" [hidden]="true">
+          <mat-icon>arrow_back_ios</mat-icon> Voltar
+        </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+</div>

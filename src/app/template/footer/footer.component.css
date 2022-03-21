@@ -1,0 +1,235 @@
+
+.li_ministerio{
+  margin-left: -100px !important;
+}
+@media (max-width: 900px) {
+  .li_ministerio{
+
+    margin-left: 0px !important;
+  }
+}
+.item_rodape{
+  max-width: 195px !important;
+  max-height: 72px !important;
+}
+.gef_rodape{
+  max-width: 50px !important;
+  max-height: 75px;
+}
+
+.onu_rodape{
+  max-width: 100px !important;
+  max-height: 150px;
+}
+.ministerio_ciencia_rodape{
+  width: 100% !important;
+  max-width: 350px !important;
+}
+
+.citnova_rodape{
+  max-height: 72px !important;
+  max-width: 140px !important;
+}
+
+.head-buttons-bar {
+    display: grid;
+    grid: auto/repeat(4,1fr);
+  }
+
+  @media (max-width: 900px) {
+    .head-buttons-bar {
+      display: inherit;
+    }
+  }
+
+
+  .list-links-side-bar{
+    list-style: none;
+    padding: 0%;
+  }
+
+  .link-side-bar{
+    color: white;
+    text-decoration: none;
+  }
+
+
+.level-2 {
+    padding: 1.5em 48px;
+}
+
+.grid-4f3 {
+    grid: auto/4fr 3fr;
+}
+
+.grid {
+    display: grid;
+    gap: 48px;
+}
+
+.left {
+    place-self: start start;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-flow: column nowrap;
+    flex-flow: column nowrap;
+    -ms-flex-align: start;
+    align-items: flex-start;
+}
+
+.right {
+    place-self: center end;
+}
+
+ul{
+    padding: 0%;
+}
+
+.left ul {
+    display: grid;
+    grid: auto/1fr 1fr 1fr;
+    gap: 48px 24px;
+    position: relative;
+}
+
+.left ul li {
+    display: inline-block;
+}
+
+.left img {
+    width: 175px;
+    vertical-align: bottom;
+    margin-right: 20px;
+}
+
+.right img {
+    max-width: 230px;
+}
+
+.left ul:before {
+    content: "";
+    width: 100%;
+    height: 1px;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #333;
+}
+
+@media only screen and (min-width: 1275px) {
+  .line:before {
+    content: "";
+    margin-left: 1em;
+    width: 98%;
+    height: 1px;
+    position: absolute;
+    left: 0;
+    top: 60%;
+    transform: translateY(-50%);
+    background-color: #333;
+  }
+}
+
+@media only screen and (min-width: 766px) {
+  .apoio-size {
+    width:80%;
+  }
+}
+
+@media only screen and (max-width: 766px) {
+  .apoio-size {
+    width:7%;
+  }
+}
+
+footer img {
+    max-width: 100%;
+    vertical-align: bottom;
+}
+
+strong {
+    font-weight: bolder;
+}
+
+.level-3 {
+    margin-left: 48px;
+    margin-right: 48px;
+    border-top-width: .0625em;
+    border-top-style: solid;
+    border-top-color: #333;
+    padding-top: 1.4375em;
+    padding-bottom: 1.5em;
+}
+
+.level-3 .links {
+    font-weight: 700;
+}
+
+.level-3 * {
+    color: #6e6e6e;
+}
+
+
+.search-form-color
+  ::ng-deep .mat-select-value-text  {
+  color: white !important;
+}
+
+.search-form-color
+  ::ng-deep .mat-focused .mat-form-field-label {
+  color: white !important;
+}
+
+.search-form-color
+  ::ng-deep .mat-form-field-label {
+  color: white !important;
+}
+
+.search-form-color
+  ::ng-deep.mat-form-field-underline {
+  background-color: white !important;
+}
+
+.search-form-color
+  ::ng-deep.mat-form-field-ripple {
+  background-color: white !important;;
+}
+
+.search-form-color
+  ::ng-deep .mat-select-arrow {
+  color: white !important;;
+}
+
+.search-form-color
+  ::ng-deep .mat-form-field-empty.mat-form-field-label {
+  color:white;
+}
+
+.search-form-color
+  ::ng-deep input.mat-input-element {
+  color: white;
+}
+
+.search-form-color
+  ::ng-deep .mat-focused .mat-form-field-underline .mat-form-field-ripple{
+  background-color: white !important;
+}
+
+.first-div{
+    padding-left: 50px !important;
+}
+
+@media (max-width: 900px) {
+    .first-div {
+        padding-left: 20px !important;
+    }
+}
+
+@media (max-width: 700px) {
+  .grid-4f3 {
+    grid: none;
+  }
+}
+
+

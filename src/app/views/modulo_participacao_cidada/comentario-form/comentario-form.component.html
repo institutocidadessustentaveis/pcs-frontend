@@ -1,0 +1,56 @@
+
+<div class="contentBody" style="position: relative;">
+  <app-breadcrumb style="position: relative;"></app-breadcrumb>
+  <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+    <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <mat-card-title>
+        Comentário
+      </mat-card-title>
+    </mat-card-content>
+      <hr>
+    <form [formGroup]="formComentario">
+
+      <mat-form-field class="col-md-12">
+        <input matInput placeholder="Título do Comentário *" formControlName="titulo" maxlength="200" #inputTitulo id="inputTitulo">
+        <mat-hint align="end">{{ inputTitulo.value?.length || 0 }}/200</mat-hint>
+       <mat-error *ngIf="formComentario.controls['titulo'].hasError('required')">
+          Campo Título do Comentário é obrigatório.
+        </mat-error>
+        
+      </mat-form-field>
+
+      <div class="col-md-12">
+        <mat-label>Comentário *</mat-label>
+        <div [ngxSummernote]="editorConfig" formControlName="comentario"></div>
+        <mat-hint class="caracteres-editor">{{ formComentario.controls['comentario'].value?.length || 0 }}/{{tamanhoMaxComentario}}</mat-hint>
+        <mat-error *ngIf="formComentario.controls['comentario'].hasError('required')">
+          Campo Comentario é obrigatório
+        </mat-error>
+        <mat-error *ngIf="formComentario.controls['comentario'].value?.length > [tamanhoMaxComentario]">
+          O comentario deve ter no máximo {{tamanhoMaxComentario}} caracteres
+        </mat-error>
+      </div>
+      <br>
+      <div *ngIf="autorizaContato == true">
+        <mat-form-field class="col-md-6">
+          <input matInput placeholder="Email para Contato" formControlName="email">
+        </mat-form-field>
+        
+        <mat-form-field class="col-md-6">
+          <input matInput placeholder="Telefone para Contato" formControlName="telefone" mask="(00)00000-0000">
+        </mat-form-field>
+      </div>
+
+      <div class="row col-md-12" style="margin-left:0px;">
+        <mat-checkbox  style="margin-right:.5em" (click)="autorizarContato()" [checked]="false"></mat-checkbox>
+        Autorizo a publicação do telefone e e-mail na página de comentários.
+      </div>
+      <br>
+      <div class="col-md-12" align="end">
+        <button mat-flat-button color="primary" (click)="salvar()" [disabled]="formComentario.controls['comentario'].value?.length > tamanhoMaxComentario">
+          <mat-icon>save</mat-icon> Salvar e finalizar
+        </button>
+    </div>
+    </form>
+  </mat-card>
+</div>

@@ -1,0 +1,199 @@
+<div class="btn-abrir-planilha" [hidden]="!esconderPlanilha">
+  <button mat-flat-button (click)="abrirPlanilha()" *ngIf="!modoImpressao">
+    <mat-icon style="line-height: .6; color: #595959; margin-top: 7px !important;">table_view</mat-icon>
+  </button>
+</div>
+
+<div class="planilha-atributos" cdkDrag  cdkDragBoundary=".map" [hidden]="esconderPlanilha" (mousedown)="resetDrag()">
+  <div class="cabecalho-planilha " cdkDragHandle>
+    <div class="row">
+      <div class="text-left col-sm-8" style="padding-top: .3em; ">
+        <strong style="margin-left: 1em; white-space: nowrap">Planilha de Atributos</strong>
+      </div>
+      <div class="text-right col-sm-4">
+        <button mat-raised-button color="warn" (click)="fecharPlanilha()">
+          <mat-icon>clear</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="" >
+
+      <div class="row menu-planilha" *ngIf="planilha && planilha.length > 0">
+        <div class="col-lg-12 ">
+          <button mat-icon-button matTooltip="Adicionar um atributo" matTooltipPosition="after"
+            aria-label="Botão para adicionar atributos" (click)="inverterHabilitarNovoAtributo()" >
+            <mat-icon>add</mat-icon>
+          </button>
+
+          <button mat-icon-button matTooltip="Mesclar atributos" matTooltipPosition="after"
+            aria-label="Botão para mesclar atributos" (click)="inverterHabilitarMesclagem()" >
+            <mat-icon svgIcon="table-merge" class="svg-icon"></mat-icon>
+          </button>
+
+          <button mat-icon-button matTooltip="Download dos atributos" matTooltipPosition="after"
+            aria-label="Botão realizar o download dos atributos" (click)="downloadAtributos()" >
+            <mat-icon>save_alt</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="Selecionar Tudo" matTooltipPosition="after"
+            aria-label="Selecionar Tudo" (click)="selecionarTudo()" >
+            <mat-icon>check</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="Limpar Seleção" matTooltipPosition="after"
+          aria-label="Selecionar Tudo" (click)="descelecionarTudo()" >
+          <mat-icon>clear</mat-icon>
+        </button>
+
+        </div>
+      </div>
+
+    <form [formGroup]="formAtributo" style="max-height: 320px; overflow:auto">
+      <div class="row formulario-novo-atributo" *ngIf="habilitarFormularioNovoAtributo">
+        <mat-form-field class="col-sm-12">
+          <mat-label>Informe um nome para o atributo</mat-label>
+          <input matInput placeholder="Nome do Atributo" formControlName="nome"  maxlength="10" minlength="3">
+        </mat-form-field>
+
+        <mat-form-field class="col-sm-12">
+          <mat-label>Formula para definir o valor do atributo</mat-label>
+          <input matInput placeholder="Fórmula do atributo" formControlName="formula" (ngModelChange)="validarFormula()" autocomplete="off">
+          <mat-hint *ngIf="!formulaValida">{{ erroNaFormula }}</mat-hint>
+        </mat-form-field>
+
+        <div class="col-sm-12 text-right">
+
+          <button mat-raised-button matTooltip="Cancelar" color="accent" matTooltipPosition="after"
+            style="margin-right: 1em;"
+            aria-label="Botão para cancelar " (click)="inverterHabilitarNovoAtributo()" >
+            Cancelar
+          </button>
+
+          <button mat-raised-button matTooltip="Adicionar Atributo" color="primary" matTooltipPosition="after"
+            aria-label="Botão para adicionar o atributo" (click)="criarAtributo()" >
+            Criar Atributo
+          </button>
+        </div>
+
+        <div class="col-sm-12 ">
+          <b>Operações Aritiméticas:</b>
+          <mat-chip-list aria-label="Operadores Aritiméticos">
+            <mat-chip color="accent"
+            *ngFor="let operacao of ['+','-','/','*','^','(', ')']"
+            class="strong" selected (click)="adicionarNaFormula(operacao)">{{operacao}}</mat-chip>
+          </mat-chip-list>
+        </div>
+
+        <div class="col-sm-12 ">
+          <b>Números:</b>
+          <mat-chip-list aria-label="Números">
+            <mat-chip color="accent"
+            *ngFor="let number of [1,2,3,4,5,6,7,8,9,0,'.']"
+            class="strong" selected (click)="adicionarNaFormula(number)">{{number}}</mat-chip>
+          </mat-chip-list>
+        </div>
+
+        <div class="col-sm-12 ">
+          <b>Atributos disponíveis:</b>
+          <mat-chip-list aria-label="Arquivo selecionado">
+            <mat-chip *ngFor="let atributo of atributos" color="accent" class="strong" selected (click)="adicionarNaFormula(atributo)">{{atributo}} </mat-chip>
+          </mat-chip-list>
+          <br />
+        </div>
+
+      </div>
+    </form>
+
+    <form [formGroup]="formMesclagem">
+      <div class="row formulario-novo-atributo" *ngIf="habilitarFormularioMesclagem">
+        <div class="col-sm-12">
+          <input hidden #inputArquivoPublicacao type="file" id="arquivo" name="arquivo" (change)="processFileMesclagem($event)">
+          <button type="button" mat-raised-button (click)="inputArquivoPublicacao.click()" id="btnArquivo" name="btnArquivo"
+            color="primary" style="margin-top: 20px; cursor: pointer;width: 100%;" matTooltip="Carregar arquivo para mesclagem">
+            <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar arquivo para mesclagem*
+          </button>
+          <br>
+          <mat-label >Escolha um arquivo em formato XLS ou XLSX.<br></mat-label>
+          <div *ngIf="nomeArquivoMesclagem">
+            <mat-chip-list aria-label="Arquivo selecionado">
+              <mat-chip color="accent" class="strong" selected>{{nomeArquivoMesclagem}} </mat-chip>
+            </mat-chip-list>
+            <br>
+          </div>
+          <mat-error *ngIf="formMesclagem.controls.arquivo.hasError('required')">
+            É necessário informar um arquivo no formato XLS ou XLSX para mesclagem. <br>
+          </mat-error>
+        </div>
+        <div class="col-sm-12">
+          <br>
+          <mat-form-field >
+            <mat-select id="atributoReferencia" placeholder="Atributo para referência" formControlName='atributoReferencia' name="atributoReferencia">
+              <mat-option>Selecione um</mat-option>
+              <mat-option *ngFor="let item of colunasMesclagem" [value]="item">{{item}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-12">
+          <button type="button" mat-raised-button  id="btnMesclar" name="btnMesclar" type="submit"
+            color="primary" style="margin-top: 20px; cursor: pointer;width: 100%;" matTooltip="Mesclar Atributos"
+            [disabled]="!this.formMesclagem.valid"
+            (click)="realizarMesclagem()">
+            <mat-icon style="margin-right: 5px;">check</mat-icon> Mesclar Atributos
+          </button>
+          <br>
+          <button type="button" mat-raised-button  id="btnCancelar" name="btnCancelar" (click)="inverterHabilitarMesclagem()"
+          color="warn" style="margin-top: 20px; cursor: pointer;width: 100%;" matTooltip="cancelar">
+          Cancelar
+        </button>
+
+        </div>
+      </div>
+
+    </form>
+
+    <div class="camadas" *ngIf="!habilitarFormularioNovoAtributo && !habilitarFormularioMesclagem">
+      <div class="row camada" *ngIf="!planilha || planilha.length == 0" >
+        <span>Ainda não existem objetos no mapa </span>
+      </div>
+      <div class="row camada" *ngIf="planilha && planilha.length > 0" >
+        <div style="width: 100%">
+          <div class="">
+            <table class="table-striped table-hover table-borderless">
+              <thead>
+                <tr>
+                  <th scope="col" *ngFor="let atributo of atributos">{{atributo}} <app-filtro-planilha style="position:relative" (filtrarAtributos)="filtrarAtributos($event)" (limparAtributos)="limparFiltroAtributos($event)" [atributo]="atributo"></app-filtro-planilha></th>
+                </tr>
+              </thead>
+              <tbody *ngIf="!estaFiltrado">
+                <tr *ngFor="let registros of planilha;" [class]="verificarSeEstaSelecionado(registros[0]) ? 'row-selected' : ''"
+                  (click)="selecionarLinha(registros[0])">
+                  <td *ngFor="let registro of registros; index as i" >
+                    {{ formatarRegistrosNumericos(registro) }}
+                  </td>
+                </tr>
+
+              </tbody>
+
+              <tbody *ngIf="estaFiltrado && planilhaFiltrada.length > 0" >
+                <tr *ngFor="let registros of planilhaFiltrada; " [class]="verificarSeEstaSelecionado(registros[0]) ? 'row-selected' : ''"
+                (click)="selecionarLinha(registros[0])">
+                  <td *ngFor="let registro of registros; index as i" >
+                    {{ formatarRegistrosNumericos(registro) }}
+                  </td>
+                </tr>
+              </tbody>
+
+              <tbody *ngIf="estaFiltrado && planilhaFiltrada.length == 0">
+                <tr>
+                  Nenhum registro encontrado.
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

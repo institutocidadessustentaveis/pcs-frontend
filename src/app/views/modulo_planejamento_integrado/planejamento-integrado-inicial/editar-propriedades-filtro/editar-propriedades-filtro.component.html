@@ -1,0 +1,47 @@
+<div>
+  <h4 class="col-md-12" style="text-align: center;" >Estilo</h4>
+  <br>
+
+  <form #propertiesForm="ngForm">
+    
+      <mat-form-field class="col-md-12" floatLabel="always">
+        <mat-label>Cor da borda</mat-label>
+        <input matInput matTooltip="Cor da borda" name="Color" placeholder=" "
+        [style.background]="style.color" [cpPosition]="'bottom-right'"
+          [(colorPicker)]="style.color" />
+      </mat-form-field>
+
+      <mat-form-field class="col-md-12">
+        <mat-label>Borda</mat-label>
+        <input  #weight="ngModel" pattern="(?:100(?:\.00?)?|\d?\d(?:\.\d\d?)?)$" onKeyPress="if(this.value.length==4) return false;" name="weight" matInput placeholder="Borda" [(ngModel)]="style.weight">
+        <mat-hint [hidden]="!weight.invalid" style="font-size: 12px;color:red">Digite um valor entre 0,0 e 100,0</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-12" floatLabel="always">
+        <mat-label>Cor de preenchimento</mat-label>
+        <input matInput matTooltip="Cor de preenchimento" name="FillColor" placeholder=" "
+        [style.background]="style.fillColor" [cpPosition]="'top-right'"
+          [(colorPicker)]="style.fillColor" />
+      </mat-form-field>
+
+      <mat-form-field class="col-md-12">
+        <mat-label>Opacidade do preenchimento</mat-label>
+        <input  #fillOpacity="ngModel" name="fillOpacity" pattern="^(0(.[0-9]+)?|1(.0+)?)$" onKeyPress="if(this.value.length==3) return false;" matInput placeholder="Opacidade do preenchimento" [(ngModel)]="style.fillOpacity">
+        <mat-hint [hidden]="!fillOpacity.invalid" style="font-size: 12px;color:red">Digite um valor entre 0.0 e 1</mat-hint>
+      </mat-form-field>
+
+      <!-- <mat-form-field class="row col-md-8">
+        <mat-label>Stroke</mat-label>
+        <input name="stroke" matInput placeholder="stroke" [(ngModel)]="style.stroke">
+      </mat-form-field> -->
+
+  
+    <br>
+
+    <div class="col-md-12">
+      <button mat-flat-button color="primary" [disabled]="!propertiesForm.form.valid"  (click)="salvar()" >OK</button>
+      <button mat-flat-button color="accent" (click)="cancelar()" style="margin-left: 20px;">Cancelar</button>
+    </div>
+  </form>
+
+</div>

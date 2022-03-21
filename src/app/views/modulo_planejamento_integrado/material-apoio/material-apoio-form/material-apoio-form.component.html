@@ -1,0 +1,344 @@
+<div class="contentBody" style="position: relative;">
+    <mat-card>
+      <mat-card-title></mat-card-title>
+      <br />
+      <div [hidden]="!loading" class="loading-indicator">
+        <mat-progress-spinner class="example-margin" style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+      </div>
+  
+      <mat-horizontal-stepper linear #stepper>
+        <!-- Passo 1 -->
+        <mat-step [stepControl]="firstFormGroup" [editable]="true">
+          <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel>Passo 1</ng-template>
+  
+            <mat-form-field class="col-md-12">
+              <input matInput placeholder="Título da publicação *" formControlName="titulo" maxlength="200" #inputTitulo id="inputTitulo">
+              <mat-hint align="end">{{ inputTitulo.value?.length || 0 }}/200</mat-hint>
+              <mat-error *ngIf="firstFormGroup.controls['titulo'].hasError('required')">
+                Campo Título da publicação é obrigatório
+              </mat-error>
+            </mat-form-field>
+  
+            <mat-form-field class="col-md-12">
+              <input matInput placeholder="Subtítulo da publicação" formControlName="subtitulo" maxlength="120" #inputSubtitulo id="inputSubtitulo">
+              <mat-hint align="end">{{ inputSubtitulo.value?.length || 0 }}/120</mat-hint>
+            </mat-form-field>
+  
+            <mat-form-field class="col-md-6">
+              <input matInput placeholder="Autor *" formControlName="autor" maxlength="120" #inputAutor id="inputAutor">
+              <mat-hint align="end">{{ inputAutor.value?.length || 0 }}/120</mat-hint>
+              <mat-error *ngIf="firstFormGroup.controls['autor'].hasError('required')">
+                Campo Autor é obrigatório
+              </mat-error>
+            </mat-form-field>
+  
+            <mat-form-field class="col-md-6">
+              <input matInput placeholder="Instituição *" formControlName="instituicao" maxlength="120" #inputInstituicao id="inputInstituicao">
+              <mat-hint align="end">{{ inputInstituicao.value?.length || 0 }}/120</mat-hint>
+              <mat-error *ngIf="firstFormGroup.controls['instituicao'].hasError('required')">
+                Campo Instituição é obrigatório
+              </mat-error>
+            </mat-form-field>
+  
+            <mat-form-field class="col-md-6">
+                <input type="date" formControlName="dataPublicacao" name="dataPublicacao" matInput placeholder="Data de publicação *">
+                <mat-error *ngIf="firstFormGroup.controls['dataPublicacao'].hasError('required')">
+                  Campo Data de publicação é obrigatório
+                </mat-error>
+            </mat-form-field>
+  
+            <mat-form-field class="col-md-6">
+                <mat-label>Idioma</mat-label>
+                <mat-select id="inputIdioma" name="idioma" formControlName="idioma">
+                    <mat-option value="Português">Português</mat-option>
+                    <mat-option value="Inglês">Inglês</mat-option>
+                    <mat-option value="Espanhol">Espanhol</mat-option>
+                    <mat-option value="Frânces">Frânces</mat-option>
+                    <mat-option value="Alemão">Alemão</mat-option>
+                    <mat-option value="Italiano">Italiano</mat-option>
+                    <mat-option value="Chinês">Chinês</mat-option>
+                    <mat-option value="Japonês">Japonês</mat-option>
+                    <mat-option value="Tupi/Macro-Jê">Tupi/Macro-Jê</mat-option>
+                    <mat-option value="Outra">Outra</mat-option>
+                </mat-select>
+            </mat-form-field>
+  
+            <mat-form-field class="col-md-6">
+                <mat-label>Continente da publicação</mat-label>
+                <mat-select id="inputContinente" name="continente" formControlName="continente">
+                    <mat-option value="América do Norte">América do Norte</mat-option>
+                    <mat-option value="América do Sul">América do Sul</mat-option>
+                    <mat-option value="América Central">América Central</mat-option>
+                    <mat-option value="Caribe">Caribe</mat-option>
+                    <mat-option value="Oriente Médio">Oriente Médio</mat-option>
+                    <mat-option value="Europa">Europa</mat-option>
+                    <mat-option value="Ásia">Ásia</mat-option>
+                    <mat-option value="Oceania">Oceania</mat-option>
+                    <mat-option value="África">África</mat-option>
+                    <mat-option value="Antártida">Antártida</mat-option>
+                </mat-select>
+            </mat-form-field>
+  
+            <mat-form-field class="col-md-6">
+                <mat-label>País da publicação</mat-label>
+                <mat-select id="inputPais" name="pais" formControlName="pais" (selectionChange)="onPaisChange($event)">
+                  <mat-option [value]=""></mat-option>
+                  <mat-option *ngFor="let item of paisesCombo" [value]="item.id">{{item.label}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+  
+            <mat-form-field class="col-md-6">
+                <mat-label>Região do Brasil da publicação</mat-label>
+                <mat-select id="inputRegiao" name="regiao" formControlName="regiao" disabled="{{!habilitarRegiaoDoBrasil}}">
+                  <mat-option [value]=""></mat-option>  
+                  <mat-option value="Norte">Norte</mat-option>
+                    <mat-option value="Nordeste">Nordeste</mat-option>
+                    <mat-option value="Centro-Oeste">Centro-Oeste</mat-option>
+                    <mat-option value="Sudeste">Sudeste</mat-option>
+                    <mat-option value="Sul">Sul</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+           <mat-form-field class="col-md-6">
+              <mat-label>Estado da publicação</mat-label>              
+              <mat-select id="inputProvinciaEstado" name="provinciaEstado" formControlName="provinciaEstado" (selectionChange)="onEstadoChange($event)">
+                <mat-option [value]=""></mat-option>
+                <mat-option *ngFor="let item of provinciaEstadoCombo" [value]="item.id">{{item.label}}</mat-option>
+              </mat-select>
+          </mat-form-field>
+  
+            <mat-form-field class="col-md-6">
+                <mat-label>Cidade da publicação</mat-label>                
+                <mat-select id="inputCidade" name="cidade" formControlName="cidade">
+                  <mat-option [value]=""></mat-option>
+                  <mat-option *ngFor="let item of cidadesCombo" [value]="item.id">{{item.label}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+  
+            <hr>
+            <div>
+              <button mat-raised-button routerLink="/planejamento-integrado/material-apoio" >Voltar para a lista</button>
+              <button mat-raised-button matStepperNext style="float:right">Próximo</button>
+            </div>
+          </form>
+        </mat-step>
+        <!-- ./Passo 1 -->
+  
+        <!-- Passo 2 -->
+        <mat-step [stepControl]="secondFormGroup" [editable]="true">
+          <form [formGroup]="secondFormGroup">
+            <ng-template matStepLabel>Passo 2</ng-template>
+  
+            <mat-form-field class="col-md-12">
+              <mat-label>Áreas de Interesse</mat-label>
+              <mat-select id="inputAreasInteresse" name="areasInteresse" formControlName="areasInteresse" multiple>
+                <mat-option *ngFor="let item of areasInteresseCombo" [value]="item.id">{{item.nome}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+  
+            <mat-form-field class="col-md-6">
+              <mat-label>Eixo</mat-label>
+              <mat-select id="inputEixo" name="eixo" formControlName="eixo" multiple (openedChange)="onEixoChange($event)">
+                  <mat-option *ngFor="let item of eixosCombo" [value]="item.id">{{item.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+  
+            <mat-form-field class="col-md-6">
+              <mat-label>Indicador</mat-label>
+              <mat-select id="inputIndicador" name="indicador" formControlName="indicador" multiple>
+                <mat-option *ngFor="let item of indicadoresCombo" [value]="item.id">{{item.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+  
+            <mat-form-field class="col-md-6">
+              <mat-label>ODS</mat-label>
+              <mat-select id="inputOds" name="ods" formControlName="ods" multiple (openedChange)="onOdsChange($event)">
+                <mat-option *ngFor="let item of odsCombo" [value]="item.id">{{item.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+  
+            <mat-form-field class="col-md-6">
+              <mat-label>Meta ODS</mat-label>
+              <mat-select id="inputMetaOds" name="metaOds" formControlName="metaOds" multiple>
+                  <mat-option *ngFor="let item of metasOdsCombo" [value]="item.id">{{item.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+  
+            <mat-form-field class="col-md-6">
+              <input matInput placeholder="Palavra-chave" formControlName="palavraChave" maxlength="45" #inputPalavraChave id="inputPalavraChave">
+              <mat-hint align="end">{{ inputPalavraChave.value?.length || 0 }}/45</mat-hint>
+            </mat-form-field>
+  
+            <mat-form-field class="col-md-6">
+              <input matInput placeholder="Tag" formControlName="tag" maxlength="45" #inputTag id="inputTag">
+              <mat-hint align="end">{{ inputTag.value?.length || 0 }}/45</mat-hint>
+            </mat-form-field>
+  
+            <mat-form-field class="col-md-12">
+              <mat-label>Público alvo</mat-label>
+              <mat-select id="inputPublicoAlvo" name="publicoAlvo" formControlName="publicoAlvo">
+                <mat-option value="Técnicos Municipais">Técnicos Municipais</mat-option>
+                <mat-option value="Gestores Públicos">Gestores Públicos</mat-option>
+                <mat-option value="Sociedade Civil">Sociedade Civil</mat-option>
+                <mat-option value="Academia">Academia</mat-option>
+                <mat-option value="Estudantes">Estudantes</mat-option>
+                <mat-option value="Criança e Adolescente">Criança e Adolescente</mat-option>
+                <mat-option value="Empresarial">Empresarial</mat-option>
+              </mat-select>
+            </mat-form-field>
+  
+            <hr>
+            <div>
+              <button mat-raised-button matStepperPrevious>Voltar</button>
+              <button mat-raised-button matStepperNext style="float:right">Próximo</button>
+            </div>
+          </form>
+        </mat-step>
+        <!-- ./Passo 2 -->
+  
+        <!-- Passo 3 -->
+        <mat-step [stepControl]="thirdFormGroup" [editable]="true">
+          <form [formGroup]="thirdFormGroup">
+            <ng-template matStepLabel>Passo 3</ng-template>
+  
+            <mat-form-field class="col-md-6">
+              <mat-label>Tipo de arquivo</mat-label>
+              <mat-select id="inputTipoArquivo" name="tipoArquivo" formControlName="tipoArquivo">
+                <mat-option value="PDF">PDF</mat-option>
+                <mat-option value="DOCX">DOCX</mat-option>
+                <mat-option value="ODT">ODT</mat-option>
+                <mat-option value="TXT">TXT</mat-option>
+                <mat-option value="PPT">PPT</mat-option>
+                <mat-option value="CSV">CSV</mat-option>
+                <mat-option value="XLSX">XLSX</mat-option>
+                <mat-option value="SHP">SHP</mat-option>
+                <mat-option value="TIFF">TIFF</mat-option>
+                <mat-option value="JPG">JPG</mat-option>
+                <mat-option value="GIF">GIF</mat-option>
+                <mat-option value="MP3">MP3</mat-option>
+                <mat-option value="MP4">MP4</mat-option>
+                <mat-option value="AVI/WMV">AVI/WMV</mat-option>
+                <mat-option value="MOV/QT">MOV/QT</mat-option>
+                <mat-option value="MKV">MKV</mat-option>
+                <mat-option value="AVCHD">AVCHD</mat-option>
+                <mat-option value="FLV/SWF">FLV/SWF</mat-option>
+                <mat-option value="Outros tipos de vídeo">Outros tipos de vídeo</mat-option>
+                <mat-option value="Outros tipos de áudio">Outros tipos de audio</mat-option>
+                <mat-option value="Outros tipos de texto">Outros tipos de texto</mat-option>
+              </mat-select>
+            </mat-form-field>
+  
+            <mat-form-field class="col-md-6">
+              <mat-label>Tipo de documento</mat-label>
+              <mat-select id="inputTipoDocumento" name="tipoDocumento" formControlName="tipoDocumento">
+                <mat-option value="Livro">Livro</mat-option>
+                <mat-option value="Artigo Científico">Artigo Científico</mat-option>
+                <mat-option value="Manual & Guia">Manual & Guia</mat-option>
+                <mat-option value="Artigo de Imprensa">Artigo de Imprensa</mat-option>
+                <mat-option value="Notícia">Notícia</mat-option>
+                <mat-option value="Fotografia">Fotografia</mat-option>
+                <mat-option value="Filme">Filme</mat-option>
+                <mat-option value="Dicionário & Gramática">Dicionário & Gramática</mat-option>
+                <mat-option value="Teses & Dissertações acadêmicas">Teses & Dissertações acadêmicas</mat-option>
+                <mat-option value="Apresentações em tela">Apresentações em tela</mat-option>
+              </mat-select>
+            </mat-form-field>
+  
+            <mat-form-field class="col-md-6">
+              <mat-label>Tipo de material</mat-label>
+              <mat-select id="inputTipoMaterial" name="tipoMaterial" formControlName="tipoMaterial">
+                <mat-option value="Texto">Texto</mat-option>
+                <mat-option value="Imagem">Imagem</mat-option>
+                <mat-option value="Vídeo">Vídeo</mat-option>
+                <mat-option value="Audio">Audio</mat-option>
+                <mat-option value="Cartografia e SIG">Cartografia e SIG</mat-option>
+                <mat-option value="Software & Aplicativo">Software & Aplicativo</mat-option>
+                <mat-option value="Planilha Digital">Planilha Digital</mat-option>
+                <mat-option value="Banco de Dados">Banco de Dados</mat-option>
+              </mat-select>
+            </mat-form-field>
+  
+            <mat-form-field class="col-md-6">
+              <mat-label>Local de Exibição da Publicação</mat-label>
+              <mat-select id="inputLocalExibicao" name="localExibicao" formControlName="localExibicao">
+                <mat-option value="Publicações Orientações do PCS">Publicações Orientações do PCS</mat-option>
+                <mat-option value="Publicações não PCS">Publicações não PCS</mat-option>
+                <mat-option value="Institucional sobre o PCS">Institucional sobre o PCS</mat-option>
+              </mat-select>
+            </mat-form-field>
+  
+            <mat-form-field class="col-md-12">
+              <mat-label>Tipologia CGEE</mat-label>
+              <mat-select id="inputTipologiaCgee" name="tipologiaCgee" disabled formControlName="tipologiaCgee">
+                <mat-option value="--">--</mat-option>
+              </mat-select>
+            </mat-form-field>
+  
+            <hr>
+            <div>
+              <button mat-raised-button matStepperPrevious>Voltar</button>
+              <button mat-raised-button matStepperNext style="float:right">Próximo</button>
+            </div>
+          </form>
+        </mat-step>
+        <!-- ./Passo 3 -->
+  
+        <!-- Passo 4 -->
+        <mat-step [stepControl]="fourthFormGroup" [editable]="true">
+          <form [formGroup]="fourthFormGroup">
+            <ng-template matStepLabel>Passo 4</ng-template>
+  
+            <div class="col-md-12" style="margin-top: 30px;">
+              <mat-label class="labelTextEditor" matTooltip="Resumo da publicação">Resumo</mat-label>
+              <div [ngxSummernote]="editorConfig" formControlName="resumo"></div>
+              <mat-error *ngIf="fourthFormGroup.controls['resumo'].value?.length > 1000">
+                  O resumo deve ter no máximo 1000 caracteres
+              </mat-error>
+              <mat-hint class="caracteres-editor">{{ fourthFormGroup.controls['resumo'].value?.length || 0 }}/1000</mat-hint>
+            </div>
+  
+            <div class="col-md-12">
+              <input hidden #imagemInputPrincipal type="file" id="imagemPrincipal" name="imagemPrincipal"
+                accept="image/jpeg,image/png, .tiff, .gif, .bmp" (change)="processImage($event)">
+              <button type="button" mat-raised-button (click)="imagemInputPrincipal.click()" id="btnImagemPrincipal" name="btnImagemPrincipal"
+                color="primary" style="margin-top: 20px; cursor: pointer;" matTooltip="Carregar Imagem de Capa">
+                <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar imagem de capa
+              </button>
+  
+              <br>
+              <mat-label *ngIf="nomeArquivoImagemCapa">{{nomeArquivoImagemCapa}} 
+                <mat-icon matTooltip="Excluir imagem de capa" style="margin-right: 5px; cursor: pointer; color: red;" (click)="excluirImagemCapa()">delete</mat-icon>
+              </mat-label>
+            </div>
+  
+            <div class="col-md-12">
+              <input hidden #inputArquivoPublicacao type="file" id="arquivoPublicacao" name="arquivoPublicacao" (change)="processFile($event)">
+              <button type="button" mat-raised-button (click)="inputArquivoPublicacao.click()" id="btnArquivoPublicacao" name="btnArquivoPublicacao"
+                color="primary" style="margin-top: 20px; cursor: pointer;" matTooltip="Carregar arquivo da publicação">
+                <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar arquivo da publicação*
+              </button>
+
+              <mat-error *ngIf="fourthFormGroup.controls['arquivoPublicacao'].hasError('required')">
+                Campo Arquivo da publicação é obrigatório
+              </mat-error>
+  
+              <br>
+              <mat-label *ngIf="nomeArquivoMaterialPublicacao">{{nomeArquivoMaterialPublicacao}}</mat-label>
+            </div>
+  
+            <hr>
+            <div>
+              <button mat-raised-button matStepperPrevious>Voltar</button>
+              <button mat-flat-button color="primary" style="float:right" (click)="salvar()" 
+              [disabled]="fourthFormGroup.controls['arquivoPublicacao'].hasError('required') || fourthFormGroup.controls['resumo'].value?.length > 1000">
+                <mat-icon>save</mat-icon> Salvar e finalizar
+              </button>
+            </div>
+          </form>
+        </mat-step>
+        <!-- ./Passo 4 -->
+  
+      </mat-horizontal-stepper>
+    </mat-card>
+  </div>

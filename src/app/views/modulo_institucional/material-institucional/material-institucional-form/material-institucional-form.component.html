@@ -1,0 +1,120 @@
+<div class="contentBody" style="position: relative;">
+  <app-breadcrumb style="position: relative;"></app-breadcrumb>
+<mat-card>
+  <mat-card-title>Cadastrar material institucional</mat-card-title>
+
+  <div *ngIf="loading" class="loading-indicator">
+    <mat-progress-spinner style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+  </div>
+
+  <form [formGroup]="formGroup">
+
+    <mat-form-field class="col-md-12">
+      <input matInput placeholder="Título da publicação" formControlName="titulo" maxlength="250" #inputTitulo id="inputTitulo" required>
+      <mat-hint align="end">{{ inputTitulo.value?.length || 0 }}/250</mat-hint>
+      <mat-error *ngIf="formGroup.controls['titulo'].hasError('required')">
+        Campo título da publicação é obrigatório
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-12">
+      <input matInput placeholder="Subtítulo" formControlName="subtitulo" maxlength="250" #inputSubtitulo id="inputSubtitulo" required>
+      <mat-hint align="end">{{ inputSubtitulo.value?.length || 0 }}/250</mat-hint>
+      <mat-error *ngIf="formGroup.controls['subtitulo'].hasError('required')">
+        Campo subtítulo é obrigatório
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-12">
+      <input matInput placeholder="Autor" formControlName="autor" maxlength="250" #inputAutor id="inputAutor" required>
+      <mat-hint align="end">{{ inputAutor.value?.length || 0 }}/250</mat-hint>
+      <mat-error *ngIf="formGroup.controls['autor'].hasError('required')">
+        Campo autor é obrigatório
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-12">
+      <mat-chip-list #inputLinksRelacionados aria-label="Links selection">
+        <mat-chip *ngFor="let link of linksRelacionados" [selectable]="true"
+                 [removable]="true" (removed)="removerLinksRelacionados(link)">
+            <a href="//{{link}}" target="_blank">{{link}}</a>
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <input placeholder="Links relacionados"
+               [matChipInputFor]="inputLinksRelacionados"
+               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+               [matChipInputAddOnBlur]="addOnBlur"
+               (matChipInputTokenEnd)="addLinksRelacionados($event)">
+      </mat-chip-list>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-12">
+      <mat-chip-list #inputTagPalavrasChave aria-label="TAG selection">
+        <mat-chip *ngFor="let item of tagPalavrasChave" [selectable]="true"
+                 [removable]="true" (removed)="removerTagPalavrasChave(item)">
+            {{item}}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <input placeholder="TAG / Palavras-Chave"
+               [matChipInputFor]="inputTagPalavrasChave"
+               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+               [matChipInputAddOnBlur]="addOnBlur"
+               (matChipInputTokenEnd)="addTagPalavrasChave($event)">
+      </mat-chip-list>
+    </mat-form-field>
+
+    <div class="col-md-12 summernote">
+      <mat-label class="labelTextEditor">Corpo do texto *</mat-label>
+      <div [ngxSummernote]="editorConfig" formControlName="corpoTexto"></div>
+      <mat-error *ngIf="formGroup.controls['corpoTexto'].hasError('required')">
+        <sub>Campo corpo do texto é obrigatório</sub>
+      </mat-error>
+    </div>
+
+    <div class="col-md-12" style="margin-top:20px;">
+      <button type="button" mat-raised-button id="btnArquivoMultimidia" (click)="inputArquivoMultimidia.click()"
+        color="primary" matTooltip="Upload de arquivo multimídia">
+        <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar arquivo *
+      </button>
+      <input hidden #inputArquivoMultimidia type="file" id="inputArquivoMultimidia" name="cartaCompromisso"
+        accept=".pdf,.docx,.doc,.xlsx,.xls,image/jpeg,image/png" (change)="processFile($event)">
+      <br />
+      <mat-error *ngIf="this.arquivosMultimidia.length === 0"> <sub>Escolha ao menos um arquivo</sub> </mat-error>
+    </div>
+
+    <div class="col-lg-12" [hidden]="this.arquivosMultimidia.length === 0">
+      <table mat-table [dataSource]="dataSourceArquivosMultimidia">
+        <ng-container matColumnDef="nomeArquivo">
+          <th mat-header-cell *matHeaderCellDef>Arquivo</th>
+          <td mat-cell *matCellDef="let arquivo"> {{arquivo.nomeArquivo}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="remover">
+          <th mat-header-cell *matHeaderCellDef>Remover</th>
+          <td mat-cell *matCellDef="let arquivo">
+            <button mat-flat-button color="warn" name="btnDeletaMeta" (click)='deletarArquivo(arquivo)'
+              class="btnTabela" matTooltip="Excluir">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsArquivosMultimidia"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsArquivosMultimidia;"></tr>
+      </table>
+    </div>
+
+    <div class="text-right" style="margin-top: 10px !important;">
+      <button mat-flat-button color="primary" class="btnToRight" role="button" matTooltip="Salvar" (click)="salvarMaterialInstitucional();"
+      [disabled]="!formGroup.valid || loading || arquivosMultimidia.length === 0">
+        <mat-icon>save</mat-icon>Salvar
+      </button>
+      <button mat-flat-button color="accent" class="btnToRight" [routerLink]="['/material_institucional']"
+        matTooltip="Voltar">
+        <mat-icon>arrow_back_ios</mat-icon>Voltar
+      </button>
+    </div>
+  </form>
+
+</mat-card>
+</div>

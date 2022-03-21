@@ -1,0 +1,95 @@
+<div class="contentBody">
+<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+  <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12 marginToTop">
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <mat-card-title>Cadastro de Senha</mat-card-title>
+      <hr>
+    </div>
+    <div [hidden]="!loading">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+    <br>
+    <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+
+      <div class="alert alert-dark text-center" role="alert" style="margin-top: 10px !important;">
+        Olá <b>{{usuario}}</b>, você foi indicado pela prefeitura <b>{{prefeitura}}</b> para ser <b>{{responsavel}}</b>.
+      </div>
+
+      <form [formGroup]="formCadSenha" class="frmCadSenha">
+
+        <mat-form-field class="marginToComponent">
+          <input matInput placeholder="Senha*:" value="" #txtSenha [type]="hideSenha ? 'password' : 'text'"
+            formControlName="Senha" id="txtSenha" />
+          <mat-icon matSuffix (click)="hideSenha = !hideSenha">{{hideSenha ? 'visibility_off' : 'visibility'}}
+          </mat-icon>
+          <mat-hint>Deve ter pelo menos 6 caracteres, contendo letra(s) e número(s)</mat-hint>
+          <mat-hint align="end">{{ txtSenha.value?.length || 0 }}/100</mat-hint>
+          <mat-error *ngIf="!formCadSenha.controls['Senha'].valid && formCadSenha.controls['Senha'].touched">
+            {{ getErrorSenha() }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="marginfield">
+          <input matInput placeholder="Confirmar Senha*:" value="" #txtConfirmaSenha
+            [type]="hideConfirmaSenha ? 'password' : 'text'" formControlName="ConfirmaSenha" id="txtConfirmaSenha"/>
+          <mat-icon matSuffix (click)="hideConfirmaSenha = !hideConfirmaSenha">
+            {{hideConfirmaSenha ? 'visibility_off' : 'visibility'}}</mat-icon>
+          <mat-hint align="end">{{ txtConfirmaSenha.value?.length || 0 }}/100</mat-hint>
+          <mat-error
+            *ngIf="!formCadSenha.controls['ConfirmaSenha'].valid && formCadSenha.controls['ConfirmaSenha'].touched">
+            {{ getErrorConfirmaSenha() }}
+          </mat-error>
+        </mat-form-field>
+      </form>
+
+      <br>
+      <div class="alert alert-dark" role="alert">
+        <p>Os signatários do Programa Cidades Sustentáveis têm à disposição um espaço virtual no portal
+          <a href="http://www.cidadessustentaveis.org.br" >http://www.cidadessustentaveis.org.br</a> para 
+          apresentar informações do município por meio dos indicadores, do Plano de Metas e divulgar boas 
+          práticas locais. Além destas ferramentas o sistema oferecerá diversas outras 
+          voltadas para a divulgação de informações da cidade que serão inseridas pela prefeitura. <br />
+          A plataforma cumpre uma dupla função para as Prefeituras, sendo fonte de informação para o planejamento, 
+          gestão e tomada de decisão da administração pública, assim como de 
+          transparência, acompanhamento e monitoramento para toda a sociedade. <br />
+          
+          Para ter acesso ao sistema, é necessário o preenchimento do formulário de cadastro com a indicação 
+          das pessoas que serão responsáveis pelo Programa Cidades Sustentáveis na gestão municipal.  <br />
+          
+          É importante salientar que a prefeitura é responsável por 
+          manter atualizadas as informações de cadastro no sistema. <br />
+
+          As pessoas indicadas pelo prefeito/a receberão seus usuários via e-mail, com os quais poderão cadastrar suas senhas pessoais. 
+          Portanto, é de responsabilidade dos usuários o uso adequado de suas senhas, 
+          bem como a responsabilidade pela inserção de dados referentes ao seu município e 
+          demais informações publicadas.  <br />
+
+          Observe que as atividades de inserção de dados no sistema, assim como seu processamento, 
+          dependerão não apenas das operações realizadas por nosso servidor de dados,
+          mas também estão sujeitas às condições de acesso do usuário. 
+          A escolha do navegador utilizado e serviço de provedor de internet podem 
+          prejudicar o desempenho na atividade e eventualmente erros nos dados cadastrados e 
+          resultados decorrentes. Caso perceba alguma falha nos dados, pedimos que nos 
+          informem para que possamos analisar a situação. <br />
+
+          Informamos que os dados pessoais solicitados no cadastro de usuários são utilizados apenas no âmbito do 
+          Programa Cidades Sustentáveis e atividades a ele vinculadas, 
+          no intuito de estabelecer uma boa comunicação com os usuários acerca de 
+          eventos e informes sobre demais atividades do Programa e seu Instituto. <br />
+          
+          Seja bem-vindo (a) a plataforma do Programa Cidades Sustentáveis!
+        </p>
+        </div>
+      <mat-checkbox [(ngModel)]="checked" id="chkTermo">Declaro que li e aceito os termos de uso</mat-checkbox>
+
+      <br *ngIf="!checked">
+      <div class="text-right">
+        <button mat-flat-button color="primary" *ngIf="!checked" matTooltip="Salvar" (click)="salvar()"
+        [disabled]="enableSalvar()" style="margin-right: 10px !important;" id="btnSave"><mat-icon >save</mat-icon> Salvar</button>
+        <button mat-flat-button color="primary" *ngIf="checked" matTooltip="Salvar" (click)="salvar()"
+        [disabled]="enableSalvar()" style="margin-right: 10px !important;" id="btnSaveTermo"><mat-icon >save</mat-icon> Salvar</button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+</div>

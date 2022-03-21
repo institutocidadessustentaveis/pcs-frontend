@@ -1,0 +1,146 @@
+<div class="contentBody">
+  <div class="row">
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-8">
+      <div class="paper paperheavy">
+        <header>
+          <h1><span>Solicitar Cadastro</span></h1>
+        </header>
+
+        <form [formGroup]="formPrefeitura">
+          <div class="row">
+
+            <div class="col-md-12">
+              <br>
+              <mat-radio-group aria-label="Cargo" formControlName="cargo" [style.fontSize.em]=1.2>
+                <mat-radio-button value="Prefeito">Prefeito</mat-radio-button>
+                <mat-radio-button value="Prefeita">Prefeita</mat-radio-button>
+              </mat-radio-group>
+            </div>
+
+            <mat-form-field class="col-md-12" [style.fontSize.em]=1.2>
+              <input matInput placeholder="Nome *" id="nome" [attr.disabled]="loading ? '' : null"
+                formControlName="nome">
+            </mat-form-field>
+
+            <mat-form-field class="col-md-4" [style.fontSize.em]=1.2>
+              <input type="email" matInput placeholder="E-mail *" id="email" [attr.disabled]="loading ? '' : null"
+                formControlName="email">
+            </mat-form-field>
+
+            <mat-form-field class="col-md-4" [style.fontSize.em]=1.2>
+                <input type="cel" matInput placeholder="Telefone *" id="telefone" mask="(00) 00000-0000"
+                  [attr.disabled]="loading ? '' : null" formControlName="telefone">
+              </mat-form-field>
+
+            <div class="col-md-4"></div>
+
+            <div class="col-lg-4">
+              <mat-form-field [style.fontSize.em]=1.2>
+                <mat-label> Selecione um estado  *</mat-label>
+                <mat-select (selectionChange)="selecionaEstado($event.value)" formControlName="estado"
+                  id="estadoProvincia">
+                  <mat-option *ngFor="let estado of listaEstados " [value]="estado">{{estado.nome}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <mat-form-field class="col-md-4" [style.fontSize.em]=1.2>
+              <mat-label> Selecione uma cidade  *</mat-label>
+              <mat-select id="cidade" formControlName="cidade" (selectionChange)="selecionaCidade($event.value)">
+                <mat-option *ngFor="let cidade of listaCidades" [value]="cidade">
+                  {{cidade.label}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-4" [style.fontSize.em]=1.2>
+              <mat-label> Selecione o Partido Político  *</mat-label>
+              <mat-select (selectionChange)="selecionaPartido($event.value)" formControlName="partidoPolitico">
+                <mat-option *ngFor="let partido of listaPartidos" [value]="partido">
+                  {{partido.siglaPartido}} - {{partido.nome}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <br />
+
+
+            <div class="col-md-4">
+              <br />
+              <button type="button" mat-raised-button id="btnCartaCompromisso" (click)="fileCartaCompromisso.click()"
+                class="btn btn-bigger btn-green" color="primary"
+                matTooltip="Upload da Carta-Compromisso"> Carregar arquivo *
+              </button>
+              <input hidden #fileCartaCompromisso type="file" id="inpCartaCompromisso" name="cartaCompromisso"
+                accept="image/jpeg,image/png,application/pdf" (change)="processFile($event)">
+              <br />
+              <mat-hint style="font-size: 16px" [hidden]="prefeitura?.cartaCompromisso?.length != 0 ">Faça o upload da
+                Carta de Compromisso*</mat-hint>
+            </div>
+
+            <div class="col-lg-12" style="margin-top: 20px !important;"
+              [hidden]="this.prefeitura.cartaCompromisso.length === 0">
+              <table mat-table [dataSource]="dataSource">
+                <ng-container matColumnDef="arquivo">
+                  <th mat-header-cell *matHeaderCellDef>Arquivo</th>
+                  <td mat-cell *matCellDef="let cartaCompromisso"> {{cartaCompromisso.nomeArquivo}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="remover">
+                  <th mat-header-cell *matHeaderCellDef>Remover</th>
+                  <td mat-cell *matCellDef="let cartaCompromisso">
+                    <button mat-flat-button color="warn" name="btnDeletaMeta" (click)='deletarCarta(cartaCompromisso)'
+                      class="btn btnTabela" matTooltip="Excluir">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+              </table>
+            </div>
+
+            <br />
+            <div class="col-md-12">
+              <br />
+              <p>
+                <mat-checkbox required formControlName="termos" style="margin-right:.5em">
+                </mat-checkbox>
+                Eu, {{cargo}}{{nomePrefeito}} concordo com os <a (click)="abrirTermos()"><i><u
+                      style="cursor: pointer;">termos acima</u></i></a> e quero preencher o formulário de cadastro com a
+                indicação das pessoas responsáveis pela administração do sistema da prefeitura {{nomeCidade}} na
+                Plataforma do Conhecimento Cidades Sustentáveis *.
+              </p>
+            </div>
+
+            <div class="col-md-12">
+              <p>Campos obrigatórios estão marcados com asterisco (*)</p>
+              <br />
+            </div>
+            <div class="col-md-6"></div>
+            <div class="col-md-3" style="margin-bottom: 1em">
+              <button mat-flat-button id="btnCadastrarCidadao" class="btnToRight btn btn-wide btn-bigger btn-green btn-block"
+                [disabled]="!formPrefeitura.valid || prefeitura?.cartaCompromisso?.length === 0 || loading"
+                (click)="gravar()" matTooltip="Salvar" color="primary">
+                Enviar
+              </button>
+            </div>
+            <div class="col-md-3">
+              <button mat-flat-button color="accent" id="btnVoltar" class="btnToRight btn btn-wide btn-bigger btn-green btn-block" [routerLink]="['/']"
+                matTooltip="Voltar">
+                Voltar
+              </button>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+
+
+  </div>
+</div>

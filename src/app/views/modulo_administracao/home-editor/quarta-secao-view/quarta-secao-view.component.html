@@ -1,0 +1,58 @@
+<!-- Quarta seção -->
+
+<section>
+  <div class="col-md-12" *ngIf="quartaSecao?.tituloPrincipal" style="margin-bottom:3%">
+    <div class="row">
+      <div class="caixa" [style.background-color]="quartaSecao.tituloPrincipalCor"></div>
+      <a class="h1 titulos" style="margin-bottom:0 !important;"
+        [style.border-color]="quartaSecao.tituloPrincipalCor"
+        [style.color]="quartaSecao.tituloPrincipalCor"
+        [href]="quartaSecao.tituloPrincipalLink" onclick="return false;">{{quartaSecao.tituloPrincipal}}</a>
+    </div>
+  </div>
+
+
+  <div class="row" style="width: 100%; margin-bottom: 3%;">
+    <div class="col-md-12 padding-fix">
+      <div class="row" style="padding-left: 15px;padding-right: 15px;">
+
+        <div class="carousel-inner">
+          <a [href]="quartaSecao.primeiraImagemLink" onclick="return false;">
+            <img class="img-carousel" loading="lazy" [src]="quartaSecao.primeiraImagemSafeUrl" 
+            *ngIf="quartaSecao.primeiraImagemSafeUrl" alt="Event Image">
+            <div class="carousel-caption d-none d-md-block">
+              <div style="display: flex !important;
+              align-items: center !important; height: 320px !important;">
+
+                <div class="row" style="width: 100%;">
+                  <a class="h1 titulos-inside-image  underline-on-hover" style="line-height: 0.7em !important"
+                    [style.border-color]="quartaSecao.primeiroTituloCor"
+                    [style.color]="quartaSecao.primeiroTituloCor" style="width: 100%;"
+                    [href]="quartaSecao.primeiroTituloLink" onclick="return false;"
+                    [innerHTML]="quartaSecao.primeiroTitulo"></a>
+
+  
+
+                    <div class="div-btn-transparent">
+                      <a [href]="quartaSecao.primeiroBotaoLink" onclick="return false;">
+                        <button class="btn-transparent" 
+                        id="btn_historia" [style.color]="quartaSecao.primeiroBotaoTextoCor">
+                          {{quartaSecao.primeiroBotaoTexto}}
+                        </button>
+                      </a>
+                    </div>
+
+                </div>
+
+              </div>
+            </div>
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+
+</section>

@@ -1,0 +1,93 @@
+
+  <form [formGroup]="form">
+    <h2 mat-dialog-title>Detalhamento de Pedido de Aprovação de Prefeitura</h2>
+    <mat-dialog-content >
+      <mat-card class="info-full-width">
+        <mat-card-subtitle>Informações da Prefeitura</mat-card-subtitle>
+        <mat-card-content>
+
+          <mat-form-field appearance="none" >
+            <mat-label>Cidade</mat-label>
+            <input matInput placeholder="Cidade" value="{{ pedidoAprovacao.prefeitura.cidade.nome }}" readonly>
+          </mat-form-field>
+
+          <mat-form-field appearance="none" *ngIf="pedidoAprovacao.status !== 'Pendente'">
+            <mat-label>{{pedidoAprovacao.prefeitura.cargo}}</mat-label>
+            <input matInput placeholder="{{pedidoAprovacao.prefeitura.cargo}}"
+              value="{{ pedidoAprovacao.prefeitura.nome }}" readonly>
+          </mat-form-field>
+          <mat-form-field *ngIf="pedidoAprovacao.status === 'Pendente'">
+            <mat-label>{{pedidoAprovacao.prefeitura.cargo}}</mat-label>
+            <input matInput formControlName="nomePrefeito">
+          </mat-form-field>
+
+          <mat-form-field appearance="none">
+            <mat-label>Data de Cadastramento</mat-label>
+            <input matInput placeholder="Data de Cadastramento" value="{{ pedidoAprovacao.data | date: 'dd/MM/yyyy'}}" readonly>
+          </mat-form-field>
+          
+          <mat-form-field appearance="none" *ngIf="pedidoAprovacao.status !== 'Pendente'">
+            <mat-label>E-mail</mat-label>
+            <input matInput placeholder="E-mail" value="{{ pedidoAprovacao.prefeitura.email }}" readonly>
+          </mat-form-field>
+          <mat-form-field *ngIf="pedidoAprovacao.status === 'Pendente'">
+            <mat-label>E-mail</mat-label>
+            <input type="text" matInput placeholder="E-mail" formControlName="email">
+          </mat-form-field>
+          
+          <mat-form-field appearance="none" *ngIf="pedidoAprovacao.status !== 'Pendente'">
+            <mat-label>Telefone</mat-label>
+            <input matInput placeholder="Telefone" value="({{pedidoAprovacao.prefeitura.telefone | slice:0:2}}) {{pedidoAprovacao.prefeitura.telefone | slice:2:6}} - {{pedidoAprovacao.prefeitura.telefone | slice:6:10}}" readonly>
+          </mat-form-field>
+          <mat-form-field *ngIf="pedidoAprovacao.status === 'Pendente' && pedidoAprovacao.prefeitura.telefone.length <= 11">
+            <input matInput placeholder="Telefone" mask="(00) 0000-0000" formControlName="telefone">
+          </mat-form-field>
+          <mat-form-field *ngIf="pedidoAprovacao.status === 'Pendente' && pedidoAprovacao.prefeitura.telefone.length >= 12">
+            <input type="cel" matInput placeholder="Telefone" mask="(00) 00000-0000" formControlName="telefone">
+          </mat-form-field>
+
+          <div *ngIf="pedidoAprovacao.status === 'Pendente'" >
+            <mat-form-field class="full-width">
+              <mat-label>Data inicial do mandato</mat-label>
+              <input matInput type="date"
+                formControlName="inicioMandato"
+                id="dtInicioMandato"
+                required="true"
+                placeholder="Data inicial do mandato"
+                matInput>
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+              <mat-label>Data fim do mandato</mat-label>
+              <input matInput type="date"
+                formControlName="fimMandato"
+                id="dtFimMandato"
+                required="true"
+                placeholder="Data fim do mandato"
+                class="info-full-width"
+                matInput>
+            </mat-form-field>
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="info">
+        <mat-card-subtitle>Carta Compromisso</mat-card-subtitle>
+        <app-image-viewer [showPDFOnlyLabel]='mostrarApenasPdf' [showPDFOnlyOption]="false" [images]="imagens" [idContainer]="'idOnHTML'" [loadOnInit]="true" [primaryColor]="'#47825e'" [buttonsColor]="'white'"></app-image-viewer>
+      </mat-card>
+      <br>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button [disabled]="!form.valid || validarPeriodoMandato()" id="btn_aprovar" mat-flat-button color="primary" (click)="aprovar(pedidoAprovacao)" mat-dialog-close
+        *ngIf="mostrarAprovar()" matTooltip="Aprovar">
+        <mat-icon>check</mat-icon> Aprovar
+      </button>
+      <button id="btn_reprovar" mat-flat-button color="warn" (click)="reprovar(pedidoAprovacao)"
+        *ngIf="mostrarReprovar()" matTooltip="Reprovar">
+        <mat-icon>clear</mat-icon> Reprovar
+      </button>
+      <button id="btn_voltar" mat-flat-button color="accent" mat-dialog-close matTooltip="Voltar">
+        <mat-icon>arrow_back_ios</mat-icon> Voltar
+      </button>
+    </mat-dialog-actions>
+  </form>

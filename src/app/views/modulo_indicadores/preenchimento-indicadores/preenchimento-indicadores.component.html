@@ -1,0 +1,124 @@
+<div class="contentBody">
+  <div class="row">
+    <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+      <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <mat-card-title>Preenchimento de indicadores</mat-card-title>
+        <mat-divider [hidden]="loading"></mat-divider>
+        <mat-progress-bar mode="indeterminate" [hidden]="!loading"></mat-progress-bar>
+        <form [formGroup]="formPreencherIndicador">
+
+          <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12 marginToCard">
+            <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+              <mat-card-subtitle>Informações gerais do indicador</mat-card-subtitle>
+              <hr>
+
+              <mat-form-field class="div-label">
+                <mat-label>Selecione o ano de referência*</mat-label>
+                <mat-select id="ddAnoReferencia" formControlName="anoReferencia" [(value)]="anoReferenciaSelecionado"
+                  (selectionChange)="tradeAno($event.value)">
+                  <mat-option *ngFor="let itemAnoReferencia of listaAnoReferencia" [value]="itemAnoReferencia">
+                    {{itemAnoReferencia}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <div class="div-label" *ngIf="subdivisao">
+                <mat-label class="label-title">Subdivisão</mat-label><br>
+                <mat-label>{{subdivisao?.nome}}</mat-label>
+              </div>
+              <div class="div-label">
+                <mat-label class="label-title">Nome do indicador</mat-label><br>
+                <mat-label>{{objetoIndicadorDTO?.indicador?.nome}}</mat-label>
+              </div>
+              <div class="div-label">
+                <mat-label class="label-title">Descrição do indicador</mat-label><br>
+                <mat-label>{{objetoIndicadorDTO?.indicador?.descricao}}</mat-label>
+              </div>
+              <div class="div-label">
+                <mat-label class="label-title">ODS</mat-label><br>
+                <mat-label>{{objetoIndicadorDTO?.indicador?.ods ? objetoIndicadorDTO?.indicador?.ods.titulo : 'Não possui ODS associado'}}</mat-label>
+              </div>
+              <div class="div-label">
+                <mat-label class="label-title">Fórmula</mat-label><br>
+                <mat-label [innerHTML]="objetoIndicadorDTO?.indicador?.formula_resultado"></mat-label>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12 marginToComponent">
+            <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+              <mat-card-subtitle>Histórico de preenchimento</mat-card-subtitle>
+              <hr>
+              <div class="div-label">
+                <div *ngIf="loading">
+                  Carregando...
+                </div>
+              <div class="table-responsive"  *ngIf="!loading" >
+                <table class="table table-striped table-sm">
+
+                  <tr>
+                    <th> Variável </th>
+                    <th> Ano </th>
+                    <th> Valor </th>
+                  </tr>
+
+                  <tr *ngFor="let item of variavelPreenchida">
+                      <td> {{ item.nomeVariavel }} </td>
+                      <td> {{ item.ano }} </td>
+                      <td> {{ item.valor }} </td>
+                  </tr>
+
+                </table>
+              </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12 marginToComponent">
+            <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+              <mat-card-subtitle>Variáveis</mat-card-subtitle>
+              <hr>
+              <mat-tab-group class="marginToComponent">
+                <mat-tab label="{{itemVariavel.nome}}" *ngFor="let itemVariavel of listaVariavel;">
+                  <app-preenchimento-indicadores-variaveis [objetoVariavel]="itemVariavel" [objetoAlerta]="listaAlerta"
+                    [desabilitarBtnConfirmar]="chkDadosIndicador">
+                  </app-preenchimento-indicadores-variaveis>
+                </mat-tab>
+              </mat-tab-group>
+            </mat-card-content>
+          </mat-card>
+          <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12 marginToComponent">
+            <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+              <mat-checkbox class="text-left" id="chkDadosIndicador"
+                (change)="checkboxDadosIndicador(chkDadosIndicador)" [checked]="chkDadosIndicador">Não possuo os dados
+                para esse indicador </mat-checkbox>
+              <mat-form-field appearance="outline" hintLabel="Máximo 200 caracteres" [hidden]="!exibirJustificativa">
+                <textarea matInput #txtJustificativa placeholder="Justificativa(Máximo 200 caracteres)"
+                  id="txtJustificativa" formControlName="justificativa"></textarea>
+                <mat-hint align="end">{{txtJustificativa.value?.length || 0}}/200</mat-hint>
+                <mat-error
+                  *ngIf="!formPreencherIndicador.controls['justificativa'].valid && formPreencherIndicador.controls['justificativa'].touched">
+                  {{ getJustificativa() }}
+                </mat-error>
+              </mat-form-field>
+            </mat-card-content>
+          </mat-card>
+
+          <div class="col-md-12 col-lg-12 text-right marginToComponent">
+            <button mat-flat-button color="primary" matTooltip="Salvar"
+              style="cursor: pointer; margin-right: 5px !important;" id="btnSalvar" (click)="salvar()"
+              [disabled]="habilitarBotaoSalvar()">
+              <mat-icon>save</mat-icon> Salvar
+            </button>
+            <button mat-flat-button color="accent" matTooltip="Voltar" style="cursor: pointer;"
+              [routerLink]="['/indicadores-para-preencher']" 
+              [queryParams]="{subdivisao: subdivisao?.nome | slugify, indicador: objetoIndicadorDTO?.indicador?.nome |slugify}"
+              id="btnVoltar">
+              <mat-icon>arrow_back_ios</mat-icon> Voltar
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

@@ -1,0 +1,120 @@
+<div class="contentBody" style="position: relative;">
+    <app-breadcrumb style="position: relative;"></app-breadcrumb>
+<mat-card>
+  <div class="row">
+
+    <div class="col-md-5 col-lg-5 col-xs-12 col-sm-12">
+      <h2>Cadastro de cidades</h2>
+    </div>
+
+    <div class="col-md-7 col-lg-7 col-xs-12 col-sm-12" style="text-align: right;">
+      <button mat-flat-button color="primary" type="button" class="btnCadastrar"
+        (click)='carregarDadosIBGE()' matTooltip="Atualizar os cadastros das cidades de acordo com IBGE"
+        style="cursor: pointer !important; margin-bottom: 5px;">
+        <mat-icon>note_add</mat-icon>Atualizar cadastro das cidades
+      </button>
+
+      <button mat-flat-button color="primary" type="button" class="btnCadastrar"
+        [routerLink]="['/cidade/cadastrar']" matTooltip="Cadastrar" style="cursor: pointer !important; margin-bottom: 5px; margin-left: 5px;">
+        <mat-icon>add</mat-icon>Cadastrar Cidade
+      </button>
+    </div>
+
+  </div>
+
+  <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+    <mat-divider></mat-divider>
+  </div>
+
+  <div [hidden]="!loading" class="loading-indicator">
+    <mat-progress-spinner class="example-margin" style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+  </div>
+
+  <br>
+
+  <mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtro" autocomplete="off">
+  </mat-form-field>
+
+  <br>
+  <br>
+
+  <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+    <mat-card-title>Lista de Cidades Cadastradas</mat-card-title>
+    <mat-divider></mat-divider>
+  </div>
+
+  <table mat-table [dataSource]="dataSource" [hidden]="resultados.length === 0" matSort (matSortChange)="sortData($event)">
+
+      <!-- ID Column -->
+      <ng-container matColumnDef="codigoIBGE">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="codigoIbge"> Cod. IBGE </th>
+        <td mat-cell *matCellDef="let cidade" class='m-card-title' data-label='Cod. IBGE'>
+            <span class="mobile-label">Cod:</span>{{cidade.codigoIbge}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="pais">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="provinciaEstado.pais.nome"> País </th>
+        <td mat-cell *matCellDef="let cidade" class='m-card-title' data-label='País'>
+            <span class="mobile-label">País:</span>{{cidade?.provinciaEstado?.pais?.nome}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="estado">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="provinciaEstado.nome"> Estado </th>
+        <td mat-cell *matCellDef="let cidade" class='m-card-title' data-label='Estado'>
+            <span class="mobile-label">Estado:</span>{{cidade?.provinciaEstado?.nome}} </td>
+      </ng-container>
+
+      <!-- Nome Cidade Column -->
+      <ng-container matColumnDef="cidade">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="nome"> Cidade </th>
+        <td mat-cell *matCellDef="let cidade" class='m-card-title' data-label='Cidade'>
+          <span class="mobile-label">Cidade:</span>{{cidade.nome}} </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="continente">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="provinciaEstado.pais.continente"> Continente </th>
+        <td mat-cell *matCellDef="let cidade" class='m-card-title' data-label='Continente'>
+            <span class="mobile-label">Continente:</span>{{cidade?.provinciaEstado?.pais?.continente}} </td>
+      </ng-container>
+
+      <!-- Editar Column -->
+      <ng-container matColumnDef="acoes">
+        <th mat-header-cell *matHeaderCellDef>Ações</th>
+        <td mat-cell *matCellDef="let cidade">
+          <span>
+            <button type="btnTabela" mat-flat-button color="primary" name="button"
+            [routerLink]="['/cidade/editar', cidade.id]" class="btnTabela" matTooltip="Editar">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </span>
+          <span>
+            <button type="btnTabeka" mat-flat-button color="warn" name="button" class="btnTabela"
+            (click)='deletarCidade(cidade)' matTooltip="Excluir">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </span>
+
+          <span>
+            <button type="btnTabeka" mat-flat-button color="primary" name="button" class="btnTabela"
+             matTooltip="Dados de contato (Ponto focal)" (click)="openPontoFocalDetalhe(cidade)">
+              <mat-icon>search</mat-icon>
+            </button>
+          </span>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <div [hidden]="loading && resultados.length === 0">
+      <mat-paginator (page)="carregarPaginaCidades($event)" showFirstLastButtons
+      [length]="length"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="[10, 25, 50, 100]"
+      style="text-align: center !important;" class="float-none" ></mat-paginator>
+    </div>
+
+</mat-card>
+</div>

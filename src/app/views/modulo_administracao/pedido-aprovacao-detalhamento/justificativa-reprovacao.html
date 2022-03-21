@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>Justificativa da Reprovacao</h2>
+<mat-dialog-content>
+    <mat-form-field class="info-full-width">
+      <textarea matInput placeholder="Insira o motivo da reprovação da prefeitura..." [(ngModel)]="justificativa"></textarea>
+    </mat-form-field>
+  <br>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-flat-button color="primary" [mat-dialog-close]="justificativa" [disabled]="justificativa === null || justificativa === undefined || justificativa === ''">
+      <mat-icon>check</mat-icon> Confirmar
+    </button>
+    <button mat-flat-button color="accent" (click)="voltarJustificativaDialog()">
+      <mat-icon>arrow_back_ios</mat-icon> Voltar
+    </button>
+</mat-dialog-actions>

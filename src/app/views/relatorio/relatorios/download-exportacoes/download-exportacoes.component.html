@@ -1,0 +1,136 @@
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <form class="example-form" [formGroup]="formFiltro">
+      <div>
+        <app-datepicker formControlName="dataInicio" placeholder="Escolha a data inicial"></app-datepicker>
+      </div>
+
+      <div>
+        <app-datepicker formControlName="dataFim" placeholder="Escolha a data final"></app-datepicker>
+      </div>
+
+      <div class="col-lg-12">
+        <mat-form-field>
+          <mat-label>Selecione uma página</mat-label>
+          <mat-select formControlName="pagina" name="pagina" id="pagina">
+            <mat-option value=""></mat-option>
+            <mat-option *ngFor="let pagina of listaPaginas" [value]="pagina">
+              {{ pagina.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+
+      <div class="col-lg-12">
+        <mat-form-field>
+          <mat-label>Selecione uma ação</mat-label>
+          <mat-select formControlName="acao" name="acao" id="acao">
+            <mat-option value=""></mat-option>
+            <mat-option *ngFor="let acao of listaAcao" [value]="acao">
+              {{ acao.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-12">
+        <mat-form-field>
+          <mat-label>Selecione uma cidade</mat-label>
+          <mat-select formControlName="cidade" name="cidade" id="cidade">
+            <mat-option value=""></mat-option>
+            <mat-option *ngFor="let cidade of listaCidades" [value]="cidade">
+              {{ cidade.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+    </form>
+  </div>
+
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right" style="margin-top: 10px !important;">
+    <button matTooltip="Gerar Relatório" mat-flat-button color="primary" (click)="buscarDadosFiltrados()"
+      id="btnGerarRelatorio" class="botaoGeraRelatorio">
+      <mat-icon style="margin-top: -1px !important">insert_drive_file</mat-icon> Gerar Relatório
+    </button>
+  </div>
+
+  <app-exportador-relatorios [registros]="formatarParaExportar(listaFiltrada)"
+    [registrosXls]="formatarParaXls(listaFiltrada)" [titulo]="titulo" [colunas]="colunas">
+  </app-exportador-relatorios>
+
+  <mat-progress-bar mode="indeterminate" [hidden]="!loading" style="margin-top:20px;"></mat-progress-bar>
+
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" [hidden]="resultadoEncontrado" style="margin-top:25px;">
+    <p class="alert alert-warning" *ngIf="pesquisou" role="alert">Nenhum registro encontrado!</p>
+  </div>
+
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px !important;"
+    [hidden]="listaFiltrada.length == 0">
+
+    <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort #tbRelatorio id="tbRelatorio">
+
+      <ng-container matColumnDef="nomeCidade" >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Cidade </th>
+        <td mat-cell *matCellDef="let element"> {{element.nomeCidade ? element.nomeCidade : 'N/A'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> E-mail </th>
+        <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="nome">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome </th>
+        <td mat-cell *matCellDef="let element"> {{ element.usuarioNome ? element.usuarioNome : element.nome}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dataDownload" >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Data do Download </th>
+        <td mat-cell *matCellDef="let element"> {{element.dataDownload | date:'dd/MM/yyyy'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+          <div class="example-element-detail"
+               [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+            <div>
+              <div class="row">
+                <span> <strong>Organização:</strong>  {{ element.organizacao ? element.organizacao : 'N/A' }} </span>
+              </div>
+              <div class="row">
+                <span> <strong>Boletim:</strong> {{ element.boletim? 'Sim' : 'Não' }} </span>
+              </div>
+              <div class="row">
+                <span> <strong>Ação:</strong> {{ element.acao ? element.acao : 'N/A' }} </span>
+              </div>
+              <div class="row">
+                <span><strong> Página:</strong> {{ element.pagina ? element.pagina : 'N/A' }} </span>
+              </div>
+              <div class="row">
+                <span><strong> Arquivo:</strong> {{ element.arquivo  }} </span>
+              </div>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let element; columns: displayedColumns"
+        class="example-element-row"
+        [class.example-expanded-row]="expandedElement === element"
+        (click)="expandedElement = expandedElement === element ? null : element">
+      </tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+    </table>
+  </div>
+
+  <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" style="margin-top: 20px !important;"
+    [hidden]="listaFiltrada.length == 0">
+    <mat-paginator style="text-align: center !important;" class="float-none" [pageSizeOptions]="[10,25,50,100]"
+      showFirstLastButtons>
+    </mat-paginator>
+  </div>
+
+</div>

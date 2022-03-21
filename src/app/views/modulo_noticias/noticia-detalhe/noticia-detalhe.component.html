@@ -1,0 +1,114 @@
+<div style="background-color: white;">
+  <div [hidden]="!loading" class="loading-indicator">
+    <mat-progress-spinner class="example-margin" style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+  </div>
+
+  <section class="home-banner owl-carousel owl-theme">
+
+    <div id="carouselExampleIndicators" class="carousel slide" ride="false">
+      <div class="carousel-inner">
+        <div>
+          <img class="img-carousel" loading="lazy" [src]="getImagePath(noticia?.id)">
+          <div class="carousel-caption">
+            <div style="position: inherit;bottom: 0;width: 100%;">
+              <h1 class="animated fadeInUp duration-3s delay-1s">{{noticia?.titulo}}</h1>
+              <h4 class="animated fadeInUp duration-3s delay-1s">{{noticia?.subtitulo}}</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="row summernote">
+    <div class="col-md-3 breadcrumbpcs">
+      <app-breadcrumb></app-breadcrumb>
+
+      <div class="btn-group botoes-sociais">
+        <button mat-icon-button  (click)="salvarLogCompartilhamento('FACEBOOK')" class="btnTabela btn-sociais-desktop"
+          style="background-color:#3a559f;color:white; margin-left: 10px;" shareButton="facebook"
+          [url]="urlatual">
+          <fa name="facebook" size="lg"></fa>
+        </button>
+
+        <button mat-icon-button  (click)="salvarLogCompartilhamento('TWITTER')" class="btnTabela btn-sociais-desktop" style="background-color:#50abf1;color:white"
+          shareButton="twitter" [url]="urlatual">
+          <fa name="twitter" size="lg"></fa>
+        </button>
+
+        <button mat-icon-button  (click)="salvarLogCompartilhamento('LINKEDIN')" class="btnTabela btn-sociais-desktop" style="background-color:#0077af;color:white"
+          shareButton="linkedin" [url]="urlatual">
+          <fa name="linkedin" size="lg"></fa>
+        </button>
+      </div>
+    </div>
+    <div class="col-md-9 col-lg-6 news_div">
+
+      <div class="news news--full">
+        <div></div>
+        <article class="news__article">
+          <section class="news-info">
+            <p>
+              {{noticia.autor}}
+            </p>
+
+            <p>
+              Publicado em
+              <span class="data-publicacao">{{ noticia.dataHoraPublicacao ? (noticia.dataHoraPublicacao |
+                date:'dd/MM/yyyy HH:mm:ss') : (this.noticia.dataHoraCriacao | date:'dd/MM/yyyy HH:mm:ss') }}
+              </span>
+              <span>
+                {{ noticia.dataHoraPublicacao ? (noticia.dataHoraPublicacao | tempoPercorrido) :
+                (this.noticia.dataHoraCriacao | tempoPercorrido) }}
+              </span>
+            </p>
+          </section>
+
+          <section class="news-text">
+            <p [ngxSummernoteView]="noticia?.corpoTexto"></p>
+          </section>
+        </article>
+      </div>
+    </div>
+  </div>
+
+  <section class="news__section">
+    <header>
+      <h1>Últimas notícias</h1>
+    </header>
+    <div class="news__grid news__grid--3">
+      <div class="news__grid-inner">
+        <article *ngFor="let item of listNoticias; let k = index">
+          <header>
+            <h2>
+              <a href="{{gerarLinkNoticia(item)}}">{{item.titulo}}</a>
+            </h2>
+          </header>
+
+          <a href="{{gerarLinkNoticia(item)}}">
+            <figure>
+              <img style=" height: 383px;width: 100%;object-fit: cover;" [src]="getImagePath(item?.id)">
+              <figcaption>
+                <span *ngIf="item.areasDeInteresse.length >= 1">{{item.areasDeInteresse[0].nome}}</span>
+              </figcaption>
+            </figure>
+          </a>
+
+          <div class="options">{{item.dataHoraPublicacao | date:'dd/MM/yyyy'}}</div>
+          <p>
+            {{pcsUtil.replaceHtmlTags(pcsUtil.subStringSemCortarTexto(item.subtitulo,190))}} <a
+              href="{{gerarLinkNoticia(item)}}">
+              [Leia Mais]</a>
+          </p>
+        </article>
+      </div>
+      <div
+        style="height: 100%;min-height: 100%;display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;-webkit-justify-content: center;justify-content: center;">
+        <button *ngIf="qtdNoticias < qtdTotalNoticias" class="view-more" matTooltip="Mais Resultados"
+          (click)="carregarMaisNoticias()" id="btnVerMais">
+          Ver Mais
+        </button>
+      </div>
+
+    </div>
+  </section>

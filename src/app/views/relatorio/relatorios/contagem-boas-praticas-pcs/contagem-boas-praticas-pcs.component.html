@@ -1,0 +1,103 @@
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <form [formGroup]="formFiltro" class="example-form">
+
+      <div class="col-lg-12">
+        <mat-form-field>
+          <mat-select id="tipoVariavel" formControlName="tipoVariavel" name="tipoVariavel" placeholder="Selecione um tipo de variável">
+            <mat-option value="Eixos">Eixos</mat-option>
+            <mat-option value="Indicadores">Indicadores</mat-option>
+            <mat-option value="Ods">ODS</mat-option>
+            <mat-option value="MetaOds">Metas ODS</mat-option>
+            <mat-option value="Estado">Estados</mat-option>
+            <mat-option value="Cidade">Cidades</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+    </form>
+  </div>
+
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right" style="margin-top: 10px !important;">
+    <button matTooltip="Gerar Relatório" mat-flat-button color="primary" (click)="gerarRelatorio()"
+      id="btnGerarRelatorio" class="botaoGeraRelatorio">
+      <mat-icon style="margin-top: -1px !important">insert_drive_file</mat-icon> Gerar Relatório
+    </button>
+  </div>
+
+  <mat-progress-bar mode="indeterminate" [hidden]="!loading" style="margin-top:20px;"></mat-progress-bar>
+
+  <app-exportador-relatorios [registros]="formatarParaExportar(registros)" [registrosXls]="formatarParaXls(registros)" [titulo]="tituloRelatorio" [colunas]="colunas">
+  </app-exportador-relatorios>
+
+
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" [hidden]="resultadoEncontrado" style="margin-top:25px;">
+    <p class="alert alert-warning" role="alert" *ngIf="pesquisou">Nenhum registro encontrado!</p>
+  </div>
+
+  <div *ngIf="tipoVariavel !== 'MetaOds'"class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px !important;"
+    [hidden]="registros.length == 0">
+
+    <table mat-table [dataSource]="dataSource" matSort #tbRelatorio id="tbRelatorio" [hidden]="registros.length === 0">
+      <ng-container matColumnDef="nome">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="nome">Nome</th>
+        <td mat-cell *matCellDef="let element">{{ element.nome }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="contagem">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="contagem">Contagem</th>
+        <td mat-cell *matCellDef="let element">{{ element.contagem }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+
+  <div *ngIf="tipoVariavel === 'MetaOds'" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px !important;"
+    [hidden]="registros.length == 0">
+
+    <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows #tbRelatorio id="tbRelatorio" [hidden]="registros.length === 0">
+      <ng-container matColumnDef="nome">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="nome">Nome</th>
+        <td mat-cell *matCellDef="let element">{{ formatandoNomeMetaOds(element.nome) }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="contagem">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="contagem">Contagem</th>
+        <td mat-cell *matCellDef="let element">{{ element.contagem }}</td>
+      </ng-container>
+
+      <ng-container  matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+          <div class="example-element-detail" *ngIf="contaCaracteres(element.nome)"
+               [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+            <div>
+              <div class="row">
+                <span> <strong> {{ element.nome }} </strong> </span>
+              </div>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let element; columns: displayedColumns"
+        class="example-element-row"
+        [class.example-expanded-row]="expandedElement === element"
+        (click)="expandedElement = expandedElement === element ? null : element">
+      </tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+    </table>
+  </div>
+
+  <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" style="margin-top: 20px !important;"
+    [hidden]="registros.length == 0">
+    <mat-toolbar style="background-color:white !important;">
+      <mat-toolbar-row>
+        <mat-paginator style="text-align: center !important;" class="float-none" [pageSizeOptions]="[10,25,50,100]"
+          showFirstLastButtons></mat-paginator>
+      </mat-toolbar-row>
+    </mat-toolbar>
+  </div>
+</div>

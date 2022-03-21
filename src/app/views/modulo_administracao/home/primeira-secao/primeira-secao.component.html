@@ -1,0 +1,34 @@
+
+<!-- Primeira seção -->
+<section>
+
+  <hr style="border-top: 4pt solid; margin-right: 30px;" [style.color]="primeiraSecao?.primeiroTituloCor">
+  
+  <div class="row" style="width: 100%;margin-top:3%; margin-bottom: 3%;">
+    <div class="col-md-6 one-column-center underline-on-hover">
+      <a *ngIf="primeiraSecao?.primeiroTitulo && primeiraSecao?.primeiroTituloLink && !verificaLinks(primeiraSecao?.primeiroTituloLink)" class="h1 titulos" [style.color]="primeiraSecao?.primeiroTituloCor" 
+      [innerHTML]="primeiraSecao?.primeiroTitulo" [href]="primeiraSecao?.primeiroTituloLink" target="_blank"></a>
+
+      <a *ngIf="primeiraSecao?.primeiroTitulo && primeiraSecao?.primeiroTituloLink && verificaLinks(primeiraSecao?.primeiroTituloLink)" class="h1 titulos" [style.color]="primeiraSecao?.primeiroTituloCor" 
+      [innerHTML]="primeiraSecao?.primeiroTitulo" style="cursor: pointer" (click)="validacaoDownload(primeiraSecao?.primeiroTituloLink)" ></a>
+      
+      <a *ngIf="primeiraSecao?.primeiroTitulo && !primeiraSecao?.primeiroTituloLink" class="h1 titulos" [style.color]="primeiraSecao?.primeiroTituloCor" 
+      [innerHTML]="primeiraSecao?.primeiroTitulo"></a>
+
+    </div>
+    
+    <a *ngIf="primeiraSecao?.primeiroTexto && primeiraSecao?.primeiroTextoLink && !verificaLinks(primeiraSecao?.primeiroTextoLink)" class="col-md-5 one-column underline-on-hover"  style="color: #231f20;" [style.color]="primeiraSecao?.primeiroTextoCor" 
+    [innerHTML]="primeiraSecao?.primeiroTexto" [href]="primeiraSecao?.primeiroTextoLink" target="_blank"></a>
+
+    <a *ngIf="primeiraSecao?.primeiroTexto && primeiraSecao?.primeiroTextoLink && verificaLinks(primeiraSecao?.primeiroTextoLink)" class="col-md-5 one-column underline-on-hover"  style="color: #231f20;" [style.color]="primeiraSecao?.primeiroTextoCor" 
+    [innerHTML]="primeiraSecao?.primeiroTexto" style="cursor: pointer" (click)="validacaoDownload(primeiraSecao?.primeiroTextoLink)"></a>
+
+    <a *ngIf="primeiraSecao?.primeiroTexto && !primeiraSecao?.primeiroTextoLink" class="col-md-5 one-column underline-on-hover"  style="color: #231f20;" [style.color]="primeiraSecao?.primeiroTextoCor" 
+    [innerHTML]="primeiraSecao?.primeiroTexto"></a>
+    
+  </div>
+
+  <hr style="border-top: 4pt solid; margin-right: 30px;" [style.color]="primeiraSecao?.primeiroTituloCor">
+
+</section>
+

@@ -1,0 +1,104 @@
+
+<div class="contentBody" style="position: relative;">
+  <mat-card>
+
+    <div class="row">
+
+      <div class="col-md-8 col-lg-9 col-xs-12 col-sm-12">
+        <h2>Administração de Formulários</h2>
+      </div>
+
+      <div class="col-md-4 col-lg-3 col-xs-12 col-sm-12" style="text-align: right;" *ngIf="'ROLE_CADASTRAR_FORMULARIO' | hasRole" >
+        <button mat-flat-button color="primary" [routerLink]="['/participacao-cidada/formulario/cadastrar']" class="btnCadastrar"
+          id="btnCadastrar" matTooltip="Cadastrar" style="cursor: pointer !important; margin-bottom: 5px;">
+          <mat-icon>add</mat-icon>Criar Formulário
+        </button>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+    <br>
+    <br>
+    <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+      
+      <div>
+        <h5>Filtro</h5>
+      </div>
+      <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12" style="text-align: left;">
+        <form [formGroup]="formFiltro">
+          <mat-form-field>
+            <input matInput (keyup)="filtrarFormularioPorPalavraChave()"formControlName="campoPesquisa" type="text" name="campoPesquisa" id="campoPesquisa" placeholder="Pesquise por palavra chave">
+          </mat-form-field>
+        </form>
+      </div>
+    </div>
+
+    <br>
+    <br>
+
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <mat-card-title>Lista de Formulários</mat-card-title>
+      <mat-divider></mat-divider>
+    </div>
+    <table mat-table [dataSource]="dataSource" matSort>
+      <!-- Resposta Column -->
+      <ng-container matColumnDef="nome">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="nome">Nome</th>
+        <td mat-cell *matCellDef="let item"> {{item.nome}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="usuarioCriador">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="usuarioCriador">Usuário</th>
+        <td mat-cell *matCellDef="let item"> {{item.usuarioCriador}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="origem">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="origem">Origem</th>
+        <td mat-cell *matCellDef="let item"> {{item.cidade}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="publicado">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="publicado">Publicado</th>
+        <td mat-cell *matCellDef="let item"> {{item.publicado ? 'Sim': 'Não'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dataCriacao">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="dataCriacao">Data de Criação</th>
+        <td mat-cell *matCellDef="let item"> {{item.dataCriacao | date:'shortDate'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="acoes">
+        <th mat-header-cell *matHeaderCellDef> Ações </th>
+        <td mat-cell *matCellDef="let item"  data-label='Ações'>
+
+          <button mat-flat-button color="primary" type="button" name="button" *ngIf="'ROLE_EDITAR_FORMULARIO' | hasRole"
+            [routerLink]="['/participacao-cidada/formulario/editar',item.id]" class="btnTabela" id="btnEditar" matTooltip="Editar" >
+            <mat-icon> edit </mat-icon>
+          </button>
+          
+          <button mat-flat-button color="warn" type="button" name="button"
+            (click)="excluirFormulario(item.id)"
+            *ngIf="'ROLE_EXCLUIR_FORMULARIO' | hasRole"
+            class="btnTabela" id="btnExcluir" matTooltip="Excluir">
+            <mat-icon> delete </mat-icon>
+          </button>
+          <button mat-flat-button type="button" name="button"
+          (click)="AbrirSwalParaCopiar(item.link)"
+            class="btnTabela" id="btnExcluir" matTooltip="Copiar link do Formulário">
+            <mat-icon> content_copy </mat-icon>
+          </button>
+          <button mat-flat-button type="button" name="button" [hidden]="!(usuario?.id == item.idUsuarioCriador || usuario?.nomePerfil == 'Administrador')"
+          (click)="formatarParaExportar(item.id, item.nome)"
+            class="btnTabela" id="btnExcluir" matTooltip="Exportar as respostas">
+            <mat-icon> get_app </mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator style="text-align: center !important;" class="float-none" [pageSizeOptions]="[10,25,50,100]"
+      showFirstLastButtons>
+    </mat-paginator>
+  </mat-card>
+</div>

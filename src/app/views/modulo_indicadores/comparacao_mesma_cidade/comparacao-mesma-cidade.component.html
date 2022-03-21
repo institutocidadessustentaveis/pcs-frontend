@@ -1,0 +1,43 @@
+<div class="contentBody">
+  <mat-card>
+    <mat-card-content>
+      <mat-card-title>Comparar Indicadores Diferentes da mesma cidade</mat-card-title>
+
+      <div class="row">
+
+        <div class="col-md-10 col-lg-10 form-comparar-indicadores" style="background-color: gray">
+          
+          <ng-autocomplete [data]="listaCidade" [searchKeyword]="keyword" placeHolder="Digite o nome da cidade"
+            (selected)='selectEvent($event)' (inputChanged)='onChangeSearch($event)'
+            historyIdentifier="listaCidade" [itemTemplate]="itemTemplate">
+          </ng-autocomplete>
+      
+          <ng-template #itemTemplate let-item>
+            <a [innerHTML]="item.nome"></a>
+          </ng-template>
+      
+        </div>
+
+        <mat-form-field class="col-md-2 col-lg-2 select-periodo">
+            <mat-label>Período</mat-label>
+            <mat-select id="eixo"  [(value)]="anoSelecionado"  (selectionChange)="onChangeAnoIndicador()" >
+              <mat-option *ngFor="let ano of listaAnosIndicadoresCidade" [value]="ano">
+                {{ano}}
+              </mat-option>
+              <mat-option [value]="null">
+                Nenhum
+              </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+      </div>
+
+      <hr>
+      <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+        <app-comparar-indicadores-diferentes-mesmacidade-detalhes [id]="idCidade" [ano]="anoSelecionado"  *ngIf="anoSelecionado && idCidade">
+        </app-comparar-indicadores-diferentes-mesmacidade-detalhes>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+</div>

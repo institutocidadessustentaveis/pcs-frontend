@@ -1,0 +1,181 @@
+<div style="background-color: white;" class="bmd-layout-container bmd-drawer-f-l bmd-drawer-overlay ">
+  <main class="bmd-layout-content">
+    <div [hidden]="!loading" class="loading-indicator">
+      <mat-progress-spinner class="example-margin" style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+    </div>
+
+    <div>
+      <section class="teaser teaser--dotted" style="margin-top: 0%;margin-bottom: 0%;">
+
+        <header>
+          <h1 style="font-weight: 700 !important;">Materiais de Apoio</h1>
+        </header>
+
+      </section>
+
+      <section class="secao-filtro">
+        <header>
+          <h1>
+            <span style="font-weight: 700 !important;color: white;">FILTRAR</span>
+            <div class="mat-tooltip" matTooltip="A busca por materiais de apoio pode ser feita usando uma ou mais opções de filtros. Observe que ao utilizar
+            duas ou mais opções os resultados serão apenas aquelas que correspondem a todas elas. Caso use apenas uma opção
+            o resultado estará relacionado apenas a ela." class="material-icons">help</div></h1>
+        </header>
+        <div class="row search-form-color">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 search-form-color">
+            <form [formGroup]="formFiltro" class="example-form">
+
+              <mat-form-field class="col-lg-12 search-form-color">
+                <mat-label>Áreas de Interesse</mat-label>
+                <mat-select id="idAreaInteresse" name="idAreaInteresse" formControlName="idAreaInteresse">
+                  <mat-option [value]=""></mat-option>
+                  <mat-option *ngFor="let item of areasInteresseCombo" [value]="item.id">{{item.nome}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="col-lg-12 search-form-color">
+                <mat-label>Eixo</mat-label>
+                <mat-select id="idEixo" name="idEixo" formControlName="idEixo" (openedChange)="onEixoChange($event)">
+                  <mat-option [value]=""></mat-option>
+                  <mat-option *ngFor="let item of eixosCombo" [value]="item.id">{{item.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              
+              <mat-form-field class="col-lg-12 search-form-color">
+                <mat-label>Indicador</mat-label>
+                <mat-select id="idIndicador" name="idIndicador" formControlName="idIndicador">
+                  <mat-option [value]=""></mat-option>
+                  <mat-option *ngFor="let item of indicadoresCombo" [value]="item.id">{{item.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="col-lg-12 search-form-color">
+                <mat-label>ODS</mat-label>
+                <mat-select id="idOds" name="idOds" formControlName="idOds" (openedChange)="onOdsChange($event)">
+                  <mat-option [value]=""></mat-option>
+                  <mat-option *ngFor="let item of odsCombo" [value]="item.id">{{item.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="col-lg-12 search-form-color">
+                <mat-label>Meta ODS</mat-label>
+                <mat-select id="idMetasOds" name="idMetasOds" formControlName="idMetasOds">
+                  <mat-option [value]=""></mat-option>
+                  <mat-option *ngFor="let item of metasOdsCombo" [value]="item.id">{{item.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="col-lg-6 search-form-color">
+                <mat-label> Selecione um continente </mat-label>
+                <mat-select formControlName="continente" name="continente" id="continente">
+                  <mat-option [value]="null"></mat-option>
+                  <mat-option value="América do Norte">América do Norte</mat-option>
+                  <mat-option value="América do Sul">América do Sul</mat-option>
+                  <mat-option value="América Central">América Central</mat-option>
+                  <mat-option value="Caribe">Caribe</mat-option>
+                  <mat-option value="Oriente Médio">Oriente Médio</mat-option>
+                  <mat-option value="Europa">Europa</mat-option>
+                  <mat-option value="Ásia">Ásia</mat-option>
+                  <mat-option value="Oceania">Oceania</mat-option>
+                  <mat-option value="África">África</mat-option>
+                  <mat-option value="Antártida">Antártida</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-6 search-form-color">
+                <mat-label>País da publicação</mat-label>
+                <mat-select id="idPais" name="idPais" formControlName="idPais" (selectionChange)="onPaisChange($event)">
+                  <mat-option [value]=""></mat-option>
+                  <mat-option *ngFor="let item of paisesCombo" [value]="item.id">{{item.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-6 search-form-color">
+                <mat-label>Região do Brasil da publicação</mat-label>
+                <mat-select id="regiao" name="regiao" formControlName="regiao" disabled="{{!habilitarRegiaoDoBrasil}}">
+                  <mat-option [value]=""></mat-option>
+                  <mat-option value="Norte">Norte</mat-option>
+                  <mat-option value="Nordeste">Nordeste</mat-option>
+                  <mat-option value="Centro-Oeste">Centro-Oeste</mat-option>
+                  <mat-option value="Sudeste">Sudeste</mat-option>
+                  <mat-option value="Sul">Sul</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-6 search-form-color">
+                <mat-label>Estado da publicação</mat-label>
+                <mat-select id="idProvinciaEstado" name="idProvinciaEstado" formControlName="idProvinciaEstado" (selectionChange)="onEstadoChange($event)">
+                  <mat-option [value]=""></mat-option>
+                  <mat-option *ngFor="let item of provinciaEstadoCombo" [value]="item.id">{{item.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-12 search-form-color">
+                <mat-label>Cidade da publicação</mat-label>
+                <mat-select id="idCidade" name="idCidade" formControlName="idCidade">
+                  <mat-option [value]=""></mat-option>
+                  <mat-option *ngFor="let item of cidadesCombo" [value]="item.id">{{item.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <div class="col-lg-12 search-form-color">
+                <mat-form-field>
+                  <input matInput formControlName="palavraChave" placeholder="Palavra chave">
+                </mat-form-field>
+              </div>
+
+              <mat-form-field class="col-lg-6 search-form-color">
+                <input matInput formControlName="populacaoMin" placeholder="População mínima" type="number">
+              </mat-form-field>
+
+              <mat-form-field class="col-lg-6 search-form-color">
+                <input matInput formControlName="populacaoMax" placeholder="População máxima" type="number">
+              </mat-form-field>
+
+            </form>
+          </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right" style="margin-top: 10px !important;">
+          <button matTooltip="Buscar Eventos" mat-flat-button color="primary" (click)="buscarMaterialApoio()"
+            id="btnBuscarEventos" class="btnpesquisar">
+            <mat-icon style="margin-top: -1px !important">search</mat-icon> Buscar Materiais
+          </button>
+
+          <button matTooltip="Buscar Eventos" mat-flat-button color="primary" (click)="limparFiltro()"
+            id="btnBuscarEventos" class="btnpesquisar ml-2">
+            Limpar filtro
+          </button>
+        </div>
+      </section>
+
+      <div id="destination" [hidden]="materiaisApoioVazio" class="news">
+        <section class="news__section">
+          <header>
+            <h1 style="font-weight: 700 !important;">Últimos Materiais de Apoio</h1>
+          </header>
+          <br>
+          <div class="news__grid news__grid--3">
+            <div class="news__grid-inner">
+              <article *ngFor="let item of materiaisApoio | slice : 0 : paginationLimit">
+                <app-item-material-apoio [materialApoioId]="item.idMaterialApoio"></app-item-material-apoio>
+              </article>
+            </div>
+          </div>
+          <div
+            style="height: 100%;min-height: 100%;display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;-webkit-justify-content: center;justify-content: center;">
+            <button class="view-more" matTooltip="Mais Resultados" (click)="carregarMaisNoticias()" id="btnVerMais">
+              Ver Mais
+            </button>
+          </div>
+        </section>
+      </div>
+
+      <div id="destination" [hidden]="!materiaisApoioVazio" class="news">
+        <div class="alert alert-secondary" role="alert">
+          Nenhnum material de apoio encontrado!
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>

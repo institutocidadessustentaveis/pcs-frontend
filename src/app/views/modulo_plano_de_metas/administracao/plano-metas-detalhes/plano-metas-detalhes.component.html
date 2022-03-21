@@ -1,0 +1,113 @@
+<form [formGroup]="formPlanoMeta">
+  <div class="row">
+    <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6" [hidden]="true">
+      <mat-form-field>
+        <input matInput placeholder="Plano de meta" #txtIdPlanoMeta id="txtIdPlanoMeta"
+          formControlName="idPlanoMeta" type="number" maxlength="20" readonly="true" />
+        <mat-hint align="end">{{ txtIdPlanoMeta.value?.length || 0 }}/20</mat-hint>
+      </mat-form-field>
+    </div>
+    <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6" [hidden]="true">
+      <mat-form-field>
+        <input matInput placeholder="Plano de meta do indicador" #txtIdPlanoMetaIndicador id="txtIdPlanoMetaIndicador"
+          formControlName="idPlanoMetaIndicador" type="number" maxlength="20" readonly="true"/>
+        <mat-hint align="end">{{ txtIdPlanoMetaIndicador.value?.length || 0 }}/20</mat-hint>
+      </mat-form-field>
+    </div>
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <mat-label>Plano para alcançar a meta proposta</mat-label>
+      <div [ngxSummernote]="editorConfig" formControlName="planoParaAlcancarProposta"></div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
+      <mat-form-field>
+        <input matInput placeholder="Meta anual para {{objetoPlanoMetaAno.primeiroAnoMandato}}"
+          #txtMetaPrimeiroAnoMandato id="txtMetaPrimeiroAnoMandato" formControlName="metaPrimeiroAnoMandato"
+          type="number" maxlength="20" onKeyPress="if(this.value.length==20) return false;" />
+        <mat-hint align="end">{{ txtMetaPrimeiroAnoMandato.value?.length || 0 }}/20</mat-hint>
+        <mat-error
+          *ngIf="!formPlanoMeta.controls['metaPrimeiroAnoMandato'].valid && formPlanoMeta.controls['metaPrimeiroAnoMandato'].touched">
+          {{ getMetaPrimeiroAnoMandato() }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
+      <mat-form-field>
+        <input matInput placeholder="Meta anual para {{objetoPlanoMetaAno.segundoAnoMandato}}" #txtMetaSegundoAnoMandato
+          id="txtMetaSegundoAnoMandato" formControlName="metaSegundoAnoMandato" type="number" maxlength="20"
+          onKeyPress="if(this.value.length==20) return false;" />
+        <mat-hint align="end">{{ txtMetaSegundoAnoMandato.value?.length || 0 }}/20</mat-hint>
+        <mat-error
+          *ngIf="!formPlanoMeta.controls['metaPrimeiroAnoMandato'].valid && formPlanoMeta.controls['metaPrimeiroAnoMandato'].touched">
+          {{ getMetaSegundoAnoMandato() }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
+      <mat-form-field>
+        <input matInput placeholder="Meta anual para {{objetoPlanoMetaAno.terceiroAnoMandato}}"
+          #txtMetaTerceiroAnoMandato id="txtMetaTerceiroAnoMandato" formControlName="metaTerceiroAnoMandato"
+          type="number" maxlength="20" onKeyPress="if(this.value.length==20) return false;" />
+        <mat-hint align="end">{{ txtMetaTerceiroAnoMandato.value?.length || 0 }}/20</mat-hint>
+        <mat-error
+          *ngIf="!formPlanoMeta.controls['metaPrimeiroAnoMandato'].valid && formPlanoMeta.controls['metaPrimeiroAnoMandato'].touched">
+          {{ getMetaTerceiroAnoMandato() }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
+      <mat-form-field>
+        <input matInput placeholder="Meta anual para {{objetoPlanoMetaAno.quartoAnoMandato}}" #txtMetaQuartoAnoMandato
+          id="txtMetaQuartoAnoMandato" formControlName="metaQuartoAnoMandato" type="number" maxlength="20"
+          onKeyPress="if(this.value.length==20) return false;" />
+        <mat-hint align="end">{{ txtMetaQuartoAnoMandato.value?.length || 0 }}/20</mat-hint>
+        <mat-error
+          *ngIf="!formPlanoMeta.controls['metaPrimeiroAnoMandato'].valid && formPlanoMeta.controls['metaPrimeiroAnoMandato'].touched">
+          {{ getMetaQuartoAnoMandato() }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-lg-5 col-md-5 col-xs-5 col-sm-5">
+      <mat-form-field>
+        <input matInput placeholder="Orçamento previsto" #txtOrcamentoPrevisto id="txtOrcamentoPrevisto"
+          formControlName="orcamentoPrevisto" type="number" maxlength="20"
+          onKeyPress="if(this.value.length==20) return false;" />
+        <mat-hint align="end">{{ txtOrcamentoPrevisto.value?.length || 0 }}/20</mat-hint>
+        <mat-error
+          *ngIf="!formPlanoMeta.controls['metaPrimeiroAnoMandato'].valid && formPlanoMeta.controls['metaPrimeiroAnoMandato'].touched">
+          {{ getOrcamentoPrevisto() }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="col-lg-5 col-md-5 col-xs-5 col-sm-5">
+      <mat-form-field>
+        <input matInput placeholder="Orçamento executado" #txtOrcamentoExecutado id="txtOrcamentoExecutado"
+          formControlName="orcamentoExecutado" type="number" maxlength="20"
+          onKeyPress="if(this.value.length==20) return false;" />
+        <mat-hint align="end">{{ txtOrcamentoExecutado.value?.length || 0 }}/20</mat-hint>
+        <mat-error
+          *ngIf="!formPlanoMeta.controls['metaPrimeiroAnoMandato'].valid && formPlanoMeta.controls['metaPrimeiroAnoMandato'].touched">
+          {{ getOrcamentoExecutado() }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <mat-form-field [hidden]="esconderJustificativa">
+        <textarea matInput placeholder="Justificativa de alteração" #txtjustificativa id="justificativa"
+          formControlName="justificativa" type="text"></textarea>
+        <mat-error
+          *ngIf="!formPlanoMeta.controls['justificativa'].valid && formPlanoMeta.controls['justificativa'].touched">
+          {{ getJustificativa() }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="col-lg-2 col-md-2 col-xs-2 col-sm-2">
+      <button mat-flat-button color="primary" matTooltip="Salvar" style="cursor: pointer; margin-top: 10px !important;"
+        id="btnSalvar" [disabled]="!formPlanoMeta.valid && hasRole('ROLE_USUARIOS')" (click)="salvar()">
+        <mat-icon>save</mat-icon> Salvar
+      </button>
+    </div>
+  </div>
+</form>

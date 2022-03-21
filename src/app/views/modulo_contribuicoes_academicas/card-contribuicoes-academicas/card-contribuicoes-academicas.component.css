@@ -1,0 +1,97 @@
+
+a:hover{
+    text-decoration: underline;
+    text-decoration-color: black;
+  }
+  .margem-publicacao{
+  margin-left: 1.1em;
+  margin-top: 2em;
+  }
+  
+  .div-card-publicacao{
+  margin: 1em 0px;
+  }
+  .card-publicacao{
+  min-height: 10em ;
+  margin-bottom: 1em;
+  }
+  .botao-publicacao{
+  padding-top: 3em ;
+  }
+  
+  .publicacao-material-apoio{
+  background-size: cover;
+  background-position: center;
+  height: 383px;
+  border-radius: 3px;
+  }
+  .publicacao-material-apoio-titulo{
+  font-size: 1.25em;
+  line-height: 1.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 2%;
+  margin-top: 4%;
+  color:black;
+  }
+  .publicacao-material-apoio-texto{
+  color:black;
+  }
+  
+  .publicacao-material-apoio-titulo:hover{
+  text-decoration: underline;
+  text-decoration-color: black;
+  }
+  .publicacao-material-apoio-texto:hover{
+  text-decoration: underline;
+  text-decoration-color: black;
+  }
+  
+  .publicacao-material-institucional{
+  background-size: cover;
+  background-position: center;
+  min-height: 250px;
+  }
+  .publicacao-material-institucional-titulo{
+  padding-top: 2em !important;
+  }
+  
+  .btn-material-institucional{
+  font-size: 1.3em;
+  line-height: 1.5em;
+  border: 0.0555555556em solid #aaa;
+  padding: 1.2777777778em;
+  font-weight: 400;
+  color: #aaa;
+  }
+  
+  .publicacao-livre{
+  background-size: cover;
+  background-position: center;
+  height: 383px;
+  
+  }
+  
+  .pointer{
+  cursor: pointer;
+  }
+  
+  .link-noticia{
+    color: #000 !important;
+  }
+  
+  .options {
+    -ms-flex-order: 3;
+    order: 3;
+    color: #408559;
+    margin-bottom: 1.5em;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-flow: row nowrap;
+    flex-flow: row nowrap;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -ms-flex-align: start;
+    align-items: flex-start;
+  }

@@ -1,0 +1,356 @@
+<div class="contentBody" style="position: relative;">
+  <app-breadcrumb style="position: relative;"></app-breadcrumb>
+  <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+    <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <mat-card-title>
+        Eventos
+      </mat-card-title>
+    </mat-card-content>
+    <hr>
+    <form [formGroup]="formEvento">
+      <mat-form-field class="col-md-6">
+        <mat-label>Tipo</mat-label>
+        <mat-select id="tipo" name="tipo" formControlName="tipo">
+          <mat-option value="PCS" *ngIf="tipoUsuario == 'Administrador'">PCS
+          </mat-option>
+          <mat-option value="Prefeitura" *ngIf="tipoUsuario == 'Prefeitura'" selected>Prefeitura</mat-option>
+          <mat-option value="Rede Nossa São Paulo"
+            *ngIf="tipoUsuario == 'Administrador'">Rede Nossa São Paulo
+          </mat-option>
+          <mat-option value="Capacitação para Prefeituras Signatárias"
+            *ngIf="tipoUsuario == 'Administrador'">Capacitação para Prefeituras
+            Signatárias</mat-option>
+          <mat-option value="Terceiros" *ngIf="tipoUsuario == 'Administrador'">
+            Parceiros</mat-option>
+          <mat-option value="Academia" *ngIf="tipoUsuario == 'Administrador'">
+            Academia</mat-option>
+          <mat-option value="ICS" *ngIf="tipoUsuario == 'Administrador'">ICS
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="formEvento.controls['tipo'].hasError('required')">
+          Campo Tipo é obrigatório
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6">
+        <input matInput placeholder="Nome do Evento *" formControlName="nome" maxlength="200" #inputNome id="inputNome">
+        <mat-hint align="end">{{ inputNome.value?.length || 0 }}/200</mat-hint>
+        <mat-error *ngIf="formEvento.controls['nome'].hasError('required')">
+          Campo Nome do Evento é obrigatório
+        </mat-error>
+      </mat-form-field>
+
+      <div class="col-md-12 summernote">
+        <mat-label>Descrição *</mat-label>
+        <div [ngxSummernote]="editorConfig" formControlName="descricao"></div>
+        <mat-error *ngIf="formEvento.controls['descricao'].hasError('required')">
+          Campo Descrição é obrigatório
+        </mat-error>
+      </div>
+      <br>
+
+      <mat-form-field class="col-md-6">
+        <input matInput formControlName="organizador" name="data" matInput placeholder="Organizador *">
+        <mat-error *ngIf="formEvento.controls['organizador'].hasError('required')">
+          Campo organizador é obrigatório
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6">
+        <mat-label>Temas</mat-label>
+        <mat-select id="inputAreasInteresse" name="areasInteresse" formControlName="temas" multiple>
+          <mat-option *ngFor="let areaInteresse of areasInteresseCombo" [value]="areaInteresse.id">
+            {{areaInteresse.nome}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="formEvento.controls['temas'].hasError('required')">
+          Campo Temas é obrigatório
+          </mat-error>
+          </mat-form-field>
+
+
+      <mat-form-field class="col-md-6">
+        <mat-label>País *</mat-label>
+        <!-- (selectionChange)="onPaisChange($event)" -->
+        <mat-select id="inputPais" name="pais" formControlName="pais" (selectionChange)="onPaisChange()">
+          <mat-option [value]=""></mat-option>
+          <mat-option *ngFor="let item of paisesCombo" [value]="item.id">{{item.label}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="formEvento.controls['pais'].hasError('required')">
+          Campo País é obrigatório
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6">
+        <mat-label>Estado *</mat-label>
+        <mat-select id="inputEstado" name="estado" formControlName="estado" (selectionChange)="onEstadoChange()">
+          <mat-option *ngFor="let item of estados" [value]="item.id">{{item.label}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="formEvento.controls['estado'].hasError('required')">
+          Campo Estado é obrigatório
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6">
+        <mat-label>Cidade *</mat-label>
+        <mat-select id="inputCidade" name="cidade" formControlName="cidade">
+          <mat-option *ngFor="let item of cidadesComboFiltrada" [value]="item.id">{{item.label}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="formEvento.controls['cidade'].hasError('required')">
+          Campo Cidade é obrigatório
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="col-md-6">
+        <mat-label>Eixos</mat-label>
+        <mat-select id="inputEixos" name="eixos" formControlName="eixos" multiple>
+          <mat-option *ngFor="let item of eixosCombo" [value]="item.id">{{item.nome}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="formEvento.controls['eixos'].hasError('required')">
+          Campo Eixos é obrigatório
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6">
+        <mat-label>ODS</mat-label>
+        <mat-select id="inputOds" name="ods" formControlName="ods">
+          <mat-option [value]=""></mat-option>
+          <mat-option *ngFor="let item of odsCombo" [value]="item.id">{{item.label}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="formEvento.controls['pais'].hasError('required')">
+          Campo ODS é obrigatório
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6">
+        <mat-label>Presencial / Online *</mat-label>
+        <mat-select id="isOnline" formControlName="isOnline" (selectionChange)="onOnlineChange()">
+          <mat-option [value]=false>Presencial</mat-option>
+          <mat-option [value]=true>Online</mat-option>
+        </mat-select>
+        <mat-error *ngIf="formEvento.controls['isOnline'].hasError('required')">
+          Campo Presencial/Online é obrigatório
+        </mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="col-md-6">
+        <mat-label>Data *</mat-label>
+        <input matInput type="date" formControlName="data" name="data" matInput>
+        <mat-error *ngIf="formEvento.controls['data'].hasError('required')">
+          Campo Data do Evento é obrigatório
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6">
+        <mat-label>Horario*</mat-label>
+        <input matInput type="time" formControlName="horario" name="horario" matInput>
+        <mat-error *ngIf="formEvento.controls['horario'].hasError('required')">
+          Campo Horario do Evento é obrigatório
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6">
+        <input matInput placeholder="Site" formControlName="site" maxlength="200" #inputSite id="inputSite">
+        <mat-hint align="end">{{ inputSite.value?.length || 0 }}/200</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6">
+        <mat-select formControlName="noticiasRelacionadas" placeholder="Notícias relacionadas" [multiple]="true" #multiSelect>
+          <mat-option>
+            <ngx-mat-select-search [formControl]="noticiasMultiFilter"
+              placeholderLabel="Pesquise por uma notícia."
+              noEntriesFoundLabel="Nenhuma notícia encontrada" ></ngx-mat-select-search>
+          </mat-option>
+          <mat-option *ngFor="let noticia of filteredNoticias | async" [value]="noticia.id">
+            {{noticia.label}}
+          </mat-option>
+        </mat-select>
+        <mat-hint align="left" class="ver-selecionados" (click)="verNoticiasSelecionadas()">Notícias selecionadas</mat-hint>
+      </mat-form-field>
+
+      <ng-template #modalVerSelecionados>
+        <mat-dialog-content class="mat-typography" style="height: 89%">
+        <div class="col-md-12">
+          <mat-list>
+            <mat-list-item *ngFor="let noticia of noticiasSelecionadas">
+              {{noticia.label}}
+              <mat-divider></mat-divider>
+             </mat-list-item>
+           </mat-list>
+        </div>
+      </mat-dialog-content>
+      <mat-dialog-actions align="end" layout="row" class="bottom-fix">
+        <button mat-button mat-dialog-close>Fechar</button>
+      </mat-dialog-actions>
+      </ng-template>
+
+      <div class="col-lg-12 col-md-12" [hidden]="formEvento.get('isOnline').value === true">
+        <h5>Coordenadas</h5>
+        <h6>Entre com latitude e longitude ou selecione um local no mapa</h6>
+
+        <div class="row">
+          <div class="col-md-3">
+
+          </div>
+
+          <mat-form-field class="col-md-3 text-center">
+            <input matInput type="number" placeholder="Latitude *" formControlName="latitude" maxlength="100"
+              #inputLatitude id="inputLatitude">
+            <mat-hint align="end">{{ inputLatitude.value?.length || 0 }}/100</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-3 text-center">
+            <input matInput type="number" placeholder="Longitude *" formControlName="longitude" maxlength="100 "
+              #inputLongitude id="inputLongitude">
+            <mat-hint align="end">{{ inputLongitude.value?.length || 0 }}/100</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <div class="col-md-3">
+
+          </div>
+
+          <mat-form-field  class="col-md-5 text-center">
+            <input matInput placeholder="Endereço *" formControlName="endereco" maxlength="200" #inputEndereco id="inputEndereco">
+              <mat-hint align="end">{{ inputEndereco.value?.length || 0 }}/200</mat-hint>
+              <mat-error *ngIf="formEvento.controls['endereco'].hasError('required')">
+              Campo Endereço é obrigatório
+              </mat-error>
+          </mat-form-field>
+
+          <div class="col-md-1">
+            <button mat-flat-button color="primary" matTooltip="Buscar" (click)="buscarCidadeMapa()">Buscar</button>
+          </div>
+        </div>
+
+        <div [hidden]="!loadingBuscaCidade">
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </div>
+
+        <div style="height: 500px;" leaflet [leafletOptions]="options" [leafletLayers]="layersControl"
+          (leafletMapReady)="onMapReady($event)">
+        </div>
+
+      </div>
+
+      <div class="col-md-6">
+        <mat-checkbox formControlName="isExterno" type="checkbox" [(ngModel)]="exibirLinkExterno"
+          id="checkAcessoExterno" (change)="exibeCampoLinkExterno()"> Externo</mat-checkbox>
+      </div>
+      <mat-form-field class="col-md-6" [hidden]="!exibirLinkExterno">
+        <input matInput placeholder="Link de acesso" formControlName="linkExterno" maxlength="200" #inputLinkExterno
+          id="inputLinkExterno">
+        <mat-hint align="end">{{ inputLinkExterno.value?.length || 0 }}/200</mat-hint>
+      </mat-form-field>
+
+      <div class="col-md-6">
+        <mat-checkbox formControlName="isPublicado" [checked]="true">Publicado</mat-checkbox>
+      </div>
+
+      <section id="alertas">
+        <div class="col-lg-12" *ngIf="!cadastrarAlertas">
+          <mat-list role="list">
+            <mat-list-item role="alertas" *ngFor="let item of listaAlerta; let i = index">
+              <div class="col-lg-10">
+                <button matTooltip="Editar" class="btn-tabela" mat-button color="primary"
+                  style="cursor: pointer; margin-right:1em ;" (click)="escolherAlerta(item)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button matTooltip="Excluir" class="btn-tabela" mat-button color="warn" style="cursor: pointer;"
+                  (click)="adicionarAlertaParaExcluir(i)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+                {{ item.titulo }}
+              </div>
+              <div class="col-lg-2">
+
+              </div>
+              <hr>
+            </mat-list-item>
+          </mat-list>
+        </div>
+
+        <div class="col-md-12  text-right">
+          <button mat-flat-button color="warn" (click)="habilitarAreaAlerta()" matTooltip="Cadastrar alertas"
+            *ngIf="!cadastrarAlertas">
+            <mat-icon>add</mat-icon> Adicionar Alertas
+          </button>
+        </div>
+
+      </section>
+      <form [formGroup]="formAlerta" class="form-alerta">
+        <div *ngIf="cadastrarAlertas">
+
+          <div class="col-md-12">
+            <h4>Adicionar Alerta</h4>
+          </div>
+
+          <mat-form-field class="col-md-12">
+            <input matInput formControlName="titulo" name="titulo" matInput placeholder="Título do alerta *">
+            <mat-error *ngIf="formAlerta.controls['titulo'].hasError('required')">
+              Campo obrigatório.
+            </mat-error>
+          </mat-form-field>
+
+          <div class="col-md-12 summmernote">
+            <mat-label>Descrição *</mat-label>
+            <div [ngxSummernote]="editorConfig" formControlName="descricao"></div>
+            <mat-error *ngIf="formAlerta.controls['descricao'].hasError('required')">
+              Campo obrigatório.
+            </mat-error>
+          </div>
+          <br>
+
+          <mat-form-field class="col-md-4">
+            <input matInput formControlName="qtdDias" type="number" name="qtdDias" matInput
+              placeholder="Quantidade de Dias para disparar o alerta *">
+            <mat-error *ngIf="formAlerta.controls['qtdDias'].hasError('required')">
+              Campo obrigatório.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-4" *ngIf="tipoUsuario == 'Administrador'">
+            <mat-label>Enviar apenas para Usuários de Prefeituras</mat-label>
+            <mat-select id="apenasPrefeitura" name="apenasPrefeitura" formControlName="apenasPrefeitura">
+              <mat-option [value]="false">Não</mat-option>
+              <mat-option [value]="true">Sim</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+
+          <mat-form-field class="col-md-4" *ngIf="tipoUsuario == 'Administrador'">
+            <mat-label>Perfil</mat-label>
+            <mat-select id="perfis" name="perfis" formControlName="perfis" multiple>
+              <mat-option *ngFor="let item of listaPerfil" [value]="item.id">{{ item.label }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <div class="col-md-12 text-right">
+            <button mat-flat-button color="primary" (click)="adicionarAlerta(true)">
+              <mat-icon>add</mat-icon> Adicionar Alerta
+            </button>
+
+            <button mat-flat-button color="accent" [hidden]="!clonar" (click)="habilitarAreaAlerta(false)"
+              matTooltip="Cadastra um novo evento com as informações deste formulário">
+              <mat-icon>cancel</mat-icon> Cancelar
+            </button>
+
+          </div>
+        </div>
+      </form>
+      <div class="col-md-12" align="end">
+        <button mat-flat-button color="primary" (click)="salvar()" matTooltip="Cadastrar Evento">
+          <mat-icon>save</mat-icon> Salvar e finalizar
+        </button>
+
+        <button mat-flat-button color="accent" style="margin-left: 8px;" matTooltip="Cancelar"
+          [routerLink]="['/eventos/lista']">
+          <mat-icon>cancel</mat-icon> Cancelar
+        </button>
+
+      </div>
+
+    </form>
+
+  </mat-card>
+</div>

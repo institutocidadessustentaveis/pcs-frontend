@@ -1,0 +1,163 @@
+<div class="conteudo" style="position: relative;">
+  <section class="home-banner owl-carousel owl-theme">
+    <div class="carousel slide" ride="false">
+      <div class="carousel-inner">
+        <div>
+          <img class="img-carousel" loading="lazy" [src]="urlImagem()"
+          matTooltip='Ilustração: Gil Tokio (Pingado)'>
+          <div class="carousel-caption">
+            <div style="position: inherit;bottom: 0;width: 100%;">
+              <h1>AGENDA DE EVENTOS</h1>
+              <h4>Encontros virtuais e presenciais, capacitações do PCS e outros eventos de parceiros
+              </h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<section class="secao-filtro">
+  <div class="row search-form-color" style="margin-right: 0px;">
+
+    <div class="col-lg-1">
+      <header style="padding-top: 10px;">
+        <h3><span>BUSCA</span></h3>
+      </header>
+    </div>
+
+    <div class="col-lg-11 itens-filtro">
+      <form [formGroup]="formFiltro" class="example-form">
+        <div class="row" >
+          <div class="col-lg-3">
+            <mat-form-field class="search-form-color">
+              <input matInput formControlName="palavraChave" placeholder="Palavra chave">
+            </mat-form-field>
+          </div>
+          <div class="col-lg-3">
+            <mat-form-field class="search-form-color">
+              <mat-label> Selecione um tipo </mat-label>
+              <mat-select formControlName="tipo" name="tipo" id="tipo">
+                <mat-option [value]="null"></mat-option>
+                <mat-option value="PCS"> PCS </mat-option>
+                <mat-option value="Terceiros"> Parceiros </mat-option>
+                <mat-option value="Rede Nossa São Paulo"> Rede Nossa São Paulo </mat-option>
+                <mat-option value="Capacitação para Prefeituras Signatárias"> Capacitação para Prefeituras Signatárias
+                </mat-option>
+                <mat-option value="Academia"> Academia </mat-option>
+                <mat-option value="ICS"> ICS </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-lg-2">
+
+            <button mat-button (click)="mostraDataPeriodo()" class="periodo" type="button">Por período</button>
+            <div class="data-periodo" *ngIf="mostrarDataPeriodo">
+              <app-datepicker formControlName="dataInicial" placeholder="Escolha a data inicial"
+                class="search-form-color"></app-datepicker><br>
+              <app-datepicker formControlName="dataFinal" placeholder="Escolha a data final" class="search-form-color">
+              </app-datepicker>
+              <div align="end" class="div-botao-periodo">
+                <button matTooltip="Limpar datas" mat-flat-button color="accent" (click)="limparDatas()"
+                  id="btnLimparDatas" class="limpar-filtro">
+                  Limpar Datas
+                </button>
+                <button matTooltip="Buscar Eventos" mat-flat-button color="primary" (click)="esconderDataPeriodo()"
+                  id="btnBuscarEventos" class="botaoBuscarEventos" style="margin-left: 10px;">
+                  Ok
+                </button>
+              </div>
+            </div>
+
+          </div>
+          <div class="col-lg-4 btn-group text-center">
+            <button matTooltip="Buscar Eventos" mat-flat-button color="primary" (click)="buscarEventos()"
+              id="btnBuscarEventos" class="botaoBuscarEventos btn-eventos botoes-pesquisa">
+              <mat-icon style="margin-top: -1px !important">search</mat-icon> Buscar Eventos
+            </button>
+            <button matTooltip="Limpar filtro" mat-flat-button color="accent" (click)="limparFiltro()"
+              id="btnLimparFiltro" class="limpar-filtro botoes-pesquisa">
+              Limpar Filtro
+            </button>
+            <div class="botoes-pesquisa-p">
+              <button matTooltip="Buscar Eventos" mat-flat-button color="primary" (click)="buscarEventos()"
+                id="btnBuscarEventos" class="botaoBuscarEventos btn-eventos botoes-pesquisa-p">
+                <mat-icon style="margin-top: -1px !important">search</mat-icon> Buscar Eventos
+              </button>
+              <br><br>
+              <button matTooltip="Limpar filtro" mat-flat-button color="accent" (click)="limparFiltro()"
+                id="btnLimparFiltro" class="limpar-filtro botoes-pesquisa-p">
+                Limpar Filtro
+              </button>
+
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+
+  </div>
+</section>
+
+<section class="secao" id="calendario">
+  <app-eventos-calendario [eventos]="eventosCalendario"></app-eventos-calendario>
+</section>
+
+<section class="secao-mapa" *ngIf="eventosMapa.length > 0">
+  <app-mapa-eventos [eventos]="eventosMapa"></app-mapa-eventos>
+</section>
+
+<section class="secao">
+  <div class="row" style="margin-bottom: 1em">
+    <div class="col-lg-5">
+      <h1 class="label-titulo">Notícias relacionadas</h1>
+    </div>
+    <div class="col-lg-7 btn-group botoes-sociais">
+        <fb-like [url]="urlatual"></fb-like>
+        <button mat-icon-button (click)="salvarLogCompartilhamento('FACEBOOK')" class="btnTabela btn-sociais-desktop" style="background-color:#3a559f;color:white; margin-left: 10px;"
+          shareButton="facebook" [url]="urlatual">
+          <fa name="facebook" size="lg"></fa>
+        </button>
+
+        <button mat-icon-button (click)="salvarLogCompartilhamento('TWITTER')" class="btnTabela btn-sociais-desktop" style="background-color:#50abf1;color:white" shareButton="twitter"
+          [url]="urlatual">
+          <fa name="twitter" size="lg"></fa>
+        </button>
+
+        <button mat-icon-button (click)="salvarLogCompartilhamento('LINKEDIN')" class="btnTabela btn-sociais-desktop" style="background-color:#0077af;color:white" shareButton="linkedin"
+          [url]="urlatual">
+          <fa name="linkedin" size="lg"></fa>
+        </button>
+
+      <div class="col-lg-6 btn-sociais-div-p">
+        <button mat-icon-button class="btnTabela" style="background-color:#3a559f;color:white; margin-left: 10px;"
+          shareButton="facebook" [url]="urlatual">
+          <fa name="facebook" size="lg"></fa>
+        </button>
+
+        <button mat-icon-button class="btnTabela" style="background-color:#50abf1;color:white" shareButton="twitter"
+          [url]="urlatual">
+          <fa name="twitter" size="lg"></fa>
+        </button>
+
+        <button mat-icon-button class="btnTabela" style="background-color:#0077af;color:white" shareButton="linkedin"
+          [url]="urlatual">
+          <fa name="linkedin" size="lg"></fa>
+        </button>
+      </div>
+    </div>
+
+  </div>
+  <div class="row">
+    <app-card-evento *ngFor="let idNoticia of idNoticias | slice : 0 : paginationLimit" [idNoticia]="idNoticia"
+      class="col-lg-4"></app-card-evento>
+  </div>
+  <div
+    style="height: 100%;min-height: 100%;display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;-webkit-justify-content: center;justify-content: center;">
+    <button class="view-more" matTooltip="Mais Resultados" (click)="carregarMaisNoticias()" id="btnVerMais">
+      Ver Mais
+    </button>
+  </div>
+</section>

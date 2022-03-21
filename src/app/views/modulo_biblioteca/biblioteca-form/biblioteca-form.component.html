@@ -1,0 +1,267 @@
+
+<div [hidden]="!loading" class="loading-indicator">
+  <mat-progress-spinner class="example-margin" style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+</div>
+<div class="contentBody" style="position: relative;">
+  <app-breadcrumb style="position: relative;"></app-breadcrumb>
+  <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+    <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <mat-card-title>
+       Biblioteca
+      </mat-card-title>
+    </mat-card-content>
+    <hr>
+
+    <form [formGroup]="formBiblioteca">
+
+      <mat-form-field class="col-md-6">
+        <mat-label>Objetivo Desenvolvimento Sustentável</mat-label>
+        <mat-select id="inputOds" name="ods" formControlName="ods" multiple (selectionChange)="carregarMetasOds()">
+          <mat-option *ngFor="let ods of odsCombo" [value]="ods.id">{{ods.label}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6">
+        <mat-label>Metas Objetivo Desenvolvimento Sustentável</mat-label>
+        <mat-select id="inputMetasOds" name="meta" formControlName="meta" multiple >
+          <mat-option *ngFor="let meta of metasOdsCombo" [value]="meta.id" [matTooltip]="meta.label">{{meta.label}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6">
+        <mat-label>Áreas de Interesse</mat-label>
+        <mat-select id="inputAreasInteresse" name="areasInteresse" formControlName="areasInteresse" multiple>
+          <mat-option *ngFor="let areaInteresse of areasInteresseCombo" [value]="areaInteresse.id">{{areaInteresse.nome}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6">
+        <mat-label>Eixos</mat-label>
+        <mat-select id="inputEixos" name="eixos" formControlName="eixos" multiple>
+          <mat-option *ngFor="let eixo of eixoCombo" [value]="eixo.id">{{eixo.nome}}</mat-option>
+        </mat-select>
+
+      </mat-form-field>
+      <hr>
+      <mat-form-field class="col-md-4">
+        <mat-label>País</mat-label>
+        <mat-select id="inputPais" name="pais" formControlName="paisPublicacao" (selectionChange)="onPaisChange()">
+            <mat-option [value]=""></mat-option>
+            <mat-option *ngFor="let pais of paisCombo" [value]="pais.id">{{pais.label}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-4">
+        <mat-label>Estado</mat-label>
+        <mat-select id="inputEstado" name="estado" formControlName="estado" (selectionChange)="onEstadoChange()">
+          <mat-option *ngFor="let estado of estados" [value]="estado.id">{{estado.label}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-4">
+        <mat-label>Cidade</mat-label>
+        <mat-select id="inputCidade" name="cidade" formControlName="cidade">
+          <mat-option *ngFor="let cidade of cidadesComboFiltrada" [value]="cidade.id">{{cidade.label}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <hr>
+      <mat-form-field class="col-md-6">
+        <input matInput placeholder="Autor *" formControlName="autor" #inputAutor id="inputAutor">
+        <mat-error *ngIf="formBiblioteca.controls['autor'].hasError('required')">
+          Campo Autor é obrigatório.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6">
+        <mat-label>Tipo Autor</mat-label>
+        <mat-select id="tipoAutor" name="tipoAutor" formControlName="tipoAutor" multiple>
+          <mat-option [value]='tipoAutor' *ngFor="let tipoAutor of tiposAutores" >{{tipoAutor}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6">
+        <mat-label>Idioma</mat-label>
+        <mat-select id="idioma" name="idioma" formControlName="idioma">
+            <mat-option [value]='idioma' *ngFor="let idioma of idiomas" >{{idioma}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6">
+        <mat-label>Indicador</mat-label>
+        <mat-select id="inputIndicadores" name="indicadores" formControlName="indicadores" multiple>
+          <mat-option *ngFor="let indicador of indicadorCombo" [value]="indicador.id" [matTooltip]="indicador.nome">{{indicador.nome}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6">
+        <input matInput placeholder="Instituicao" formControlName="instituicao" #inputInstituicao id="inpuInstituicao">
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6">
+        <input matInput placeholder="Palavra Chave" formControlName="palavraChave" #inpuPalavraChave id="inpuPalavraChave">
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6">
+        <input matInput placeholder="Título *" formControlName="tituloPublicacao" #inputTitulo id="inpuTitulo">
+        <mat-error *ngIf="formBiblioteca.controls['tituloPublicacao'].hasError('required')">
+          Campo Título é obrigatório.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6">
+        <input matInput placeholder="Subtítulo" formControlName="subtitulo" #inputSubtitulo id="inpuSubtitulo">
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6">
+        <mat-label>Publico Alvo</mat-label>
+        <mat-select id="publicoAlvo" name="publicoAlvo" formControlName="publicoAlvo" multiple>
+            <mat-option [value]='item' *ngFor="let item of publicoAlvo">{{item}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6">
+        <mat-label>Tipo do Material</mat-label>
+        <mat-select id="tipoMaterial" name="tipoMaterial" formControlName="tipoMaterial">
+            <mat-option [value]='item' *ngFor="let item of tipoMaterial">{{item}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field [ngClass]="{'col-lg-3 col-md-3': mostrarGrupoAcademicoNome === true, 'col-lg-4 col-md-4': mostrarGrupoAcademicoNome === false }">
+        <mat-label>Local de Exibição</mat-label>
+        <mat-select id="localExibicao" name="modulo" formControlName="localExibicao">
+            <mat-option [value]='item' *ngFor="let item of localExibicao" >{{item}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field [ngClass]="{'col-lg-3 col-md-3': mostrarGrupoAcademicoNome === true, 'col-lg-4 col-md-4': mostrarGrupoAcademicoNome === false }">
+        <mat-label>Módulo</mat-label>
+        <mat-select id="modulo" name="modulo" formControlName="modulo" multiple>
+            <mat-option [value]='modulo' *ngFor="let modulo of modulos" >{{modulo}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field [ngClass]="{'col-lg-3 col-md-3': mostrarGrupoAcademicoNome === true, 'col-lg-4 col-md-4': mostrarGrupoAcademicoNome === false }">
+        <mat-label>Grupo Acadêmico</mat-label>
+        <mat-select id="grupoAcademico" #grupoAcademico formControlName="grupoAcademico" (selectionChange)="grupoAcademicoChange(grupoAcademico.value)">
+          <mat-option [value]=''></mat-option>
+            <mat-option [value]='item.id' *ngFor="let item of gruposAcademicosCombo" >{{item.nomeGrupo}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-3">
+        <mat-label>ShapeFile</mat-label>
+        <mat-select id="grupoAcademico" name="shapeFile" formControlName="shapeFiles" multiple>
+            <mat-option [value]='shapeFile.id' *ngFor="let shapeFile of shapeFiles" >{{shapeFile?.nome}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+      <mat-form-field class='col-lg-3 col-md-3' *ngIf="mostrarGrupoAcademicoNome == true">
+          <input matInput placeholder="Nome do Grupo Acadêmico" formControlName="grupoAcademicoNome" #inpuGrupoAcademicoNome id="inpuGrupoAcademicoNome">
+          <mat-error *ngIf="formBiblioteca.controls['grupoAcademicoNome'].hasError('required')">
+            Campo Nome do Grupo Acadêmico obrigatório.
+          </mat-error>
+      </mat-form-field>
+
+      <div class="col-md-12">
+        <input hidden #imagemInputPrincipal type="file" id="imagemPrincipal" name="imagemPrincipal"
+          accept="image/jpeg,image/png, .tiff, .gif, .bmp" (change)="processImage($event)">
+        <button type="button" mat-raised-button (click)="imagemInputPrincipal.click()" id="btnImagemPrincipal" name="btnImagemPrincipal"
+          color="primary" style="margin-top: 20px; cursor: pointer;" matTooltip="Carregar Imagem de Capa">
+          <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar imagem
+        </button>
+
+        <br>
+        <mat-label *ngIf="nomeArquivoImagemCapa">{{nomeArquivoImagemCapa}}
+          <mat-icon matTooltip="Excluir imagem de capa" style="margin-right: 5px; cursor: pointer; color: red;" (click)="excluirImagemCapa()">delete</mat-icon>
+        </mat-label>
+      </div>
+      <br>
+      <div class="col-md-12">
+        <mat-form-field style="width: 20%">
+            <input matInput placeholder="Link do vídeo" formControlName="urlVideo" id="videoAdicionado">
+        </mat-form-field>
+        <button type="button" mat-raised-button id="btnImagemGaleriaVideo" name="urlGaleriaVideo" color="primary"
+            style="margin-left:20px; margin-bottom: 20px; margin-top: 20px; cursor: pointer;" (click)="adicionarVideo()">Adicionar
+            vídeo</button>
+
+        <div class="row">
+            <div class="containerGaleria col-md-2" *ngFor="let item of galeriaDeVideos">
+                <iframe frameborder="0" [src]="item.safeUrl" class="note-video-clip" style="width:100%;"></iframe>
+                <button type="button" mat-raised-button style="width:100%;" (click)="deletarVideoDaGaleria(item)">
+                    <mat-icon class="btn-remover">delete</mat-icon>
+                </button>
+            </div>
+        </div>
+      </div>
+      <br>
+
+      <div class="col-md-12">
+        <input hidden #inputGaleriaDeAudios type="file" id="galeriaDeAudios" name="galeriaDeAudios" accept="audio/*"
+        (change)="processFile($event)">
+        <button type="button" mat-raised-button (click)="inputGaleriaDeAudios.click()" id="btngaleriaDeAudios" name="btngaleriaDeAudios"
+          color="primary" style="margin-top: 20px; cursor: pointer;" matTooltip="Carregar Áudio">
+          <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar Áudios
+        </button>
+        <br>
+        <div *ngFor="let item of galeriaDeAudios">
+        <mat-label *ngIf="item">{{item.nomeArquivo}}
+          <mat-icon matTooltip="Excluir áudio" style="margin-right: 5px; cursor: pointer; color: red;" (click)="excluirAudio(item)">delete</mat-icon>
+        </mat-label>
+        </div>
+      </div>
+
+      <div class="col-md-12" style="margin-top:20px;">
+        <button type="button" mat-raised-button id="btnArquivoMultimidia" (click)="inputArquivoMultimidia.click()"
+          color="primary" matTooltip="Upload de arquivo multimídia">
+          <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Arquivo multimídia
+        </button>
+        <input hidden #inputArquivoMultimidia type="file" id="inputArquivoMultimidia" name="multimidia"
+          accept=".pdf,.docx,.doc,.xlsx,.xls,image/jpeg,image/png" (change)="processFileMultimidia($event)">
+        <br />
+      </div>
+
+      <div class="col-lg-12" [hidden]="this.arquivosMultimidia.length === 0">
+        <table mat-table [dataSource]="dataSourceArquivosMultimidia">
+          <ng-container matColumnDef="nomeArquivo">
+            <th mat-header-cell *matHeaderCellDef>Arquivo</th>
+            <td mat-cell *matCellDef="let arquivo"> {{arquivo.nomeArquivo}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="remover">
+            <th mat-header-cell *matHeaderCellDef>Remover</th>
+            <td mat-cell *matCellDef="let arquivoOutrosTipos">
+              <button mat-flat-button color="warn" name="btnDeletaMeta" (click)='deletarArquivoMultimidia(arquivo)'
+                class="btnTabela" matTooltip="Excluir">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumnsArquivosMultimidia"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumnsArquivosMultimidia;"></tr>
+        </table>
+      </div>
+
+      <br>
+
+      <div class="col-md-12 summernote">
+        <mat-label>Descrição *</mat-label>
+        <div [ngxSummernote]="editorConfig" formControlName="descricao"></div>
+        <mat-error *ngIf="formBiblioteca.controls['descricao'].hasError('required')">
+          Campo Descrição é obrigatório
+        </mat-error>
+      </div>
+      <br>
+      <div class="col-md-12" align="end">
+        <button mat-flat-button color="primary" (click)="salvar()" [disabled]="desabilitarSalvar" matTooltip="Cadastra biblioteca">
+          <mat-icon>save</mat-icon> Salvar e finalizar
+        </button>
+
+        <button mat-flat-button color="accent" style="margin-left: 8px;"  matTooltip="Cancela cadastro" [routerLink]="['/biblioteca/administracao']">
+          <mat-icon>cancel</mat-icon> Cancelar
+        </button>
+    </div>
+
+    </form>
+  </mat-card>
+</div>

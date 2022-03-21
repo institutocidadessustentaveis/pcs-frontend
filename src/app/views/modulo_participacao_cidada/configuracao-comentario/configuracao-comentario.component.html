@@ -1,0 +1,38 @@
+<div style="background-color: white;" class="bmd-layout-container bmd-drawer-f-l bmd-drawer-overlay ">
+  <main class="bmd-layout-content">
+    <div>
+      <section class="teaser teaser--dotted" style="margin-top: 0%;margin-bottom: 0%;">
+        <app-breadcrumb></app-breadcrumb>
+        <br>
+        <br>
+        <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+
+          <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12" >
+            <mat-card-title>
+              Alterar configurações dos comentários
+            </mat-card-title>
+          </mat-card-content>
+          <form [formGroup]="formConfiguracaoComentario">
+
+            <mat-form-field class="col-md-12">
+              <input matInput type="number" placeholder="Tamanho máximo de todos os comentários*"
+                formControlName="tamanhoMaxComentario">
+              <mat-error *ngIf="formConfiguracaoComentario.controls['tamanhoMaxComentario'].hasError('required')">
+                Campo tamanho máximo dos comentários é obrigatório.
+              </mat-error>
+            </mat-form-field>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right" style="margin-top: 10px !important;">
+              <button matTooltip="Salvar e finalizar" mat-flat-button color="primary" (click)="atualizar()">
+                <mat-icon style="margin-top: -1px !important">save</mat-icon> Salvar e finalizar
+              </button>
+            </div>
+            
+          </form>
+
+        </mat-card>
+
+      </section>
+    </div>
+  </main>
+</div>

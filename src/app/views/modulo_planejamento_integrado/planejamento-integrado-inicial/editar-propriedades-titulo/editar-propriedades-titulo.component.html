@@ -1,0 +1,50 @@
+<div class="edicao-titulo" style="overflow-y: hidden;">
+  <div class="text-center">
+    <h4>Edição do Rótulo</h4>
+  </div>
+  <hr>
+  <p class="col-md-12" style="text-align: justify;" >
+    Adicione um texto (até 50 caracteres) para inserir no mapa e,
+    depois, escolha sua posição clicando sobre o mapa. Você pode
+    adicionar até 99 caixas de textos como título ou para identificar algo no mapa
+  </p>
+  <br>
+
+  <form>
+
+      <mat-form-field class="col-md-12" floatLabel="always">
+        <mat-label>Cor</mat-label>
+        <input matInput matTooltip="Cor do texto" name="Color" placeholder=" "
+        [style.background]="titulo.color" [cpPosition]="'top'"
+          [(colorPicker)]="titulo.color" />
+      </mat-form-field>
+
+      <mat-form-field class="col-md-12" floatLabel="always">
+        <mat-label>Cor de fundo</mat-label>
+        <input matInput matTooltip="Cor do fundo" name="ColorFundo" placeholder=" "
+        [style.background]="titulo.backgroundColor" [cpPosition]="'top'"
+          [(colorPicker)]="titulo.backgroundColor" />
+      </mat-form-field>
+
+      <mat-form-field class="col-md-12">
+        <mat-label>Tamanho da fonte</mat-label>
+        <input type="number"  step="1"  min="8" max="40" name="tamanhoFonte" matInput placeholder="Tamanho da Fonte" [(ngModel)]="titulo.fontSize">
+      </mat-form-field>
+
+
+      <mat-form-field class="col-md-12">
+        <mat-label>Texto</mat-label>
+        <input type="text" matInput placeholder="Texto" maxlength="50"
+          [(ngModel)]="titulo.texto" name="textoTitulo"  />
+      </mat-form-field>
+
+
+    <br>
+
+    <div class="col-md-12">
+      <button mat-flat-button color="primary" (click)="salvar()" >OK</button>
+      <button mat-flat-button color="accent" (click)="cancelar()" style="margin-left: 20px;">Cancelar</button>
+    </div>
+  </form>
+
+</div>

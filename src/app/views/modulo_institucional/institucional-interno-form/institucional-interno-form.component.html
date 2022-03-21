@@ -1,0 +1,548 @@
+
+<div class="contentBody" style="position: relative;">
+  <app-breadcrumb style="position: relative;"></app-breadcrumb>
+  <mat-card>
+    <div class="col-lg-12">
+      <mat-card-title *ngIf="institucional.id !== null && institucional.id !== undefined">Alterar Página Institucional
+      </mat-card-title>
+      <mat-card-title *ngIf="institucional.id === null || institucional.id === undefined">Criar Página Institucional
+      </mat-card-title>
+      <hr>
+    </div>
+
+    <mat-radio-group aria-label="Selecione um template" [(ngModel)]="tipoTemplate" (change)="tipoTemplateChange($event)">
+      <mat-radio-button value="template01">
+        Template 01
+      </mat-radio-button>
+
+      <mat-radio-button value="template02" style="margin-left: 20px;">
+        Template 02
+      </mat-radio-button>
+
+      <mat-radio-button value="template03" style="margin-left: 20px;">
+        Template 03
+      </mat-radio-button>
+
+      <mat-radio-button value="template04" style="margin-left: 20px;">
+        Template 04
+      </mat-radio-button>
+    </mat-radio-group>
+
+    <form #institucionalForm="ngForm" class="example-form">
+
+      <!-- Link da página -->
+      <div class="col-lg-12" style="margin-top: 20px !important;">
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Insira o Link da Página" (blur)="verificaLink()" id="txtLink" [(ngModel)]="institucional.link_pagina"
+            name="link" required minlength="3" #link="ngModel">
+          <mat-hint [hidden]="link.invalid" style="font-size: 12px">Link completo da página:
+            {{urlBase}}/pagina/{{institucional.link_pagina}}</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <!-- Image cropper -->
+      <div class="col-md-12">
+        <input hidden #imagemInputPrincipal type="file" id="imagemPrincipal" name="imagemPrincipal"
+          accept="image/jpeg,image/png" (change)="fileChangeEvent($event)">
+        <button type="button" mat-raised-button (click)="imagemInputPrincipal.click()" id="btnIcone" name="icone"
+          color="primary" style="margin-top: 20px; cursor: pointer;" matTooltip="Upload Imagem Principal">
+          <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar imagem principal *
+        </button>
+        <mat-error *ngIf="!this.institucional.imagemPrincipal" style="margin-bottom: 20px;"> <sub>Escolha ao menos uma imagem principal</sub>
+        </mat-error>
+
+        <div>
+          <image-cropper style="max-height: 500px;"
+          [imageChangedEvent]="imageChangedEvent"
+          [maintainAspectRatio]="false"
+          [aspectRatio]="1 / 1"
+          [resizeToWidth]="0"
+          format="png"
+          (imageCropped)="imageCropped($event)">
+          </image-cropper>
+        </div>
+
+        <div class="containerGaleria" *ngIf="this.institucional.imagemPrincipal">
+          <img [src]="this.institucional.imagemPrincipalSafeUrl" style="width:100%">
+          <button type="button" mat-raised-button style="width:100%;" (click)="removerImagemPrincipal()">
+            <mat-icon class="btn-remover">delete</mat-icon>
+          </button>
+          <mat-form-field style="margin-top: 5px;">
+              <input type="text" #autor matInput placeholder="Autoria da imagem" (blur)="onEnterPrincipal(autor.value)" value='{{institucional.nomeAutor}}'>
+          </mat-form-field>
+        </div>
+
+        <mat-checkbox [checked]="institucional.possuiFiltro" (change)="alterarFiltro($event)">Adicionar filtro verde na imagem</mat-checkbox>
+      </div>
+
+      <!-- ./Image cropper -->
+
+      <div class="col-md-12" style="margin-top: 30px; margin-bottom: 30px;">
+        <mat-label class="labelTextEditor">Insira o Caminho de Migalhas</mat-label>
+        <div [ngxSummernote]="editorCaminhoMigalhasConfig" name="caminhoMigalhas" [(ngModel)]="institucional.caminhoMigalhas"></div>
+        <mat-hint class="caracteres-editor">{{ institucional.caminhoMigalhas?.length || 0 }}/400</mat-hint>
+      </div>
+
+      <!-- Título -->
+      <div class="col-lg-12" style="margin-top: 20px !important;">
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Insira o título" id="txtTitulo" [(ngModel)]="institucional.titulo" name="titulo"
+            required minlength="3" maxlength="250" #titulo>
+            <mat-hint align="end">{{ titulo.value?.length || 0 }}/250</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <!-- Subtítulo -->
+      <div class="col-md-12" style="margin-top: 30px; margin-bottom: 30px;">
+        <mat-label class="labelTextEditor">Insira o Subtitulo</mat-label>
+        <div [ngxSummernote]="editorSubtituloConfig" name="subtitulo" [(ngModel)]="institucional.subtitulo"></div>
+        <mat-hint class="caracteres-editor">{{ institucional.subtitulo?.length || 0 }}/400</mat-hint>
+      </div>
+
+       <!-- Texto Botão do subtítulo -->
+       <div class="col-lg-12" style="margin-top: 20px !important;">
+          <mat-form-field class="full-width">
+            <input matInput id="txtSubtitulo" placeholder="Texto Botão do subtítulo" [(ngModel)]="institucional.txtBotaoSubtitulo"
+              name="txtBotaoSubtitulo" minlength="3" maxlength="50" #txtBotaoSubtitulo>
+              <mat-hint align="end">{{ txtBotaoSubtitulo.value?.length || 0 }}/50</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Link Botão do subtítulo -->
+        <div class="col-lg-12" style="margin-top: 20px !important;">
+          <mat-form-field class="full-width">
+            <input matInput id="linkSubtitulo" placeholder="Link Botão do subtítulo" [(ngModel)]="institucional.linkBotaoSubtitulo"
+              name="linkBotaoSubtitulo" minlength="3" maxlength="250" #linkBotaoSubtitulo>
+              <mat-hint align="end">{{ linkBotaoSubtitulo.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+        </div>
+
+
+
+
+      <!-- Template 01 -->
+      <div *ngIf="tipoTemplate === 'template01'">
+
+        <!-- Título primeira seção -->
+        <div class="col-lg-12" style="margin-top: 20px !important;">
+          <mat-form-field class="full-width">
+            <input matInput id="tituloPrimeiraSecao" placeholder="Título primeira seção" [(ngModel)]="institucional.template01.tituloPrimeiraSecao"
+              name="tituloPrimeiraSecao" minlength="3" maxlength="250" #tituloPrimeiraSecao>
+              <mat-hint align="end">{{ tituloPrimeiraSecao.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Texto primeira seção -->
+        <div class="col-md-12 summernote" style="margin-top: 30px; margin-bottom: 30px;">
+          <mat-label class="labelTextEditor">Texto primeira seção</mat-label>
+          <div [ngxSummernote]="editorConfig" name="textoPrimeiraSecao" [(ngModel)]="institucional.template01.textoPrimeiraSecao"></div>
+        </div>
+
+        <!-- Blockquote primeira seção -->
+        <div class="col-lg-12" style="margin-top: 20px !important;">
+          <mat-form-field class="full-width">
+            <input matInput id="blockquotePrimeiraSecao" placeholder="Blockquote primeira seção" [(ngModel)]="institucional.template01.blockquotePrimeiraSecao"
+              name="blockquotePrimeiraSecao" minlength="3" maxlength="250" #blockquotePrimeiraSecao>
+              <mat-hint align="end">{{ blockquotePrimeiraSecao.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Título segunda seção -->
+        <div class="col-lg-12" style="margin-top: 20px !important;">
+          <mat-form-field class="full-width">
+            <input matInput id="tituloSegundaSecao" placeholder="Título segunda seção" [(ngModel)]="institucional.template01.tituloSegundaSecao"
+              name="tituloSegundaSecao" minlength="3" maxlength="250" #tituloSegundaSecao>
+              <mat-hint align="end">{{ tituloSegundaSecao.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Texto segunda seção -->
+        <div class="col-md-12 summernote" style="margin-top: 30px; margin-bottom: 30px;">
+          <mat-label class="labelTextEditor">Texto segunda seção</mat-label>
+          <div [ngxSummernote]="editorConfig" name="txtSegundaSecao" [(ngModel)]="institucional.template01.txtSegundaSecao"></div>
+        </div>
+
+        <!-- Texto Botão 01 segunda seção -->
+        <div class="col-lg-12" style="margin-top: 20px !important;">
+          <mat-form-field class="full-width">
+            <input matInput id="txtBotao01" placeholder="Texto Botão 01 segunda seção" [(ngModel)]="institucional.template01.txtBotao01"
+              name="txtBotao01" minlength="3" maxlength="50" #txtBotao01>
+              <mat-hint align="end">{{ txtBotao01.value?.length || 0 }}/50</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Link Botão 01 segunda seção -->
+        <div class="col-lg-12" style="margin-top: 20px !important;">
+          <mat-form-field class="full-width">
+            <input matInput id="linkBotao01" placeholder="Link Botão 01 segunda seção" [(ngModel)]="institucional.template01.linkBotao01"
+              name="linkBotao01" minlength="3" maxlength="250" #linkBotao01>
+              <mat-hint align="end">{{ linkBotao01.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Texto Botão 02 segunda seção -->
+        <div class="col-lg-12" style="margin-top: 20px !important;">
+          <mat-form-field class="full-width">
+            <input matInput id="txtBotao02" placeholder="Texto Botão 02 segunda seção" [(ngModel)]="institucional.template01.txtBotao02"
+              name="txtBotao02" minlength="3" maxlength="50" #txtBotao02>
+              <mat-hint align="end">{{ txtBotao02.value?.length || 0 }}/50</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Link Botão 02 segunda seção -->
+        <div class="col-lg-12" style="margin-top: 20px !important;">
+          <mat-form-field class="full-width">
+            <input matInput id="linkBotao02" placeholder="Link Botão 02 segunda seção" [(ngModel)]="institucional.template01.linkBotao02"
+              name="linkBotao02" minlength="3" maxlength="250" #linkBotao02>
+              <mat-hint align="end">{{ linkBotao02.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Texto Botão 03 segunda seção -->
+        <div class="col-lg-12" style="margin-top: 20px !important;">
+          <mat-form-field class="full-width">
+            <input matInput id="txtBotao03" placeholder="Texto Botão 03 segunda seção" [(ngModel)]="institucional.template01.txtBotao03"
+              name="txtBotao03" minlength="3" maxlength="50" #txtBotao03>
+              <mat-hint align="end">{{ txtBotao03.value?.length || 0 }}/50</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Link Botão 03 segunda seção -->
+        <div class="col-lg-12" style="margin-top: 20px !important;">
+          <mat-form-field class="full-width">
+            <input matInput id="linkBotao03" placeholder="Link Botão 03 segunda seção" [(ngModel)]="institucional.template01.linkBotao03"
+              name="linkBotao03" minlength="3" maxlength="250" #linkBotao03>
+              <mat-hint align="end">{{ linkBotao03.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Texto Botão 04 segunda seção -->
+        <div class="col-lg-12" style="margin-top: 20px !important;">
+          <mat-form-field class="full-width">
+            <input matInput id="txtBotao04" placeholder="Texto Botão 04 segunda seção" [(ngModel)]="institucional.template01.txtBotao04"
+              name="txtBotao04" minlength="3" maxlength="50" #txtBotao04>
+              <mat-hint align="end">{{ txtBotao04.value?.length || 0 }}/50</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Link Botão 04 segunda seção -->
+        <div class="col-lg-12" style="margin-top: 20px !important;">
+          <mat-form-field class="full-width">
+            <input matInput id="linkBotao04" placeholder="Link Botão 04 segunda seção" [(ngModel)]="institucional.template01.linkBotao04"
+              name="linkBotao04" minlength="3" maxlength="250" #linkBotao04>
+              <mat-hint align="end">{{ linkBotao04.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+      <!-- ...Template 01 -->
+
+
+      <!-- Template 02 -->
+      <div *ngIf="tipoTemplate === 'template02'">
+        <!-- Título primeira seção -->
+        <div class="col-lg-12" style="margin-top: 20px !important;">
+          <mat-form-field class="full-width">
+            <input matInput id="tituloPrimeiraSecao" placeholder="Título primeira seção" [(ngModel)]="institucional.template02.tituloPrimeiraSecao"
+              name="tituloPrimeiraSecao" minlength="3" maxlength="250" #tituloPrimeiraSecao>
+              <mat-hint align="end">{{ tituloPrimeiraSecao.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Imagem primeira seção -->
+        <div class="col-md-12">
+          <input hidden #imagemPrimeiraSecao type="file" id="imagemPrimeiraSecao" name="imagemPrimeiraSecao"
+            accept="image/jpeg,image/png" (change)="processImage($event, 'primeiraSecao')">
+          <button type="button" mat-raised-button (click)="imagemPrimeiraSecao.click()" id="btnImagemPrimeiraSecao"
+            name="imagemPrimeiraSecao" color="primary" style="margin-top: 20px; cursor: pointer;"
+            matTooltip="Upload Imagem Primeira Seção">
+            <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar imagem primeira seção
+          </button>
+
+          <div class="containerGaleria" *ngIf="this.institucional.template02?.imagemPrimeiraSecao">
+            <img [src]="this.institucional.template02.imagemPrimeiraSecaoSafeUrl" style="width:100%">
+            <button type="button" mat-raised-button style="width:100%;" (click)="removerImagemPrimeiraSecao()">
+              <mat-icon class="btn-remover">delete</mat-icon>
+            </button>
+            <mat-form-field style="margin-top: 5px;">
+                <input type="text" #autorPrimeiraSecao matInput placeholder="Autoria da imagem" (blur)="onEnterPrimeiraSecao(autorPrimeiraSecao.value)" value='{{institucional.template02.nomeAutorImagemPrimeiraSecao}}'>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Texto primeira seção -->
+        <div class="col-md-12 summernote" style="margin-top: 30px; margin-bottom: 30px;">
+          <mat-label class="labelTextEditor">Texto primeira seção</mat-label>
+          <div [ngxSummernote]="editorConfig" name="textoPrimeiraSecao" [(ngModel)]="institucional.template02.textoPrimeiraSecao"></div>
+        </div>
+
+        <!-- Título segunda seção -->
+        <div class="col-lg-12" style="margin-top: 20px !important;">
+          <mat-form-field class="full-width">
+            <input matInput id="tituloSegundaSecao" placeholder="Título segunda seção" [(ngModel)]="institucional.template02.tituloSegundaSecao"
+              name="tituloSegundaSecao" minlength="3" maxlength="250" #tituloSegundaSecao>
+              <mat-hint align="end">{{ tituloSegundaSecao.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Texto segunda seção -->
+        <div class="col-md-12 summernote" style="margin-top: 30px; margin-bottom: 30px;">
+          <mat-label class="labelTextEditor">Texto segunda seção</mat-label>
+          <div [ngxSummernote]="editorConfig" name="txtSegundaSecao" [(ngModel)]="institucional.template02.txtSegundaSecao"></div>
+        </div>
+
+        <div class="col-md-12">
+          <mat-form-field class="full-width">
+            <input [(style.background)]="institucional.template02.corFundoSegundaSecao" [cpPosition]="'top-right'"
+            [(colorPicker)]="institucional.template02.corFundoSegundaSecao" />
+          <input matInput placeholder="Cor fundo segunda seção" style="min-width: 150px;"
+            maxlength="10"
+            name="corFundoSegundaSecao" 
+            [(ngModel)]="institucional.template02.corFundoSegundaSecao"
+            id="corFundoSegundaSecao" 
+            matTooltip="Cor de fundo da segunda seção">
+          </mat-form-field>
+        </div>
+
+        <!-- Título terceira seção -->
+        <div class="col-lg-12" style="margin-top: 20px !important;">
+          <mat-form-field class="full-width">
+            <input matInput id="tituloTerceiraSecao" placeholder="Título terceira seção" [(ngModel)]="institucional.template02.tituloTerceiraSecao"
+              name="tituloTerceiraSecao" minlength="3" maxlength="250" #tituloTerceiraSecao>
+              <mat-hint align="end">{{ tituloTerceiraSecao.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Texto terceira seção -->
+        <div class="col-md-12 summernote" style="margin-top: 30px; margin-bottom: 30px;">
+          <mat-label class="labelTextEditor">Texto terceira seção</mat-label>
+          <div [ngxSummernote]="editorConfig" name="txtTerceiraSecao" [(ngModel)]="institucional.template02.txtTerceiraSecao"></div>
+        </div>
+
+        <!-- Imagem terceira seção -->
+        <div class="col-md-12">
+          <input hidden #imagemTerceiraSecao type="file" id="imagemTerceiraSecao" name="imagemTerceiraSecao"
+            accept="image/jpeg,image/png" (change)="processImage($event, 'terceiraSecao')">
+          <button type="button" mat-raised-button (click)="imagemTerceiraSecao.click()" id="btnImagemTerceiraSecao"
+            name="imagemTerceiraSecao" color="primary" style="margin-top: 20px; cursor: pointer;"
+            matTooltip="Upload Imagem Terceira Seção">
+            <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar imagem terceira seção
+          </button>
+
+          <div class="containerGaleria" *ngIf="this.institucional.template02.imagemTerceiraSecao">
+            <img [src]="this.institucional.template02.imagemTerceiraSecaoSafeUrl" style="width:100%">
+            <button type="button" mat-raised-button style="width:100%;" (click)="removerImagemTerceiraSecao()">
+              <mat-icon class="btn-remover">delete</mat-icon>
+            </button>
+            <mat-form-field style="margin-top: 5px;">
+                <input type="text" #autorTerceiraSecao matInput placeholder="Autoria da imagem" (blur)="onEnterTerceiraSecao(autorTerceiraSecao.value)" value='{{institucional.template02.nomeAutorImagemTerceiraSecao}}'>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Título quarta seção -->
+        <div class="col-lg-12" style="margin-top: 20px !important;">
+          <mat-form-field class="full-width">
+            <input matInput id="tituloQuartaSecao" placeholder="Título quarta seção" [(ngModel)]="institucional.template02.tituloQuartaSecao"
+              name="tituloQuartaSecao" minlength="3" maxlength="250" #tituloQuartaSecao>
+              <mat-hint align="end">{{ tituloQuartaSecao.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Texto quarta seção -->
+        <div class="col-md-12 summernote" style="margin-top: 30px; margin-bottom: 30px;">
+          <mat-label class="labelTextEditor">Texto quarta seção</mat-label>
+          <div [ngxSummernote]="editorConfig" name="txtQuartaSecao" [(ngModel)]="institucional.template02.txtQuartaSecao"></div>
+        </div>
+
+        <!-- Texto Botão 01 quarta seção -->
+        <div class="col-lg-12" style="margin-top: 20px !important;">
+          <mat-form-field class="full-width">
+            <input matInput id="txtBotao01" placeholder="Texto Botão 01 quarta seção" [(ngModel)]="institucional.template02.txtBotao01"
+              name="txtBotao01" minlength="3" maxlength="50" #txtBotao01>
+              <mat-hint align="end">{{ txtBotao01.value?.length || 0 }}/50</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Link Botão 01 quarta seção -->
+        <div class="col-lg-12" style="margin-top: 20px !important;">
+          <mat-form-field class="full-width">
+            <input matInput id="linkBotao01" placeholder="Link Botão 01 quarta seção" [(ngModel)]="institucional.template02.linkBotao01"
+              name="linkBotao01" minlength="3" maxlength="250" #linkBotao01>
+              <mat-hint align="end">{{ linkBotao01.value?.length || 0 }}/250</mat-hint>
+          </mat-form-field>
+        </div>
+
+      </div>
+      <!-- ...Template 02 -->
+
+       <!-- Template 03 -->
+
+      <div *ngIf="tipoTemplate === 'template03'" >
+        <!-- Primeira seção do Catalogo-->
+        <div class="row" >
+          <div class="col-lg-12">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Informe o título da primeira seção de catalogos"
+              id="titulo-catalogo01"
+              [(ngModel)]="institucional.template03.tituloCatalogo1" name="tituloCatalogo1"
+              minlength="3" maxlength="500">
+            </mat-form-field>
+          </div>
+          <p class="col-lg-12">
+            Escolha ou crie publicações para sua adicionar ao seu catalogo de publicações página.
+          </p>
+
+          <!--
+            <app-institucional-publicacao-visualizacao  class="div-card-publicacao col-lg-4 col-sm-12"
+            [publicacao]="institucional.template03.publicacao1"
+            (resultado)="onAtualizar($event, 1)"></app-institucional-publicacao-visualizacao>
+          -->
+
+          <app-institucional-publicacao-visualizacao  class="div-card-publicacao col-lg-4 col-sm-12"
+            *ngFor="let item of institucional.template03.publicacoes; let i = index"
+            [publicacao]="item"
+            (resultado)="onAtualizar($event, i, 1)"
+            (moverParaDireita)="onMoverDireita($event,i,1)"
+            (moverParaEsquerda)="onMoverEsquerda($event,i,1)">
+          </app-institucional-publicacao-visualizacao>
+
+          <app-institucional-publicacao-visualizacao  class="div-card-publicacao col-lg-4 col-sm-12"
+            [publicacao]="publicacao"
+            (resultado)="onAtualizar($event, institucional.template03.publicacoes.length,1)"></app-institucional-publicacao-visualizacao>
+        </div>
+        <!-- Mostrar o Botão para Ver Mais Publicações -->
+        <div class="col-lg-12" style="margin-top: 20px !important;">
+          <span>Você deseja exibir o botão para carregar os últimos Materiais de Apoio do PCS automaticamente?</span><br />
+          <mat-radio-group aria-label="Exibir o botão para carregar as últimas publicações do PCS automaticamente?"
+          [(ngModel)]="institucional.template03.verMaisPCS"
+          name="verMaisPCS" >
+            <mat-radio-button [value]="true"  style="margin-right: 2em" [checked]="institucional.template03.verMaisPCS">
+              Sim
+            </mat-radio-button>
+            <mat-radio-button [value]="false" [checked]="!institucional.template03.verMaisPCS">
+              Não
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <br>
+
+          <!--Seção Texto-->
+          <div class="row">
+            <div class="col-md-12">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Informe o título da seção de texto"
+                id="titulo-catalogo01"
+                [(ngModel)]="institucional.template03.tituloSecaoTexto" name="tituloSecaoTexto"
+                minlength="3" maxlength="500">
+              </mat-form-field>
+              <mat-label class="labelTextEditor">Texto</mat-label>
+              <div [ngxSummernote]="editorConfig" name="secaoTexto" [(ngModel)]="institucional.template03.secaoTexto"></div>
+            </div>
+          </div>
+        <!-- ...Template 02 -->
+
+        <!-- Segunda seção do Catalogo-->
+        <div class="row" >
+          <div class="col-lg-12">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Informe o título da segunda seção de catálogos"
+              id="titulo-catalogo02"
+              [(ngModel)]="institucional.template03.tituloCatalogo2" name="tituloCatalogo2"
+              minlength="3" maxlength="500">
+            </mat-form-field>
+          </div>
+          <p class="col-lg-12">
+            Escolha ou crie publicações para sua adicionar à segunda seção de catálogo de publicações.
+          </p>
+
+          <app-institucional-publicacao-visualizacao  class="div-card-publicacao col-lg-4 col-sm-12"
+            *ngFor="let item of institucional.template03.publicacoes2; let i = index"
+            [publicacao]="item"
+            (resultado)="onAtualizar($event, i, 2)"
+            (moverParaDireita)="onMoverDireita($event,i,2)"
+            (moverParaEsquerda)="onMoverEsquerda($event,i,2)">
+          </app-institucional-publicacao-visualizacao>
+
+          <app-institucional-publicacao-visualizacao  class="div-card-publicacao col-lg-4 col-sm-12"
+            [publicacao]="publicacao"
+            (resultado)="onAtualizar($event, institucional.template03.publicacoes2.length, 2)"></app-institucional-publicacao-visualizacao>
+
+        </div>
+        <!-- Mostrar o Botão para Ver Mais Publicações -->
+        <div class="col-lg-12" style="margin-top: 20px !important;">
+          <span>Você deseja exibir o botão para carregar os últimos Materiais de Apoio de outras instituições automaticamente?</span><br />
+          <mat-radio-group aria-label="Exibir o botão para carregar as últimas publicações do outras instituições automaticamente?"
+          [(ngModel)]="institucional.template03.verMaisInstituicao"
+          name="verMaisInstituicao" >
+            <mat-radio-button [value]="true" style="margin-right: 2em" [checked]="institucional.template03.verMaisInstituicao">
+              Sim
+            </mat-radio-button>
+            <mat-radio-button [value]="false" [checked]="!institucional.template03.verMaisInstituicao">
+              Não
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+
+      </div>
+       <!-- ...Template 03 -->
+
+
+      <!-- Template 04 -->
+      <div *ngIf="tipoTemplate === 'template04'">
+
+        <div class="col-lg-12" style="margin-top: 20px !important;">
+            <mat-form-field class="full-width">
+              <mat-label>Selecione os ShapeFiles</mat-label>
+              <mat-select id="idShp" name="shp"  [(ngModel)]="institucional.template04.shapeFiles" multiple>
+                  <mat-option *ngFor="let shp of shapeFiles" [value]="shp.id">{{shp?.nome}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="col-md-12" style="margin-top: 30px; margin-bottom: 30px;">
+          <mat-label class="labelTextEditor">Texto Primeira Seção</mat-label>
+          <div [ngxSummernote]="editorConfig" name="primeiroTexto" [(ngModel)]="institucional.template04.primeiroTexto"></div>
+        </div>
+        <br>
+
+        <div class="col-md-12" style="margin-top: 30px; margin-bottom: 30px;">
+          <mat-label class="labelTextEditor">Texto Segunda Seção</mat-label>
+          <div [ngxSummernote]="editorConfig" name="segundoTexto" [(ngModel)]="institucional.template04.segundoTexto"></div>
+        </div>
+        <br>
+      </div>
+      <!-- ...Template 04 -->
+
+      <!-- f/Voltar -->
+      <div class="text-right" style="margin-top: 10px !important;">
+        <button mat-flat-button color="primary"  [disabled]="!institucional.imagemPrincipal || estaPersistindo" class="btnToRight" role="button" (click)='salvar()' matTooltip="Salvar">
+          <mat-icon>save</mat-icon>Salvar
+        </button>
+        <button mat-flat-button color="accent" class="btnToRight" [routerLink]="['/institucional-interno']"
+          matTooltip="Voltar">
+          <mat-icon>arrow_back_ios</mat-icon>Voltar
+        </button>
+      </div>
+    </form>
+
+  </mat-card>
+
+  
+<ng-template #modalLoading>
+  <div class="centralizar-loading">
+     <div id="circularG">
+      <div id="circularG_1" class="circularG"></div>
+      <div id="circularG_2" class="circularG"></div>
+      <div id="circularG_3" class="circularG"></div>
+      <div id="circularG_4" class="circularG"></div>
+      <div id="circularG_5" class="circularG"></div>
+      <div id="circularG_6" class="circularG"></div>
+      <div id="circularG_7" class="circularG"></div>
+      <div id="circularG_8" class="circularG"></div>
+    </div> 
+    <div class="mt-2" style="text-align: center">
+      <strong>Carregando...</strong>
+    </div>
+  </div>
+</ng-template>
+</div>

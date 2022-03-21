@@ -1,0 +1,58 @@
+<div class="container">
+  <a *ngIf="publicacao.imagem && publicacao.link && !verificaLinks(publicacao.link)" 
+    [href]="publicacao.link" target="_blank">
+    <div class="publicacao-livre pointer" [matTooltip]="publicacao?.tooltipTexto"
+      [style.background-image]="'url('+urlbackend+'institucionalDinamico/publicacao/imagem/'+publicacao.id +')'">
+    </div>
+  </a>
+
+  <a *ngIf="publicacao.imagem && publicacao.link && verificaLinks(publicacao.link)" (click)="validacaoDownload(publicacao.link)" style="cursor: pointer;">
+    <div class="publicacao-livre pointer" [matTooltip]="publicacao?.tooltipTexto"
+      [style.background-image]="'url('+urlbackend+'institucionalDinamico/publicacao/imagem/'+publicacao.id +')'">
+    </div>
+  </a>
+
+  <a *ngIf="publicacao.imagem && !publicacao.link">
+    <div class="publicacao-livre pointer" [matTooltip]="publicacao?.tooltipTexto"
+      [style.background-image]="'url('+urlbackend+'institucionalDinamico/publicacao/imagem/'+publicacao.id +')'">
+    </div>
+  </a>
+  
+  <div *ngIf="publicacao">
+    <a *ngIf="publicacao.link && !verificaLinks(publicacao.link)"
+     [href]="publicacao.link" target="_blank" [matTooltip]="publicacao?.tooltipTitulo">
+      <h2 class="publicacao-material-apoio-titulo pointer"  [ngxSummernoteView]="publicacao?.titulo">
+        <br>
+      </h2>
+    </a>
+
+    <a *ngIf="publicacao.link && verificaLinks(publicacao.link)" (click)="validacaoDownload(publicacao.link)" style="cursor: pointer;" [matTooltip]="publicacao.tooltipTitulo">
+      <h2 class="publicacao-material-apoio-titulo pointer"  [ngxSummernoteView]="publicacao?.titulo">
+        <br>
+      </h2>
+    </a>
+
+    <a *ngIf="!publicacao.link" [matTooltip]="publicacao?.tooltipTitulo">
+     <h2 class="publicacao-material-apoio-titulo pointer"  [ngxSummernoteView]="publicacao?.titulo">
+       <br>
+     </h2>
+   </a>
+
+
+    <a *ngIf="publicacao.link && !verificaLinks(publicacao.link)" 
+      [href]="publicacao.link" target="_blank">
+      <p class="publicacao-material-apoio-texto pointer"  [ngxSummernoteView]=" publicacao?.texto">
+      </p>
+    </a>
+
+    <a *ngIf="publicacao.link && verificaLinks(publicacao.link)" (click)="validacaoDownload(publicacao.link)" style="cursor: pointer;">
+      <p class="publicacao-material-apoio-texto pointer" [ngxSummernoteView]=" publicacao?.texto">
+      </p>
+    </a>
+
+    <a *ngIf="!publicacao.link">
+      <p class="publicacao-material-apoio-texto pointer"  [ngxSummernoteView]="publicacao?.texto">
+      </p>
+    </a>
+  </div>
+</div>

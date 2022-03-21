@@ -1,0 +1,65 @@
+<mat-card class="card-publicacao">
+  <div *ngIf="!publicacao" class="botao-publicacao text-center">
+    <button mat-stroked-button (click)="escolherPublicacao()" matTooltip="Escolha uma Publicação">
+      Escolha uma Publicação
+    </button>
+  </div>
+  <div *ngIf="publicacao && publicacao.idMaterialApoio" class="publicacao-material-apoio text-center"
+    [style.backgroundImage]="'url('+urlbackend+'materialapoio/imagem/'+publicacao.idMaterialApoio+')'">
+  </div>
+  <div  *ngIf="publicacao && publicacao.idMaterialApoio" class="">
+    <h2 class="publicacao-material-apoio-titulo pointer" [matTooltip]="publicacao.tooltipTitulo">
+      {{ publicacao?.materialApoio.titulo }}<br>
+    </h2>
+    <p class="pointer publicacao-material-apoio-texto" >
+      {{ publicacao?.materialApoio?.subtitulo }}
+    </p>
+
+  </div>
+
+  <div *ngIf="publicacao && publicacao.idMaterialInstitucional"
+   [style.background-image]="publicacao.id ? (!publicacao.editado ? 'url('+urlbackend+'publicacao/imagem/'+publicacao.id +')' : 'url(data:image/png;base64,'+publicacao.imagem +')') : 'url(data:image/png;base64,'+publicacao.imagem +')'"
+    class="publicacao-material-apoio text-center">
+  </div>
+  <div  *ngIf="publicacao && publicacao.idMaterialInstitucional" class="">
+    <h2 class="publicacao-material-apoio-titulo pointer" [matTooltip]="publicacao.tooltipTitulo">
+      {{ publicacao?.materialInstitucional.titulo }}<br>
+    </h2>
+    <p class="pointer publicacao-material-apoio-texto" >
+      {{ publicacao?.materialInstitucional?.subtitulo }}
+    </p>
+
+  </div>
+  <div *ngIf="publicacao && publicacao.titulo" class="publicacao-livre"
+  [matTooltip]="publicacao.tooltipTexto" [style.background-image]="publicacao.id ? (!publicacao.editado ? 'url('+urlbackend+'publicacao/imagem/'+publicacao.id +')' : 'url(data:image/png;base64,'+publicacao.imagem +')') : 'url(data:image/png;base64,'+publicacao.imagem +')'">
+  </div>
+  <div  *ngIf="publicacao && publicacao.titulo">
+    <a [href]="publicacao.link" target="_blank">
+    <h2 class="publicacao-material-apoio-titulo pointer" [matTooltip]="publicacao.tooltipTitulo">
+        {{ publicacao.titulo }}
+        <br>
+      </h2>
+    </a>
+    <a [href]="publicacao.link" target="_blank">
+      <p class="publicacao-material-apoio-texto pointer" >
+        {{ publicacao.texto }}
+      </p>
+    </a>
+  </div>
+
+  <div *ngIf="publicacao" class="text-center">
+    <br>
+    <button mat-stroked-button color="accent" (click)="paraEsquerda()" matTooltip="Mover para esquerda" class="btnTabela">
+      <mat-icon>keyboard_arrow_left</mat-icon>
+    </button>
+    <button mat-stroked-button  color="primary" (click)="escolherPublicacao()" matTooltip="Editar" class="btnTabela">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button mat-stroked-button color="warn" (click)="excluirPublicacao()" matTooltip="Excluir" class="btnTabela">
+      <mat-icon>delete</mat-icon>
+    </button>
+    <button mat-stroked-button color="accent" (click)="paraDireita()" matTooltip="Mover para direita" class="btnTabela">
+      <mat-icon>keyboard_arrow_right</mat-icon>
+    </button>
+  </div>
+</mat-card>

@@ -1,0 +1,169 @@
+<div [hidden]="!loading" class="loading-indicator">
+  <mat-progress-spinner class="example-margin" style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+</div>
+
+<div class="search-results" style="background-color: white !important">
+
+  <section class="home-banner owl-carousel owl-theme">
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+      <ol class="carousel-indicators">
+        <li data-target="#carouselExampleIndicators" *ngFor="let x of listBannerItensCarousel;let i = index"
+          [attr.data-slide-to]="i" ngClass="i == 0 ? 'active' : ''"></li>
+      </ol>
+      <div class="carousel-inner">
+        <div *ngFor="let item of listBannerItensCarousel; let k = index"
+          [ngClass]="k == 0 ? 'carousel-item active' : 'carousel-item'">
+          <img *ngIf="item.idNoticia" class="img-carousel" loading="lazy" [src]="getImagePathNoticia(item.idNoticia)"
+            alt="Event Image">
+          <img *ngIf="item.idBoaPratica" class="img-carousel" loading="lazy" [src]="getImagePathBoaPratica(item.idBoaPratica)"
+            alt="Event Image">
+          <img *ngIf="item.idInstitucional" class="img-carousel" loading="lazy" [src]="getImagePathInstitucional(item.idInstitucional)"
+            alt="Event Image">
+          <div class="carousel-caption d-none d-md-block">
+            <div style="position: absolute;bottom: 0;width:100%;">
+              <h1 *ngIf="item.idNoticia" class="animated fadeInUp duration-3s delay-2s" (click)="irDetalheNoticia(item)"
+                style="cursor: pointer;">{{item.titulo}}</h1>
+              <h4 *ngIf="item.idNoticia" class="animated fadeInUp duration-3s delay-2s" (click)="irDetalheNoticia(item)"
+                style="text-align: center;cursor: pointer;">{{item.subtitulo}}</h4>
+              <h1 *ngIf="item.idBoaPratica" class="animated fadeInUp duration-3s delay-2s"
+                (click)="irDetalheBoaPratica(item)" style="cursor: pointer;">{{item.titulo}}</h1>
+              <h4 *ngIf="item.idBoaPratica" class="animated fadeInUp duration-3s delay-2s"
+                (click)="irDetalheBoaPratica(item)" style="text-align: center;cursor: pointer;">{{item.subtitulo}}</h4>
+              <h1 *ngIf="item.idInstitucional" class="animated fadeInUp duration-3s delay-2s"
+                (click)="irDetalheInstitucional(item)" style="cursor: pointer;">{{item.titulo}}</h1>
+              <h4 *ngIf="item.idInstitucional" class="animated fadeInUp duration-3s delay-2s"
+                (click)="irDetalheInstitucional(item)" style="text-align: center;cursor: pointer;" [innerHTML]="item.subtitulo">
+              </h4>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="head-buttons-bar">
+    <div class="underline-on-hover">
+      <a routerLink="/institucional/pagina/eixos-do-pcs" class="a-branco">CONHEÇA OS 12 EIXOS TEMÁTICOS DO PROGRAMA CIDADES SUSTENTÁVEIS</a>
+    </div>
+    <div class="underline-on-hover links">
+      <a routerLink="/indicadores" class="a-branco">FERRAMENTAS E INDICADORES DO PCS PARA GESTORES MUNICIPAIS</a>
+    </div>
+    <div class="underline-on-hover">
+      <a routerLink="/institucional/pagina/agenda2030" class="a-branco">UM CAMINHO PARA MONITORAR OS ODS NA GESTÃO MUNICIPAL</a>
+    </div>
+    <div class="underline-on-hover links" (click)="fileDownloadReferencias()">
+      <a href="assets/pdf/Guia_de_Referencias_para_Indicadores_e_Metas_PCS_CEBRAP_2019.pdf" target="_blank" rel="noopener" class="a-branco">REFERÊNCIAS PARA METAS E INDICADORES DE DESEMPENHO</a>
+    </div>
+    <div class="underline-on-hover">
+      <a href="https://www.citinova.org.br" target="_blank" rel="noopener" class="a-branco">CITINOVA: PLANEJAMENTO URBANO E INOVAÇÃO</a>
+    </div>
+  </section>
+
+  <section class="cards">
+    <div class="row">
+      <div class="col-sm-12 col-md-8 ">
+        <div class="row header">
+          <h1 style="margin-bottom:0 !important" class="titulos"> <a [routerLink]="'/boaspraticasinicial'" class="a-branco">BOAS PRÁTICAS </a></h1>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 col-md-6 row-card" *ngFor="let item of listBoasPraticas">
+            <div class="h-100" (click)="irDetalheBoaPratica(item)" style="cursor: pointer">
+              <img class="card-img" loading="lazy" [src]="getImagePathBoaPratica(item.idBoaPratica)" />
+              <div class="card-body" style="padding-right: 0%; padding-left:0%">
+                <h5 class="card-title noticia-titulo">
+                  <a [href]="gerarLinkBoaPratica(item)" class="link-noticia">{{item.titulo}}</a>
+                </h5>
+                <p class="card-text-subtitle">{{item.subtitulo}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row header">
+          <h1 style="margin-bottom:0 !important" class="titulos">AGENDA</h1>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 col-md-6 row-card" *ngFor="let item of listaUltimasNoticiasAgenda">
+            <div class="h-100" (click)="irDetalheNoticiaAgenda(item)" style="cursor: pointer">
+              <img class="card-img" loading="lazy" [src]="getImagePathNoticia(item.id)" />
+              <div class="card-body" style="padding-right: 0%; padding-left:0%">
+                <h5 class="card-title noticia-titulo">
+                  <a [href]="gerarLinkNoticiaAgenda(item)" class="link-noticia">{{item.titulo}}</a>
+                </h5>
+                <p class="card-text-subtitle">{{item.subtitulo}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-12 col-md-4">
+        <div class="row">
+          <div class="col-md-12 row-card-side-bar">
+            <div class="h-100" style="cursor: pointer;">
+              <div class="color-title-side-bar">
+                <h1 class="titulo-sidebar"> <a href="https://oics.cgee.org.br" target="_blank" style="color: white;">OBSERVATÓRIO DE INOVAÇÃO</a></h1>
+              </div>
+              <div class="card-body" style="background-color: #d0dce1;">
+
+                <img class="card-img" img loading="lazy" src="../../../../../assets/observatorio.webp" alt="Observatório" />
+
+                <h5 style="margin-top: 4%">
+                  <a class="link-noticia" href="https://oics.cgee.org.br/index.php/solucoes/" 
+                      target="_blank" rel="noopener">EXPLORE AS SOLUÇÕES</a>
+                </h5>
+
+                <p class="card-text-subtitle">O Observatório de Inovação para Cidades Sustentáveis mapeia soluções
+                  urbanas inovadoras em seis grandes temas,
+                  em âmbito local e internacional.
+                  Explore o banco de soluções para conhecer as alternativas e estimular a sustentabilidade na sua
+                  cidade.</p>
+                <br>
+                <h5 class="card-title noticia-titulo">
+                  <a class="link-noticia" href="https://oics.cgee.org.br/index.php/tipologias/"
+                    target="_blank" rel="noopener">CONHEÇA AS TIPOLOGIAS DE CIDADE-REGIÕES</a>
+                </h5>
+                <p class="card-text-subtitle">As tipologias de cidade-regiões caracterizam o território brasileiro
+                  considerando a diversidade do meio urbano em seis grandes temas. O mapa de tipologias busca
+                  contextualizar as soluções mapeadas pelo Observatório às realidades locais. Conheça!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top: 10%">
+          <div class="col-md-12 row-card-side-bar">
+            <div class="h-100" routerLink='/noticias' style="cursor: pointer;">
+              <div class="color-title-side-bar">
+                <h1 style="margin-bottom:0 !important" class="titulo-sidebar">ÚLTIMAS NOTÍCIAS</h1>
+              </div>
+              <div class="card-body" style="background-color: #e8f3d9;">
+                <img class="card-img" loading="lazy" [src]="getImagePathNoticia(ultimaNoticia.idNoticia)" />
+                <h5 style="margin-top: 4%">
+                  <a [href]="gerarLinkNoticia(ultimaNoticia)" class="link-noticia">{{ultimaNoticia.titulo}}</a>
+                </h5>
+                <p *ngIf="ultimaNoticia.subtitulo" class="card-text-subtitle">{{ultimaNoticia.subtitulo}}</p>
+                <br>
+                <div class="separator-top">
+                  <h6 class="strong" style="color: #6e6e6e;">Leia Também</h6>
+                  <ul class="list-links-side-bar" *ngFor="let item of listaUltimasNoticiasLinks">
+                    <li><a class="link-side-bar" [href]="gerarLinkNoticia(item)">{{item.titulo}}</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

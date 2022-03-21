@@ -1,0 +1,51 @@
+<h2 mat-dialog-title>Configuração de Classes</h2>
+<mat-dialog-content class="mat-typography">
+  <div class="row">
+    <div class="col-lg-12">
+      <h3>Formulário de Criação de Classes</h3>
+    </div>
+  </div>
+  <form [formGroup]="form">
+    <div class="row">
+
+      <mat-form-field class="col-lg-12">
+        <mat-label>Cor da Classe</mat-label>
+        <input matInput
+          [colorPicker]="form.get('cor').value"
+          [value]="form.get('cor').value"
+          (colorPickerChange)="form.get('cor').setValue($event)"
+          formControlName="cor"
+          [style.background]="form.get('cor').value"
+          [cpPosition]="'top'"
+          autocomplete="off">
+        <mat-hint>Se os valores forem iguais ou maiores a esse campo</mat-hint>
+        <mat-error *ngIf="form.controls['cor'].hasError('required')">
+          Escolha uma cor.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-lg-12">
+        <input matInput placeholder="Informe o valor mínimo para classe" formControlName="minimo">
+        <mat-hint>Serão válidos apenas os valores menores e iguais ao informado</mat-hint>
+        <mat-error *ngIf="form.controls['minimo'].hasError('required') || _isNaN(form.controls['minimo'].value)">
+          Informe um valor numérico.
+        </mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="col-lg-12">
+        <input matInput placeholder="Informe o valor máximo para classe" formControlName="maximo">
+        <mat-hint>Serão válidos apenas os valores menores ao informado</mat-hint>
+        <mat-error *ngIf="form.controls['maximo'].hasError('required') || _isNaN(form.controls['maximo'].value)">
+          Informe um valor numérico.
+        </mat-error>
+      </mat-form-field>
+
+    </div>
+  </form>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close color="accent">Cancelar</button>
+  <button mat-button color="primary" [disabled]="form.status == 'INVALID' ||  _isNaN(form.controls['maximo'].value || _isNaN(form.controls['minimo'].value))" cdkFocusInitial (click)="salvar()">Salvar</button>
+</mat-dialog-actions>

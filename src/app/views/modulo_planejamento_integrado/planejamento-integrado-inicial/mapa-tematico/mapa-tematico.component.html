@@ -1,0 +1,256 @@
+<div class="col-md-12 mt-2">
+<div class="alert alert-warning col-md-12" [hidden]="shapesSelecionados.length > 0">
+    Não há nenhum shape exibido no mapa. Carregue shapes para desenhar o mapa temático.
+</div>
+<div class="row" style="padding: 0em 1em 1em 1em;">
+  <div class="col-md-12">
+    A construção de Mapas Temáticos só pode ser feita sobre as camadas do próprio usuário. Para fazer um mapa temático sobre camada do PCS ou de outro usuário de cidade signatária, é necessário baixar a camada e a cadastrar como sendo de seu próprio usuário.
+    <br>
+  </div>
+</div>
+<form #formConsulta="ngForm" *ngIf="isAuthenticated()" [hidden]="!form.controls['camadaSelecionada'].touched">
+  <div class="row " style="margin-top: 1%;">
+    <div class="col-lg-12">
+      <mat-form-field class="col-md-6 col-lg-6">
+        <input matInput placeholder="Nome do mapa temático:" value="" id="mapaTematicoNome" required  [disabled]="mapaTematicoSelecionado.id"
+          [(ngModel)]="mapaTematicoSelecionado.nome" name="mapaTematicoNome"/>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row" style="margin-bottom: 3%;">
+    <div class="col-lg-12">
+      <div class="col-lg-6">
+        <mat-form-field>
+          <mat-label class="bmd-label-floating">Selecione um mapa temático</mat-label>
+          <mat-select id="idMapaTematicoSelecionado"  name="filtroConfiguracao" [(ngModel)]="mapaTematicoSelecionado" (selectionChange)="onChangeMapaTematico($event.value)">
+            <mat-option *ngFor="let mapa of listaMapaTematico" [value]="mapa">{{mapa.nome}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-error *ngIf="listaMapaTematico.length == 0">Nenhum mapa temático com permissão de edição encontrado. *</mat-error>
+      </div>
+      <div class="col-lg-6">
+
+        <button mat-raised-button color="primary" matTooltip="Salvar mapa temático" (click)="salvarMapaTematico()" [disabled]="!formConsulta.valid || !(mapaTematicoSelecionado.id == null) || !(hasRole('ROLE_CADASTRAR_MAPA_TEMATICO'))"
+          id="btnSalvarConsulta">
+          Salvar
+        </button>
+
+        <button mat-flat-button  color="warn" type="button" name="button" style="margin-left: 1%;" *ngIf="mapaTematicoSelecionado.id && hasRole('ROLE_DELETAR_MAPA_TEMATICO')"  (click)="excluirMapaTematico(mapaTematicoSelecionado.id)"
+        id="btnExcluir"  matTooltip="Excluir mapa temático" >
+          <mat-icon> delete </mat-icon>
+        </button>
+
+        <button mat-flat-button  color="accent"  style="margin-left: 1%;" (click)="limparFiltroMapaTematico()"
+            id="btnAdd" matTooltip="Limpar">Limpar
+        </button>
+      </div>
+  </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="col-md-6" *ngIf="mapaTematicoSelecionado.id">
+        <form [formGroup]="form">
+          <mat-checkbox formControlName="exibirAuto" (change)='onExibirAutoChange()'></mat-checkbox> Sempre exibir mapa temático ao abrir a camada
+        </form>
+      </div>
+    </div>
+  </div>
+</form>
+
+<form [formGroup]="form" style="padding: 1em;height: 30em;" [hidden]="shapesSelecionados.length === 0">
+    <div class="row">
+        <div class="col-lg-12">
+            <mat-form-field>
+                <mat-label>Camada</mat-label>
+                <mat-select formControlName="camadaSelecionada" #camadasel
+                            (selectionChange)="carregarAtributosDaCamadaSelecionada()">
+                    <mat-option *ngFor="let shape of shapesSelecionados"
+                                [value]="shape">
+                        {{shape.layerName}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <mat-form-field>
+                <mat-label>Tipo</mat-label>
+                <mat-select formControlName="tipo"
+                            (selectionChange)="carregarAtributosDaCamadaSelecionada()">
+                    <mat-option value="CATEGORIZADO">Discreto</mat-option>
+                    <mat-option value="GRADUADO">Contínuo</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+            <mat-form-field>
+                <mat-label>Atributo</mat-label>
+                <mat-select formControlName="atributo" (selectionChange)="gerarClasses()">
+                    <mat-option *ngFor="let atributo of atributos"
+                                [value]="atributo" >
+                        {{atributo.nome}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="row ">
+      <div class="col-12 text-right">
+        <button mat-raised-button color="primary" (click)="gerarMapa()" >
+            Gerar mapa temático
+        </button>
+        <button mat-raised-button color="accent" (click)="limparStyle()" style="margin-left: 1%;">
+          Remover mapa temático
+      </button>
+      </div>
+    </div>
+
+    <div *ngIf="classes.length > 0">
+        <br />
+        <strong>
+            <h5>Configuração das Classes</h5>
+        </strong>
+
+        <div class="row">
+          <div class="col-12">
+            <mat-divider></mat-divider>
+            <br>
+          </div>
+        </div>
+        <p>
+          Obs.: para dados numéricos a classificação dos dados para montagem do intervalo das classes da legenda é utilizado o método de Intervalos Iguais.
+        </p> 
+        <span matTooltip='Mostra legenda de cores e classes no canto inferior esquerdo da tela'>
+          <form [formGroup]="form">
+            <mat-checkbox formControlName="exibirLegenda" [checked]='false' ></mat-checkbox> Gerar legenda de classes
+          </form>
+        </span>
+        <br>
+        <p>
+          <span>Escolha duas cores para criar uma escala a partir dos valores do atributo escolhido, ou clique no botão "Sortear Cores" para definir cores aleatórias para cada classe.</span>
+        </p>
+
+        <div class="row" >
+            <div class="col-lg-6">
+                <mat-form-field>
+                    <mat-label>Cor mínima</mat-label>
+                    <input matInput [(colorPicker)]="corMinima"
+                                    [style.background]="corMinima"
+                                    [cpPosition]="'top'"
+                                    (colorPickerChange)="gerarClasses()">
+                </mat-form-field>
+            </div>
+            <div class="col-lg-6">
+                <mat-form-field>
+                    <mat-label>Cor máxima</mat-label>
+                    <input matInput [(colorPicker)]="corMaxima"
+                                    [style.background]="corMaxima"
+                                    [cpPosition]="'top'"
+                                    (colorPickerChange)="gerarClasses()">
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row " >
+          <div class="col-lg-12 text-right">
+            <button mat-raised-button color="primary"
+              (click)="gerarCoresAletorias()">
+              Sortear cores
+            </button>
+            <br>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <br>
+          </div>
+        </div>
+        <div class="row" *ngIf="form.controls.tipo.value == 'GRADUADO'">
+          <mat-form-field class="col-md-12">
+            <input matInput type="number" placeholder="Informe a quantidade classes para agrupar os valores do atributo selecionado, ou mantenha o dado em branco para gerar automáticamente." formControlName="qtdClasses"
+            min="1" max="100" maxlength="3" (change)="gerarClasses()">
+            <mat-error *ngIf="form.controls['qtdClasses'].hasError('required')">
+                Informe um valor entre 1 e 100
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="row " *ngIf="form.controls.tipo.value == 'GRADUADO'">
+          <div class="col-lg-12 text-right">
+            <button mat-raised-button color="accent"
+                  (click)="dialogNovaClasse()">
+              Adicionar Classe
+            </button>
+            <br>
+          </div>
+        </div>
+
+        <form #checkFormIntervalValues="ngForm">
+          <mat-checkbox name="intervalIsEnabled" id="intervalIsEnabled" [(ngModel)]="valuesIntervalIsEnabled">Definir os limiares para classificação dos valores</mat-checkbox>
+          
+          <div class="row" [hidden]="!valuesIntervalIsEnabled">
+            <mat-form-field class="col-md-6">
+              <input  matInput [(ngModel)]="minValueInterval" type="number" name="minValueInterval"  id="minValueInterval" placeholder="Informe o valor mínimo para gerar as classes">
+            </mat-form-field>
+            <mat-form-field class="col-md-6">
+              <input matInput [(ngModel)]="maxValueInterval" (change)="gerarClasses()" type="number" name="maxValueInterval" id="maxValueInterval" placeholder="Informe o valor máximo para gerar as classes">
+            </mat-form-field>
+          </div>
+        </form>
+          
+
+        <div class="row">
+            <table mat-table [dataSource]="dataSource" style="margin-bottom: 1em">
+                <ng-container matColumnDef="Cor">
+                    <th mat-header-cell *matHeaderCellDef> Cor </th>
+                    <td mat-cell *matCellDef="let registro" style="width: 1%;"
+                        data-label='Cor' class="m-card-title"
+                        [style.background-color]="registro.color">
+                        <input matInput [(colorPicker)]="registro.color"
+                                        [cpPosition]="'top'"
+                                        autocomplete="off"
+                                        readonly="true">
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Valor">
+                    <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Classe </th>
+                    <td mat-cell *matCellDef="let registro"
+                        class='m-card-title' data-label='Valor' style="padding-left: 1em;">
+                        <span *ngIf="_typeof(registro.value) == 'number'">
+                            {{registro.value | number}}
+                        </span>
+
+                        <span *ngIf="_typeof(registro.value) == 'string'">
+                            {{registro.value}}
+                        </span>
+                        <button mat-button color="primary" *ngIf="form.controls.tipo.value == 'GRADUADO'"
+                              (click)="dialogEditarClasse(registro)">
+                          <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-button color="primary" *ngIf="form.controls.tipo.value == 'GRADUADO'"
+                              (click)="deletarClasse(registro)">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                    </td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <br>
+            <br>
+        </div>
+    </div>
+
+    <br>
+
+
+</form>
+</div>

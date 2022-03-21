@@ -1,0 +1,217 @@
+
+/* Galeria */
+  .containerGaleria {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 20px;
+  }
+  
+  .containerGaleria img {
+    width: 100%;
+    height: 200px;
+  }
+
+  .btn-remover {
+    color: red;
+  }
+
+  .labelTextEditor {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 14px;
+  }
+
+  .caracteres-editor {
+    float: right;
+    font-size: 11px;
+  }
+
+  .cursor-hand{
+    cursor: pointer;
+  }
+  
+  .cursor-hand:hover {
+    text-decoration: underline;
+  }
+
+.caption {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate( -50%, -50% );
+  text-align: center;
+  color: white;
+}
+/* ....Galeria */
+
+
+/* Barra de chamadas */
+.head-buttons-bar {
+  display: grid;
+  grid: auto/repeat(5,1fr);
+  margin-bottom: 2%;
+  margin-top: .2em;
+}
+
+@media (max-width: 900px) {
+  .head-buttons-bar {
+    display: inherit;
+  }
+  
+  .links {
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 0px;
+    margin-bottom: 0em;
+  }
+
+  .underline-on-hover{
+    margin-bottom: 2px;
+  }
+}
+
+.a-branco{
+  color: white;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+.hr-separador {
+	border: 0;
+    border-top: 2px solid gray;
+    margin-top: 0px !important;
+}
+
+.cards{
+  padding-left: 8%;
+  padding-right: 8%;
+  }
+
+/*....Barra de chamadas */
+
+
+.carousel-caption {
+  height: 480px;
+  color: #fff;
+  text-align: center;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  margin-bottom: 13px;
+  }
+  .carousel-inner {
+  height: 480px;
+  }
+  .carousel-item {
+  height: 480px;
+  }
+  .carousel-indicators{
+  margin-bottom: 10px;
+  }
+
+
+  .home-banner {
+    position: relative;
+    background-color: black;
+    height: 480px;
+  }
+
+  .home-banner h1 {
+    font-family: Source Sans Pro;
+    font-weight: 700;
+    font-size: calc(17px + 1.5vw);
+    line-height: 1.25em;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+    text-transform: uppercase;
+  }
+
+  .home-banner .banner-content h1 {
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 34px;
+    font-weight: bold;
+  }
+
+  .titulos {
+    font-size: 24px;
+    font-weight: 500;
+    display: inline-block;
+    color:black;
+  }
+
+
+  .area-pesquisa{
+    position: absolute;
+    right: 10%;
+    left: 10%;
+    /* top: 2em; */
+    bottom: 20%;
+    z-index: 10;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: rgba(0,176,80,.8);
+    color: #fff;
+    text-align: center;
+    border-radius: 2em 2em 2em 2em;
+  }
+
+  .nome-da-pagina{
+    margin-top: 2em;
+    margin-bottom: 2em;
+    margin-left: 2em;
+    margin-right: 2em;
+    border-radius: 1em;
+    color: rgba(0,176,80,1);
+    background-color: #fff;
+    text-align: center;
+  }
+
+  .nome-da-pagina h1{
+    font-weight: 600;
+  }
+
+  .campo-pesquisa{
+    margin-top: 4em;
+    margin-bottom: 2em;
+    margin-left: 2em;
+    margin-right: 2em;
+    border-radius: 1em;
+    border-width: 5px;
+    border-style: solid;
+    color: #ED7D31;
+    background-color: #fff;
+    text-align: left;
+  }
+  .botao-pesquisa{
+    background-color:#ED7D31;
+    color:#fff;
+    width: 20%;
+    line-height: 2.5em;
+    font-size: x-large;
+    position: relative;
+    border: 0px;
+  }
+  .input-pesquisa{
+    width: 75%;
+    border: 0px;
+    line-height:2.5em;
+    padding: 0 2em;
+    font-size: larger;
+    color: #ED7D31;
+  }
+
+  .filtros-avancados{
+    width: 100%;
+    text-align: right;
+    padding: 0 3em;
+  }
+
+  .botao-busca-avancada{
+    color : #fff;
+    border: 0;
+    background-color: rgba(0,176,80,.1);
+    font-size: larger;
+  }

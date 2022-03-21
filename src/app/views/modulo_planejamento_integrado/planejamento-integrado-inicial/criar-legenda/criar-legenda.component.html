@@ -1,0 +1,72 @@
+<div>
+  <h4 class="col-md-12" >Criar Legenda</h4>
+  <br>
+
+  <form class="example-form" >
+    <div class="row col-md-12" *ngFor="let item of data.listaLabels; let i = index ">
+
+      <mat-form-field class="col-md-2" floatLabel="always" [id]="'mat-ff-colorPickerLegenda'+i">
+        <mat-label>Cor</mat-label>
+        <input matInput
+          [id]="'colorPickerLegenda'+i"
+          [name]="'colorPickerLegenda'+i"
+          matTooltip="Cor da Legenda" placeholder=" "
+          [style.background]="data.listaLabels[i]" [cpPosition]="'bottom-right'"
+          [cpDisableInput]="disableInputMobile"
+          [(colorPicker)]="data.listaLabels[i]"
+          [cpToggle]="colorHasClickedLegenda"
+          (click)="colorClick('legenda')" />
+      </mat-form-field>
+
+      <mat-form-field class="col-md-8">
+          <mat-label>Legenda</mat-label>
+          <input name="{{'inptLegendaValor'+i}}" matInput placeholder="Legenda" [(ngModel)]="data.listaGrades[i]">
+      </mat-form-field>
+
+      <span>
+          <mat-icon class="col-md-1"  (click)="removerAtributo(i)" *ngIf="data.listaLabels.length > 1" style="cursor: pointer; color: red;">delete</mat-icon>
+          <mat-icon class="col-md-1"  (click)="adicionarAtributo()" *ngIf="(i+1) == data.listaLabels.length" style="cursor: pointer; color: green;">add</mat-icon>
+      </span>
+    </div>
+    <br>
+    <h5 class="col-md-12">Legenda por Camada</h5>
+    <div *ngFor="let item of data.camadasComLegenda; let i = index">
+      <mat-form-field class="col-md-4">
+        <mat-label>Camada</mat-label>
+        <mat-select id="camadas" name="{{'camada'+i}}" [(ngModel)]="data.camadasComLegenda[i].nomeCamada" matTooltip='Lista de Camadas' >
+          <mat-option *ngFor="let camada of menuCamadas" [value]='camada'>
+            {{camada}}
+          </mat-option>
+      </mat-select>
+      </mat-form-field>
+      <mat-form-field class="col-md-2" floatLabel="always" [id]="'mat-ff-colorPickerLegenda'+i">
+        <mat-label>Cor</mat-label>
+        <input matInput
+          [id]="'colorPickerCamadaComLegenda'+i"
+          [name]="'colorPickerCamadaComLegenda'+i"
+          matTooltip="Cor da Legenda" placeholder=" "
+          [style.background]="data.camadasComLegenda[i].cor" [cpPosition]="'bottom-right'"
+          [cpDisableInput]="disableInputMobile"
+          [(colorPicker)]="data.camadasComLegenda[i].cor"
+          [cpToggle]="colorHasClickedCamada"
+          (click)="colorClick('camada')" />
+      </mat-form-field>
+
+      <mat-form-field class="col-md-4">
+          <mat-label>Legenda</mat-label>
+          <input name="{{'inptCamadaComLegendaValor'+i}}" matInput placeholder="Legenda" matTooltip="Insira uma legenda ou deixe em branco pra utilizar o nome da camada" [(ngModel)]="data.camadasComLegenda[i].legenda">
+      </mat-form-field>
+
+      <span>
+        <mat-icon class="col-md-1"  (click)="removerAtributoCamadaComLegenda(i)" *ngIf="data.camadasComLegenda.length > 1" style="cursor: pointer; color: red;">delete</mat-icon>
+        <mat-icon class="col-md-1"  (click)="adicionarAtributoCamadaComLegenda()" *ngIf="(i+1) == data.camadasComLegenda.length" style="cursor: pointer; color: green;">add</mat-icon>
+    </span>
+    </div>
+    <br>
+    <div class="col-md-12">
+      <button mat-flat-button color="primary" (click)="salvar()" >Exibir no mapa</button>
+      <button mat-flat-button color="accent" (click)="cancelar()" style="margin-left: 20px;">Cancelar</button>
+    </div>
+  </form>
+
+</div>

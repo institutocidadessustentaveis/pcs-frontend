@@ -1,0 +1,514 @@
+<div class="contentBody" style="position: relative;">
+    <!-- <app-breadcrumb style="position: relative;"></app-breadcrumb> -->
+    <div [hidden]="!loading" class="loading-indicator">
+        <mat-progress-spinner class="example-margin" style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+    </div>
+    <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+
+        <mat-card-title>Cadastrar/Editar Shapefile</mat-card-title>
+
+        <form [formGroup]="formGroup">
+
+            <mat-form-field class="col-md-6">
+                <input matInput placeholder="Título do Mapa *" formControlName="titulo"  maxlength="350"
+                    matTooltip='Nome do projeto, descrição do tema ou código da folha. Por exemplo: Nome da Cidade - nome do tema mapeado neste produto.'>
+                <mat-error *ngIf="formGroup.controls['titulo'].hasError('required')">
+                    Campo título é obrigatório
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6">
+                <mat-label>Ano da publicação *</mat-label>
+                <mat-select id="ano" name="ano" formControlName="ano"
+                    matTooltip='Ano da publicação original'>
+                    <mat-option *ngFor="let item of listaAnos" [value]="item">{{item}}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="formGroup.controls['ano'].hasError('required')">
+                    Campo Ano da publicação é obrigatório
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6">
+                <mat-label>Tema da Camada</mat-label>
+                <mat-select id="temaGeoespacial" name="temaGeoespacial" formControlName="temaGeoespacial"
+                    matTooltip='Tema predominante do mapa conforme opções da lista.'>
+                    <mat-option ></mat-option>
+                    <mat-option *ngFor="let item of temasGeoespaciais" [value]="item.id">{{item.nome}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6">
+                <input matInput placeholder="Instituição autora *" formControlName="instituicao"  maxlength="120"
+                    matTooltip='Nome da instituição geradora e responsável pelo documento'>
+                <mat-error *ngIf="formGroup.controls['instituicao'].hasError('required')">
+                    Campo Instituição autora é obrigatório
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6">
+                <input matInput placeholder="Referência para citar a fonte do dado" formControlName="fonte"  maxlength="500"
+                    matTooltip='Indicações para o usuário fazer citação a fonte da informação.'>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6">
+                <mat-label>Sistema de referência de coordenadas e Datum</mat-label>
+                <mat-select id="sistemaDeReferencia" name="sistemaDeReferencia" formControlName="sistemaDeReferencia"
+                matTooltip='Sistema de coordenadas usado'>
+                    <mat-option ></mat-option>
+                    <mat-option value="EPSG:4225">GCS Córrego Alegre - EPSG: 4225</mat-option>
+                    <mat-option value="EPSG:4618">GCS SAD69 - EPSG: 4618</mat-option>
+                    <mat-option value="EPSG:4674">GCS SIRGAS2000 - EPSG: 4674</mat-option>
+                    <mat-option value="EPSG:4326">GCS WGS84 - EPSG: 4326</mat-option>
+                    <mat-option value="EPSG:22521">Corrego Alegre / UTM zone 21S - EPSG: 22521</mat-option>
+                    <mat-option value="EPSG:22522">Corrego Alegre / UTM zone 22S - EPSG: 22522</mat-option>
+                    <mat-option value="EPSG:22523">Corrego Alegre / UTM zone 23S - EPSG: 22523</mat-option>
+                    <mat-option value="EPSG:22524">Corrego Alegre / UTM zone 24S - EPSG: 22524</mat-option>
+                    <mat-option value="EPSG:22525">Corrego Alegre / UTM zone 25S - EPSG: 22525</mat-option>
+                    <mat-option value="EPSG:29168">SAD69 / UTM zone 18N - EPSG: 29168</mat-option>
+                    <mat-option value="EPSG:29188">SAD69 / UTM zone 18S - EPSG: 29188</mat-option>
+                    <mat-option value="EPSG:29169">SAD69 / UTM zone 19N - EPSG: 29169</mat-option>
+                    <mat-option value="EPSG:29189">SAD69 / UTM zone 19S - EPSG: 29189</mat-option>
+                    <mat-option value="EPSG:29170">SAD69 / UTM zone 20N - EPSG: 29170</mat-option>
+                    <mat-option value="EPSG:29190">SAD69 / UTM zone 20S - EPSG: 29190</mat-option>
+                    <mat-option value="EPSG:29171">SAD69 / UTM zone 21N - EPSG: 29171</mat-option>
+                    <mat-option value="EPSG:29191">SAD69 / UTM zone 21S - EPSG: 29191</mat-option>
+                    <mat-option value="EPSG:29172">SAD69 / UTM zone 22N - EPSG: 29172</mat-option>
+                    <mat-option value="EPSG:29192">SAD69 / UTM zone 22S - EPSG: 29192</mat-option>
+                    <mat-option value="EPSG:29193">SAD69 / UTM zone 23S - EPSG: 29193</mat-option>
+                    <mat-option value="EPSG:29194">SAD69 / UTM zone 24S - EPSG: 29194</mat-option>
+                    <mat-option value="EPSG:29195">SAD69 / UTM zone 25S - EPSG: 29195</mat-option>
+                    <mat-option value="EPSG:31972">SIRGAS 2000 / UTM zone 18N - EPSG: 31972</mat-option>
+                    <mat-option value="EPSG:31978">SIRGAS 2000 / UTM zone 18S - EPSG: 31978</mat-option>
+                    <mat-option value="EPSG:31973">SIRGAS 2000 / UTM zone 19N - EPSG: 31973</mat-option>
+                    <mat-option value="EPSG:31979">SIRGAS 2000 / UTM zone 19S - EPSG:31979</mat-option>
+                    <mat-option value="EPSG:31974">SIRGAS 2000 / UTM zone 20N - EPSG: 31974</mat-option>
+                    <mat-option value="EPSG:31980">SIRGAS 2000 / UTM zone 20S - EPSG: 31980</mat-option>
+                    <mat-option value="EPSG:31981">SIRGAS 2000 / UTM zone 21S - EPSG: 31981</mat-option>
+                    <mat-option value="EPSG:31975">SIRGAS 2000 / UTM zone 21N - EPSG: 31975</mat-option>
+                    <mat-option value="EPSG:31976">SIRGAS 2000 / UTM zone 22N - EPSG: 31976</mat-option>
+                    <mat-option value="EPSG:31982">SIRGAS 2000 / UTM zone 22S - EPSG: 31982</mat-option>
+                    <mat-option value="EPSG:31983">SIRGAS 2000 / UTM zone 23S - EPSG: 31983</mat-option>
+                    <mat-option value="EPSG:31984">SIRGAS 2000 / UTM zone 24S - EPSG: 31984</mat-option>
+                    <mat-option value="EPSG:31985">SIRGAS 2000 / UTM zone 25S - EPSG: 31985</mat-option>
+                    <mat-option value="EPSG:32618">WGS 84 / UTM zone 18N - EPSG: 32618</mat-option>
+                    <mat-option value="EPSG:32718">WGS 84 / UTM zone 18S - EPSG: 32718</mat-option>
+                    <mat-option value="EPSG:32619">WGS 84 / UTM zone 19N - EPSG: 32619</mat-option>
+                    <mat-option value="EPSG:32719">WGS 84 / UTM zone 19S - EPSG: 32719</mat-option>
+                    <mat-option value="EPSG:32620">WGS 84 / UTM zone 20N - EPSG: 32620</mat-option>
+                    <mat-option value="EPSG:32720">WGS 84 / UTM zone 20S - EPSG: 32720</mat-option>
+                    <mat-option value="EPSG:32621">WGS 84 / UTM zone 21N - EPSG: 32621</mat-option>
+                    <mat-option value="EPSG:32721">WGS 84 / UTM zone 21S - EPSG: 32721</mat-option>
+                    <mat-option value="EPSG:32622">WGS 84 / UTM zone 22N - EPSG: 32622</mat-option>
+                    <mat-option value="EPSG:32722">WGS 84 / UTM zone 22S - EPSG: 32722</mat-option>
+                    <mat-option value="EPSG:32723">WGS 84 / UTM zone 23S - EPSG: 32723</mat-option>
+                    <mat-option value="EPSG:32724">WGS 84 / UTM zone 24S - EPSG: 32724</mat-option>
+                    <mat-option value="EPSG:32725">WGS 84 / UTM zone 25S - EPSG: 32725</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field [hidden]='shapeFile?.shapes' class="col-md-6">
+                <mat-label>Tipos de Arquivo Cartográfico *</mat-label>
+                <mat-select id="tipoArquivo" name="tipoArquivo" formControlName="tipoArquivo" #tipoArquivo (valueChange)="limparArquivosCarregados()"
+                matTooltip='Formato da extensão do arquivo digital.'>
+                    <mat-option ></mat-option>
+                    <mat-option value="SHP">SHP</mat-option>
+                    <mat-option value="KML">KML</mat-option>
+                    <mat-option value="KMZ">KMZ</mat-option>
+                </mat-select>
+                <mat-error *ngIf="formGroup.controls['tipoArquivo'].hasError('required')">
+                    Campo Tipos de Arquivo Cartográfico é obrigatório
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field [ngClass]="shapeFile?.shapes ? 'col-md-12': 'col-md-6' " >
+                <mat-label>Região do Brasil da publicação</mat-label>
+                <mat-select id="regiao" name="regiao" formControlName="regiao"
+                    matTooltip='Escolher entre as cinco regiões brasileiras onde situa-se a área abrangida pelo mapa'>
+                    <mat-option ></mat-option>
+                    <mat-option value="Norte">Norte</mat-option>
+                    <mat-option value="Nordeste">Nordeste</mat-option>
+                    <mat-option value="Centro-Oeste">Centro-Oeste</mat-option>
+                    <mat-option value="Sudeste">Sudeste</mat-option>
+                    <mat-option value="Sul">Sul</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6 marginToComponent">
+                <mat-select id="areaInteresse" multiple placeholder="Áreas de interesse" matTooltip='Lista de Áreas de Interesse da Plataforma do PCS'
+                  formControlName="areaInteresse">
+                  <mat-option *ngFor="let dados of listaAreaInteresse" [value]="dados.id">
+                    {{dados.nome}}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6 marginToComponent">
+                <mat-label>Eixos PCS</mat-label>
+                <mat-select id="eixos" multiple matTooltip='Lista de Eixos do PCS'
+                  formControlName="eixos"
+                  (selectionChange)="tradeEixo($event.value)" >
+                  <mat-option *ngFor="let item of eixos" [value]="item.id" >
+                    {{item.nome}}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+
+            <mat-form-field class="col-md-6 marginToComponent">
+                <mat-label>ODS</mat-label>
+                <mat-select id="ods" multiple matTooltip='Código do ODS'
+                  formControlName="ods"
+                  (selectionChange)="tradeOds($event.value)">
+                  <mat-option *ngFor="let item of ods" [value]="item.id">
+                    {{item.label}}{{ !item.label ? (item.numero+" - "+item.titulo):''}}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6 marginToComponent">
+                <mat-label>Metas ODS</mat-label>
+                <mat-select id="meta" multiple matTooltip='Código da Meta ODS'
+                  formControlName="metas">
+                  <mat-option *ngFor="let item of metas" [value]="item.id" [matTooltip]="item.descricao">
+                    {{( item.numero+" - "+item.descricao )}}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6 marginToComponent">
+                  <mat-label>Indicador</mat-label>
+                  <mat-select multiple name="indicador" id="indicador" formControlName="indicadores" matTooltip="Lista de Indicadores do PCS">
+                    <mat-option *ngFor="let item of listaIndicadores" [value]="item.id" [matTooltip]="item.nome">{{item.nome}}</mat-option>
+                  </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6">
+                <input matInput placeholder="Palavra-chave" formControlName="palavra" maxlength="250"
+                    matTooltip='Palavras chave para identificar conteudo e características SIG'>
+            </mat-form-field>
+
+
+
+            <mat-form-field class="col-md-6">
+                <mat-select formControlName="dadosMapeados" placeholder="Ano dos Dados Mapeados *">
+                    <mat-option *ngFor="let ano of listaAnos" value="{{ano}}">{{ano}}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="formGroup.controls['dadosMapeados'].hasError('required')">
+                    Campo Ano dos Dados Mapeados é obrigatório
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6">
+                <input matInput placeholder="Resumo do conteúdo" formControlName="resumoConteudo" maxlength="350"
+                    matTooltip='Breve descrição das propriedades, quando necessário, para complementar o título do mapa. Um exemplo é a informação sobre o tamanho das células de uma grade regular fornecido em km ou a caracterização do tema tratado, tal como um subtítulo mais extenso que defina o produto.'>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6">
+                <input matInput placeholder="Código do mapa no Sistema Cartográfico Internacional" formControlName="codigoMapa" maxlength="50"
+                    matTooltip='Código UTM da folha ou código no mapa índice da instituição fonte.'>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6">
+                <input matInput placeholder="Observações sobre integridade do arquivo" formControlName="integridade" maxlength="500"
+                    matTooltip='Comentários sobre eventuais falhas e incompletudes conhecidas dos objetos ou atributos do arquivo SIG.'>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6">
+                <mat-label>Há mosaico?</mat-label>
+                <mat-select id="mosaico" name="mosaico" formControlName="mosaico" (valueChange)="exibirCampoFolhaMosaico()" matTooltip="Indicar se há um mosaico das folhas cartográficas.">
+                  <mat-option [value]="false" >Não</mat-option>
+                  <mat-option [value]="true"  >Sim</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+            <mat-form-field class="col-md-6" *ngIf="exibirFolhaMosaico == true">
+                <input matInput placeholder="Código da folha no mosaico" formControlName="codigoFolha" maxlength="50"
+                    matTooltip='Inserir o código da folha cartográfica em seu respectivo mosaico, caso este exista.'>
+            </mat-form-field>
+
+
+            <mat-form-field class="col-md-6">
+                <mat-label>Escala original *</mat-label>
+                <mat-select id="escala" name="escala" formControlName="escala"
+                matTooltip='A escala original do mapa digital é importante para saber quanto se pode ampliar ou reduzir sua escala conhecendo a perda de precisão espacial (DOP/PDOP).'>
+                    <mat-option ></mat-option>
+                    <mat-option value="1:2.500">1:2.500</mat-option>
+                    <mat-option value="1:5.000">1:5.000</mat-option>
+                    <mat-option value="1:10.000">1:10.000</mat-option>
+                    <mat-option value="1:12.500">1:12.500</mat-option>
+                    <mat-option value="1:25.000">1:25.000</mat-option>
+                    <mat-option value="1:50.000">1:50.000</mat-option>
+                    <mat-option value="1:100.000">1:100.000</mat-option>
+                    <mat-option value="1:250.000">1:250.000</mat-option>
+                    <mat-option value="1:500.000">1:500.000</mat-option>
+                    <mat-option value="1:1.000.000">1:1.000.000</mat-option>
+                    <mat-option value="1:2.500.000">1:2.500.000</mat-option>
+                    <mat-option value="1:5.000.000">1:5.000.000</mat-option>
+                    <mat-option value="Outra">Outra</mat-option>
+                </mat-select>
+                <mat-error *ngIf="formGroup.controls['escala'].hasError('required')">
+                    Campo Escala original é obrigatório
+                </mat-error>
+            </mat-form-field>
+
+
+            <mat-form-field class="col-md-6">
+                <mat-label>País *</mat-label>
+                <mat-select id="inputPais" name="pais" formControlName="pais" (selectionChange)="onPaisChange($event)">
+                  <mat-option [value]=""></mat-option>
+                  <mat-option *ngFor="let item of paisesCombo" [value]="item.id">{{item.label}}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="formGroup.controls['pais'].hasError('required')">
+                  Campo País é obrigatório
+                </mat-error>
+              </mat-form-field>
+
+
+            <mat-form-field class="col-md-6 marginToComponent">
+                <mat-label>Estado</mat-label>
+                <mat-select id="estados" name="estados" multiple matTooltip='Nome do Estado onde incide o mapa. Pode ser mais de um município.'
+                  formControlName="estados" (openedChange)="onEstadoChange($event)">
+                  <mat-option *ngFor="let item of estados" [value]="item.id">{{item.label}}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="formGroup.controls['estados'].hasError('required')">
+                    Campo Estado é obrigatório
+                </mat-error>
+            </mat-form-field>
+
+
+            <mat-form-field class="col-md-6 marginToComponent">
+                <mat-label>Cidade</mat-label>
+                <mat-select id="cidades" name="cidades" multiple matTooltip='Nome da cidade onde incide o mapa. Pode ser mais de uma cidade.'
+                  formControlName="cidades">
+                  <mat-option *ngFor="let item of cidadesComboFiltrada" [value]="item.id">{{item.label}}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="formGroup.controls['cidades'].hasError('required')">
+                    Campo Cidade é obrigatório
+                </mat-error>
+            </mat-form-field>
+
+
+            <mat-form-field class="col-md-6">
+                <mat-label>Tipo de Cartografia *</mat-label>
+                <mat-select id="cartografia" name="cartografia" formControlName="cartografia"
+                matTooltip='Existem dois grandes grupos de mapas: os Temáticos (como os mapas de densidade populacional) e
+                aqueles de Base/Sistemáticos (como as cartas topográficas e planialtimétricas). E, no campo do processamento digital,
+                destacam-se dois produtos específicos (Grade Estatística e Modelo Numérico ou Digital de Terreno)'>
+                    <mat-option ></mat-option>
+                    <mat-option value="Cartografia de Base/Sistemática">Cartografia de Base/Sistemática</mat-option>
+                    <mat-option value="Cartografia Temática">Cartografia Temática</mat-option>
+                    <mat-option value="Grade Estatística">Grade Estatística</mat-option>
+                    <mat-option value="Modelo Numerico ou Digital de Terreno (Triangular ou Regular)">Modelo Numerico ou Digital de Terreno (Triangular ou Regular)</mat-option>
+                    <mat-option value="Dado Cadastral Municipal">Dado Cadastral Municipal</mat-option>
+                </mat-select>
+                <mat-error *ngIf="formGroup.controls['cartografia'].hasError('required')">
+                    Campo Tipo de Cartografia é obrigatório
+                </mat-error>
+            </mat-form-field>
+
+
+            <mat-form-field class="col-md-3">
+                <input matInput type="number" min="-90" max="90" placeholder="Latitude" formControlName="latitude"
+                    matTooltip='Coordenada geográfica do centro do mapa.'>
+            </mat-form-field>
+            <mat-form-field class="col-md-3">
+                <input matInput type="number"  min="-180" max="180" placeholder="Longitude" formControlName="longitude"
+                    matTooltip='Coordenada geográfica do centro do mapa.'>
+            </mat-form-field>
+
+
+            <mat-form-field class="col-md-6">
+                <mat-label>Codificação de caracteres</mat-label>
+                <mat-select id="codificacao" name="codificacao" formControlName="codificacao"
+                matTooltip='Tipo de codificação usada nos caracteres da tabela de atributos.'>
+                    <mat-option ></mat-option>
+                    <mat-option value=ASCII>ASCII</mat-option>
+                    <mat-option value=UCS>UCS</mat-option>
+                    <mat-option value=System>System</mat-option>
+                    <mat-option value=CP-1252>CP-1252</mat-option>
+                    <mat-option value=XML>XML</mat-option>
+                    <mat-option value=UTF-8>UTF-8 (padrão)</mat-option>
+                    <mat-option value=IBM00858>IBM00858</mat-option>
+                    <mat-option value=IBM437>IBM437</mat-option>
+                    <mat-option value=IBM775>IBM775</mat-option>
+                    <mat-option value=IBM850>IBM850</mat-option>
+                    <mat-option value=IBM852>IBM852</mat-option>
+                    <mat-option value=IBM855>IBM855</mat-option>
+                    <mat-option value=IBM857>IBM857</mat-option>
+                    <mat-option value=IBM862>IBM862</mat-option>
+                    <mat-option value=IBM866>IBM866</mat-option>
+                    <mat-option value=ISO-8859-1>ISO-8859-1</mat-option>
+                    <mat-option value=ISO-8859-2>ISO-8859-2</mat-option>
+                    <mat-option value=ISO-8859-3>ISO-8859-3</mat-option>
+                    <mat-option value=ISO-8859-4>ISO-8859-4</mat-option>
+                    <mat-option value=ISO-8859-5>ISO-8859-5</mat-option>
+                    <mat-option value=ISO-8859-5>ISO-8859-5</mat-option>
+                    <mat-option value=ISO-8859-5>ISO-8859-5</mat-option>
+                    <mat-option value=ISO-8859-8>ISO-8859-8</mat-option>
+                    <mat-option value=ISO-8859-9>ISO-8859-9</mat-option>
+                    <mat-option value=ISO-8859-13>ISO-8859-13</mat-option>
+                    <mat-option value=ISO-8859-15>ISO-8859-15</mat-option>
+                    <mat-option value=KOI8-R>KOI8-R</mat-option>
+                    <mat-option value=KOI8-U>KOI8-U</mat-option>
+                    <mat-option value=US-ASCII>US-ASCII</mat-option>
+                    <mat-option value=UTF-16>UTF-16</mat-option>
+                    <mat-option value=UTF-16BE>UTF-16BE</mat-option>
+                    <mat-option value=UTF-16LE>UTF-16LE</mat-option>
+                    <mat-option value=UTF-32>UTF-32</mat-option>
+                    <mat-option value=UTF-32BE>UTF-32BE</mat-option>
+                    <mat-option value=UTF-32LE>UTF-32LE</mat-option>
+                    <mat-option value=windows-1250>windows-1250</mat-option>
+                    <mat-option value=windows-1251>windows-1251</mat-option>
+                    <mat-option value=windows-1252>windows-1252</mat-option>
+                    <mat-option value=windows-1253>windows-1253</mat-option>
+                    <mat-option value=windows-1254>windows-1254</mat-option>
+                    <mat-option value=windows-1255>windows-1255</mat-option>
+                    <mat-option value=windows-1256>windows-1256</mat-option>
+                    <mat-option value=windows-1257>windows-1257</mat-option>
+                    <mat-option value=x-IBM737>x-IBM737</mat-option>
+                    <mat-option value=x-IBM874>x-IBM874</mat-option>
+                    <mat-option value=x-UTF-16LE-BOM>x-UTF-16LE-BOM</mat-option>
+                    <mat-option value=Outra>Outra</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6">
+                <mat-label>Ambiente SIG de produção</mat-label>
+                <mat-select id="ambiente" name="ambiente" formControlName="ambiente"
+                matTooltip='Nome do programa usado para gerar os mapas.'>
+                    <mat-option ></mat-option>
+                    <mat-option value=ArcGis>ArcGis</mat-option>
+                    <mat-option value=QGis>QGis</mat-option>
+                    <mat-option value=MapInfo>MapInfo</mat-option>
+                    <mat-option value=Spring>Spring</mat-option>
+                    <mat-option value=AutoCadMap>AutoCad Map</mat-option>
+                    <mat-option value=Idrisi>Idrisi</mat-option>
+                    <mat-option value=TerraView>Terra View</mat-option>
+                    <mat-option value=MapServer>Map Server</mat-option>
+                    <mat-option value=GeoMedia>Geo Media</mat-option>
+                    <mat-option value=GVSIG>GVSIG</mat-option>
+                    <mat-option value=Gismaps>Gismaps</mat-option>
+                    <mat-option value=Viewer>Viewer</mat-option>
+                    <mat-option value=JUMP>JUMP</mat-option>
+                    <mat-option value=SAGA>SAGA</mat-option>
+                    <mat-option value=Grass>Grass</mat-option>
+                    <mat-option value=Kosmos>Kosmos</mat-option>
+                    <mat-option value=MicroStation>MicroStation</mat-option>
+                    <mat-option value=Outros>Outros</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6">
+                <mat-label>Há atualização?</mat-label>
+                <mat-select id="atualizacao" name="atualizacao" formControlName="atualizacao"
+                matTooltip='Indicar se o mapa é atualizado periodicamente.'>
+                    <mat-option ></mat-option>
+                    <mat-option value=ArcGis>Não há atualização periódica </mat-option>
+                    <mat-option value=QGis>Anual</mat-option>
+                    <mat-option value=MapInfo>Quinquenal</mat-option>
+                    <mat-option value=Spring>Decenal</mat-option>
+                    <mat-option value=AutoCadMap>Mensal</mat-option>
+                    <mat-option value=Idrisi>Outro</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field [ngClass]="{'col-md-3': isAdmin, 'col-md-6': !isAdmin}">
+                <mat-label>PUBLICAR</mat-label>
+                <mat-select id="publicar" name="publicar" formControlName="publicar">
+                    <mat-option value="sim">Sim</mat-option>
+                    <mat-option value="nao">Não</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-3" *ngIf="isAdmin">
+                <mat-label>Exibir automaticamente?</mat-label>
+                <mat-select id="exibirAuto" name="exibirAuto" formControlName="exibirAuto">
+                    <mat-option value="sim">Sim</mat-option>
+                    <mat-option value="nao">Não</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6">
+              <mat-label>Nível territorial</mat-label>
+              <mat-select id="nivelTerritorial" name="nivelTerritorial" formControlName="nivelTerritorial">
+                  <mat-option value="Submunicipal">Submunicipal</mat-option>
+                  <mat-option value="Municipal">Municipal</mat-option>
+                  <mat-option value="Regional">Regional</mat-option>
+                  <mat-option value="Estadual">Estadual</mat-option>
+                  <mat-option value="Nacional">Nacional</mat-option>
+                  <mat-option value="Internacional">Internacional</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <div class="col-md-4">
+                <span *ngIf="((tipoArquivo.value == 'KML' || tipoArquivo.value == 'KMZ') || (shapeFile?.tipoArquivo == 'KML' || shapeFile?.tipoArquivo == 'KMZ')) && shapeFile?.shapes == undefined">
+                    <input hidden #arquivoVetorialKml id='arquivoVetorialKml' type='file' accept=".kml, .kmz" (change)="carregarArquivoVetorial($event)">
+                    <button type="button" mat-raised-button (click)="arquivoVetorialKml.click()" id="btnIcone" name="icone"
+                        color="primary" style="margin-top: 20px; cursor: pointer;" matTooltip="Carregar arquivos">
+                        <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar arquivos *
+                    </button><br>
+                    <mat-hint style="font-size: 12px">Formatos aceitos .kml e .kmz</mat-hint>
+                </span>
+                <span *ngIf="(tipoArquivo.value == 'SHP' || shapeFile?.tipoArquivo == 'SHP') && shapeFile?.shapes == undefined">
+                    <input  hidden #arquivoVetorial id='arquivoVetorial' type='file' accept=".shp, .dbf, .shx" (change)="carregarArquivoVetorial($event)" multiple>
+                    <button type="button" mat-raised-button (click)="arquivoVetorial.click()" id="btnIcone" name="icone"
+                        color="primary" style="margin-top: 20px; cursor: pointer;" matTooltip="Carregar arquivos">
+                        <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar arquivos *
+                    </button><br>
+                    <mat-hint style="font-size: 12px">Formatos aceitos .shp, .dbf e .shx</mat-hint>
+                </span>
+            </div>
+
+            <div class="col-md-4" *ngIf="tipoArquivo.value == 'Raster'">
+                <input hidden #arquivoRaster id='arquivoVetorial' type='file' accept=".tif, .tiff" (change)="carregarArquivoRaster($event)">
+                <button type="button" mat-raised-button (click)="arquivoRaster.click()" id="btnIcone" name="icone"
+                    color="primary" style="margin-top: 20px; cursor: pointer;" matTooltip="Carregar arquivos">
+                    <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Carregar arquivos *
+                </button><br>
+                <mat-hint style="font-size: 12px">Formatos aceitos .tif ou .tiff</mat-hint>
+            </div>
+
+            <div class="col-md-12">
+                <p *ngFor="let item of arquivosCarregados" style="margin-top: 10px;">• {{item}}<br></p>
+            </div>
+
+            <br>
+            <div class="col-md-12">
+                <div style="height: 500px;" leaflet [leafletOptions]="mapOptions"
+                    (leafletMapReady)="onMapReady($event)"></div>
+            </div>
+            <br>
+
+            <div class="col-md-12 text-right">
+                <button mat-flat-button color="primary" matTooltip="Salvar"
+                    style="cursor: pointer; margin-right: 5px !important;" (click)="salvar()" id="btnSalvar">
+                    <mat-icon>save</mat-icon> Salvar
+                </button>
+
+                <button mat-flat-button color="accent" matTooltip="Voltar" style="cursor: pointer;"
+                    [routerLink]="['/planejamento-integrado/cadastro-shapefile']" id="btnVoltar">
+                    <mat-icon>arrow_back_ios</mat-icon> Voltar
+                </button>
+            </div>
+
+        </form>
+    </mat-card>
+</div>
+
+<ng-template #modalLoading>
+    <div class="centralizar-loading">
+       <div id="circularG">
+        <div id="circularG_1" class="circularG"></div>
+        <div id="circularG_2" class="circularG"></div>
+        <div id="circularG_3" class="circularG"></div>
+        <div id="circularG_4" class="circularG"></div>
+        <div id="circularG_5" class="circularG"></div>
+        <div id="circularG_6" class="circularG"></div>
+        <div id="circularG_7" class="circularG"></div>
+        <div id="circularG_8" class="circularG"></div>
+      </div> 
+      <div class="mt-2" style="text-align: center">
+        <strong>Carregando...</strong>
+      </div>
+    </div>
+  </ng-template>

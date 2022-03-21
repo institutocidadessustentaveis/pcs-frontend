@@ -1,0 +1,109 @@
+<div class="contentBody" style="position: relative;">
+    <app-breadcrumb style="position: relative;"></app-breadcrumb>
+  <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+    <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12 marginToTop">
+      <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <mat-card-title *ngIf="eixoSelecionado.id !== null && eixoSelecionado.id !== undefined && eixoSelecionado.id > 0">Alterar Eixo</mat-card-title>
+        <mat-card-title *ngIf="eixoSelecionado.id === 0">Criar Eixo</mat-card-title>
+        <hr>
+      </div>
+      <div [hidden]="!loading">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </div>
+      <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+
+        <form [formGroup]="formEixo" class="example-form">
+
+          <br>
+          <button type="button" mat-flat-button (click)="fileInput.click()" color="primary"
+            style="margin-right: 20px !important;cursor: pointer;" matTooltip="Upload Icone">
+            <mat-icon style="margin-right: 5px;">cloud_upload</mat-icon>Upload Icone
+          </button>
+          <input hidden #fileInput type="file" id="icone" name="icone" accept="image/*" (change)="processFile($event)">
+          <img class="form-group tamanhoImagem"
+            [src]="_DomSanitizationService.bypassSecurityTrustUrl('data:image/png;base64, ' + eixoSelecionado.icone)"
+            *ngIf="eixoSelecionado.icone !== undefined && eixoSelecionado.icone !== null" width="48" height="48" />
+
+          <mat-form-field class="marginToComponent">
+            <input matInput placeholder="Link para a página do eixo" value="" #txtLink formControlName="link" />
+            <mat-hint align="end">{{ txtLink.value?.length || 0 }}/200</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="marginToComponent">
+            <input matInput placeholder="Nome eixo" value="" #txtUsuario formControlName="nome" />
+            <mat-hint align="end">{{ txtUsuario.value?.length || 0 }}/100</mat-hint>
+            <mat-error *ngIf="!formEixo.controls['nome'].valid && formEixo.controls['nome'].touched">
+              {{ getNome() }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="marginToComponent" style="width: 90% !important; margin-right: 10px;">
+            <mat-label>Selecione um ODS</mat-label>
+            <mat-select (selectionChange)="tradeODS($event.value)">
+              <mat-option *ngFor="let ods of cboListaODS" [value]="ods">
+                {{ ods?.numero + ' - ' + ods.titulo}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <button matTooltip="Incluir ODS" mat-mini-fab color="primary" style="cursor: pointer;"
+            (click)="addTableItem()" id="btnAddItem"><mat-icon>add</mat-icon></button>
+
+            &nbsp;<a href="institucional/ods" title="Ir para página de ODS"><i class="material-icons">help</i></a>
+        </form>
+
+        <table mat-table [dataSource]="dataSource" matSort #tbEixo id="tbEixo">
+
+          <ng-container matColumnDef="Icone">
+            <th mat-header-cell *matHeaderCellDef>Icone</th>
+            <td mat-cell *matCellDef="let element">
+              <img [src]="_DomSanitizationService.bypassSecurityTrustUrl('data:image/png;base64, ' + element.icone)"
+                width="24" height="24" />
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Numero">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Número</th>
+            <td mat-cell *matCellDef="let element">{{ element.numero }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="Titulo">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Título</th>
+            <td mat-cell *matCellDef="let element">{{ element.titulo }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="SubTitulo">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>SubTitulo</th>
+            <td mat-cell *matCellDef="let element">{{ element.subtitulo }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="#Remover" *ngIf="hasRole('ROLE_USUARIOS')">
+            <th mat-header-cell *matHeaderCellDef>Ação</th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-mini-fab color="warn" matTooltip="Remover ODS" style="cursor: pointer;"
+                (click)="removeTableItem(element)" id="btnRemoveItem">
+                <mat-icon>remove</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+        <mat-paginator style="text-align: center !important;" class="float-none" [pageSizeOptions]="[10,25,50,100]"
+          showFirstLastButtons></mat-paginator>
+
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-right">
+          <button mat-flat-button color="primary" matTooltip="Salvar"
+            style="cursor: pointer; margin-right: 5px !important;" (click)="salvar()"
+            [disabled]="enableSalvar()" id="btnSalvar">
+            <mat-icon>save</mat-icon> Salvar
+          </button>
+          <button mat-flat-button color="accent" matTooltip="Voltar" style="cursor: pointer;" [routerLink]="['/eixo']"
+            id="btnVoltar">
+            <mat-icon>arrow_back_ios</mat-icon> Voltar
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>

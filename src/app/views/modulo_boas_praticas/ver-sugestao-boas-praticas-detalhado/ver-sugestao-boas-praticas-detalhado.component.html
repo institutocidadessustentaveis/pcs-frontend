@@ -1,0 +1,58 @@
+<div class="contentBody">
+  <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+      <div class="col-lg-12">
+        <h2 >Descrição da Boa Prática</h2>
+        <mat-divider></mat-divider>
+      </div>
+      
+      <br />
+
+      <div class="col-lg-12 mt-4">
+        <label><strong>Usuário:</strong></label>
+        <p> {{sugestaoBoaPratica.nomeUsuario}} </p>
+      </div>
+
+      <div class="col-lg-12 mt-4">
+        <label><strong>País:</strong></label>
+        <p> {{sugestaoBoaPratica.nomePais}} </p>
+      </div>
+
+      <div class="col-lg-12 mt-4">
+        <label><strong>Estado:</strong></label>
+        <p> {{sugestaoBoaPratica.nomeEstado}} </p>
+      </div>
+
+      <div class="col-lg-12 mt-4">
+        <label><strong>Cidade:</strong></label>
+        <p> {{sugestaoBoaPratica.nomeCidade}} </p>
+      </div>
+
+      <div class="col-lg-12 mt-4">
+        <label><strong>Data de Publicação:</strong></label>
+        <p> {{ formatarDataSolicitacao() }} </p>
+      </div>
+
+      <div class="col-lg-12 mt-4">
+        <label><strong>Horario de Publicação:</strong></label>
+        <p> {{sugestaoBoaPratica.horarioPublicacao}} </p>
+      </div>
+
+      <div class="col-lg-12 mt-4">     
+        <label><strong>Solicitação</strong></label>  
+        <p class="full-width" [ngxSummernoteView]="sugestaoBoaPratica.solicitacao"></p>
+      </div>
+
+      <br />
+
+      <div class="text-right">
+        <button mat-flat-button color="accent" matTooltip="Voltar" style="cursor: pointer;"
+          [routerLink]="['/versugestaoboaspraticas']" id="btnVoltar" [hidden]="false">
+          <mat-icon>arrow_back_ios</mat-icon> Voltar
+        </button>
+      </div>
+
+      <mat-progress-bar [hidden]="!loading" mode="indeterminate"></mat-progress-bar>
+
+  </mat-card>
+</div>
+

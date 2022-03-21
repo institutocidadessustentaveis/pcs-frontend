@@ -1,0 +1,87 @@
+<div class="col-md-12 mt-2">
+
+  <div class="alert alert-warning col-md-12" [hidden]="shapesSelecionados.length > 0">
+    Não há nenhum shape exibido no mapa. Carregue shapes para efetuar operações.
+  </div>
+
+  <form [formGroup]="form" style="padding: 0em 1em 1em 1em;height: 30em;" [hidden]="shapesSelecionados.length === 0">
+    <div class="row">
+      <div class="col-md-12">
+        Para realizar as operações de apoio estatístico, observe as seguintes condições: <br>
+        1º - Escolha uma camada que esteja em exibição.<br>
+        2º - Escolha um dos campos preenchidos com números.<br>
+        3º - Escolha qual a operação será executada e clique no botão "Calcular". A operação será realizada sobre todos os valores do campo escolhido.<br>
+        <br>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6" *ngIf="!(shapesSelecionadosPorSelecaoArea && shapesSelecionadosPorSelecaoArea.length > 0)">
+        <mat-form-field>
+          <mat-label>Camada</mat-label>
+          <mat-select formControlName="camadaSelecionada" (selectionChange)="carregarAtributosDaCamadaSelecionada()">
+            <mat-option *ngFor="let shape of shapesSelecionados" [value]="shape">
+              {{shape.layerName}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-6" *ngIf="(shapesSelecionadosPorSelecaoArea && shapesSelecionadosPorSelecaoArea.length > 0)">
+        <div style="margin-bottom: 2%">
+          <span> Shapes selecionados - Pela ferramenta de seleção</span>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="row">
+      <div class="col-lg-6">
+        <mat-form-field>
+          <mat-label>Atributo</mat-label>
+          <mat-select formControlName="atributo">
+            <mat-option *ngFor="let atributo of atributos" [value]="atributo">
+              {{atributo.nome}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <mat-form-field>
+          <mat-label>Operação</mat-label>
+          <mat-select formControlName="operacao">
+            <mat-option value="SOMA">Soma</mat-option>
+            <mat-option value="MÉDIA">Média</mat-option>
+            <mat-option value="MODA">Moda</mat-option>
+            <mat-option value="MEDIANA">Mediana</mat-option>
+            <mat-option value="DESVIO PADRÃO">Desvio padrão</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <button mat-raised-button color="primary" (click)="efetuarOperacao()">
+          Calcular
+        </button>
+      </div>
+    </div>
+
+    <br>
+
+    <div class="row" *ngIf="nomeOperacaoEfetuada">
+      <div class="col-lg-12">
+        <h4>Resultado</h4>
+      </div>
+
+      <div class="col-lg-4">
+        <span>{{nomeOperacaoEfetuada}}</span>:
+        <span *ngIf="isNumber(resultado); else resultadoString"> {{resultado | number:'':'pt-BR'}}</span>
+        <ng-template #resultadoString>{{resultado}}</ng-template>
+      </div>
+    </div>
+  </form>
+</div>

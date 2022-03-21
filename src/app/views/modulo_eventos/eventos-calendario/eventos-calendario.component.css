@@ -1,0 +1,11 @@
+
+::ng-deep .cal-month-view .cal-open-day-events {
+    color: rgb(0, 0, 0) !important;
+    background-color: #ededed;
+    box-shadow: inset 0 0 15px 0 rgba(255, 255, 255, 0);
+}
+
+::ng-deep .cal-month-view .cal-day-badge {
+    background-color: #ff9800;
+}
+

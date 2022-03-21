@@ -1,0 +1,188 @@
+<div style="background-color: white;" class="bmd-layout-container bmd-drawer-f-l bmd-drawer-overlay ">
+  <main class="bmd-layout-content">
+    <div>
+      <section class="teaser teaser--dotted pontos-background" style="margin-top: 0%;margin-bottom: 0%;">
+
+        <header>
+          <h1 style="font-weight: 700 !important;">Grupos Acadêmicos</h1>
+        </header>
+
+      </section>
+
+      <div class="contentBody" style="position: relative; margin-bottom: 3%;">
+        <app-breadcrumb style="position: relative;"></app-breadcrumb>
+      </div>
+      <section class="secao-filtro">
+        <header>
+          <h1><span style="font-weight: 700 !important;color: white;">FAÇA UMA BUSCA</span></h1>
+        </header>
+        <div class="row search-form-color">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 search-form-color">
+            <form [formGroup]="formFiltro" class="example-form">
+
+              <div class="col-lg-12 search-form-color">
+                <mat-form-field>
+                  <input matInput formControlName="palavraChave" placeholder="Palavra chave">
+                </mat-form-field>
+              </div>
+
+              <mat-form-field class="col-lg-4 search-form-color">
+                <mat-label>Áreas de Interesse</mat-label>
+                <mat-select id="inputAreaInteresse" name="areaInteresse" formControlName="idAreaInteresse">
+                  <mat-option [value]=""></mat-option>
+                  <mat-option *ngFor="let item of areasInteresseCombo" value="{{item.id}}">{{item.nome}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="col-lg-4 search-form-color">
+                <mat-label>Eixo</mat-label>
+                <mat-select id="idEixo" name="idEixo" formControlName="idEixo">
+                  <mat-option [value]=""></mat-option>
+                  <mat-option *ngFor="let item of eixosCombo" value="{{item.id}}">{{item.nome}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="col-lg-4 search-form-color">
+                <mat-label>ODS</mat-label>
+                <mat-select id="idOds" name="idOds" formControlName="idOds">
+                  <mat-option [value]=""></mat-option>
+                  <mat-option *ngFor="let item of odsCombo" value="{{item.id}}">{{item.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-4 search-form-color">
+                <mat-label>País da publicação</mat-label>
+                <mat-select id="idPais" name="idPais" formControlName="idPais" (selectionChange)="onPaisChange($event)">
+                  <mat-option [value]=""></mat-option>
+                  <mat-option *ngFor="let item of paisesCombo" value="{{item.id}}">{{item.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-4 search-form-color">
+                <mat-label>Estado da publicação</mat-label>
+                <mat-select id="idProvinciaEstado" name="idProvinciaEstado" formControlName="idProvinciaEstado"
+                  (selectionChange)="onEstadoChange($event)">
+                  <mat-option [value] =""></mat-option>
+                  <mat-option *ngFor="let item of provinciaEstadoCombo" value="{{item.id}}">{{item.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-4 search-form-color">
+                <mat-label>Cidade da publicação</mat-label>
+                <mat-select id="idCidade" name="idCidade" formControlName="idCidade">
+                  <mat-option [value]=""></mat-option>
+                  <mat-option *ngFor="let item of cidadesCombo" value="{{item.id}}">{{item.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-6 search-form-color">
+                <mat-label>Tipo da Instituição acadêmica</mat-label>
+                <mat-select id="tipoInstituicaoAcademia" name="tipoInstituicaoAcademia"
+                  formControlName="tipoInstituicaoAcademia">
+                  <mat-option [value]=""></mat-option>
+                  <mat-option [value]='item' *ngFor="let item of tiposInstituicaoAcademia">{{item}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-3 search-form-color" >
+                <input matInput type="number" placeholder="Quantidade de Alunos Mínima" formControlName="quantidadeAlunosMin" 
+                  #inputQuantidadeAlunosMin id="inputQuantidadeAlunosMin">
+              </mat-form-field>
+
+              <mat-form-field class="col-md-3 search-form-color" >
+                <input matInput type="number" placeholder="Quantidade de Alunos Máxima" formControlName="quantidadeAlunosMax" 
+                  #inputQuantidadeAlunosMax id="inputQuantidadeAlunosMax">
+              </mat-form-field>
+
+              <div class="white">
+                <mat-checkbox [checked]="false"
+                class="search-form-color" formControlName="possuiExperiencias"></mat-checkbox>
+                Experiências já desenvolvidas / parcerias com prefeituras
+                <br>
+                <mat-checkbox [checked]="false" (change)="onParticipaAplChange($event.checked)"
+                  class="search-form-color" formControlName="participaApl"></mat-checkbox>
+                Participação em Arranjo Produtivo Local - APL
+              </div>
+
+              <mat-form-field class="col-md-6" [hidden]="!participaApl">
+                <mat-label>Setor Econômico da APL</mat-label>
+                <mat-select id="porteEmpresa" name="setoresEconomicos" formControlName="setoresApl" multiple>
+                  <mat-option [value]='item' *ngFor="let item of setoresEconomicos">{{item}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-6" [hidden]="!participaApl">
+                <mat-label>Cidade de Atuação</mat-label>
+                <mat-select id="inputCidade" name="cidade" formControlName="cidadesApl">
+                  <mat-option [value] =""></mat-option>
+                  <mat-option *ngFor="let cidade of cidadesApl" value="{{cidade.id}}">{{cidade.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <div class="col-lg-12 text-right" style="margin-top: 10px !important;">
+                <button matTooltip="Buscar Instituições" mat-flat-button color="primary"
+                  (click)="buscarGruposAcademicos()" id="btnBuscarBibliotecas" class="btnpesquisar" type="submit">
+                  <mat-icon style="margin-top: -1px !important">search</mat-icon> Buscar grupos acadêmicos
+                </button>
+                <button matTooltip="Limpar Filtro" mat-flat-button color="accent" (click)="limparFiltro()"
+                  id="btnBuscarBibliotecas" style="margin-left: 16px" class="btnpesquisar" type="submit">
+                  <mat-icon style="margin-top: -1px !important">clear</mat-icon> Limpar filtros
+                </button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <div [hidden]="!loading">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </div>
+      
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px !important;" [hidden]="!pesquisou">
+        
+        <div class="div-titulo" align="center">
+          <h1>
+            Lista de Grupos Acadêmicos
+          </h1>
+        </div>
+        
+        <table mat-table [dataSource]="dataSource" matSort >
+          <ng-container matColumnDef="gruposAcademicos">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="gruposAcademicos"></th>
+            <td align="center" mat-cell *matCellDef="let element" class='m-card-title' data-label='Cidade'>
+              <a [routerLink]="['detalhes', element.id]" style="font-size: 16px;">{{ element.nomeGrupo }}</a>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+        <div *ngIf="gruposAcademicos?.length == 0" align="center">
+          <h4>Não foram encontrados grupos acadêmicos</h4>
+        </div>
+      </div>
+      <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" style="margin-top: 20px !important;" [hidden]="!pesquisou">
+        <mat-paginator style="text-align: center !important;" class="float-none" [pageSizeOptions]="[10,25,50,100]"
+          showFirstLastButtons>
+        </mat-paginator>
+      </div>
+      
+
+    <div id="destination" class="news">
+      <section class="secao-mapa">
+        <h1>Mapa de Grupos Acadêmicos</h1>
+        <br>
+        <div leaflet class="mapa" id="map" [leafletOptions]="mapOptions" [leafletLayers]="layers"
+          (leafletMapReady)="onMapReady($event)">
+        </div>
+      </section>
+    </div>
+
+    <section class="secao">
+      <h1>Agenda de Eventos Acadêmicos</h1>
+      <br>
+      <app-eventos-calendario [eventos]="eventosCalendario"></app-eventos-calendario>
+    </section>
+
+</div>

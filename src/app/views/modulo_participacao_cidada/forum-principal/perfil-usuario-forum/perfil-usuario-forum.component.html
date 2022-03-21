@@ -1,0 +1,36 @@
+
+<div class="contentBody" style="position: relative;">
+  <mat-card class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+    <mat-card-content class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <mat-card-title>
+        Perfil do Fórum
+      </mat-card-title>
+    </mat-card-content>
+    <hr>
+    <form [formGroup]="formPerfilUsuarioForum">
+
+      <mat-form-field class="col-md-6">
+        <input matInput placeholder="Nome para Contato *" formControlName="nomeContato" maxlength="200" #inputNome id="inputNome">
+       <mat-error *ngIf="formPerfilUsuarioForum.controls['nomeContato'].hasError('required')">
+          Campo Nome é obrigatório.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-md-6">
+        <input matInput placeholder="Email para Contato *" formControlName="emailContato" maxlength="200" #inputEmail id="inputEmail">
+        <mat-hint align="end">{{ inputEmail.value?.length || 0 }}/320</mat-hint>
+       <mat-error *ngIf="formPerfilUsuarioForum.controls['emailContato'].hasError('required')">
+          Campo Email é obrigatório.
+        </mat-error>
+      </mat-form-field>
+      <br>
+      <br>
+      <div class="col-md-12" align="end">
+        <button mat-flat-button color="primary" [disabled]="modoEditar" (click)="salvar()">
+          <mat-icon>save</mat-icon> Salvar
+        </button>
+      </div>
+
+    </form>
+  </mat-card>
+</div>

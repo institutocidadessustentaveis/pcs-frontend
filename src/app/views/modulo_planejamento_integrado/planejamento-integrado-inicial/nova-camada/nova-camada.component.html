@@ -1,0 +1,139 @@
+<div class="mt-2 col-md-12" style="margin: 0;">
+    <div class="col-md-12" >
+        <p>Esta ferramenta permite salvar uma camada nova a partir da criação de objetos (pontos, linhas e polígonos) que tenham sido desenhados na tela.</p>
+    </div>
+    <form [formGroup]="formGroup">
+    <mat-form-field class="col-md-6">
+        <mat-label>Ano</mat-label>
+        <mat-select id="ano" name="ano" formControlName="ano" 
+            matTooltip='Ano'>
+            <mat-option ></mat-option>
+            <mat-option *ngFor="let item of listaAnos" [value]="item">{{item}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6">
+        <input matInput placeholder="Título *" formControlName="titulo">
+        <mat-error *ngIf="formGroup.controls['titulo'].hasError('required')">
+            Campo título é obrigatório
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6">
+        <mat-label>Tema da Camada</mat-label> 
+        <mat-select id="temaGeoespacial" name="temaGeoespacial" formControlName="temaGeoespacial">
+            <mat-option ></mat-option>
+            <mat-option *ngFor="let item of temasGeoespaciais" [value]="item.id">{{item.nome}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6">
+        <mat-label>Área de Interesse</mat-label>
+        <mat-select id="areaInteresse" name="areaInteresse" formControlName="areaInteresse">
+            <mat-option ></mat-option>
+            <mat-option *ngFor="let area of areasInteresse" [value]="area.id">{{area.nome}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6">
+        <input matInput placeholder="Instituição" formControlName="instituicao">
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6">
+        <input matInput placeholder="Fonte" formControlName="fonte">
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6">
+        <mat-label>Sistema de referência</mat-label>
+        <mat-select id="sistemaDeReferencia" name="sistemaDeReferencia" formControlName="sistemaDeReferencia">
+            <mat-option value="EPSG:4225">GCS Córrego Alegre - EPSG: 4225</mat-option>
+            <mat-option value="EPSG:4618">GCS SAD69 - EPSG: 4618</mat-option>
+            <mat-option value="EPSG:4674">GCS SIRGAS2000 - EPSG: 4674</mat-option>
+            <mat-option value="EPSG:4326">GCS WGS84 - EPSG: 4326</mat-option>
+            <mat-option value="EPSG:22521">Corrego Alegre / UTM zone 21S - EPSG: 22521</mat-option>
+            <mat-option value="EPSG:22522">Corrego Alegre / UTM zone 22S - EPSG: 22522</mat-option>
+            <mat-option value="EPSG:22523">Corrego Alegre / UTM zone 23S - EPSG: 22523</mat-option>
+            <mat-option value="EPSG:22524">Corrego Alegre / UTM zone 24S - EPSG: 22524</mat-option>
+            <mat-option value="EPSG:22525">Corrego Alegre / UTM zone 25S - EPSG: 22525</mat-option>
+            <mat-option value="EPSG:29168">SAD69 / UTM zone 18N - EPSG: 29168</mat-option>
+            <mat-option value="EPSG:29188">SAD69 / UTM zone 18S - EPSG: 29188</mat-option>
+            <mat-option value="EPSG:29169">SAD69 / UTM zone 19N - EPSG: 29169</mat-option>
+            <mat-option value="EPSG:29189">SAD69 / UTM zone 19S - EPSG: 29189</mat-option>
+            <mat-option value="EPSG:29170">SAD69 / UTM zone 20N - EPSG: 29170</mat-option>
+            <mat-option value="EPSG:29190">SAD69 / UTM zone 20S - EPSG: 29190</mat-option>
+            <mat-option value="EPSG:29171">SAD69 / UTM zone 21N - EPSG: 29171</mat-option>
+            <mat-option value="EPSG:29191">SAD69 / UTM zone 21S - EPSG: 29191</mat-option>
+            <mat-option value="EPSG:29172">SAD69 / UTM zone 22N - EPSG: 29172</mat-option>
+            <mat-option value="EPSG:29192">SAD69 / UTM zone 22S - EPSG: 29192</mat-option>
+            <mat-option value="EPSG:29193">SAD69 / UTM zone 23S - EPSG: 29193</mat-option>
+            <mat-option value="EPSG:29194">SAD69 / UTM zone 24S - EPSG: 29194</mat-option>
+            <mat-option value="EPSG:29195">SAD69 / UTM zone 25S - EPSG: 29195</mat-option>
+            <mat-option value="EPSG:31972">SIRGAS 2000 / UTM zone 18N - EPSG: 31972</mat-option>
+            <mat-option value="EPSG:31978">SIRGAS 2000 / UTM zone 18S - EPSG: 31978</mat-option>
+            <mat-option value="EPSG:31973">SIRGAS 2000 / UTM zone 19N - EPSG: 31973</mat-option>
+            <mat-option value="EPSG:31979">SIRGAS 2000 / UTM zone 19S - EPSG:31979</mat-option>
+            <mat-option value="EPSG:31974">SIRGAS 2000 / UTM zone 20N - EPSG: 31974</mat-option>
+            <mat-option value="EPSG:31980">SIRGAS 2000 / UTM zone 20S - EPSG: 31980</mat-option>
+            <mat-option value="EPSG:31981">SIRGAS 2000 / UTM zone 21S - EPSG: 31981</mat-option>
+            <mat-option value="EPSG:31975">SIRGAS 2000 / UTM zone 21N - EPSG: 31975</mat-option>
+            <mat-option value="EPSG:31976">SIRGAS 2000 / UTM zone 22N - EPSG: 31976</mat-option>
+            <mat-option value="EPSG:31982">SIRGAS 2000 / UTM zone 22S - EPSG: 31982</mat-option>
+            <mat-option value="EPSG:31983">SIRGAS 2000 / UTM zone 23S - EPSG: 31983</mat-option>
+            <mat-option value="EPSG:31984">SIRGAS 2000 / UTM zone 24S - EPSG: 31984</mat-option>
+            <mat-option value="EPSG:31985">SIRGAS 2000 / UTM zone 25S - EPSG: 31985</mat-option>
+            <mat-option value="EPSG:32618">WGS 84 / UTM zone 18N - EPSG: 32618</mat-option>
+            <mat-option value="EPSG:32718">WGS 84 / UTM zone 18S - EPSG: 32718</mat-option>
+            <mat-option value="EPSG:32619">WGS 84 / UTM zone 19N - EPSG: 32619</mat-option>
+            <mat-option value="EPSG:32719">WGS 84 / UTM zone 19S - EPSG: 32719</mat-option>
+            <mat-option value="EPSG:32620">WGS 84 / UTM zone 20N - EPSG: 32620</mat-option>
+            <mat-option value="EPSG:32720">WGS 84 / UTM zone 20S - EPSG: 32720</mat-option>
+            <mat-option value="EPSG:32621">WGS 84 / UTM zone 21N - EPSG: 32621</mat-option>
+            <mat-option value="EPSG:32721">WGS 84 / UTM zone 21S - EPSG: 32721</mat-option>
+            <mat-option value="EPSG:32622">WGS 84 / UTM zone 22N - EPSG: 32622</mat-option>
+            <mat-option value="EPSG:32722">WGS 84 / UTM zone 22S - EPSG: 32722</mat-option>
+            <mat-option value="EPSG:32723">WGS 84 / UTM zone 23S - EPSG: 32723</mat-option>
+            <mat-option value="EPSG:32724">WGS 84 / UTM zone 24S - EPSG: 32724</mat-option>
+            <mat-option value="EPSG:32725">WGS 84 / UTM zone 25S - EPSG: 32725</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+
+    <mat-form-field class="col-md-6">
+        <mat-label>Nível territorial</mat-label>
+        <mat-select id="nivelTerritorial" name="nivelTerritorial" formControlName="nivelTerritorial">
+            <mat-option value="Submunicipal">Submunicipal</mat-option>
+            <mat-option value="Municipal">Municipal</mat-option>
+            <mat-option value="Regional">Regional</mat-option>
+            <mat-option value="Estadual">Estadual</mat-option>
+            <mat-option value="Nacional">Nacional</mat-option>
+            <mat-option value="Internacional">Internacional</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6">
+        <mat-label>Publicar</mat-label>
+        <mat-select id="publicar" name="publicar" formControlName="publicar">
+            <mat-option value="sim">Sim</mat-option>
+            <mat-option value="nao">Não</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6">
+        <mat-label>Exibir automaticamente?</mat-label>
+        <mat-select id="exibirAuto" name="exibirAuto" formControlName="exibirAuto">
+            <mat-option value="sim">Sim</mat-option>
+            <mat-option value="nao">Não</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <div class="col-md-12 text-right">
+        <button mat-flat-button color="primary" matTooltip="Salvar"  [disabled]="!formGroup.valid"
+            style="cursor: pointer; margin-right: 5px !important;" (click)="salvar()" id="btnSalvar">
+            Salvar
+        </button>
+    </div>
+
+</form>
+
+
+</div>

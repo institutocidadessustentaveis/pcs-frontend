@@ -1,0 +1,42 @@
+
+<!-- Primeira seção -->
+<section *ngIf="pagina?.template02?.tituloPrimeiraSecao" class="first-section">
+  <label style="font-family: Source Sans Pro,Arial Black,Helvetica,Arial,sans-serif;" class="label-titulo">{{pagina?.template02?.tituloPrimeiraSecao}}</label>
+  <div class="row" style="width: 100%;" *ngIf="pagina.template02.imagemPrimeiraSecao">
+    <div class="col-md-3 div-img-first-section">
+      <img [src]="pagina.template02.imagemPrimeiraSecaoSafeUrl" class="img-third-section" matTooltip='{{pagina.template02?.nomeAutorImagemPrimeiraSecao}}'>
+    </div>
+    <div class="col-md-8 two-columns-with-image summernote" [ngxSummernoteView]="pagina?.template02?.textoPrimeiraSecao"></div>
+  </div>
+  <div class="two-columns" *ngIf="!pagina.template02.imagemPrimeiraSecao" [ngxSummernoteView]="pagina?.template02?.textoPrimeiraSecao"></div>
+</section>
+
+
+<!-- Segunda seção -->
+<section *ngIf="pagina?.template02?.tituloSegundaSecao" class="second-section" [style.background-color]="pagina?.template02?.corFundoSegundaSecao">
+  <label style="font-family: Source Sans Pro,Arial Black,Helvetica,Arial,sans-serif;" class="label-titulo-white">{{pagina?.template02?.tituloSegundaSecao}}</label>
+  <div [ngxSummernoteView]="pagina?.template02?.txtSegundaSecao" class="three-columns summernote"></div>
+</section>
+
+<!-- Terceira seção -->
+<section *ngIf="pagina?.template02?.tituloTerceiraSecao" class="third-section">
+  <label style="font-family: Source Sans Pro,Arial Black,Helvetica,Arial,sans-serif;" class="label-titulo">{{pagina?.template02?.tituloTerceiraSecao}}</label>
+  <div class="row summernote" style="width: 100%;" *ngIf="pagina.template02.imagemTerceiraSecao">
+    <div class="col-md-6 one-column-with-image" [ngxSummernoteView]="pagina?.template02?.txtTerceiraSecao"></div>
+    <div class="div-img-third-section"><img class="img-third-section"
+      [src]="pagina.template02.imagemTerceiraSecaoSafeUrl" matTooltip='{{pagina.template02?.nomeAutorImagemTerceiraSecao}}'>
+    </div>
+  </div>
+  <div class="row secao-texto-secao3">
+      <div class="col-md-3"></div>
+      <div class="col-md-9 col-lg-6 summernote" *ngIf="!pagina.template02.imagemTerceiraSecao" [ngxSummernoteView]="pagina?.template02?.txtTerceiraSecao"></div>
+  </div>
+</section>
+
+<!-- Quarta seção -->
+<section *ngIf="pagina?.template02?.tituloQuartaSecao" class="fourth-section" style="text-align: center">
+  <label style="font-family: Source Sans Pro,Arial Black,Helvetica,Arial,sans-serif;" class="label-titulo-white">{{pagina?.template02?.tituloQuartaSecao}}</label>
+  <div class="three-columns summernote" [ngxSummernoteView]="pagina?.template02?.txtQuartaSecao"></div>
+  <button type="button" class="btn-transparent" (click)="verificaTipoLink()" *ngIf="pagina?.template02?.txtBotao01">{{pagina?.template02?.txtBotao01}}</button>
+</section>
+
