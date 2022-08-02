@@ -1,32 +1,33 @@
-# Frontend
+# Programa Cidades Sustentáveis
+Código-fonte do projeto do [Programa Cidades Sustentáveis](https://www.cidadessustentaveis.org.br/inicial/home).
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.2.
+## Principais tecnologias e documentações de apoio
 
-## Development server
+- [Angular](https://angular.io/docs) v7.2.16;
+- [Node.js](https://nodejs.org/en/docs/) v10.15.3;
+- [RxJs](https://rxjs.dev/) v6.3.3;
+- [Angular Material](https://material.angular.io/) v7.3.7;
+- [LeafletJS](https://leafletjs.com/reference-1.5.1.html) v1.5.1;
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Ferramentas necessárias para execução do projeto e instruções de instalação:
 
-## Code scaffolding
+- [Git](https://git-scm.com/downloads)
+- [Node.js](https://nodejs.org/dist/v10.15.3/node-v10.15.3-x64.msi) (v10.15.3)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Como clonar o projeto
 
-## Build
+Com o Git e Node.js instalados, acesso o terminal e execute o comando:
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+`git clone https://github.com/programacidadessustentaveis/pcs-frontend.git`
 
-## Running unit tests
+Após a clonagem, através do próprio terminal ou através da IDE/Editor de texto de sua preferência, acesse o diretório com o código-fonte, e execute o seguinte comando para instalar as depedências e bibliotecas do projeto:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+`npm install`
 
-## Running end-to-end tests
+## Como executar o projeto
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+Após a instalação das dependências e bibliotecas do projeto, para executar o projeto em servidor local, execute o comando:
 
-## Further help
+`ng serve`
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
-
-
-## Selenium Tests
-
-selenium-side-runner -c "browserName=firefox moz:firefoxOptions.binary='C:\Program Files\Mozilla Firefox\firefox.exe'" PCS.side
+Aguarde o carregamento e acesse, em seu navegador, o endereço http://localhost:4200
